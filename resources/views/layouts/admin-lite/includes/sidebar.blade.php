@@ -11,7 +11,7 @@
             </div>
             <div class="pull-left info">
                 @if (Auth::guest())
-                <p>InfyOm</p>
+                <p>Wizag</p>
                 @else
                     <p>{{ Auth::user()->name}}</p>
                 @endif
@@ -33,7 +33,7 @@
         <!-- Sidebar Menu -->
 
         <ul class="sidebar-menu" data-widget="tree">
-            @include('layouts.menu')
+            @include('layouts.admin-lite.menu')
         </ul>
         <!-- /.sidebar-menu -->
     </section>
