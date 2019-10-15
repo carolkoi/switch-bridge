@@ -33,7 +33,7 @@
         <!-- Sidebar Menu -->
 
         <ul class="sidebar-menu" data-widget="tree">
-            @include('layouts.admin-lite.menu')
+            @include('layouts.menu')
         </ul>
         <!-- /.sidebar-menu -->
     </section>
