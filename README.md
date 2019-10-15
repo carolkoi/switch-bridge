@@ -8,3 +8,6 @@ Wiz-kit is a development-kit based on the <a href='https://adminlte.io/'>AdminLT
 2. ` cd WizKit`
 3. Run `composer install`
 
+## Code generation
+`php artisan infyom:scaffold Events --views=index,create,edit,show
+`
