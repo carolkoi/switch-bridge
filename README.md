@@ -21,3 +21,7 @@ Wiz-kit is a development-kit based on the <a href='https://adminlte.io/'>AdminLT
 ## Code generation
 1. To generate an entire crude operation e.g for Events run
 `php artisan infyom:scaffold Events --views=index,create,edit,show`
+2. To reverse the generation of the above crud action simply run 
+`php artisan infyom:rollback Events scaffold --views=edit,create,index,show`
+3. Generating full crud from existing table 
+`php artisan infyom:scaffold User --fromTable --tableName=users`
