@@ -17,6 +17,8 @@ Wiz-kit is a development-kit based on the <a href='https://adminlte.io/'>AdminLT
 4. ` cp .env.example .env` or for windows
 5. ` copy .env.example .env`
 6. `php artisan key:generate`
+6. set the database connections in the .env file the run
+  `php artisan migrate`
 
 ## Code generation
 1. To generate an entire crude operation e.g for Events run
