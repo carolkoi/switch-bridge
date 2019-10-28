@@ -11,6 +11,8 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+{{--    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>--}}
+{{--    <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>--}}
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">

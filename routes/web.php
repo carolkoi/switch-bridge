@@ -25,3 +25,14 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 
 Route::resource('users', 'UserController');
+
+Route::resource('templates', 'TemplateController');
+
+Route::resource('questions/{id}', 'QuestionController');
+Route::get('add-question', 'QuestionController@create');
+//Route::get('question-create/{id}','QuestionController@create')->name('questions.create');
+//Route::get('question-create/{id}','QuestionController@templateQuestion')->name('question-create');
+//Route::get('questions/{id}','QuestionController@index')->name('questions.index');
+
+
+Route::resource('answers', 'AnswerController');
