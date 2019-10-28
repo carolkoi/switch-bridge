@@ -1,7 +1,10 @@
 
 ## About Wiz-Kit 
 
-Wiz-kit is a development-kit based on the <a href='https://adminlte.io/'>AdminLTE </a>dashboard and <a href='http://labs.infyom.com/laravelgenerator/'>InfyOm CRUD Generator</a>
+Wiz-kit is a development-kit based on the <a href='https://adminlte.io/'>AdminLTE </a>dashboard,
+ <a href="https://laravelcollective.com/docs">laravel form collective</a>, 
+ <a href="https://yajrabox.com/docs/laravel-datatables/6.0"> Laravel Datatables</a> 
+ and <a href='http://labs.infyom.com/laravelgenerator/'>InfyOm CRUD Generator</a>
 1. The kit will reduces the development time by 20-30%.
 2. It makes code generation is a breeze.
 3. Generate an entire CRUD operation in seconds.
