@@ -26,5 +26,6 @@ class CreateQuestionRequest extends FormRequest
     public function rules()
     {
         return Question::$rules;
+
     }
 }

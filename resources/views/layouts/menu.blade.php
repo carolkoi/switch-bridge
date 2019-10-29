@@ -8,7 +8,7 @@
         <a href="{!! route('users.index') !!}"><i class="fa fa-edit"></i><span>Users</span></a>
     </li>
     <li class="{{ Request::is('templates*') ? 'active' : '' }}">
-        <a href="{!! route('templates.index') !!}"><i class="fa fa-edit"></i><span>Templates</span></a>
+        <a href="{!! route('templates.index') !!}"><i class="fa fa-edit"></i><span>Surveys</span></a>
     </li>
 
     <li class="active treeview menu-open">

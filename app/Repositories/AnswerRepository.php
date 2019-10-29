@@ -3,14 +3,14 @@
 namespace App\Repositories;
 
 use App\Models\Answer;
+use App\Models\Question;
 use App\Repositories\BaseRepository;
 
 /**
  * Class AnswerRepository
  * @package App\Repositories
  * @version October 28, 2019, 6:39 pm UTC
-*/
-
+ */
 class AnswerRepository extends BaseRepository
 {
     /**
@@ -37,5 +37,22 @@ class AnswerRepository extends BaseRepository
     public function model()
     {
         return Answer::class;
+    }
+
+    public function saveMultipleAnswers($id, $choice)
+    {
+        return Answer::create([
+            'question_id' => $id,
+            'choice' => $choice
+        ]);
+
+    }
+
+    public function updateMultipleAnswers($choice, $id, $question_id)
+    {
+        return Answer::update([
+            'question_id' => $id,
+            'choice' => $choice
+        ]);
     }
 }

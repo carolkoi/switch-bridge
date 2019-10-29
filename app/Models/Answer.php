@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Eloquent as Model;
+use App\Question;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -51,7 +52,7 @@ class Answer extends Model
     use SoftDeletes;
 
     public $table = 'answers';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -85,6 +86,12 @@ class Answer extends Model
         'question_id' => 'required',
         'choice' => 'required'
     ];
+    public function question()
+    {
+        return $this->belongsTo(Questionnaire::class);
+    }
 
-    
+
+
+
 }

@@ -28,8 +28,17 @@ Route::resource('users', 'UserController');
 
 Route::resource('templates', 'TemplateController');
 
-Route::resource('questions/{id}', 'QuestionController');
-Route::get('add-question', 'QuestionController@create');
+Route::get('questions/{id}', 'QuestionController@create');
+Route::post('question/{id}', 'QuestionController@store')->name('question.save');
+Route::get('question/{id}/edit', 'QuestionController@edit')->name('question.edit');
+Route::get('question/{id}', 'QuestionController@show')->name('question.show');
+Route::patch('question/{id}', 'QuestionController@update')->name('question.update');
+Route::delete('question/{id}', 'QuestionController@destroy')->name('question.destroy');
+
+
+
+
+//Route::get('add-question', 'QuestionController@create');
 //Route::get('question-create/{id}','QuestionController@create')->name('questions.create');
 //Route::get('question-create/{id}','QuestionController@templateQuestion')->name('question-create');
 //Route::get('questions/{id}','QuestionController@index')->name('questions.index');

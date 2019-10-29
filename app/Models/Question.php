@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Answer;
 use App\Template;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
