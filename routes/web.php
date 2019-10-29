@@ -29,7 +29,7 @@ Route::resource('users', 'UserController');
 Route::resource('templates', 'TemplateController');
 
 Route::get('questions/{id}', 'QuestionController@create');
-Route::post('question/{id}', 'QuestionController@store')->name('question.save');
+Route::post('question', 'QuestionController@store')->name('question.save');
 Route::get('question/{id}/edit', 'QuestionController@edit')->name('question.edit');
 Route::get('question/{id}', 'QuestionController@show')->name('question.show');
 Route::patch('question/{id}', 'QuestionController@update')->name('question.update');

@@ -133,7 +133,7 @@ class QuestionController extends AppBaseController
     public function update($id, UpdateQuestionRequest $request)
     {
         $question = $this->questionRepository->find($id);
-
+        $template_id = $question->template_id;
         if (empty($question)) {
             Flash::error('Question not found');
 
@@ -143,23 +143,24 @@ class QuestionController extends AppBaseController
         $question = $this->questionRepository->update($request->all(), $id);
 
         if (($question['type'] == Question::SELECT_MULTIPLE OR $question['type'] == Question::DROP_DOWN_LIST)) {
-            if ((empty($request->$question['options']))) {
+            if ((empty($request['options']))) {
                 flash('A select Question must have choices')->error();
 
                 return redirect()->back()->withInput();
             }
 
 //            collect($question['options'])->each(function ($question, $key) use($id, $question){
-            foreach ($question['options'] as $question) {
-                Answer::whereId('question_id', $id)
+            foreach ($request['options'] as $question) {
+                Answer::where('question_id', $id)->update(['choice' => $question]);
 //                    ->where('id', $question['optionsId'])
-                    ->update(['choice' => $question]);
+
 //            });
             }
 
             Flash::success('Question updated successfully.');
 
-            return redirect(url('questions', ['id' => $question->template_id]));
+            return redirect(url('questions',$template_id));
+
 
         }
     }

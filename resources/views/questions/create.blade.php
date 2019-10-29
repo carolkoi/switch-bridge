@@ -49,15 +49,11 @@
         function addAnswer(event){
             event.preventDefault();
             var htmlrow='<div class="row form-group div'+count+'">'+
-                '<div class="table-responsive">'+
-                '<table class="table-bordered col-sm-6" style="margin-left: 30px">'+
-                '<td>'+
+                '<div class="col-md-10">'+
                 '{!! Form::text('options[]', null, ['class' => 'form-control']) !!}'+
-                '</td>'+
-                '<td>'+
+                '</div>'+
+                '<div class="col-md-2">'+
                 '<button type="button" class="btn btn-danger btn_remove" onclick="remove('+count+')"> X </button>'+
-                '</td>'+
-                '</table>'+
                 '</div>'+
                 '</div>';
             count ++;

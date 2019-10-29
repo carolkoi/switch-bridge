@@ -32,7 +32,7 @@
                                 <table class="table-bordered">
                                     <tr>
                                     <div class="row form-group div1">
-                                        <div class="col-md-8">
+                                        <div class="col-md-6">
                                             {{ $count ++}} . {{$question->question}}
                                         </div>
                                         <div class="col-md-4">

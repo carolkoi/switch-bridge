@@ -32,26 +32,20 @@
     {!! Form::label('type', 'List') !!}
 </div>
 <div class="row">
-    <div class="col-md-12 selectAnswer" style="display:none;">
-        {!! Form::label('options', 'Add Choices:', ['style'=>"margin-left: 20px"]) !!}
-        <div class="row form-group div1">
-            <div class="table-responsive">
-
-                <table class="table-bordered" id="InputContainer" style="margin-left: 30px">
-                    <td>
-{{--                        <div class="form-group col-sm-6">--}}
-                        {!! Form::text('options[]', null, ['class' => 'form-control']) !!}
-{{--                        </div>--}}
-                    </td>
-                    <td>
-                        {!! Form::submit('+', ['class' => 'btn btn-info', 'onClick' => 'addAnswer(event);']) !!}
-
-                        {!! Form::submit('X', ['class' => 'btn btn-danger btn_remove', 'onClick' => 'remove(1);']) !!}
-
-                        {{--                    <button class="btn btn-danger btn_remove" type="button" onClick="remove(1)"> X </button>--}}
-                    </td>
-                </table>
-            </div>
+    <div class="col-md-6 selectAnswer" style="display:none;">
+        <div id="InputContainer">
+                    <div class="row form-group div1">
+                        <div class="col-md-4">
+                            {!! Form::label('options', 'Add Choices:') !!}
+                            {!! Form::text('options[]', null, ['class' => 'form-control']) !!}
+                        </div>
+                        <div class="col-md-2">
+                            {!! Form::submit('X', ['class' => 'btn btn-danger btn_remove', 'onClick' => 'remove(1);']) !!}
+                        </div>
+                    </div>
+        </div>
+        <div class="pull-left">
+            {!! Form::submit('+', ['class' => 'btn btn-info', 'onClick' => 'addAnswer(event);']) !!}
         </div>
 
     </div>
