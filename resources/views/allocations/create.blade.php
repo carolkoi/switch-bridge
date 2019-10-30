@@ -3,7 +3,7 @@
 @section('content')
     <section class="content-header">
         <h1>
-            Survey
+            Allocation
         </h1>
     </section>
     <div class="content">
@@ -12,9 +12,9 @@
 
             <div class="box-body">
                 <div class="row">
-                    {!! Form::open(['route' => 'templates.store']) !!}
+                    {!! Form::open(['route' => 'allocations.store']) !!}
 
-                        @include('templates.fields')
+                        @include('allocations.fields')
 
                     {!! Form::close() !!}
                 </div>
@@ -22,3 +22,10 @@
         </div>
     </div>
 @endsection
+@section('scripts')
+    <script>
+        $("#user_id, #client_id, #template_id").select2({
+        });
+
+    </script>
+    @endsection

@@ -151,4 +151,27 @@ class TemplateController extends AppBaseController
 
         return redirect(route('templates.index'));
     }
+    public function changeStatus($id, $action)
+    {
+
+        $template = Template::where('id',$id)->with(['questions'])->first();
+
+        if(count($template->questions) > 0){
+            if($action){
+
+                $template->update(['status' => Template::ACTIVE]);
+                flash('Activated')->success();
+
+            }else{
+                $template->update(['status' => !Template::ACTIVE]);
+                flash('Deactivated')->success();
+
+            }
+
+            return redirect()->route('template.index');
+        }
+
+        flash('You cannot activate a survey with no questions')->error();
+        return redirect()->route('template.index');
+    }
 }

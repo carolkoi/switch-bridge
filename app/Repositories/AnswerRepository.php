@@ -48,10 +48,16 @@ class AnswerRepository extends BaseRepository
 
     }
 
-    public function updateMultipleAnswers($choice, $id, $question_id)
+    public function updateMultipleAnswers($question_id,$choice, $answer_id)
     {
-        return Answer::update([
-            'question_id' => $id,
+        if (empty($answer_id)) {
+            return Answer::create([
+                'question_id' => $question_id,
+                'choice' => $choice
+            ]);
+        }
+
+        return Answer::find($answer_id)->update([
             'choice' => $choice
         ]);
     }

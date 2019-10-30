@@ -65,12 +65,12 @@ class QuestionController extends AppBaseController
 //        dd($input['options']);
         $question = $this->questionRepository->create($input);
 
-        if(($question['type'] == Question::SELECT_MULTIPLE OR $question['type'] == Question::DROP_DOWN_LIST)){
-            if(empty($input['options'])){
+        if (($question['type'] == Question::SELECT_MULTIPLE OR $question['type'] == Question::DROP_DOWN_LIST)) {
+            if (empty($input['options'])) {
                 flash('A select Question must have choices')->error();
-                return  redirect()->back()->withInput();
+                return redirect()->back()->withInput();
             }
-            foreach($input['options'] as $choice){
+            foreach ($input['options'] as $choice) {
                 $this->answerRepository->saveMultipleAnswers($question->id, $choice);
 
             }
@@ -79,13 +79,13 @@ class QuestionController extends AppBaseController
 
         Flash::success('Question saved successfully.');
 
-        return redirect(url('questions',['id'=> $request->template_id]));
+        return redirect(url('questions', ['id' => $request->template_id]));
     }
 
     /**
      * Display the specified Question.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
@@ -96,16 +96,16 @@ class QuestionController extends AppBaseController
         if (empty($question)) {
             Flash::error('Question not found');
 
-            return redirect(url('questions',['id'=> $question->template_id]));
+            return redirect(url('questions', ['id' => $question->template_id]));
         }
 
-        return view('questions.show')->with(['question'=> $question, 'template_id' => $question->template_id]);
+        return view('questions.show')->with(['question' => $question, 'template_id' => $question->template_id]);
     }
 
     /**
      * Show the form for editing the specified Question.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
@@ -116,16 +116,16 @@ class QuestionController extends AppBaseController
         if (empty($question)) {
             Flash::error('Question not found');
 
-            return redirect(url('questions',['id'=> $question->template_id]));
+            return redirect(url('questions', ['id' => $question->template_id]));
         }
 
-        return view('questions.edit')->with(['question'=> $question, 'template_id' => $template_id]);
+        return view('questions.edit')->with(['question' => $question, 'template_id' => $template_id]);
     }
 
     /**
      * Update the specified Question in storage.
      *
-     * @param  int              $id
+     * @param int $id
      * @param UpdateQuestionRequest $request
      *
      * @return Response
@@ -149,17 +149,14 @@ class QuestionController extends AppBaseController
                 return redirect()->back()->withInput();
             }
 
-//            collect($question['options'])->each(function ($question, $key) use($id, $question){
-            foreach ($request['options'] as $question) {
-                Answer::where('question_id', $id)->update(['choice' => $question]);
-//                    ->where('id', $question['optionsId'])
-
-//            });
+            foreach ($request['options'] as $key => $choice) {
+                $answer_id = array_key_exists($key, $request['optionsId']) ? $request['optionsId'][$key] : null;
+                $this->answerRepository->updateMultipleAnswers($question->id, $choice, $answer_id);
             }
 
             Flash::success('Question updated successfully.');
 
-            return redirect(url('questions',$template_id));
+            return redirect(url('questions', $template_id));
 
 
         }
@@ -168,7 +165,7 @@ class QuestionController extends AppBaseController
     /**
      * Remove the specified Question from storage.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
@@ -179,7 +176,7 @@ class QuestionController extends AppBaseController
         if (empty($question)) {
             Flash::error('Question not found');
 
-            return redirect(url('questions',['id'=> $question['template_id']]));
+            return redirect(url('questions', ['id' => $question['template_id']]));
 
         }
 
@@ -187,6 +184,6 @@ class QuestionController extends AppBaseController
 
         Flash::success('Question deleted successfully.');
 
-        return redirect(url('questions',['id'=> $question->template_id]));
+        return redirect(url('questions', ['id' => $question->template_id]));
     }
 }

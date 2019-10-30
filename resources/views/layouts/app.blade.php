@@ -14,4 +14,4 @@
 </div>
 @include('layouts.admin-lite.scripts.scripts')
 </body>
-</html>s
+</html>

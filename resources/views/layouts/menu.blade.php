@@ -189,3 +189,19 @@
     <a href="{!! route('answers.index') !!}"><i class="fa fa-edit"></i><span>Answers</span></a>
 </li>
 
+<li class="{{ Request::is('allocations*') ? 'active' : '' }}">
+    <a href="{!! route('allocations.index') !!}"><i class="fa fa-edit"></i><span>Allocations</span></a>
+</li>
+
+<li class="{{ Request::is('allocations*') ? 'active' : '' }}">
+    <a href="{!! route('allocations.index') !!}"><i class="fa fa-edit"></i><span>Allocations</span></a>
+</li>
+
+<li class="{{ Request::is('allocations*') ? 'active' : '' }}">
+    <a href="{!! route('allocations.index') !!}"><i class="fa fa-edit"></i><span>Allocations</span></a>
+</li>
+
+<li class="{{ Request::is('clients*') ? 'active' : '' }}">
+    <a href="{!! route('clients.index') !!}"><i class="fa fa-edit"></i><span>Clients</span></a>
+</li>
+

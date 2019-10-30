@@ -45,3 +45,12 @@ Route::delete('question/{id}', 'QuestionController@destroy')->name('question.des
 
 
 Route::resource('answers', 'AnswerController');
+
+
+Route::resource('allocations', 'AllocationController');
+
+Route::resource('allocations', 'AllocationController');
+
+Route::resource('allocations', 'AllocationController');
+
+Route::resource('clients', 'ClientController');

@@ -14,6 +14,7 @@ class Template extends Model
 
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
+    const ACTIVE = true;
 
 
     protected $dates = ['deleted_at'];
@@ -64,6 +65,11 @@ class Template extends Model
     public function questions()
     {
         return $this->hasMany(Question::class);
+    }
+
+    public function allocations()
+    {
+        return $this->hasMany(Allocation::class);
     }
 
 

@@ -1,6 +1,7 @@
 <!-- Template Id Field -->
 {{--<div class="form-group col-sm-6">--}}
 {{--    {!! Form::label('template_id', 'Template Id:') !!}--}}
+
 {!! Form::hidden('template_id', $template_id, ['class' => 'form-control']) !!}
 {{--</div>--}}
 
@@ -38,6 +39,7 @@
             <div class="row form-group div1">
                 <div class="col-md-8">
 {{--                    {!! Form::label('options', 'Add Choices:', ['style'=>"margin-left: 20px"]) !!}--}}
+
                     {!! Form::hidden('optionsId[]', $choice->id, ['class' => 'form-control']) !!}
                     {!! Form::text('options[]', $choice->choice, ['class' => 'form-control', 'style'=>"margin-left: 20px"]) !!}
                 </div>
