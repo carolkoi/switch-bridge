@@ -58,7 +58,7 @@ class TemplateController extends AppBaseController
 
         $template = $this->templateRepository->create($input);
 
-        Flash::success('Template saved successfully.');
+        Flash::success('Survey saved successfully.');
 
         return redirect(route('templates.index'));
     }
@@ -95,7 +95,7 @@ class TemplateController extends AppBaseController
         $template = $this->templateRepository->find($id);
 
         if (empty($template)) {
-            Flash::error('Template not found');
+            Flash::error('Survey not found');
 
             return redirect(route('templates.index'));
         }
@@ -123,7 +123,7 @@ class TemplateController extends AppBaseController
 
         $template = $this->templateRepository->update($request->all(), $id);
 
-        Flash::success('Template updated successfully.');
+        Flash::success('Survey updated successfully.');
 
         return redirect(route('templates.index'));
     }
@@ -140,14 +140,14 @@ class TemplateController extends AppBaseController
         $template = $this->templateRepository->find($id);
 
         if (empty($template)) {
-            Flash::error('Template not found');
+            Flash::error('Survey not found');
 
             return redirect(route('templates.index'));
         }
 
         $this->templateRepository->delete($id);
 
-        Flash::success('Template deleted successfully.');
+        Flash::success('Survey deleted successfully.');
 
         return redirect(route('templates.index'));
     }

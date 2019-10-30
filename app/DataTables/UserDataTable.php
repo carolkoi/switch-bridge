@@ -18,7 +18,10 @@ class UserDataTable extends DataTable
     {
         $dataTable = new EloquentDataTable($query);
 
-        return $dataTable->addColumn('action', 'users.datatables_actions');
+        return $dataTable->addColumn('action', 'users.datatables_actions')
+            ->editColumn('name', function ($query){
+                return $query->first_name. ' '.$query->last_name;
+            });
     }
 
     /**

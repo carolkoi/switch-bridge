@@ -60,7 +60,7 @@ class Question extends Model
      */
     public static $rules = [
         'template_id' => 'required',
-        'question' => 'required',
+        'question' => 'required|unique:questions',
         'type' => 'required',
 //        'status' => 'required'
     ];

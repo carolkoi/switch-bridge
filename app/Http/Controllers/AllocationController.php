@@ -81,7 +81,7 @@ class AllocationController extends AppBaseController
             }
         }
 
-        Flash::success('Survey sent successfully.');
+        Flash::success('Survey allocated successfully.');
 
         return redirect(route('allocations.index'));
     }
@@ -117,6 +117,8 @@ class AllocationController extends AppBaseController
     {
         $allocation = $this->allocationRepository->find($id);
         $template = Template::find($allocation->template_id);
+        $user = User::find($allocation->user_id);
+        $client = Client::find($allocation->client_id);
         $users = User::get();
         $clients = Client::get();
 
@@ -126,7 +128,7 @@ class AllocationController extends AppBaseController
             return redirect(route('allocations.index'));
         }
 
-        return view('allocations.edit', compact('allocation','template', 'users', 'clients'));
+        return view('allocations.edit', compact('allocation','template', 'users', 'clients', 'user', 'client'));
     }
 
     /**
@@ -140,16 +142,36 @@ class AllocationController extends AppBaseController
     public function update($id, UpdateAllocationRequest $request)
     {
         $allocation = $this->allocationRepository->find($id);
+        $all_update = $request->except(['user_id', 'client_id']);
+        $template = Template::find($allocation->template_id);
 
         if (empty($allocation)) {
             Flash::error('Allocation not found');
 
             return redirect(route('allocations.index'));
         }
+        if ($allocation->user_type == 'staff'){
+            $staffs = $request->input('user_id');
+            foreach ($staffs as $staff){
+                $all_update['user_id'] = $staff;
+                $allocation = $this->allocationRepository->update($all_update, $id);
+                $staff_email = User::find($staff)->email;
+                Mail::to($staff_email)->send(new SendSurveyEmail($template));
 
-        $allocation = $this->allocationRepository->update($request->all(), $id);
+            }
+        }
+        if ($allocation->user_type == 'client'){
+            $clients = $request->input('client_id');
+            foreach ($clients as $client){
+                $all_update['client_id'] = $client;
+                $allocation = $this->allocationRepository->update($all_update, $id);
+                $client_mail = Client::find($client)->email;
+                Mail::to($client_mail)->send(new SendSurveyEmail($template));
 
-        Flash::success('Allocation updated successfully.');
+            }
+        }
+
+        Flash::success('Survey allocation updated successfully.');
 
         return redirect(route('allocations.index'));
     }
@@ -176,5 +198,10 @@ class AllocationController extends AppBaseController
         Flash::success('Allocation deleted successfully.');
 
         return redirect(route('allocations.index'));
+    }
+    public function getSurveyType($type){
+        // Fetch survey by type
+        $surveyData = Template::where('type', $type)->get();
+        return response()->json(['data' => $surveyData]);
     }
 }

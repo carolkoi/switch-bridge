@@ -23,8 +23,11 @@
 @endsection
 @section('scripts')
     <script>
-        $("#user_id, #client_id, #template_id").select2({
-        });
+        $(document).ready(function () {
+            $("#user_id, #client_id, #template_id").select2({
+            });
+
+        })
 
     </script>
 @endsection

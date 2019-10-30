@@ -5,6 +5,7 @@ namespace App\DataTables;
 use App\Models\Client;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
+use function foo\func;
 
 class ClientDataTable extends DataTable
 {
@@ -18,7 +19,10 @@ class ClientDataTable extends DataTable
     {
         $dataTable = new EloquentDataTable($query);
 
-        return $dataTable->addColumn('action', 'clients.datatables_actions');
+        return $dataTable->addColumn('action', 'clients.datatables_actions')
+            ->editColumn('name', function ($query){
+                return $query->first_name. '  '.$query->last_name;
+            });
     }
 
     /**
@@ -66,12 +70,11 @@ class ClientDataTable extends DataTable
     {
         return [
             'contact_id',
-            'first_name',
-            'last_name',
-            'initials',
+            'name',
+//            'initials',
             'email',
-            'company_account',
-            'company_id',
+//            'company_account',
+//            'company_id',
             'company_name'
         ];
     }

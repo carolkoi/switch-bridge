@@ -44,17 +44,32 @@
 </div>
 
 <!-- User Id Field -->
+@if(isset($user))
 <div class="form-group col-sm-6">
     {!! Form::label('user_id', 'Staffs:') !!}
     <select class="form-control" name="user_id[]" id="user_id" multiple>
-        <option value='0'>-- Select Staffs --</option>
+{{--        @foreach($user as $selected)--}}
+{{--        <option value='{{$selected['id']}}'>{{$selected['first_name'].' '.$selected['last_name']}}</option>--}}
+{{--        @endforeach--}}
         @foreach($users as $user)
             <option value="{{$user->id}}">{{$user->first_name.' '.$user->last_name}}</option>
         @endforeach
     </select>
 </div>
+@else
+    <div class="form-group col-sm-6">
+        {!! Form::label('user_id', 'Staffs:') !!}
+        <select class="form-control" name="user_id[]" id="user_id" multiple>
+            <option value='0'>-- Select Staffs --</option>
+            @foreach($users as $user)
+                <option value="{{$user->id}}">{{$user->first_name.' '.$user->last_name}}</option>
+            @endforeach
+        </select>
+    </div>
+    @endif
 
 <!-- Client Id Field -->
+@if(isset($client))
 <div class="form-group col-sm-6">
     {!! Form::label('client_id', 'Clients:') !!}
     <select class="form-control" name="client_id[]" id="client_id" multiple>
@@ -64,6 +79,17 @@
         @endforeach
     </select>
 </div>
+@else
+    <div class="form-group col-sm-6">
+        {!! Form::label('client_id', 'Clients:') !!}
+        <select class="form-control" name="client_id[]" id="client_id" multiple>
+            <option value='0'>-- Select Clients--</option>
+            @foreach($clients as $client)
+                <option value="{{$client->id}}">{{$client->first_name.' '.$client->last_name}}</option>
+            @endforeach
+        </select>
+    </div>
+    @endif
 
 
 

@@ -55,7 +55,7 @@
                                             @endif
 {{--                                            <a href="{{url('question/'.$question->id.'/edit')}}">Edit</a>--}}
                                             @if($question->type == App\Models\Question::SELECT_ONE)
-{{--                                                <label class="badge badge-success"> True/False Choice</label>--}}
+                                                <label class="badge badge-success"> True/False Choice</label>
                                                 @foreach($question->answer as $ans)
                                                     <li> {{ $ans->choice }}</li>
                                                 @endforeach

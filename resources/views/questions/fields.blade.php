@@ -35,7 +35,7 @@
     <div class="col-md-6 selectAnswer" style="display:none;">
         <div id="InputContainer">
                     <div class="row form-group div1">
-                        <div class="col-md-4">
+                        <div class="col-md-10">
                             {!! Form::label('options', 'Add Choices:') !!}
                             {!! Form::text('options[]', null, ['class' => 'form-control']) !!}
                         </div>

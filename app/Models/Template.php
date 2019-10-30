@@ -56,6 +56,9 @@ class Template extends Model
     public static $rules = [
         'name' => 'required',
         'description' => 'required',
+        'valid_from' => 'required',
+        'valid_until' => 'required',
+        'email_msg' => 'required'
     ];
 
     public function user()

@@ -11,6 +11,10 @@
     {!! Form::radio('type', 'poll' , false) !!}
     {!! Form::label('poll', 'Poll') !!}
 
+{{--    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--}}
+{{--    {!! Form::radio('type', 'feedback' , false) !!}--}}
+{{--    {!! Form::label('feedback', 'Feedback') !!}--}}
+
 
 </div>
 
@@ -29,10 +33,18 @@
 
 
 <!-- Valid From Field -->
+@if(isset($template))
 <div class="form-group col-sm-6">
     {!! Form::label('valid_from', 'Valid From:') !!}
-    {!! Form::date('valid_from', null, ['class' => 'form-control','id'=>'valid_from']) !!}
+    {!! Form::date('valid_from', $template->valid_from, ['class' => 'form-control','id'=>'valid_from']) !!}
 </div>
+@else
+    <div class="form-group col-sm-6">
+        {!! Form::label('valid_from', 'Valid From:') !!}
+        {!! Form::date('valid_from',null , ['class' => 'form-control','id'=>'valid_from']) !!}
+    </div>
+    @endif
+
 
 {{--@section('scripts')--}}
 {{--    <script type="text/javascript">--}}
@@ -44,10 +56,17 @@
 {{--@endsection--}}
 
 <!-- Valid Until Field -->
+@if(isset($template))
 <div class="form-group col-sm-6">
     {!! Form::label('valid_until', 'Valid Until:') !!}
-    {!! Form::date('valid_until', null, ['class' => 'form-control','id'=>'valid_until']) !!}
+    {!! Form::date('valid_until', $template->valid_until, ['class' => 'form-control','id'=>'valid_until']) !!}
 </div>
+@else
+    <div class="form-group col-sm-6">
+        {!! Form::label('valid_until', 'Valid Until:') !!}
+        {!! Form::date('valid_until', null, ['class' => 'form-control','id'=>'valid_until']) !!}
+    </div>
+    @endif
 
 {{--@section('scripts')--}}
 {{--    <script type="text/javascript">--}}
@@ -61,7 +80,7 @@
 <!-- Email Msg Field -->
 <div class="form-group col-sm-12 col-lg-12">
     {!! Form::label('email_msg', 'Email Msg:') !!}
-    {!! Form::textarea('email_msg', null, ['class' => 'form-control']) !!}
+    {!! Form::textarea('email_msg', null, ['class' => 'form-control', 'required' => 'required']) !!}
 </div>
 
 <!-- Submit Field -->
