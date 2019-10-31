@@ -3,7 +3,7 @@
 
     <!-- Logo -->
     <a href="#" class="logo">
-        <b>{{env('APP_NAME', 'Wizag')}}</b>
+        <b>{{env('APP_NAME', 'WizSurvey')}}</b>
     </a>
 
     <!-- Header Navbar -->

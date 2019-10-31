@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>How to send mail using queue in Laravel 5.7? - ItSolutionStuff.com</title>
 </head>
 <body>
 
@@ -14,7 +13,7 @@
 <p>Dear Sir / Madam</p>
 <p>{{ $templateEmailMsg }}</p>
 
-<p><a  href="{{ url('template',['id'=> $templateID])}}" class="btn btn-sm btn-info"> Take Survey </a></p>
+<p><a  href="{{ url('survey',['id'=> $templateID])}}" class="btn btn-sm btn-info"> Take Survey </a></p>
 
 <strong>Thank you. :)</strong>
 

@@ -62,7 +62,6 @@ class QuestionController extends AppBaseController
     public function store(CreateQuestionRequest $request)
     {
         $input = $request->all();
-//        dd($input['options']);
         $question = $this->questionRepository->create($input);
 
         if (($question['type'] == Question::SELECT_MULTIPLE OR $question['type'] == Question::DROP_DOWN_LIST)) {

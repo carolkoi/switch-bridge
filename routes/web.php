@@ -56,3 +56,9 @@ Route::resource('allocations', 'AllocationController');
 Route::resource('allocations', 'AllocationController');
 
 Route::resource('clients', 'ClientController');
+
+Route::resource('survey', 'SurveyController');
+
+
+Route::resource('responses', 'ResponseController');
+//Route::get('survey-responses/{survey}','ResponseController@showResponses');

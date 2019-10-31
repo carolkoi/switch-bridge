@@ -54,3 +54,11 @@
 @section('scripts')
     document.querySelector("body > div.wrapper > aside.main-sidebar > section > ul > li.active.treeview")
 @endsection
+{{--<li class="{{ Request::is('surveys*') ? 'active' : '' }}">--}}
+{{--    <a href="{!! route('surveys.index') !!}"><i class="fa fa-edit"></i><span>Surveys</span></a>--}}
+{{--</li>--}}
+
+<li class="{{ Request::is('responses*') ? 'active' : '' }}">
+    <a href="{!! route('responses.index') !!}"><i class="fa fa-edit"></i><span>Responses</span></a>
+</li>
+
