@@ -17,6 +17,7 @@ use Flash;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Mail;
 use Response;
+use Webpatser\Uuid\Uuid;
 
 class AllocationController extends AppBaseController
 {
@@ -62,24 +63,31 @@ class AllocationController extends AppBaseController
     {
         $input = $request->except('user_id', 'client_id');
         $template = Template::findOrFail($input['template_id']);
-        if ($input['user_type'] == 'client'){
-            $clients = $request->input('client_id');
-            foreach ($clients as $client){
-            $input['client_id'] = $client;
+        $users = $request->input('user_id');
+        $clients = $request->input('client_id');
+        if (is_array($users)){
+        foreach ($users as $user) {
+            $input['user_id'] = $user;
+//            dd(array_diff($input, array($user)));
             $allocation = $this->allocationRepository->create($input);
-            $client_mail = Client::find($client)->email;
-            Mail::to($client_mail)->send(new SendSurveyEmail($template));
+            $staff_email = User::find($user)->email;
+            $token = Uuid::generate()->string;
+            Mail::to($staff_email)->send(new SendSurveyEmail($template, $token));
         }
+
         }
-        if ($input['user_type'] == 'staff') {
-            $users = $request->input('user_id');
-            foreach ($users as $user) {
-                $input['user_id'] = $user;
+        if ($clients) {
+            foreach ($clients as $client) {
+                $input['client_id'] = $client;
                 $allocation = $this->allocationRepository->create($input);
-                $staff_email = User::find($user)->email;
-                Mail::to($staff_email)->send(new SendSurveyEmail($template));
+                $client_mail = Client::find($client)->email;
+                //before send survey, generate unique uuid
+                $token = Uuid::generate()->string;
+                Mail::to($client_mail)->send(new SendSurveyEmail($template, $token));
             }
         }
+
+
 
         Flash::success('Survey allocated successfully.');
 
@@ -142,7 +150,7 @@ class AllocationController extends AppBaseController
     public function update($id, UpdateAllocationRequest $request)
     {
         $allocation = $this->allocationRepository->find($id);
-        $all_update = $request->except(['user_id', 'client_id']);
+        $requestdata = $request->except(['user_id', 'client_id']);
         $template = Template::find($allocation->template_id);
 
         if (empty($allocation)) {
@@ -150,11 +158,11 @@ class AllocationController extends AppBaseController
 
             return redirect(route('allocations.index'));
         }
-        if ($allocation->user_type == 'staff'){
-            $staffs = $request->input('user_id');
+        if ($requestdata['user_type'] == 'staff'){
+            $staffs = $request['user_id'];
             foreach ($staffs as $staff){
-                $all_update['user_id'] = $staff;
-                $allocation = $this->allocationRepository->update($all_update, $id);
+                $requestdata['user_id'] = $staff;
+                $allocation = $this->allocationRepository->create($requestdata, $id);
                 $staff_email = User::find($staff)->email;
                 Mail::to($staff_email)->send(new SendSurveyEmail($template));
 
@@ -201,7 +209,7 @@ class AllocationController extends AppBaseController
     }
     public function getSurveyType($type){
         // Fetch survey by type
-        $surveyData = Template::where('type', $type)->get();
+        $surveyData = Template::where('type', $type)->get()->pluck('name','id');
         return response()->json(['data' => $surveyData]);
     }
 }

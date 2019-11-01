@@ -49,11 +49,12 @@ Route::get('survey-type/{type}', 'AllocationController@getSurveyType')->name('su
 Route::resource('answers', 'AnswerController');
 
 
-Route::resource('allocations', 'AllocationController');
+//Route::resource('allocations', 'AllocationController');
+//
+//Route::resource('allocations', 'AllocationController');
 
 Route::resource('allocations', 'AllocationController');
-
-Route::resource('allocations', 'AllocationController');
+Route::get('survey-response/{id}/{token}', 'SurveyController@show');
 
 Route::resource('clients', 'ClientController');
 

@@ -18,10 +18,13 @@ class SendSurveyEmail extends Mailable
      * @return void
      */
     public $template;
-    public function __construct(Template $template)
+    public $token;
+
+    public function __construct(Template $template, $token)
     {
         //
         $this->template = $template;
+        $this->token = $token;
     }
 
     /**
@@ -32,6 +35,10 @@ class SendSurveyEmail extends Mailable
     public function build()
     {
         return $this->view('allocations.email')
-            ->with(['templateEmailMsg' => $this->template->email_msg, 'templateID' => $this->template->id]);
+            ->with([
+                'templateEmailMsg' => $this->template->email_msg,
+                'templateID' => $this->template->id,
+                'token' => $this->token
+            ]);
     }
 }

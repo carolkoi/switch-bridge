@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Response;
 use App\User;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -74,6 +75,13 @@ class Template extends Model
     {
         return $this->hasMany(Allocation::class);
     }
+//    public static function boot()
+//    {
+//        parent::boot();
+//        self::creating(function ($model) {
+//            $model->uuid = (string) Uuid::generate(4);
+//        });
+//    }
 
 
 }

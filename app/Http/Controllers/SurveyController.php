@@ -53,16 +53,19 @@ class SurveyController extends AppBaseController
      */
     public function store(CreateSurveyRequest $request)
     {
-        $input = $request->except(['_token']);
+        $input = $request->except(['_token','survey_uuid']);
+
         foreach($input as $key => $resp){
 
             $map = explode('_',$key);
             Response::create([
                 'user_id' => NULL,
+                'client_id' => NULL,
                 'template_id' => $map[1],
                 'question_id' => $map[2],
                 'answer_type' => $map[3],
                 'answer' => is_array($resp)? json_encode($resp):(is_int($resp) ? strval($resp) : $resp),
+                'survey_uuid' => $request['survey_uuid']
             ]);
         }
 
@@ -80,7 +83,7 @@ class SurveyController extends AppBaseController
      *
      * @return Response
      */
-    public function show($id)
+    public function show($id, $token)
     {
 //        $survey = $this->surveyRepository->find($id);
 
@@ -90,7 +93,7 @@ class SurveyController extends AppBaseController
 //            return redirect(route('surveys.index'));
 //        }
         $questions = Template::with(['questions.answer'])->find($id);
-        return view('surveys.create')->with('questions', $questions);
+        return view('surveys.create', compact('token','questions'));
     }
 
     /**

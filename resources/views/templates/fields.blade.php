@@ -45,7 +45,6 @@
     </div>
     @endif
 
-
 {{--@section('scripts')--}}
 {{--    <script type="text/javascript">--}}
 {{--        $('#valid_from').datetimepicker({--}}

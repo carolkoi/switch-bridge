@@ -13,7 +13,7 @@
                <div class="row">
                    {!! Form::model($allocation, ['route' => ['allocations.update', $allocation->id], 'method' => 'patch']) !!}
 
-                        @include('allocations.fields')
+                        @include('allocations.editfields')
 
                    {!! Form::close() !!}
                </div>

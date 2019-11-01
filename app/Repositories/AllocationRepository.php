@@ -41,4 +41,27 @@ class AllocationRepository extends BaseRepository
     {
         return Allocation::class;
     }
+    public function updateAllocationOnStaffs($allocation_id, $template_id, $user_id)
+    {
+        if (empty($user_id)) {
+            return Allocation::create([
+                'id' => $allocation_id,
+                'template_id' => $template_id,
+                'user_id' => $user_id
+            ]);
+        }
+
+    }
+
+    public function updateAllocationOnclients($allocation_id, $template_id, $client_id)
+    {
+        if (empty($client_id)) {
+            return Allocation::create([
+                'id' => $allocation_id,
+                'template_id' => $template_id,
+                'client_id' => $client_id
+            ]);
+        }
+
+    }
 }

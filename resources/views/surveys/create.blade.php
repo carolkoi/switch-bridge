@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.def')
 
 @section('content')
     <div class="container" style="margin-left: 150px">
@@ -31,7 +31,7 @@
 
                                     <div class="box-body" style="margin-left: 50px; margin-right: 50px">
                                         <div class="row">
-                                            {!! Form::open(['route' => 'survey.store']) !!}
+                                            {!! Form::open(['route' => 'survey.store', 'style' => 'width:100%']) !!}
 
                                                 @include('surveys.fields')
 

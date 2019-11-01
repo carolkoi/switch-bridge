@@ -20,8 +20,28 @@ class ResponseDataTable extends DataTable
 
         return $dataTable
             ->addColumn('Title', 'responses.datatables_title')
-            ->addColumn('Description', function ($query){
-                return $query->template->description;
+//            ->addColumn('Description', function ($query){
+//                return $query->template->description;
+//            })
+            ->addColumn('users sent', function ($query){
+              return  $query->template->allocations->count();
+//                foreach ($query->template->allocations as $all){
+//                    dd($all);
+//                    return $all->groupBy('template_id')->count();
+//                }
+            })
+            ->addColumn('no of respondents', function ($query){
+//                dd($query->countRespondentsByTemplateId($query->template_id));
+                $no = $query->countRespondentsByTemplateId($query->template_id) / $query->template->questions->count();
+                return $no;
+            })
+            ->addColumn('%age response', function ($query){
+                $no = $query->groupBy('template_id')->count()/$query->template->questions->count();
+                foreach ($query->template->allocations as $all){
+                    $no2 = $all->groupBy('template_id')->count();
+                    return ($no/$no2) * 100;
+                }
+
             })
             ->addColumn('action', 'responses.datatables_actions')
             ->rawColumns(['Title','action']);
@@ -35,7 +55,7 @@ class ResponseDataTable extends DataTable
      */
     public function query(Response $model)
     {
-        return $model->with(['template'])->groupBy('template_id')->newQuery();
+        return $model->with(['template','template.allocations'])->groupBy('template_id')->newQuery();
     }
 
     /**
@@ -72,7 +92,10 @@ class ResponseDataTable extends DataTable
     {
         return [
             'Title',
-            'Description'
+//            'Description',
+            'users sent',
+            'no of respondents',
+            '%age response'
         ];
     }
 

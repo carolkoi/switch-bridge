@@ -237,6 +237,7 @@ return [
         'Html'      => Collective\Html\HtmlFacade::class,
         'Flash'     => Laracasts\Flash\Flash::class,
         'Datatables' => Yajra\Datatables\Facades\Datatables::class,
+        'Uuid' => Webpatser\Uuid\Uuid::class,
     ],
 
 ];

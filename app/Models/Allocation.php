@@ -112,8 +112,13 @@ class Allocation extends Model
     {
         return $this->belongsTo(Template::class, 'template_id','id');
     }
-    public function scopeCountUsersByTemplateId($query, $template_id, $user_type){
-        return $query->where(['template_id' =>$template_id, 'user_type' =>  $user_type])->count();
+
+    public function scopeCountUsersByTemplateId($query, $template_id){
+        return $query->where(['template_id' =>$template_id])->count();
+    }
+
+    public function scopeCountAllUsersByTemplateId($query, $template_id){
+        return $query->where(['template_id' => $template_id])->count();
     }
 
 }

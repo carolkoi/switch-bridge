@@ -152,13 +152,13 @@ class QuestionController extends AppBaseController
                 $answer_id = array_key_exists($key, $request['optionsId']) ? $request['optionsId'][$key] : null;
                 $this->answerRepository->updateMultipleAnswers($question->id, $choice, $answer_id);
             }
+        }
 
             Flash::success('Question updated successfully.');
 
             return redirect(url('questions', $template_id));
 
 
-        }
     }
 
     /**

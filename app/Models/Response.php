@@ -92,7 +92,8 @@ class Response extends Model
         'template_id',
         'question_id',
         'answer_type',
-        'answer'
+        'answer',
+        'survey_uuid'
     ];
 
     /**
@@ -107,7 +108,7 @@ class Response extends Model
         'template_id' => 'integer',
         'question_id' => 'integer',
         'answer_type' => 'integer',
-        'answer' => 'string'
+        'answer' => 'string',
     ];
 
     /**
@@ -119,7 +120,9 @@ class Response extends Model
         'template_id' => 'required',
         'question_id' => 'required',
         'answer_type' => 'required',
-        'answer' => 'required'
+        'answer' => 'required',
+        'survey_uuid' => 'required|unique:responses'
+
     ];
 
     public function template()
@@ -132,5 +135,12 @@ class Response extends Model
         return $this->belongsTo(Question::class);
     }
 
+    public function allocations()
+    {
+        return $this->hasManyThrough('App\Models\Allocation', 'App\Models\Template', 'id');
+    }
+    public function scopecountRespondentsByTemplateId($query, $template_id){
+        return $query->where(['template_id' =>$template_id])->count();
+    }
 
 }

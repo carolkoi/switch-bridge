@@ -1,4 +1,7 @@
-
+@isset($token)
+    <input type="hidden" class="form-control" value="{{$token}}" name="survey_uuid">
+{{--    {!! Form::hidden('survey_uuid', $token, ['class' => 'form-control']) !!}--}}
+    @endisset
 @foreach($questions->questions as $question)
     <div class="form-group">
 

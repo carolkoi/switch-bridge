@@ -22,10 +22,12 @@ class AllocationDataTable extends DataTable
             return $query->template->type;
         })->addColumn('title', function ($query){
             return $query->template->name;
-        })->editColumn('Sent to', function ($query){
-            return $query->user_type;
-        })->addColumn('No of users sent to', function ($query){
-           return $query->CountUsersByTemplateId($query->template_id, $query->user_type);
+        })
+//            ->editColumn('Sent to', function ($query){
+//            return $query->user_type;
+//        })
+            ->addColumn('No of users sent to', function ($query){
+           return $query->CountUsersByTemplateId($query->template_id);
 //            return count($query['user_type']);
         })
         ->addColumn('action', 'allocations.datatables_actions');
@@ -39,7 +41,7 @@ class AllocationDataTable extends DataTable
      */
     public function query(Allocation $model)
     {
-        return $model->with(['template'])->groupBy(['template_id', 'user_type'])->newQuery();
+        return $model->with(['template'])->groupBy(['template_id'])->newQuery();
     }
 
     /**
@@ -77,7 +79,7 @@ class AllocationDataTable extends DataTable
         return [
             'type',
             'title',
-            'Sent to',
+//            'Sent to',
             'No of users sent to',
 //            'no of respondents',
 //            '%age responses'
