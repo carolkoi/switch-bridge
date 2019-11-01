@@ -11,6 +11,7 @@
 |
 */
 
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -23,9 +24,11 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::prefix('people')->group(function () {
+    Route::resource('clients', 'ClientController');
 
-Route::resource('users', 'UserController');
-
+    Route::resource('users', 'UserController');
+});
 Route::resource('templates', 'TemplateController');
 
 Route::get('questions/{id}', 'QuestionController@create')->name('questions-index');
@@ -35,9 +38,6 @@ Route::get('question/{id}', 'QuestionController@show')->name('question.show');
 Route::patch('question/{id}', 'QuestionController@update')->name('question.update');
 Route::delete('question/{id}', 'QuestionController@destroy')->name('question.destroy');
 Route::get('survey-type/{type}', 'AllocationController@getSurveyType')->name('survey-type');
-
-
-
 
 
 //Route::get('add-question', 'QuestionController@create');
@@ -56,7 +56,6 @@ Route::resource('answers', 'AnswerController');
 Route::resource('allocations', 'AllocationController');
 Route::get('survey-response/{id}/{token}', 'SurveyController@show');
 
-Route::resource('clients', 'ClientController');
 
 Route::resource('survey', 'SurveyController');
 

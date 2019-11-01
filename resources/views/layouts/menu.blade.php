@@ -1,12 +1,10 @@
-
-<ul class="sidebar-menu tree" data-widget="tree">
     <li class="header">MAIN NAVIGATION</li>
     <li class="{{ Request::is('users*') ? 'active' : '' }}">
         <a href="{!! route('home') !!}"><i class="fa fa-dashboard"></i><span>Dashboard</span></a>
     </li>
 
 
-    <li class="active treeview">
+    <li class="treeview {{ Request::is('people*') ? 'active menu-open' : '' }}">
         <a class="dropdown-toggle" href="#">
             <i class="fa fa-users"></i> <span>Users</span>
             <span class="pull-right-container">
@@ -14,10 +12,10 @@
             </span>
         </a>
         <ul class="treeview-menu">
-            <li class="{{ Request::is('users*') ? 'active' : '' }}">
+            <li class="{{ Request::is('people/users*') ? 'active' : '' }}">
                 <a href="{!! route('users.index') !!}"><i class="fa fa-users"></i><span>Staffs</span></a>
             </li>
-            <li class="{{ Request::is('clients*') ? 'active' : '' }}">
+            <li class="{{ Request::is('people/clients*') ? 'active' : '' }}">
                 <a href="{!! route('clients.index') !!}"><i class="fa fa-users"></i><span>Clients</span></a>
             </li>
         </ul>
@@ -54,7 +52,6 @@
 {{--            <li class="active"><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>--}}
 {{--        </ul>--}}
 {{--    </li>--}}
-</ul>
 
 {{--<li class="{{ Request::is('allocations*') ? 'active' : '' }}">--}}
 {{--    <a href="{!! route('allocations.index') !!}"><i class="fa fa-edit"></i><span>Allocations</span></a>--}}
