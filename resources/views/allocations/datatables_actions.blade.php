@@ -13,3 +13,7 @@
     ]) !!}
 </div>
 {!! Form::close() !!}
+<br/>
+    <a href="" class='btn btn-info'>
+        Send
+    </a>

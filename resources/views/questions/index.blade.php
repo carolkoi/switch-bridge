@@ -3,7 +3,8 @@
 @section('content')
     <div class="container">
         <div class="row">
-                <div class="col-md-6"> <div class="card">
+                <div class="col-md-6">
+                    <div class="card">
                     <section class="content-header">
                         <h1 class="pull-left">Create Question</h1>
                         <h1 class="pull-right">
@@ -16,8 +17,10 @@
                     <br/>
                     @include('questions.create')
 
-                    </div></div>
-                <div class="col-md-6"><div class="card">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
                         <section class="content-header">
                             <h1 class="pull-left">Available Questions</h1>
 

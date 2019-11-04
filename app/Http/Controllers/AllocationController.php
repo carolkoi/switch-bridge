@@ -212,4 +212,30 @@ class AllocationController extends AppBaseController
         $surveyData = Template::where('type', $type)->get()->pluck('name','id');
         return response()->json(['data' => $surveyData]);
     }
+
+
+    public function approveSurvey($id, $action)
+    {
+
+        $allocation = Allocation::where('template_id',$id)->with(['template.questions'])->first();
+
+        if(count($allocation->template->questions) > 0){
+            if($action){
+
+                $allocation->update(['status' => Allocation::APPROVED]);
+
+                flash('Survey approved')->success();
+
+            }else{
+                $allocation->update(['status' => !Allocation::APPROVED]);
+                flash('survey rejected')->success();
+
+            }
+
+            return redirect()->route('allocations.index');
+        }
+
+        flash('You cannot activate a survey with no questions')->error();
+        return redirect()->route('allocations.index');
+    }
 }

@@ -23,14 +23,16 @@ class AllocationDataTable extends DataTable
         })->addColumn('title', function ($query){
             return $query->template->name;
         })
-//            ->editColumn('Sent to', function ($query){
-//            return $query->user_type;
-//        })
+            ->addColumn('date range', function ($query){
+            return $query->template->valid_from->format('Y/m/d'). ' - ' .$query->template->valid_until->format('Y/m/d');
+        })
+            ->addColumn('status', 'allocations.datatables_status')
             ->addColumn('No of users sent to', function ($query){
            return $query->CountUsersByTemplateId($query->template_id);
 //            return count($query['user_type']);
         })
-        ->addColumn('action', 'allocations.datatables_actions');
+        ->addColumn('action', 'allocations.datatables_actions')
+            ->rawColumns(['status','action']);
     }
 
     /**
@@ -63,7 +65,7 @@ class AllocationDataTable extends DataTable
                     ['extend' => 'create', 'className' => 'btn btn-default btn-sm no-corner',],
                     ['extend' => 'export', 'className' => 'btn btn-default btn-sm no-corner',],
                     ['extend' => 'print', 'className' => 'btn btn-default btn-sm no-corner',],
-                    ['extend' => 'reset', 'className' => 'btn btn-default btn-sm no-corner',],
+//                    ['extend' => 'reset', 'className' => 'btn btn-default btn-sm no-corner',],
                     ['extend' => 'reload', 'className' => 'btn btn-default btn-sm no-corner',],
                 ],
             ]);
@@ -79,6 +81,8 @@ class AllocationDataTable extends DataTable
         return [
             'type',
             'title',
+            'date range',
+            'status',
 //            'Sent to',
             'No of users sent to',
 //            'no of respondents',

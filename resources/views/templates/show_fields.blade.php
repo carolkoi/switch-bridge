@@ -6,7 +6,7 @@
 
 <!-- Name Field -->
 <div class="form-group">
-    {!! Form::label('name', 'Name:') !!}
+    {!! Form::label('name', 'Title:') !!}
     <p>{!! $template->name !!}</p>
 </div>
 
@@ -39,4 +39,6 @@
     {!! Form::label('email_msg', 'Email Msg:') !!}
     <p>{!! $template->email_msg !!}</p>
 </div>
+
+
 

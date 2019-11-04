@@ -27,10 +27,18 @@
             @endforeach
         @endif
         @if($question->type == App\Models\Question::DATE)
-            <input type="date"
+            <input type="text"
                    name="su_{{$questions->id}}_{{$question->id}}_{{$question->type}}"
-                   class="form-control" required>
+                   class="form-control" id="date_id" required>
         @endif
+        @section('scripts')
+            <script type="text/javascript">
+                $('#date_id').datetimepicker({
+                    format: 'YYYY-MM-DD HH:mm:ss',
+                    useCurrent: false
+                })
+            </script>
+        @endsection
         @if($question->type == App\Models\Question::NUMBER)
             <input type="number" min="1"
                    name="su_{{$questions->id}}_{{$question->id}}_{{$question->type}}"
@@ -53,8 +61,4 @@
 @if(count($questions->questions) !== 0 )
     <button type="submit" class="btn btn-sm btn-primary"> submit</button>
 @endif
-{{--<!-- Submit Field -->--}}
-{{--<div class="form-group col-sm-12">--}}
-{{--    {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}--}}
-{{--    <a href="{!! route('surveys.index') !!}" class="btn btn-default">Cancel</a>--}}
-{{--</div>--}}
+

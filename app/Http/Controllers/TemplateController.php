@@ -6,6 +6,7 @@ use App\DataTables\TemplateDataTable;
 use App\Http\Requests;
 use App\Http\Requests\CreateTemplateRequest;
 use App\Http\Requests\UpdateTemplateRequest;
+use App\Models\Question;
 use App\Models\Template;
 use App\Repositories\TemplateRepository;
 use Flash;
@@ -72,15 +73,17 @@ class TemplateController extends AppBaseController
      */
     public function show($id)
     {
+
         $template = $this->templateRepository->find($id);
 
+        $questions = Question::where('template_id',$template->id)->get();
         if (empty($template)) {
             Flash::error('Template not found');
 
             return redirect(route('templates.index'));
         }
 
-        return view('templates.show')->with('template', $template);
+        return view('templates.show')->with(['template' => $template, 'questions' => $questions]);
     }
 
     /**
@@ -151,6 +154,7 @@ class TemplateController extends AppBaseController
 
         return redirect(route('templates.index'));
     }
+
     public function changeStatus($id, $action)
     {
 
@@ -160,18 +164,18 @@ class TemplateController extends AppBaseController
             if($action){
 
                 $template->update(['status' => Template::ACTIVE]);
-                flash('Activated')->success();
+                flash('Survey approved')->success();
 
             }else{
                 $template->update(['status' => !Template::ACTIVE]);
-                flash('Deactivated')->success();
+                flash('survey rejected')->success();
 
             }
 
-            return redirect()->route('template.index');
+            return redirect()->route('templates.index');
         }
 
         flash('You cannot activate a survey with no questions')->error();
-        return redirect()->route('template.index');
+        return redirect()->route('templates.index');
     }
 }

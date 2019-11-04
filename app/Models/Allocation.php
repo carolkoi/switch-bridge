@@ -71,6 +71,7 @@ class Allocation extends Model
 
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
+    const APPROVED = true;
 
 
     protected $dates = ['deleted_at'];
@@ -82,6 +83,7 @@ class Allocation extends Model
         'client_id',
         'user_id',
         'type',
+        'status',
         'template_id'
     ];
 
@@ -96,6 +98,7 @@ class Allocation extends Model
         'client_id' => 'integer',
         'user_id' => 'integer',
         'type' => 'string',
+        'status' => 'boolean',
         'template_id' => 'integer'
     ];
 

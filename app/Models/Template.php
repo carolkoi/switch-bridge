@@ -15,7 +15,7 @@ class Template extends Model
 
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
-    const ACTIVE = true;
+    const APPROVED = true;
 
 
     protected $dates = ['deleted_at'];
@@ -75,13 +75,4 @@ class Template extends Model
     {
         return $this->hasMany(Allocation::class);
     }
-//    public static function boot()
-//    {
-//        parent::boot();
-//        self::creating(function ($model) {
-//            $model->uuid = (string) Uuid::generate(4);
-//        });
-//    }
-
-
 }
