@@ -65,6 +65,11 @@
             $('.div'+id).remove();
         }
 
+        $('#required').on('click', function () {
+            $("input").prop('required',true);
+            // alert('here');
+        });
+
     </script>
 
 

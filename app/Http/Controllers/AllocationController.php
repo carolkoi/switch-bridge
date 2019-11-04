@@ -70,9 +70,9 @@ class AllocationController extends AppBaseController
             $input['user_id'] = $user;
 //            dd(array_diff($input, array($user)));
             $allocation = $this->allocationRepository->create($input);
-            $staff_email = User::find($user)->email;
-            $token = Uuid::generate()->string;
-            Mail::to($staff_email)->send(new SendSurveyEmail($template, $token));
+//            $staff_email = User::find($user)->email;
+//            $token = Uuid::generate()->string;
+//            Mail::to($staff_email)->send(new SendSurveyEmail($template, $token));
         }
 
         }
@@ -80,14 +80,12 @@ class AllocationController extends AppBaseController
             foreach ($clients as $client) {
                 $input['client_id'] = $client;
                 $allocation = $this->allocationRepository->create($input);
-                $client_mail = Client::find($client)->email;
-                //before send survey, generate unique uuid
-                $token = Uuid::generate()->string;
-                Mail::to($client_mail)->send(new SendSurveyEmail($template, $token));
+//                $client_mail = Client::find($client)->email;
+//                //before send survey, generate unique uuid
+//                $token = Uuid::generate()->string;
+//                Mail::to($client_mail)->send(new SendSurveyEmail($template, $token));
             }
         }
-
-
 
         Flash::success('Survey allocated successfully.');
 
@@ -238,4 +236,25 @@ class AllocationController extends AppBaseController
         flash('You cannot activate a survey with no questions')->error();
         return redirect()->route('allocations.index');
     }
+
+        public function emailSurvey($id){
+            $allocations = Allocation::where('template_id',$id)->with('template')->get();
+            foreach ($allocations as $allocation){
+                $template = Template::find($allocation->template_id);
+                if ($allocation->user_id){
+                    $staff_email = User::find($allocation->user_id)->email;
+                    $token = Uuid::generate()->string;
+                    Mail::to($staff_email)->send(new SendSurveyEmail($template, $token));
+                }
+                if($allocation->client_id){
+                    $client_email = Client::find($allocation->client_id)->email;
+                    $token = Uuid::generate()->string;
+                    Mail::to($client_email)->send(new SendSurveyEmail($template, $token));
+                }
+            }
+            Flash::success('Survey allocated successfully.');
+
+            return redirect(route('allocations.index'));
+
+        }
 }

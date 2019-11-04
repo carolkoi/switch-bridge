@@ -40,6 +40,7 @@ Route::delete('question/{id}', 'QuestionController@destroy')->name('question.des
 Route::get('survey-type/{type}', 'AllocationController@getSurveyType')->name('survey-type');
 //Route::get('template-status/{id}/{action}','TemplateController@changeStatus');
 Route::get('approve-survey/{id}/{action}','AllocationController@approveSurvey');
+Route::get('email-survey/{id}','AllocationController@emailSurvey')->name('send.survey');
 
 //Route::get('add-question', 'QuestionController@create');
 //Route::get('question-create/{id}','QuestionController@create')->name('questions.create');

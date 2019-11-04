@@ -51,10 +51,17 @@
     </div>
 </div>
 
+<!--required field-->
+<div class="form-group">
+    {!! Form::label('required', 'Mark Question as Required:') !!}
+    &nbsp;&nbsp;&nbsp;
+    {!! Form::checkbox('required', '0', false, ['id' => 'required']) !!}
+</div>
+
 <!-- Description Field -->
 <div class="form-group">
     {!! Form::label('description', 'Description:') !!}
-    {!! Form::textarea('description', null, ['class' => 'form-control']) !!}
+    {!! Form::textarea('description', null, ['class' => 'form-control', 'rows' =>3]) !!}
 </div>
 
 
