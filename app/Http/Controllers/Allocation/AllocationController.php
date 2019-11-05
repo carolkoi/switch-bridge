@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Allocation;
 
 use App\DataTables\AllocationDataTable;
 use App\Http\Requests;
@@ -61,29 +61,27 @@ class AllocationController extends AppBaseController
      */
     public function store(CreateAllocationRequest $request)
     {
-        $input = $request->except('user_id', 'client_id');
-        $template = Template::findOrFail($input['template_id']);
+        $input = $request->except('user_id', 'client_id','others');
         $users = $request->input('user_id');
         $clients = $request->input('client_id');
+        $others = $request->input('others');
+        foreach ($others as $other){
+            $input['others'] = serialize($other);
+            $allocation = $this->allocationRepository->create($input);
+        }
+        unset($input['others']);
+
         if (is_array($users)){
         foreach ($users as $user) {
             $input['user_id'] = $user;
-//            dd(array_diff($input, array($user)));
             $allocation = $this->allocationRepository->create($input);
-//            $staff_email = User::find($user)->email;
-//            $token = Uuid::generate()->string;
-//            Mail::to($staff_email)->send(new SendSurveyEmail($template, $token));
         }
-
+        unset($input['user_id']);
         }
         if ($clients) {
             foreach ($clients as $client) {
                 $input['client_id'] = $client;
                 $allocation = $this->allocationRepository->create($input);
-//                $client_mail = Client::find($client)->email;
-//                //before send survey, generate unique uuid
-//                $token = Uuid::generate()->string;
-//                Mail::to($client_mail)->send(new SendSurveyEmail($template, $token));
             }
         }
 
@@ -215,9 +213,8 @@ class AllocationController extends AppBaseController
     public function approveSurvey($id, $action)
     {
 
-        $allocation = Allocation::where('template_id',$id)->with(['template.questions'])->first();
-
-        if(count($allocation->template->questions) > 0){
+        $allocations = Allocation::where('template_id',$id)->get();
+        foreach ($allocations as $allocation){
             if($action){
 
                 $allocation->update(['status' => Allocation::APPROVED]);
@@ -229,32 +226,13 @@ class AllocationController extends AppBaseController
                 flash('survey rejected')->success();
 
             }
+        }
+
 
             return redirect()->route('allocations.index');
         }
 
-        flash('You cannot activate a survey with no questions')->error();
-        return redirect()->route('allocations.index');
-    }
 
-        public function emailSurvey($id){
-            $allocations = Allocation::where('template_id',$id)->with('template')->get();
-            foreach ($allocations as $allocation){
-                $template = Template::find($allocation->template_id);
-                if ($allocation->user_id){
-                    $staff_email = User::find($allocation->user_id)->email;
-                    $token = Uuid::generate()->string;
-                    Mail::to($staff_email)->send(new SendSurveyEmail($template, $token));
-                }
-                if($allocation->client_id){
-                    $client_email = Client::find($allocation->client_id)->email;
-                    $token = Uuid::generate()->string;
-                    Mail::to($client_email)->send(new SendSurveyEmail($template, $token));
-                }
-            }
-            Flash::success('Survey allocated successfully.');
 
-            return redirect(route('allocations.index'));
 
-        }
 }

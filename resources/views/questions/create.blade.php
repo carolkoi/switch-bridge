@@ -65,10 +65,10 @@
             $('.div'+id).remove();
         }
 
-        $('#required').on('click', function () {
-            $("input").prop('required',true);
-            // alert('here');
-        });
+        // $('#status').on('change', function(){
+        //     this.value = this.checked ? 1 : 0;
+        //     console.log(this.value);
+        // }).change();
 
     </script>
 

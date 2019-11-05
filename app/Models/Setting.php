@@ -7,35 +7,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @SWG\Definition(
- *      definition="Allocation",
+ *      definition="Setting",
  *      required={""},
  *      @SWG\Property(
  *          property="id",
  *          description="id",
  *          type="integer",
  *          format="int32"
- *      ),
- *      @SWG\Property(
- *          property="user_type",
- *          description="user_type",
- *          type="string"
- *      ),
- *      @SWG\Property(
- *          property="client_id",
- *          description="client_id",
- *          type="integer",
- *          format="int32"
- *      ),
- *      @SWG\Property(
- *          property="user_id",
- *          description="user_id",
- *          type="integer",
- *          format="int32"
- *      ),
- *      @SWG\Property(
- *          property="type",
- *          description="type",
- *          type="string"
  *      ),
  *      @SWG\Property(
  *          property="template_id",
@@ -63,15 +41,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      )
  * )
  */
-class Allocation extends Model
+class Setting extends Model
 {
     use SoftDeletes;
 
-    public $table = 'allocations';
-
+    public $table = 'settings';
+    
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
-    const APPROVED = true;
 
 
     protected $dates = ['deleted_at'];
@@ -79,12 +56,6 @@ class Allocation extends Model
 
 
     public $fillable = [
-        'user_type',
-        'client_id',
-        'user_id',
-        'others',
-        'type',
-        'status',
         'template_id'
     ];
 
@@ -95,11 +66,6 @@ class Allocation extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'user_type' => 'string',
-        'client_id' => 'integer',
-        'user_id' => 'integer',
-        'type' => 'string',
-        'status' => 'boolean',
         'template_id' => 'integer'
     ];
 
@@ -109,20 +75,8 @@ class Allocation extends Model
      * @var array
      */
     public static $rules = [
-        'template_id' => 'required'
+        
     ];
 
-    public function template()
-    {
-        return $this->belongsTo(Template::class, 'template_id','id');
-    }
-
-    public function scopeCountUsersByTemplateId($query, $template_id){
-        return $query->where(['template_id' =>$template_id])->count();
-    }
-
-    public function scopeCountAllUsersByTemplateId($query, $template_id){
-        return $query->where(['template_id' => $template_id])->count();
-    }
-
+    
 }

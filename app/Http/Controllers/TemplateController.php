@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateTemplateRequest;
 use App\Models\Question;
 use App\Models\Template;
 use App\Repositories\TemplateRepository;
+use App\User;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
@@ -83,7 +84,8 @@ class TemplateController extends AppBaseController
             return redirect(route('templates.index'));
         }
 
-        return view('templates.show')->with(['template' => $template, 'questions' => $questions]);
+        return view('templates.show')->with(['template' => $template, 'questions' => $questions,
+            'user' => User::find($template->user_id)]);
     }
 
     /**
