@@ -71,3 +71,11 @@
 
 
 
+<li class="{{ Request::is('surveyReports*') ? 'active' : '' }}">
+    <a href="{!! route('surveyReports.index') !!}"><i class="fa fa-edit"></i><span>Survey Reports</span></a>
+</li>
+
+<li class="{{ Request::is('responseReports*') ? 'active' : '' }}">
+    <a href="{!! route('responseReports.index') !!}"><i class="fa fa-edit"></i><span>Response Reports</span></a>
+</li>
+

@@ -64,3 +64,8 @@ Route::resource('survey', 'SurveyController');
 
 Route::resource('responses', 'ResponseController');
 //Route::get('survey-responses/{survey}','ResponseController@showResponses');
+
+
+Route::resource('surveyReports', 'SurveyReportsController');
+
+Route::resource('responseReports', 'ResponseReportsController');
