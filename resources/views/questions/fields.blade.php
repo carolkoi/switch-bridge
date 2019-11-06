@@ -53,9 +53,9 @@
 
 <!--required field-->
 <div class="form-group">
-    {!! Form::label('required', 'Mark Question as Required:') !!}
+    {!! Form::label('status', 'Mark Question as Required:') !!}
     &nbsp;&nbsp;&nbsp;
-    {!! Form::checkbox('required', '0', false, ['id' => 'required']) !!}
+    {!! Form::checkbox('status') !!}
 </div>
 
 <!-- Description Field -->

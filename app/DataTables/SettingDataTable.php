@@ -2,11 +2,11 @@
 
 namespace App\DataTables;
 
-use App\Models\Allocation;
+use App\Models\Setting;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
 
-class AllocationDataTable extends DataTable
+class SettingDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -18,35 +18,18 @@ class AllocationDataTable extends DataTable
     {
         $dataTable = new EloquentDataTable($query);
 
-        return $dataTable->addColumn('type', function ($query){
-            return $query->template->type;
-        })->addColumn('title', function ($query){
-            return $query->template->name;
-        })
-            ->addColumn('date range', function ($query){
-            return $query->template->valid_from->format('Y/m/d'). ' - ' .$query->template->valid_until->format('Y/m/d');
-        })
-            ->addColumn('status', 'allocations.datatables_status')
-            ->addColumn('created by',function ($query){
-                return $query->template->user->first_name. ' '.$query->template->user->last_name;
-            })
-            ->addColumn('No of allocated users', function ($query){
-           return $query->CountUsersByTemplateId($query->template_id);
-//            return count($query['user_type']);
-        })
-        ->addColumn('action', 'allocations.datatables_actions')
-            ->rawColumns(['status','action']);
+        return $dataTable->addColumn('action', 'settings.datatables_actions');
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\Allocation $model
+     * @param \App\Models\Setting $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Allocation $model)
+    public function query(Setting $model)
     {
-        return $model->with(['template.user', 'template.questions'])->groupBy(['template_id'])->newQuery();
+        return $model->newQuery();
     }
 
     /**
@@ -68,7 +51,7 @@ class AllocationDataTable extends DataTable
                     ['extend' => 'create', 'className' => 'btn btn-default btn-sm no-corner',],
                     ['extend' => 'export', 'className' => 'btn btn-default btn-sm no-corner',],
                     ['extend' => 'print', 'className' => 'btn btn-default btn-sm no-corner',],
-//                    ['extend' => 'reset', 'className' => 'btn btn-default btn-sm no-corner',],
+                    ['extend' => 'reset', 'className' => 'btn btn-default btn-sm no-corner',],
                     ['extend' => 'reload', 'className' => 'btn btn-default btn-sm no-corner',],
                 ],
             ]);
@@ -82,16 +65,7 @@ class AllocationDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'type',
-            'title',
-            'created by',
-            'date range',
-            'status',
-//            'Sent to',
-            'No of allocated users',
-//            'no of respondents',
-//            '%age responses'
-
+            'template_id'
         ];
     }
 
@@ -102,6 +76,6 @@ class AllocationDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'allocationsdatatable_' . time();
+        return 'settingsdatatable_' . time();
     }
 }

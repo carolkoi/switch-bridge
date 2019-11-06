@@ -26,7 +26,7 @@ class TemplateDataTable extends DataTable
             ->editColumn('type', function ($query){
                 return $query->type;
             })
-            ->editColumn('status', 'templates.datatables_status')
+//            ->editColumn('status', 'templates.datatables_status')
             ->editColumn('name','templates.datables_column_name')
             ->addColumn('no of Questions', 'templates.datatables_question')
             ->addColumn('action', 'templates.datatables_actions')
@@ -90,7 +90,7 @@ class TemplateDataTable extends DataTable
             'valid_until',
             'Created By',
             'no of Questions',
-            'status'
+//            'status'
 //            'Questions'
         ];
     }

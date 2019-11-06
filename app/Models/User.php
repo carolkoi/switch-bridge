@@ -65,6 +65,9 @@ class User extends Model
     public function allocations(){
         return $this->hasMany(Allocation::class);
     }
+    public function templates(){
+        return $this->hasMany(Template::class);
+    }
 
 
 }

@@ -1,4 +1,10 @@
 @extends('layouts.app')
+<style>
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        background-color: #3c8dbc !important;
+
+    }
+</style>
 
 @section('content')
     <section class="content-header">
@@ -25,11 +31,19 @@
 @section('scripts')
     <script>
         jQuery(document).ready(function () {
-            $("#user_id, #client_id, #template_id").select2();
-            $('#client_list').css({'display': 'none'});
+            $("#user_id, #client_id, #template_id, #mails").select2({
+                tags: true,
+                tokenSeparators: [',', ' '],
+            });
+            $('#client_list, #others_email').css({'display': 'none'});
             $('#client').on('click', function () {
                 $('#client_list').show();
             });
+
+            $('#others').on('click', function () {
+                $('#others_email').show();
+            });
+
 
             let selectedType = $('input[type=radio][name=type]:checked').val();
             setDropDownOptions(selectedType);
@@ -67,51 +81,5 @@
 
 
         }
-        //     let rad = document.allocation.type;
-        //     for(let i = 0; i < rad.length; i++) {
-        //         rad[i].onclick = function () {
-        //             if(this !== prev) {
-        //                 prev = this;
-        //             }
-        //             //survey type
-        //             let type = this.value;
-        //
-        //             // Empty the dropdown
-        //             $('#template_id').find('option').not(':first').remove();
-        //
-        //             $.ajax({
-        //                 url: '/survey-type/'+ type,
-        //                 type: 'get',
-        //                 dataType: "json",
-        //                 success:function (response) {
-        //                     // console.log(response['data']);
-        //                     let len = 0;
-        //                     if (response['data'] != null) {
-        //                         len = response['data'].length;
-        //                     }
-        //                     if (len > 0) {
-        //                         // Read data and create <option >
-        //                         for (let i = 0; i < len; i++) {
-        //
-        //                             let id = response['data'][i].id;
-        //                             let name = response['data'][i].name;
-        //                             let option = "<option value='" + id + "'>" +name+ "</option>";
-        //
-        //                             $("#template_id").append(option);
-        //                         }
-        //                     }
-        //                 }
-        //             });
-        //
-        //             //(prev)? console.log(prev.value):null;
-        //
-        //             console.log(this.value)
-        //         };
-        //     }
-        //
-        //
-        // });
-
-
     </script>
 @endsection

@@ -26,50 +26,12 @@
     </li>
 
 
-{{--<li class="{{ Request::is('questions*') ? 'inactive' : '' }}">--}}
-{{--    <a href="{!! route('questions-index') !!}"><i class="fa fa-edit"></i><span>Questions</span></a>--}}
-{{--</li>--}}
-
-{{--<li class="{{ Request::is('answers*') ? 'active' : '' }}">--}}
-{{--    <a href="{!! route('answers.index') !!}"><i class="fa fa-edit"></i><span>Answers</span></a>--}}
-{{--</li>--}}
-
 <li class="{{ Request::is('allocations*') ? 'active' : '' }}">
     <a href="{!! route('allocations.index') !!}"><i class="fa fa-address-card"></i><span>Allocations</span></a>
 </li>
     <li class="{{ Request::is('responses*') ? 'active' : '' }}">
         <a href="{!! route('responses.index') !!}"><i class="fa fa-edit"></i><span>Responses</span></a>
     </li>
-{{--    <li class="active treeview menu-open">--}}
-{{--        <a href="#">--}}
-{{--            <i class="fa fa-dashboard"></i> <span>Dashboard</span>--}}
-{{--            <span class="pull-right-container">--}}
-{{--              <i class="fa fa-angle-left pull-right"></i>--}}
-{{--            </span>--}}
-{{--        </a>--}}
-{{--        <ul class="treeview-menu">--}}
-{{--            <li><a href="index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>--}}
-{{--            <li class="active"><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>--}}
-{{--        </ul>--}}
-{{--    </li>--}}
-
-{{--<li class="{{ Request::is('allocations*') ? 'active' : '' }}">--}}
-{{--    <a href="{!! route('allocations.index') !!}"><i class="fa fa-edit"></i><span>Allocations</span></a>--}}
-{{--</li>--}}
-
-{{--<li class="{{ Request::is('allocations*') ? 'active' : '' }}">--}}
-{{--    <a href="{!! route('allocations.index') !!}"><i class="fa fa-edit"></i><span>Allocations</span></a>--}}
-{{--</li>--}}
-
-{{--<li class="{{ Request::is('clients*') ? 'active' : '' }}">--}}
-{{--    <a href="{!! route('clients.index') !!}"><i class="fa fa-edit"></i><span>Clients</span></a>--}}
-{{--</li>--}}
-
-{{--<li class="{{ Request::is('surveys*') ? 'active' : '' }}">--}}
-{{--    <a href="{!! route('surveys.index') !!}"><i class="fa fa-edit"></i><span>Surveys</span></a>--}}
-{{--</li>--}}
-
-
 
 <li class="{{ Request::is('surveyReports*') ? 'active' : '' }}">
     <a href="{!! route('surveyReports.index') !!}"><i class="fa fa-edit"></i><span>Survey Reports</span></a>
@@ -77,5 +39,9 @@
 
 <li class="{{ Request::is('responseReports*') ? 'active' : '' }}">
     <a href="{!! route('responseReports.index') !!}"><i class="fa fa-edit"></i><span>Response Reports</span></a>
+
+<li class="{{ Request::is('settings*') ? 'active' : '' }}">
+    <a href="{!! route('settings.index') !!}"><i class="fa fa-edit"></i><span>Settings</span></a>
+
 </li>
 

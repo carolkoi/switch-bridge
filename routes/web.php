@@ -37,27 +37,18 @@ Route::get('question/{id}/edit', 'QuestionController@edit')->name('question.edit
 Route::get('question/{id}', 'QuestionController@show')->name('question.show');
 Route::patch('question/{id}', 'QuestionController@update')->name('question.update');
 Route::delete('question/{id}', 'QuestionController@destroy')->name('question.destroy');
-Route::get('survey-type/{type}', 'AllocationController@getSurveyType')->name('survey-type');
+Route::get('survey-type/{type}', 'Allocation\AllocationController@getSurveyType')->name('survey-type');
 //Route::get('template-status/{id}/{action}','TemplateController@changeStatus');
-Route::get('approve-survey/{id}/{action}','AllocationController@approveSurvey');
-Route::get('email-survey/{id}','AllocationController@emailSurvey')->name('send.survey');
+Route::get('approve-survey/{id}/{action}','Allocation\AllocationController@approveSurvey');
+Route::get('email-survey/{id}','Allocation\SendSurveyEmailController@emailSurvey')->name('send.survey');
 
-//Route::get('add-question', 'QuestionController@create');
-//Route::get('question-create/{id}','QuestionController@create')->name('questions.create');
-//Route::get('question-create/{id}','QuestionController@templateQuestion')->name('question-create');
-//Route::get('questions/{id}','QuestionController@index')->name('questions.index');
 
 
 Route::resource('answers', 'AnswerController');
 
 
-//Route::resource('allocations', 'AllocationController');
-//
-//Route::resource('allocations', 'AllocationController');
-
-Route::resource('allocations', 'AllocationController');
+Route::resource('allocations', 'Allocation\AllocationController');
 Route::get('survey-response/{id}/{token}', 'SurveyController@show');
-
 
 Route::resource('survey', 'SurveyController');
 
@@ -69,3 +60,4 @@ Route::resource('responses', 'ResponseController');
 Route::resource('surveyReports', 'SurveyReportsController');
 
 Route::resource('responseReports', 'ResponseReportsController');
+
