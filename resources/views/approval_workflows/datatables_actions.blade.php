@@ -1,9 +1,9 @@
-{!! Form::open(['route' => ['settings.destroy', $id], 'method' => 'delete']) !!}
+{!! Form::open(['route' => ['approvalWorkflows.destroy', $id], 'method' => 'delete']) !!}
 <div class='btn-group'>
-    <a href="{{ route('settings.show', $id) }}" class='btn btn-default btn-xs'>
+    <a href="{{ route('approvalWorkflows.show', $id) }}" class='btn btn-default btn-xs'>
         <i class="glyphicon glyphicon-eye-open"></i>
     </a>
-    <a href="{{ route('settings.edit', $id) }}" class='btn btn-default btn-xs'>
+    <a href="{{ route('approvalWorkflows.edit', $id) }}" class='btn btn-default btn-xs'>
         <i class="glyphicon glyphicon-edit"></i>
     </a>
     {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', [

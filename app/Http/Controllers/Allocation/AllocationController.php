@@ -219,12 +219,8 @@ class AllocationController extends AppBaseController
 
                 $allocation->update(['status' => Allocation::APPROVED]);
 
-                flash('Survey approved')->success();
-
             }else{
                 $allocation->update(['status' => !Allocation::APPROVED]);
-                flash('survey rejected')->success();
-
             }
         }
 

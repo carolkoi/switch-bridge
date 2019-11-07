@@ -56,8 +56,16 @@ Route::resource('survey', 'SurveyController');
 Route::resource('responses', 'ResponseController');
 //Route::get('survey-responses/{survey}','ResponseController@showResponses');
 
+Route::prefix('report')->group(function () {
+    Route::resource('surveyReports', 'SurveyReportsController');
 
-Route::resource('surveyReports', 'SurveyReportsController');
+    Route::resource('responseReports', 'ResponseReportsController');
+});
 
-Route::resource('responseReports', 'ResponseReportsController');
+Route::prefix('settings')->group(function () {
+    Route::resource('options', 'OptionsController');
+
+    Route::resource('approvalWorkflows', 'ApprovalWorkflowController');
+});
+
 

@@ -27,9 +27,7 @@ class AllocationDataTable extends DataTable
             return $query->template->valid_from->format('Y/m/d'). ' - ' .$query->template->valid_until->format('Y/m/d');
         })
             ->addColumn('status', 'allocations.datatables_status')
-            ->addColumn('created by',function ($query){
-                return $query->template->user->first_name. ' '.$query->template->user->last_name;
-            })
+
             ->addColumn('No of allocated users', function ($query){
            return $query->CountUsersByTemplateId($query->template_id);
 //            return count($query['user_type']);
@@ -84,7 +82,7 @@ class AllocationDataTable extends DataTable
         return [
             'type',
             'title',
-            'created by',
+//            'created by',
             'date range',
             'status',
 //            'Sent to',

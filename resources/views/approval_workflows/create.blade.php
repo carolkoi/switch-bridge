@@ -3,7 +3,7 @@
 @section('content')
     <section class="content-header">
         <h1>
-            Setting
+            Approval Workflow
         </h1>
     </section>
     <div class="content">
@@ -12,9 +12,9 @@
 
             <div class="box-body">
                 <div class="row">
-                    {!! Form::open(['route' => 'settings.store']) !!}
+                    {!! Form::open(['route' => 'approvalWorkflows.store']) !!}
 
-                        @include('settings.fields')
+                        @include('approval_workflows.fields')
 
                     {!! Form::close() !!}
                 </div>

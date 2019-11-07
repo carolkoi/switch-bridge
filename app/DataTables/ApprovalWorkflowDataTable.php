@@ -2,12 +2,11 @@
 
 namespace App\DataTables;
 
-use App\Models\ResponseReports;
-use App\Models\Response;
+use App\Models\ApprovalWorkflow;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
 
-class ResponseReportsDataTable extends DataTable
+class ApprovalWorkflowDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -19,24 +18,18 @@ class ResponseReportsDataTable extends DataTable
     {
         $dataTable = new EloquentDataTable($query);
 
-        return $dataTable
-            ->addColumn('Title', 'response_reports.datatables_title')
-            ->addColumn('type', function ($query){
-                return $query->template->type;
-            })
-            ->addColumn('action', 'responses.datatables_actions')
-            ->rawColumns(['Title','action']);
+        return $dataTable->addColumn('action', 'approval_workflows.datatables_actions');
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\Response $model
+     * @param \App\Models\ApprovalWorkflow $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Response $model)
+    public function query(ApprovalWorkflow $model)
     {
-        return $model->with(['template','template.allocations'])->groupBy('template_id')->newQuery();
+        return $model->newQuery();
     }
 
     /**
@@ -58,7 +51,7 @@ class ResponseReportsDataTable extends DataTable
                     ['extend' => 'create', 'className' => 'btn btn-default btn-sm no-corner',],
                     ['extend' => 'export', 'className' => 'btn btn-default btn-sm no-corner',],
                     ['extend' => 'print', 'className' => 'btn btn-default btn-sm no-corner',],
-//                    ['extend' => 'reset', 'className' => 'btn btn-default btn-sm no-corner',],
+                    ['extend' => 'reset', 'className' => 'btn btn-default btn-sm no-corner',],
                     ['extend' => 'reload', 'className' => 'btn btn-default btn-sm no-corner',],
                 ],
             ]);
@@ -72,8 +65,7 @@ class ResponseReportsDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'type',
-            'Title',
+            
         ];
     }
 
@@ -84,6 +76,6 @@ class ResponseReportsDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'responsesdatatable_' . time();
+        return 'approval_workflowsdatatable_' . time();
     }
 }

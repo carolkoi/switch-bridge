@@ -51,7 +51,7 @@
             <div class="input-group-addon">
                 <i class="fa fa-calendar"></i>
             </div>
-        {!! Form::text('valid_from',null , ['class' => 'form-control','id'=>'valid_from', 'autocomplete' => 'off']) !!}
+        {!! Form::date('valid_from',null , ['class' => 'form-control','id'=>'valid_from', 'autocomplete' => 'off']) !!}
         </div>
     </div>
     @endif
@@ -82,7 +82,7 @@
             <div class="input-group-addon">
                 <i class="fa fa-calendar"></i>
             </div>
-        {!! Form::text('valid_until',null , ['class' => 'form-control valid_until','id'=>'valid_until', 'autocomplete' => 'off']) !!}
+        {!! Form::date('valid_until',null , ['class' => 'form-control valid_until','id'=>'valid_until', 'autocomplete' => 'off']) !!}
     </div></div>
     @endif
 

@@ -7,17 +7,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @SWG\Definition(
- *      definition="Setting",
+ *      definition="Options",
  *      required={""},
  *      @SWG\Property(
  *          property="id",
  *          description="id",
- *          type="integer",
- *          format="int32"
- *      ),
- *      @SWG\Property(
- *          property="template_id",
- *          description="template_id",
  *          type="integer",
  *          format="int32"
  *      ),
@@ -32,23 +26,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *          description="updated_at",
  *          type="string",
  *          format="date-time"
- *      ),
- *      @SWG\Property(
- *          property="deleted_at",
- *          description="deleted_at",
- *          type="string",
- *          format="date-time"
  *      )
  * )
  */
-class Setting extends Model
+class Options extends Model
 {
     use SoftDeletes;
 
-    public $table = 'settings';
-    
-    const CREATED_AT = 'created_at';
-    const UPDATED_AT = 'updated_at';
+    public $table = 'options';
 
 
     protected $dates = ['deleted_at'];
@@ -56,7 +41,9 @@ class Setting extends Model
 
 
     public $fillable = [
-        'template_id'
+        'option_name',
+        'value'
+
     ];
 
     /**
@@ -66,7 +53,8 @@ class Setting extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'template_id' => 'integer'
+        'option_name'=> 'string',
+        'value' => 'boolean'
     ];
 
     /**
@@ -75,8 +63,9 @@ class Setting extends Model
      * @var array
      */
     public static $rules = [
-        
+//        'questions' => 'required'
+
     ];
 
-    
+
 }

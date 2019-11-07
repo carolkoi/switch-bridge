@@ -23,8 +23,8 @@ class SurveyReportsDataTable extends DataTable
         })->addColumn('title', function ($query){
             return $query->template->name;
         })
-            ->addColumn('created by', function ($query){
-                return $query->template->user->first_name;
+            ->addColumn('created by',function ($query){
+                return $query->template->user->first_name. ' '.$query->template->user->last_name;
             })
             ->addColumn('start date', function ($query){
                 return $query->template->valid_from->format('Y-m-d');
@@ -32,8 +32,11 @@ class SurveyReportsDataTable extends DataTable
             ->addColumn('end date', function ($query){
                 return $query->template->valid_until->format('Y-m-d');
             })
-            ->addColumn('status', 'allocations.datatables_status')
-            ->addColumn('action', 'allocations.datatables_actions')
+            ->addColumn('status', 'survey_reports.datatables_status')
+            ->addColumn('questions', function ($query){
+                return $query->template->questions->count();
+            })
+            ->addColumn('action', 'survey_reports.datatables_actions')
             ->rawColumns(['status','action']);
     }
 
@@ -45,7 +48,7 @@ class SurveyReportsDataTable extends DataTable
      */
     public function query(Allocation $model)
     {
-        return $model->with(['template.user'])->groupBy(['template_id'])->newQuery();
+        return $model->with(['template.user', 'template.questions'])->groupBy(['template_id'])->newQuery();
     }
 
     /**
@@ -87,6 +90,7 @@ class SurveyReportsDataTable extends DataTable
             'start date',
             'end date',
             'status',
+            'questions'
         ];
     }
 

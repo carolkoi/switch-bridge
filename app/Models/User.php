@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use Eloquent as Model;
+//use Eloquent as Model;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -31,11 +32,10 @@ class User extends Model
 
 
     public $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
-        'email_verified_at',
         'password',
-        'remember_token'
     ];
 
     /**
@@ -45,7 +45,8 @@ class User extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'name' => 'string',
+        'first_name' => 'string',
+        'last_name' => 'string',
         'email' => 'string',
         'email_verified_at' => 'datetime',
         'password' => 'string',
@@ -58,7 +59,8 @@ class User extends Model
      * @var array
      */
     public static $rules = [
-        'name' => 'required',
+        'first_name' => 'required',
+        'last_name' => 'required',
         'email' => 'required',
         'password' => 'required'
     ];

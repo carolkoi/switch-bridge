@@ -8,6 +8,7 @@ use App\Models\Allocation;
 use App\Models\Client;
 use App\Models\Template;
 use App\Models\User;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Laracasts\Flash\Flash;
@@ -18,14 +19,20 @@ class SendSurveyEmailController extends Controller
     //
     public function emailSurvey($id)
     {
+        $now = new DateTime();
+        $allocations = Allocation::where(['template_id' => $id, 'status' => true])->with('template')->get();
+        foreach ($allocations as $allocation){
+        if ($now < $allocation->template->valid_until) {
 
-        $this->sendToClient($id);
-        $this->sendToStaff($id);
-        $this->sendToOther($id);
-
-        Flash::success('Survey allocated successfully.');
+            $this->sendToClient($id);
+            $this->sendToStaff($id);
+            $this->sendToOther($id);
+        }
+            Flash::success('Survey email sent successfully.');
+            return redirect(route('allocations.index'));
+        }
+        Flash::success('There is an error! Survey deadline has passed or the allocation is not yet approved.');
         return redirect(route('allocations.index'));
-
     }
 
     public function sendToStaff($id)
@@ -40,6 +47,7 @@ class SendSurveyEmailController extends Controller
             $staff_email = User::find($staff->user_id)->email;
             $token = Uuid::generate()->string;
             Mail::to($staff_email)->send(new SendSurveyEmail($template, $token));
+            Allocation::where('user_id', $staff->user_id)->update(['email_sent' => 1]);
         }
 
     }
@@ -55,6 +63,7 @@ class SendSurveyEmailController extends Controller
             $client_email = Client::find($client->client_id)->email;
             $token = Uuid::generate()->string;
             Mail::to($client_email)->send(new SendSurveyEmail($template, $token));
+            Allocation::where('client_id', $client->client_id)->update(['email_sent' => 1]);
         }
 
     }
@@ -70,6 +79,7 @@ class SendSurveyEmailController extends Controller
             $email = unserialize($other->others);
             $token = Uuid::generate()->string;
             Mail::to($email)->send(new SendSurveyEmail($template, $token));
+            Allocation::whereNull(['client_id', 'user_id'])->update(['email_sent' => 1]);
         }
 
     }

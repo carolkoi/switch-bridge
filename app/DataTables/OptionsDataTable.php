@@ -2,11 +2,11 @@
 
 namespace App\DataTables;
 
-use App\Models\Setting;
+use App\Models\Options;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
 
-class SettingDataTable extends DataTable
+class OptionsDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -18,16 +18,16 @@ class SettingDataTable extends DataTable
     {
         $dataTable = new EloquentDataTable($query);
 
-        return $dataTable->addColumn('action', 'settings.datatables_actions');
+        return $dataTable->addColumn('action', 'options.datatables_actions');
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\Setting $model
+     * @param \App\Models\Options $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Setting $model)
+    public function query(Options $model)
     {
         return $model->newQuery();
     }
@@ -48,11 +48,11 @@ class SettingDataTable extends DataTable
                 'stateSave' => true,
                 'order'     => [[0, 'desc']],
                 'buttons'   => [
-                    ['extend' => 'create', 'className' => 'btn btn-default btn-sm no-corner',],
-                    ['extend' => 'export', 'className' => 'btn btn-default btn-sm no-corner',],
-                    ['extend' => 'print', 'className' => 'btn btn-default btn-sm no-corner',],
-                    ['extend' => 'reset', 'className' => 'btn btn-default btn-sm no-corner',],
-                    ['extend' => 'reload', 'className' => 'btn btn-default btn-sm no-corner',],
+//                    ['extend' => 'create', 'className' => 'btn btn-default btn-sm no-corner',],
+//                    ['extend' => 'export', 'className' => 'btn btn-default btn-sm no-corner',],
+//                    ['extend' => 'print', 'className' => 'btn btn-default btn-sm no-corner',],
+//                    ['extend' => 'reset', 'className' => 'btn btn-default btn-sm no-corner',],
+//                    ['extend' => 'reload', 'className' => 'btn btn-default btn-sm no-corner',],
                 ],
             ]);
     }
@@ -65,7 +65,8 @@ class SettingDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'template_id'
+            'questions'
+
         ];
     }
 
@@ -76,6 +77,6 @@ class SettingDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'settingsdatatable_' . time();
+        return 'optionsdatatable_' . time();
     }
 }

@@ -68,10 +68,13 @@ class ResponseController extends AppBaseController
         $responses = Question::where('template_id',$template_id)
             ->with(['answer','responses'])
             ->get();
+        $template = Template::find($template_id);
+
 
         return  view('responses.show',[
             'responses' => $responses,
-            'id' => $template_id
+            'id' => $template_id,
+            'template' => $template
         ]);
     }
 

@@ -6,7 +6,11 @@ use App\DataTables\SurveyReportsDataTable;
 use App\Http\Requests;
 use App\Http\Requests\CreateSurveyReportsRequest;
 use App\Http\Requests\UpdateSurveyReportsRequest;
+use App\Models\Question;
+use App\Models\Template;
+use App\Repositories\AllocationRepository;
 use App\Repositories\SurveyReportsRepository;
+use App\User;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
@@ -15,10 +19,12 @@ class SurveyReportsController extends AppBaseController
 {
     /** @var  SurveyReportsRepository */
     private $surveyReportsRepository;
+    private $allocationRepository;
 
-    public function __construct(SurveyReportsRepository $surveyReportsRepo)
+    public function __construct(SurveyReportsRepository $surveyReportsRepo, AllocationRepository $allocationRepo)
     {
         $this->surveyReportsRepository = $surveyReportsRepo;
+        $this->allocationRepository = $allocationRepo;
     }
 
     /**
@@ -67,17 +73,19 @@ class SurveyReportsController extends AppBaseController
      *
      * @return Response
      */
-    public function show($id)
+    public function show($template_id)
     {
-        $surveyReports = $this->surveyReportsRepository->find($id);
+        $surveyReport = Template::find($template_id);
+       $questions = Question::where('template_id',$template_id )->get();
 
-        if (empty($surveyReports)) {
+        if (empty($surveyReport)) {
             Flash::error('Survey Reports not found');
 
             return redirect(route('surveyReports.index'));
         }
 
-        return view('survey_reports.show')->with('surveyReports', $surveyReports);
+        return view('survey_reports.show')->with(['surveyReport'=> $surveyReport,
+            'questions' => $questions, 'user' => User::find($surveyReport->user_id)]);
     }
 
     /**

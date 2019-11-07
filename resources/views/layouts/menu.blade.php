@@ -33,15 +33,42 @@
         <a href="{!! route('responses.index') !!}"><i class="fa fa-edit"></i><span>Responses</span></a>
     </li>
 
-<li class="{{ Request::is('surveyReports*') ? 'active' : '' }}">
-    <a href="{!! route('surveyReports.index') !!}"><i class="fa fa-edit"></i><span>Survey Reports</span></a>
-</li>
+    <li class="treeview {{ Request::is('report*') ? 'active menu-open' : '' }}">
+        <a class="dropdown-toggle" href="#">
+            <i class="fa fa-users"></i> <span>Reports</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li class="{{ Request::is('report/surveyReports*') ? 'active' : '' }}">
+                <a href="{!! route('surveyReports.index') !!}"><i class="fa fa-edit"></i><span>Survey Reports</span></a>
+            </li>
+            <li class="{{ Request::is('report/responseReports*') ? 'active' : '' }}">
+                <a href="{!! route('responseReports.index') !!}"><i class="fa fa-edit"></i><span>Response Reports</span></a>
+            </li>
+        </ul>
+    </li>
 
-<li class="{{ Request::is('responseReports*') ? 'active' : '' }}">
-    <a href="{!! route('responseReports.index') !!}"><i class="fa fa-edit"></i><span>Response Reports</span></a>
+    <li class="treeview {{ Request::is('settings*') ? 'active menu-open' : '' }}">
+        <a class="dropdown-toggle" href="#">
+            <i class="fa fa-users"></i> <span>Settings</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li class="{{ Request::is('settings/options*') ? 'active' : '' }}">
+                <a href="{!! route('options.index') !!}"><i class="fa fa-edit"></i><span>Options</span></a>
+            </li>
 
-<li class="{{ Request::is('settings*') ? 'active' : '' }}">
-    <a href="{!! route('settings.index') !!}"><i class="fa fa-edit"></i><span>Settings</span></a>
+            <li class="{{ Request::is('settings/approvalWorkflows*') ? 'active' : '' }}">
+                <a href="{!! route('approvalWorkflows.index') !!}"><i class="fa fa-edit"></i><span>Approval Workflows</span></a>
+            </li> </li>
+        </ul>
+    </li>
 
-</li>
+
+
+
 

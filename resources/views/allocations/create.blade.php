@@ -50,7 +50,6 @@
 
             $('.survey_type').on('change', function () {
                 let type = $('input[type=radio][name=type]:checked').val();
-
                 setDropDownOptions(type);
 
             });

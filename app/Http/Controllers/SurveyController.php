@@ -6,6 +6,7 @@ use App\DataTables\SurveyDataTable;
 use App\Http\Requests;
 use App\Http\Requests\CreateSurveyRequest;
 use App\Http\Requests\UpdateSurveyRequest;
+use App\Models\Allocation;
 use App\Repositories\SurveyRepository;
 use App\Models\Template;
 use App\Models\Response;
@@ -54,7 +55,10 @@ class SurveyController extends AppBaseController
     public function store(CreateSurveyRequest $request)
     {
         $input = $request->except(['_token','survey_uuid']);
-
+// check if the uuid already exist, user cant respond to the same survey twice
+//        $check_respondent =Allocation::where('user_id',Auth::user()->id)
+//            ->where('product_id',$request->product_id)
+//            ->first();
         foreach($input as $key => $resp){
 
             $map = explode('_',$key);

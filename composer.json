@@ -13,6 +13,7 @@
         "barryvdh/laravel-snappy": "^0.4.6",
         "doctrine/dbal": "~2.3",
         "fideloper/proxy": "^4.0",
+        "guzzlehttp/guzzle": "~6.0",
         "infyomlabs/adminlte-templates": "5.8.x-dev",
         "infyomlabs/laravel-generator": "5.8.x-dev",
         "infyomlabs/swagger-generator": "dev-master",
@@ -22,7 +23,8 @@
         "webpatser/laravel-uuid": "^3.0",
         "yajra/laravel-datatables-buttons": "^4.6",
         "yajra/laravel-datatables-html": "^4.4",
-        "yajra/laravel-datatables-oracle": "~9.0"
+        "yajra/laravel-datatables-oracle": "~9.0",
+        "ext-json": "*"
     },
     "require-dev": {
         "appointer/swaggervel": "^2.5",

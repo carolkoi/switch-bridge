@@ -2,22 +2,22 @@
 
 namespace App\Repositories;
 
-use App\Models\Setting;
+use App\Models\ApprovalWorkflow;
 use App\Repositories\BaseRepository;
 
 /**
- * Class SettingRepository
+ * Class ApprovalWorkflowRepository
  * @package App\Repositories
- * @version November 5, 2019, 2:06 pm UTC
+ * @version November 6, 2019, 2:00 pm UTC
 */
 
-class SettingRepository extends BaseRepository
+class ApprovalWorkflowRepository extends BaseRepository
 {
     /**
      * @var array
      */
     protected $fieldSearchable = [
-        'template_id'
+        
     ];
 
     /**
@@ -35,6 +35,6 @@ class SettingRepository extends BaseRepository
      **/
     public function model()
     {
-        return Setting::class;
+        return ApprovalWorkflow::class;
     }
 }

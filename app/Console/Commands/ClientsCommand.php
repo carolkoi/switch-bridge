@@ -2,23 +2,25 @@
 
 namespace App\Console\Commands;
 
+use GuzzleHttp\Client as GuzzleClient;
+use App\Models\ERPModels\Client;
 use Illuminate\Console\Command;
 
-class sendSurvey extends Command
+class ClientsCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'survey:send';
+    protected $signature = 'clients:get';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Sending surveys to users';
+    protected $description = 'importing clients from sage';
 
     /**
      * Create a new command instance.
@@ -38,5 +40,10 @@ class sendSurvey extends Command
     public function handle()
     {
 
+        $data = Client::whereNotNull('email')->get();
+        dd($data);
+
     }
+
+
 }
