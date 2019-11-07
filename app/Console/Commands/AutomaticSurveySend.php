@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Http\Controllers\Allocation\SendSurveyEmailController;
+use App\Models\Template;
 use Illuminate\Console\Command;
 use App\Models\Allocation;
 use App\Models\Options;
@@ -40,7 +41,10 @@ class automaticSurveySend extends Command
      */
     public function handle()
     {
-        $allocations = Allocation::where('template_id', 6)->get();
+        $templates = Template::get();
+        foreach ($templates as $template){
+            $id = $template->id;
+        $allocations = Allocation::where('template_id', $id)->get();
         $setting = Options::find(1);
         if ($setting->value == true) {
             foreach ($allocations as $allocation){
@@ -51,6 +55,7 @@ class automaticSurveySend extends Command
             }
         }
 
+        }
 
     }
 }

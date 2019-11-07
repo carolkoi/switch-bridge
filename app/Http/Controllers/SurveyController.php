@@ -54,30 +54,37 @@ class SurveyController extends AppBaseController
      */
     public function store(CreateSurveyRequest $request)
     {
-        $input = $request->except(['_token','survey_uuid']);
-// check if the uuid already exist, user cant respond to the same survey twice
-//        $check_respondent =Allocation::where('user_id',Auth::user()->id)
-//            ->where('product_id',$request->product_id)
-//            ->first();
-        foreach($input as $key => $resp){
 
-            $map = explode('_',$key);
-            Response::create([
-                'user_id' => NULL,
-                'client_id' => NULL,
-                'template_id' => $map[1],
-                'question_id' => $map[2],
-                'answer_type' => $map[3],
-                'answer' => is_array($resp)? json_encode($resp):(is_int($resp) ? strval($resp) : $resp),
-                'survey_uuid' => $request['survey_uuid']
-            ]);
-        }
+        $input = $request->except(['_token','survey_uuid']);
+        // check if the uuid already exist, user cant respond to the same survey twice
+        $response =Response::where('survey_uuid', '=', $request->input('survey_uuid'))
+            ->first();
+        // if response does not exist proceed to save
+        if ($response == null) {
+            foreach ($input as $key => $resp) {
+
+                $map = explode('_', $key);
+                Response::create([
+                    'user_id' => NULL,
+                    'client_id' => NULL,
+                    'template_id' => $map[1],
+                    'question_id' => $map[2],
+                    'answer_type' => $map[3],
+                    'answer' => is_array($resp) ? json_encode($resp) : (is_int($resp) ? strval($resp) : $resp),
+                    'survey_uuid' => $request['survey_uuid']
+                ]);
+            }
 
 //        $survey = $this->surveyRepository->create($input);
 
-        Flash::success('Survey saved successfully.');
+            Flash::success('Survey saved successfully.');
 
-        return redirect()->back()->with('filled','filled');
+            return redirect()->back()->with('filled', 'filled');
+        }
+        //if response exist exit
+        return redirect()->back()->with('error', 'error');
+
+
     }
 
     /**
