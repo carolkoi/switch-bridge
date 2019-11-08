@@ -21,11 +21,17 @@
                                 Thank you for participating. We appreciate your time and effort in taking the survey.
                             </div>
                         @else
-                            @if(session('error'))
-                                <div class="alert alert-danger">
-                                    You cannot respond to the same survey/poll twice!
+                            @if(session('passed'))
+                                <div class="alert alert-warning">
+                                    Survey deadline passed.
                                 </div>
                             @endif
+                            @if(session('error'))
+                                <div class="alert alert-warning">
+                                    URL Expired
+                                </div>
+                            @endif
+
                             @if(count($questions->questions) == 0)
                                 <div class="alert alert-danger"> No Questions yet</div>
                             @endif

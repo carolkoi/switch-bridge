@@ -1,10 +1,9 @@
 @component('mail::message')
-# Introduction
+    # Dear Sir / Madam,
+<p>{{ $templateEmailMsg }}</p>
 
-The body of your message.
-
-@component('mail::button', ['url' => ''])
-Button Text
+@component('mail::button', ['url' => url('survey-response/'.$templateID.'/'.$token)])
+Take Survey
 @endcomponent
 
 Thanks,<br>

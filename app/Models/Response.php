@@ -139,8 +139,8 @@ class Response extends Model
     {
         return $this->hasManyThrough('App\Models\Allocation', 'App\Models\Template', 'id');
     }
-    public function scopecountRespondentsByTemplateId($query, $template_id){
-        return $query->where(['template_id' =>$template_id])->count();
+    public function scopecountRespondentsByTemplateId($query, $template_id, $question_id){
+        return $query->where(['template_id' =>$template_id, 'question_id' => $question_id])->count();
     }
 
 }

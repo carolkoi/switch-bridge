@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\Template;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -16,9 +17,14 @@ class SurveyEmail extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public $template;
+    public $token;
+
+    public function __construct(Template $template, $token)
     {
         //
+        $this->template = $template;
+        $this->token = $token;
     }
 
     /**
@@ -28,6 +34,11 @@ class SurveyEmail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('surveys.email');
+        return $this->markdown('surveys.email')
+            ->with([
+                'templateEmailMsg' => $this->template->email_msg,
+                'templateID' => $this->template->id,
+                'token' => $this->token,
+            ]);
     }
 }

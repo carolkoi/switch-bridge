@@ -1,7 +1,11 @@
+
 @isset($token)
     <input type="hidden" class="form-control" value="{{$token}}" name="survey_uuid">
-{{--    {!! Form::hidden('survey_uuid', $token, ['class' => 'form-control']) !!}--}}
-    @endisset
+@endisset
+{{--@isset($templateID)--}}
+{{--    <input type="hidden" class="form-control" value="{{$templateID}}" name="template_id">--}}
+{{--@endisset--}}
+
 @foreach($questions->questions as $question)
     <div class="form-group">
 

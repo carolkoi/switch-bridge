@@ -10,6 +10,7 @@ use App\Models\Allocation;
 use App\Repositories\SurveyRepository;
 use App\Models\Template;
 use App\Models\Response;
+use DateTime;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 //use Response;
@@ -56,6 +57,13 @@ class SurveyController extends AppBaseController
     {
 
         $input = $request->except(['_token','survey_uuid']);
+        //check if the end date of survey has passed and if the setting is set to receive late responses
+        //get current date
+//        $now = new DateTime();
+//        $template = Template::find($request->input('template_id'));
+//        dd($template);
+
+
         // check if the uuid already exist, user cant respond to the same survey twice
         $response =Response::where('survey_uuid', '=', $request->input('survey_uuid'))
             ->first();
@@ -64,6 +72,7 @@ class SurveyController extends AppBaseController
             foreach ($input as $key => $resp) {
 
                 $map = explode('_', $key);
+
                 Response::create([
                     'user_id' => NULL,
                     'client_id' => NULL,
@@ -77,7 +86,7 @@ class SurveyController extends AppBaseController
 
 //        $survey = $this->surveyRepository->create($input);
 
-            Flash::success('Survey saved successfully.');
+            Flash::success('Survey responses saved successfully.');
 
             return redirect()->back()->with('filled', 'filled');
         }

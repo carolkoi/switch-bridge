@@ -28,8 +28,8 @@ class AllocationDataTable extends DataTable
         })
             ->addColumn('status', 'allocations.datatables_status')
 
-            ->addColumn('No of allocated users', function ($query){
-           return $query->CountUsersByTemplateId($query->template_id);
+            ->addColumn('users', function ($query){
+           return $query->CountUsersByTemplateId($query->template_id, $query->user_type);
 //            return count($query['user_type']);
         })
         ->addColumn('action', 'allocations.datatables_actions')
@@ -86,7 +86,7 @@ class AllocationDataTable extends DataTable
             'date range',
             'status',
 //            'Sent to',
-            'No of allocated users',
+            'users',
 //            'no of respondents',
 //            '%age responses'
 

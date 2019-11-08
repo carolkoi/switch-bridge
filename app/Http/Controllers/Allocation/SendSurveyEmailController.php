@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Allocation;
 
 use App\Http\Controllers\Controller;
 use App\Mail\SendSurveyEmail;
+use App\Mail\SurveyEmail;
 use App\Models\Allocation;
 use App\Models\Client;
 use App\Models\Template;
@@ -46,7 +47,7 @@ class SendSurveyEmailController extends Controller
             $template = Template::find($staff->template_id);
             $staff_email = User::find($staff->user_id)->email;
             $token = Uuid::generate()->string;
-            Mail::to($staff_email)->send(new SendSurveyEmail($template, $token));
+            Mail::to($staff_email)->send(new SurveyEmail($template, $token));
             Allocation::where('user_id', $staff->user_id)->update(['email_sent' => 1]);
         }
 
@@ -62,7 +63,7 @@ class SendSurveyEmailController extends Controller
             $template = Template::find($client->template_id);
             $client_email = Client::find($client->client_id)->email;
             $token = Uuid::generate()->string;
-            Mail::to($client_email)->send(new SendSurveyEmail($template, $token));
+            Mail::to($client_email)->send(new SurveyEmail($template, $token));
             Allocation::where('client_id', $client->client_id)->update(['email_sent' => 1]);
         }
 
@@ -78,7 +79,7 @@ class SendSurveyEmailController extends Controller
             $template = Template::find($other->template_id);
             $email = unserialize($other->others);
             $token = Uuid::generate()->string;
-            Mail::to($email)->send(new SendSurveyEmail($template, $token));
+            Mail::to($email)->send(new SurveyEmail($template, $token));
             Allocation::whereNull(['client_id', 'user_id'])->update(['email_sent' => 1]);
         }
 

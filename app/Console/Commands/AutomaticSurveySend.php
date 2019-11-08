@@ -49,7 +49,7 @@ class automaticSurveySend extends Command
         if ($setting->value == true) {
             foreach ($allocations as $allocation){
                 if ($allocation->email_sent == 0){
-                    return app(SendSurveyEmailController::class)->emailSurvey(6);
+                    return app(SendSurveyEmailController::class)->emailSurvey($id);
 
                 }
             }

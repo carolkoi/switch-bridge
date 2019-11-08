@@ -37,7 +37,7 @@
     <!-- User Id Field -->
 
     <div class="form-group">
-{{--        {!! Form::label('user_id', 'Staffs:') !!}--}}
+        {!! Form::label('user_id', 'Staffs:') !!}
         <select class="form-control" name="user_id[]" id="user_id" placeholder="---Select Staff--" multiple>
             <option disabled="disabled">-- Select Staffs --</option>
             @foreach($users as $user)
@@ -49,7 +49,7 @@
     <!-- Client Id Field -->
 
     <div class="form-group" id="client_list">
-{{--        {!! Form::label('client_id', 'Clients:') !!}--}}
+        {!! Form::label('client_id', 'Clients:') !!}
         <select class="form-control" name="client_id[]" id="client_id" multiple>
             <option disabled="disabled">-- Select Clients--</option>
             @foreach($clients as $client)
@@ -60,7 +60,7 @@
 
 
     <div class="form-group" id="others_email">
-{{--        {!! Form::label('others', 'Others:') !!}--}}
+        {!! Form::label('others', 'Others:') !!}
         <select class="form-control" name="others[]" id="mails" multiple>
             <option disabled="disabled">-- Add email--</option>
         </select>

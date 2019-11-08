@@ -23,26 +23,23 @@ class ResponseDataTable extends DataTable
 //            ->addColumn('Description', function ($query){
 //                return $query->template->description;
 //            })
-            ->addColumn('users sent', function ($query){
+            ->addColumn('users', function ($query){
               return  $query->template->allocations->count();
-//                foreach ($query->template->allocations as $all){
-//                    dd($all);
-//                    return $all->groupBy('template_id')->count();
-//                }
             })
-            ->addColumn('no of respondents', function ($query){
-//                dd($query->countRespondentsByTemplateId($query->template_id));
-                $no = $query->countRespondentsByTemplateId($query->template_id) / $query->template->questions->count();
-                return $no;
+            ->addColumn('responses', function ($query){
+                return $query->countRespondentsByTemplateId($query->template_id, $query->question_id);
             })
-            ->addColumn('%age response', function ($query){
-                $no = $query->groupBy('template_id')->count()/$query->template->questions->count();
-                foreach ($query->template->allocations as $all){
-                    $no2 = $all->groupBy('template_id')->count();
-                    return ($no/$no2) * 100;
-                }
-
+            ->addColumn('% received', function ($query){
+               $percent = ($query->countRespondentsByTemplateId($query->template_id, $query->question_id))/ ($query->template->allocations->count());
+               return $percent * 100;
             })
+//            ->addColumn('%age response', function ($query){
+//                $no = $query->groupBy('template_id')->count()/$query->template->questions->count();
+//
+//                $no2 = $query->template->allocations->where('template_id', $query->template_id)->groupBy('template_id')->first()->count();
+//                    return ($no/$no2) * 100;
+//
+//            })
             ->addColumn('action', 'responses.datatables_actions')
             ->rawColumns(['Title','action']);
     }
@@ -93,9 +90,9 @@ class ResponseDataTable extends DataTable
         return [
             'Title',
 //            'Description',
-            'users sent',
-            'no of respondents',
-            '%age response'
+            'users',
+            'responses',
+            '% received'
         ];
     }
 

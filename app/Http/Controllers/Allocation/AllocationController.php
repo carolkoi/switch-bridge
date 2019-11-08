@@ -65,12 +65,13 @@ class AllocationController extends AppBaseController
         $users = $request->input('user_id');
         $clients = $request->input('client_id');
         $others = $request->input('others');
+        if($others){
         foreach ($others as $other){
             $input['others'] = serialize($other);
             $allocation = $this->allocationRepository->create($input);
         }
         unset($input['others']);
-
+        }
         if (is_array($users)){
         foreach ($users as $user) {
             $input['user_id'] = $user;

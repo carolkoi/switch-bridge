@@ -59,6 +59,7 @@ class OptionsController extends AppBaseController
 
 
         Flash::success('Setting question saved successfully.');
+        return redirect()->back()->withInput();
 
         return redirect(route('options.index'));
     }
