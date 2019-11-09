@@ -20,9 +20,7 @@ class TemplateDataTable extends DataTable
         $dataTable = new EloquentDataTable($query);
 
         return $dataTable
-            ->addColumn('Created By', function ($query){
-//                return $query->user->first_name. ' '.$query->user->last_name;
-            })
+            ->addColumn('created by', 'templates.datatables_created_by')
             ->editColumn('type', function ($query){
                 return $query->type;
             })
@@ -38,7 +36,7 @@ class TemplateDataTable extends DataTable
 //                return $query->valid_until->format('Y-m-d');
                 return Carbon::parse($query->valid_until)->format('d-m-Y');
             })
-            ->rawColumns(['name','status','action', 'no of Questions']);
+            ->rawColumns(['name','status','action', 'no of Questions', 'Created By']);
     }
 
     /**
@@ -90,7 +88,7 @@ class TemplateDataTable extends DataTable
             'name',
             'valid_from',
             'valid_until',
-            'Created By',
+            'created by',
             'no of Questions',
 //            'status'
 //            'Questions'
