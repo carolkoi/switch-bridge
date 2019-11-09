@@ -31,10 +31,12 @@ class TemplateDataTable extends DataTable
             ->addColumn('no of Questions', 'templates.datatables_question')
             ->addColumn('action', 'templates.datatables_actions')
             ->editColumn('valid_from', function ($query){
-                return $query->valid_from->format('Y-m-d');
+//                return $query->valid_from->format('Y-m-d');
+                return Carbon::parse($query->valid_from)->format('d-m-Y');
             })
             ->editColumn('valid_until', function ($query){
-                return $query->valid_until->format('Y-m-d');
+//                return $query->valid_until->format('Y-m-d');
+                return Carbon::parse($query->valid_until)->format('d-m-Y');
             })
             ->rawColumns(['name','status','action', 'no of Questions']);
     }
