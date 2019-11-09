@@ -1,11 +1,8 @@
 
-@isset($token)
+@isset($token, $questions)
     <input type="hidden" class="form-control" value="{{$token}}" name="survey_uuid">
+    <input type="hidden" class="form-control" value="{{$questions->id}}" name="template_id">
 @endisset
-{{--@isset($templateID)--}}
-{{--    <input type="hidden" class="form-control" value="{{$templateID}}" name="template_id">--}}
-{{--@endisset--}}
-
 @foreach($questions->questions as $question)
     <div class="form-group">
 

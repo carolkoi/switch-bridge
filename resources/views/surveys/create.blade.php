@@ -27,7 +27,7 @@
                                 </div>
                             @endif
                             @if(session('error'))
-                                <div class="alert alert-warning">
+                                <div class="alert alert-danger">
                                     URL Expired
                                 </div>
                             @endif

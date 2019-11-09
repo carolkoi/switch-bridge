@@ -7,9 +7,11 @@ use App\Http\Requests;
 use App\Http\Requests\CreateSurveyRequest;
 use App\Http\Requests\UpdateSurveyRequest;
 use App\Models\Allocation;
+use App\Models\Options;
 use App\Repositories\SurveyRepository;
 use App\Models\Template;
 use App\Models\Response;
+use Carbon\Carbon;
 use DateTime;
 use Flash;
 use App\Http\Controllers\AppBaseController;
@@ -57,12 +59,13 @@ class SurveyController extends AppBaseController
     {
 
         $input = $request->except(['_token','survey_uuid']);
-        //check if the end date of survey has passed and if the setting is set to receive late responses
-        //get current date
-//        $now = new DateTime();
-//        $template = Template::find($request->input('template_id'));
-//        dd($template);
+//        check if the end date of survey has passed and if the
+// check if late response is set is set to receive late responses
+        $setting = Options::where('option_name', 'receive_late_response')->first();
+//        get current date
+        $template = Template::find($request->input('template_id'));
 
+        if (carbon::now()->lte($template->valid_until) AND ($setting->value == false)){
 
         // check if the uuid already exist, user cant respond to the same survey twice
         $response =Response::where('survey_uuid', '=', $request->input('survey_uuid'))
@@ -92,7 +95,9 @@ class SurveyController extends AppBaseController
         }
         //if response exist exit
         return redirect()->back()->with('error', 'error');
-
+        }
+        //if the deadline has passed
+        return redirect()->back()->with('passed', 'passed');
 
     }
 
@@ -105,13 +110,6 @@ class SurveyController extends AppBaseController
      */
     public function show($id, $token)
     {
-//        $survey = $this->surveyRepository->find($id);
-
-//        if (empty($survey)) {
-//            Flash::error('Survey not found');
-//
-//            return redirect(route('surveys.index'));
-//        }
         $questions = Template::with(['questions.answer'])->find($id);
         return view('surveys.create', compact('token','questions'));
     }
