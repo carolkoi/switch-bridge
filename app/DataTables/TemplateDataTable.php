@@ -21,7 +21,7 @@ class TemplateDataTable extends DataTable
 
         return $dataTable
             ->addColumn('Created By', function ($query){
-                return $query->user->first_name. ' '.$query->user->last_name;
+//                return $query->user->first_name. ' '.$query->user->last_name;
             })
             ->editColumn('type', function ($query){
                 return $query->type;
