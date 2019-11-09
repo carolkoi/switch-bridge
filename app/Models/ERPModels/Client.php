@@ -6,18 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Client extends Model
 {
-    protected $table = '_rtblPeople';
+    protected $table = 'Client';
     protected $connection = 'sqlsrv';
-    protected $primaryKey = 'contact_id';
+    protected $primaryKey = 'DCLink';
     protected $fillable = [
-    'contact_id',
-    'first_name',
-    'last_name',
-    'initials',
-    'email',
-    'company_account',
-    'company_id',
-    'company_name'
+    'DCLink'
 ];
+    public function rtblpeople(){
+        return $this->hasMany(RtblPeople::class);
+    }
 
 }

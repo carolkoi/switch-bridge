@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use DateTime;
 use Flash;
 use App\Http\Controllers\AppBaseController;
+
 //use Response;
 
 class SurveyController extends AppBaseController
@@ -58,43 +59,41 @@ class SurveyController extends AppBaseController
     public function store(CreateSurveyRequest $request)
     {
 
-        $input = $request->except(['_token','survey_uuid']);
+        $input = $request->except(['_token', 'survey_uuid', 'template_id']);
 //        check if the end date of survey has passed and if the
 // check if late response is set is set to receive late responses
         $setting = Options::where('option_name', 'receive_late_response')->first();
 //        get current date
         $template = Template::find($request->input('template_id'));
 
-        if (carbon::now()->lte($template->valid_until) AND ($setting->value == false)){
+        if (carbon::now()->lte($template->valid_until) OR ($setting->value == true)) {
 
-        // check if the uuid already exist, user cant respond to the same survey twice
-        $response =Response::where('survey_uuid', '=', $request->input('survey_uuid'))
-            ->first();
-        // if response does not exist proceed to save
-        if ($response == null) {
-            foreach ($input as $key => $resp) {
-
-                $map = explode('_', $key);
-
-                Response::create([
-                    'user_id' => NULL,
-                    'client_id' => NULL,
-                    'template_id' => $map[1],
-                    'question_id' => $map[2],
-                    'answer_type' => $map[3],
-                    'answer' => is_array($resp) ? json_encode($resp) : (is_int($resp) ? strval($resp) : $resp),
-                    'survey_uuid' => $request['survey_uuid']
-                ]);
-            }
+            // check if the uuid already exist, user cant respond to the same survey twice
+            $response = Response::where('survey_uuid', '=', $request->input('survey_uuid'))
+                ->first();
+            // if response does not exist proceed to save
+            if ($response == null) {
+                foreach ($input as $key => $resp) {
+                    $map = explode('_', $key);
+                    Response::create([
+                        'user_id' => NULL,
+                        'client_id' => NULL,
+                        'template_id' => $map[1],
+                        'question_id' => $map[2],
+                        'answer_type' => $map[3],
+                        'answer' => is_array($resp) ? json_encode($resp) : (is_int($resp) ? strval($resp) : $resp),
+                        'survey_uuid' => $request['survey_uuid']
+                    ]);
+                }
 
 //        $survey = $this->surveyRepository->create($input);
 
-            Flash::success('Survey responses saved successfully.');
+                Flash::success('Survey responses saved successfully.');
 
-            return redirect()->back()->with('filled', 'filled');
-        }
-        //if response exist exit
-        return redirect()->back()->with('error', 'error');
+                return redirect()->back()->with('filled', 'filled');
+            }
+            //if response exist exit
+            return redirect()->back()->with('error', 'error');
         }
         //if the deadline has passed
         return redirect()->back()->with('passed', 'passed');
@@ -104,20 +103,20 @@ class SurveyController extends AppBaseController
     /**
      * Display the specified Survey.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
     public function show($id, $token)
     {
         $questions = Template::with(['questions.answer'])->find($id);
-        return view('surveys.create', compact('token','questions'));
+        return view('surveys.create', compact('token', 'questions'));
     }
 
     /**
      * Show the form for editing the specified Survey.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
@@ -137,7 +136,7 @@ class SurveyController extends AppBaseController
     /**
      * Update the specified Survey in storage.
      *
-     * @param  int              $id
+     * @param int $id
      * @param UpdateSurveyRequest $request
      *
      * @return Response
@@ -162,7 +161,7 @@ class SurveyController extends AppBaseController
     /**
      * Remove the specified Survey from storage.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */

@@ -41,12 +41,12 @@ class automaticSurveySend extends Command
      */
     public function handle()
     {
+        $setting = Options::find(1);
+        if ($setting->value == true) {
         $templates = Template::get();
         foreach ($templates as $template){
             $id = $template->id;
         $allocations = Allocation::where('template_id', $id)->get();
-        $setting = Options::find(1);
-        if ($setting->value == true) {
             foreach ($allocations as $allocation){
                 if ($allocation->email_sent == 0){
                     return app(SendSurveyEmailController::class)->emailSurvey($id);

@@ -5,6 +5,7 @@ namespace App\Console;
 use App\Console\Commands\automaticSurveySend;
 use App\Console\Commands\ClientsCommand;
 use App\Console\Commands\EmployeesCommand;
+use App\Console\Commands\ReceiveLateResponseCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -20,6 +21,7 @@ class Kernel extends ConsoleKernel
         EmployeesCommand::class,
         ClientsCommand::class,
         automaticSurveySend::class,
+        ReceiveLateResponseCommand::class
     ];
 
     /**
@@ -37,6 +39,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('clients:get')
             ->everyMinute();
         $schedule->command('survey:send')
+            ->everyMinute();
+        $schedule->command('response:receive')
             ->everyMinute();
 
     }
