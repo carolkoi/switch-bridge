@@ -54,6 +54,7 @@ class OptionsController extends AppBaseController
      */
     public function store(CreateOptionsRequest $request)
     {
+//        dd($request->all());
         $this->automateSurveysending( $request);
         $this->receiveLateResponses( $request);
 

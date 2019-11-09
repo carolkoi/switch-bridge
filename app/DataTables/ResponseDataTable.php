@@ -19,10 +19,9 @@ class ResponseDataTable extends DataTable
         $dataTable = new EloquentDataTable($query);
 
         return $dataTable
+            ->addColumn('type', 'responses.datatables_type')
             ->addColumn('Title', 'responses.datatables_title')
-//            ->addColumn('Description', function ($query){
-//                return $query->template->description;
-//            })
+
             ->addColumn('users', function ($query){
               return  $query->template->allocations->count();
             })
@@ -41,7 +40,7 @@ class ResponseDataTable extends DataTable
 //
 //            })
             ->addColumn('action', 'responses.datatables_actions')
-            ->rawColumns(['Title','action']);
+            ->rawColumns(['Title','action','type']);
     }
 
     /**
@@ -88,6 +87,7 @@ class ResponseDataTable extends DataTable
     protected function getColumns()
     {
         return [
+            'type',
             'Title',
 //            'Description',
             'users',

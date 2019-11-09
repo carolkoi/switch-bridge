@@ -61,6 +61,6 @@
 @endforeach
 
 @if(count($questions->questions) !== 0 )
-    <button type="submit" class="btn btn-sm btn-primary"> submit</button>
+    <button type="submit" class="btn btn-sm btn-primary"> Submit</button>
 @endif
 
