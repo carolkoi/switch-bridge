@@ -8,7 +8,7 @@ class RtblPeople extends Model
 {
     protected $table = '_rtblPeople';
     protected $connection = 'sqlsrv';
-    protected $primaryKey = 'contact_id';
+    protected $primaryKey = 'idPeople';
     protected $fillable = [
         'contact_id',
         'first_name',
@@ -20,12 +20,14 @@ class RtblPeople extends Model
         'company_name'
     ];
 
-    public function client(){
-        return $this->belongsTo(Client::class);
+
+    public function rtblpeoplelink(){
+        return $this->belongsTo(RtblPeopleLinks::class);
     }
 
-    public function rtblpeoplelinks(){
-        return $this->hasOne(RtblPeopleLinks::class);
+    public function peopleClient(){
+        return $this->hasOneThrough('App\Models\ERPModels\Client', 'App\Models\ERPModels\RtblPeopleLinks',
+            'iPeopleID', 'DCLink', 'idPeople', 'iDebtorID');
     }
 
 }

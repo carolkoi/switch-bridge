@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Allocation;
 
 use App\Http\Controllers\Controller;
-use App\Mail\SendSurveyEmail;
 use App\Mail\SurveyEmail;
 use App\Models\Allocation;
 use App\Models\Client;
+use App\Models\Options;
 use App\Models\Template;
 use App\Models\User;
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -20,20 +21,20 @@ class SendSurveyEmailController extends Controller
     //
     public function emailSurvey($id)
     {
-        $now = new DateTime();
+        $setting = Options::where('option_name', 'automatic_survey_send')->first();
         $allocations = Allocation::where(['template_id' => $id, 'status' => true])->with('template')->get();
         foreach ($allocations as $allocation){
-        if ($now < $allocation->template->valid_until) {
-
+        if (Carbon::now()->lte($allocation->template->valid_until)) {
             $this->sendToClient($id);
             $this->sendToStaff($id);
             $this->sendToOther($id);
-        }
             Flash::success('Survey email sent successfully.');
             return redirect(route('allocations.index'));
         }
-        Flash::success('There is an error! Survey deadline has passed or the allocation is not yet approved.');
-        return redirect(route('allocations.index'));
+            Flash::success('There is an error! Survey deadline has passed or the survey is not yet approved for allocation.');
+            return redirect(route('allocations.index'));
+        }
+
     }
 
     public function sendToStaff($id)

@@ -75,4 +75,11 @@ class Template extends Model
     {
         return $this->hasMany(Allocation::class);
     }
+
+    public function scopecountSurveyType($query, $type){
+        return $query->where(['type'=> $type])->count();
+    }
+    public function responses(){
+        return $this->hasManyThrough('App\Models\Response', 'App\Models\Question', 'template_id');
+    }
 }

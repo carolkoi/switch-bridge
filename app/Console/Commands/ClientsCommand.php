@@ -41,20 +41,21 @@ class ClientsCommand extends Command
     public function handle()
     {
 
-        $data = RtblPeople::whereNotNull('email')->where('cModule', 'AR')->with(['client','rtblpeoplelinks'])->get();
+        $data = RtblPeople::whereNotNull('cEmail')->with(['peopleClient', 'rtblpeoplelink'])->get();
+//        dd($data);
         return collect($data)->each(function ($client) {
             Client::updateOrCreate([
-                "email" => $client->email,
+                "email" => $client->cEmail,
             ],
                 [
-                    'contact_id' => $client->contact_id,
-                    'first_name' => $client->first_name,
-                    'last_name' => $client->last_name,
-                    'initials' => $client->initials,
-                    'email' => $client->email,
-                    'company_account'=> $client->company_account,
-                    'company_id' => $client->company_id,
-                    'company_name' => $client->company_name
+                    'contact_id' => $client->idPeople,
+                    'first_name' => $client->cFirstName,
+                    'last_name' => $client->cLastName,
+                    'initials' => $client->cInitials,
+                    'email' => $client->cEmail,
+                    'company_account'=> $client->peopleClient['Account'],
+                    'company_id' => $client->peopleClient['DCLink'],
+                    'company_name' => $client->peopleClient['Name']
                 ]
 
             );

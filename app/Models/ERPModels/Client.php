@@ -10,7 +10,9 @@ class Client extends Model
     protected $connection = 'sqlsrv';
     protected $primaryKey = 'DCLink';
     protected $fillable = [
-    'DCLink'
+    'DCLink',
+        'Account',
+        ''
 ];
     public function rtblpeople(){
         return $this->hasMany(RtblPeople::class);

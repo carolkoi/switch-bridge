@@ -3,15 +3,7 @@
 @section('content')
     <!-- Content Header (Page header) -->
     <section class="content-header">
-{{--        <h1>--}}
-{{--            Blank page--}}
-{{--            <small>it all starts here</small>--}}
-{{--        </h1>--}}
-{{--        <ol class="breadcrumb">--}}
-{{--            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>--}}
-{{--            <li><a href="#">Examples</a></li>--}}
-{{--            <li class="active">Blank page</li>--}}
-{{--        </ol>--}}
+
 
     </section>
 
@@ -34,11 +26,11 @@
             <div class="box-body">
                 <div class="col-md-4 col-sm-6 col-xs-12">
                     <div class="info-box">
-                        <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
+                        <span class="info-box-icon bg-aqua"><i class="fa fa-file"></i></span>
 
                         <div class="info-box-content">
                             <span class="info-box-text">Surveys</span>
-                            <span class="info-box-number">4</span>
+                            <span class="info-box-number">{{$templates->where('type', 'Survey')->count()}}</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -46,11 +38,11 @@
                 </div>
                 <div class="col-md-4 col-sm-6 col-xs-12">
                     <div class="info-box">
-                        <span class="info-box-icon bg-red"><i class="fa fa-google-plus"></i></span>
+                        <span class="info-box-icon bg-red"><i class="fa fa-file-text"></i></span>
 
                         <div class="info-box-content">
                             <span class="info-box-text">Polls</span>
-                            <span class="info-box-number">6</span>
+                            <span class="info-box-number">{{$templates->where('type', 'Poll')->count()}}</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -58,11 +50,11 @@
                 </div>
                 <div class="col-md-4 col-sm-6 col-xs-12">
                     <div class="info-box">
-                        <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
+                        <span class="info-box-icon bg-green"><i class="fa fa-file-text"></i></span>
 
                         <div class="info-box-content">
                             <span class="info-box-text">Feedback</span>
-                            <span class="info-box-number">2</span>
+                            <span class="info-box-number">{{$templates->where('type', 'Feedback')->count()}}</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -93,50 +85,28 @@
                         <table class="table no-margin">
                             <thead>
                             <tr>
-                                <td>Type</td>
+                                <th>Type</th>
                                 <th>Name</th>
-                                <th>Status</th>
                                 <th>Allocations</th>
                                 <th>Respondents</th>
+                                <th>%age responses</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>Survey</td>
-                                <td>Test Survey</td>
-                                <td><span class="label label-success">inactive</span></td>
-                                <td>
-                                    20
-                                </td>
-                                <td>18</td>
-                            </tr>
-                            <tr>
-                                <td>Survey</td>
-                                <td>Test Survey</td>
-                                <td><span class="label label-success">inactive</span></td>
-                                <td>
-                                    20
-                                </td>
-                                <td>18</td>
-                            </tr>
-                            <tr>
-                                <td>Poll</td>
-                                <td>Test Poll</td>
-                                <td><span class="label label-success">active</span></td>
-                                <td>
-                                    15
-                                </td>
-                                <td>13</td>
-                            </tr>
-                            <tr>
-                                <td>Survey</td>
-                                <td>ICT Survey</td>
-                                <td><span class="label label-success">inactive</span></td>
-                                <td>
-                                    20
-                                </td>
-                                <td>18</td>
-                            </tr>
+
+                            @foreach($templates as $template)
+                                <tr>
+                                    <td>{{$template->type}}</td>
+                                    <td>{{$template->name}}</td>
+                                    <td>{{$template->allocations->count()}}</td>
+                                    <td>
+                                    {{$responses->where('template_id', $template->id)->groupBy('$template_id')->count()}}<td>
+                                        <td>
+                                        {{$template->allocations->count() == 0 ? 0 : ($responses->where('template_id', $template->id)->groupBy('$template_id')->count() / $template->allocations->count())*100}}
+                                    </td>
+                                </tr>
+
+                            @endforeach
 
 
                             </tbody>

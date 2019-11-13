@@ -29,16 +29,12 @@ class ResponseDataTable extends DataTable
                 return $query->countRespondentsByTemplateId($query->template_id, $query->question_id);
             })
             ->addColumn('% received', function ($query){
-               $percent = ($query->countRespondentsByTemplateId($query->template_id, $query->question_id))/ ($query->template->allocations->count());
+                $respondents = $query->countRespondentsByTemplateId($query->template_id, $query->question_id);
+                $allocations = $query->template->allocations->count();
+               $percent = $respondents/$allocations;
                return $percent * 100;
             })
-//            ->addColumn('%age response', function ($query){
-//                $no = $query->groupBy('template_id')->count()/$query->template->questions->count();
-//
-//                $no2 = $query->template->allocations->where('template_id', $query->template_id)->groupBy('template_id')->first()->count();
-//                    return ($no/$no2) * 100;
-//
-//            })
+
             ->addColumn('action', 'responses.datatables_actions')
             ->rawColumns(['Title','action','type']);
     }
