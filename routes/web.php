@@ -67,5 +67,6 @@ Route::prefix('settings')->group(function () {
 
     Route::resource('approvalWorkflows', 'ApprovalWorkflowController');
 });
+Route::get('excel-report/{id}', "ResponseController@exportResponses")->name('export-responses');
 
 

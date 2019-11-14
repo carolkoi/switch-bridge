@@ -8,7 +8,6 @@
         @php( $count =1 )
 
         @foreach($responses as $response)
-            {{--                        {{dd($response->responses)}}--}}
             <tr>
                 <td>{{ $count ++}} . {{$response->question}}
                 </td>
@@ -39,7 +38,7 @@
                             @if($answer->answer_type == App\Models\Question::DROP_DOWN_LIST)
                                 @php($data = collect(json_decode($answer->answer))->toArray())
                                 @foreach($data as $ans)
-                                    <li> {{ App\Models\Answer::find($ans)->choice }}</li>
+                                    <li> {{ App\Models\Answer::find($ans)->choice }}. {{App\Models\Answer::find($ans)->choice->groupBy()}}</li>
                     @endforeach
                     @endif
                     @endforeach

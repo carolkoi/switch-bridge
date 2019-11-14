@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use App\Question;
+use App\Models\Question;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -88,7 +88,7 @@ class Answer extends Model
     ];
     public function question()
     {
-        return $this->belongsTo(Questionnaire::class);
+        return $this->belongsTo(Question::class);
     }
 
 

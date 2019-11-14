@@ -2,10 +2,13 @@
 
 @section('content')
     <section class="content-header">
-        <h1>
-            Responses for: {{$template->name}} {{$template->type}}
+        <h1 class="pull-left">
+            Responses for: {{$template->name}} {{$template->type}}</h1>
+        <h1 class="pull-right">
+            <a  href="{{ route('export-responses', $id) }}" class="btn btn-primary pull-right"> Export Responses</a>
         </h1>
     </section>
+    <br/>
     <div class="content">
         <div class="box box-primary">
             <div class="box-body">
@@ -17,19 +20,4 @@
         </div>
     </div>
 @endsection
-{{--@section('content')--}}
-{{--    <div class="container">--}}
-{{--        <div class="row justify-content-center">--}}
-{{--            <div class="col-md-8">--}}
-{{--                <div class="card">--}}
-{{--                    <div class="card-header">Responses--}}
-{{--                        <a href="{!! route('responses.index') !!}" class="btn btn-default">Back</a>--}}
 
-{{--                        --}}{{--                        <a href="{{ route('export-responses', $id) }}" class="btn btn-success btn-sm pull-right">Export Responses</a>--}}
-{{--                    </div>--}}
-
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-{{--@endsection--}}

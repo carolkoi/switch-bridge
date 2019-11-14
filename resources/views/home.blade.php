@@ -88,8 +88,8 @@
                                 <th>Type</th>
                                 <th>Name</th>
                                 <th>Allocations</th>
-                                <th>Respondents</th>
-                                <th>%age responses</th>
+{{--                                <th>Respondents</th>--}}
+{{--                                <th>%age responses</th>--}}
                             </tr>
                             </thead>
                             <tbody>
@@ -99,11 +99,11 @@
                                     <td>{{$template->type}}</td>
                                     <td>{{$template->name}}</td>
                                     <td>{{$template->allocations->count()}}</td>
-                                    <td>
-                                    {{$responses->where('template_id', $template->id)->groupBy('$template_id')->count()}}<td>
-                                        <td>
-                                        {{$template->allocations->count() == 0 ? 0 : ($responses->where('template_id', $template->id)->groupBy('$template_id')->count() / $template->allocations->count())*100}}
-                                    </td>
+{{--                                    <td>--}}
+{{--                                    {{$responses->where('template_id', $template->id)->groupBy('template_id')->count()}}<td>--}}
+{{--                                        <td>--}}
+{{--                                        {{$template->allocations->count() == 0 ? 0 : ($responses->where('template_id', $template->id)->groupBy('$template_id')->count() / $template->allocations->count())*100}}--}}
+{{--                                    </td>--}}
                                 </tr>
 
                             @endforeach

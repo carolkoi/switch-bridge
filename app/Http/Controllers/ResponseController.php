@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\ResponseDataTable;
+use App\Exports\UserResponsesExport;
 use App\Http\Requests;
 use App\Http\Requests\CreateResponseRequest;
 use App\Http\Requests\UpdateResponseRequest;
@@ -11,6 +12,7 @@ use App\Repositories\ResponseRepository;
 use App\Models\Template;
 use Flash;
 use App\Http\Controllers\AppBaseController;
+use Maatwebsite\Excel\Facades\Excel;
 use Response;
 
 class ResponseController extends AppBaseController
@@ -76,6 +78,18 @@ class ResponseController extends AppBaseController
             'id' => $template_id,
             'template' => $template
         ]);
+    }
+
+    public function exportResponses($id)
+    {
+//
+        $template = Template::find($id);
+        $export = new UserResponsesExport($template);
+
+        return Excel::download($export, 'responses.xlsx');
+
+
+//
     }
 
     /**
