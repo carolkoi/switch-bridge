@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateResponseRequest;
 use App\Models\Question;
 use App\Repositories\ResponseRepository;
 use App\Models\Template;
+use App\Repositories\SentSurveysRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Maatwebsite\Excel\Facades\Excel;
@@ -82,14 +83,8 @@ class ResponseController extends AppBaseController
 
     public function exportResponses($id)
     {
-//
-        $template = Template::find($id);
-        $export = new UserResponsesExport($template);
-
+        $export = new UserResponsesExport($id);
         return Excel::download($export, 'responses.xlsx');
-
-
-//
     }
 
     /**

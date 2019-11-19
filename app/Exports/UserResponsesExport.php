@@ -11,48 +11,43 @@ use App\Models\Response;
 
 class UserResponsesExport implements FromCollection
 {
+    protected $templateId;
+
+    public function __construct($templateId)
+    {
+        $this->templateId = $templateId;
+    }
+
+    public function extractAnswer($response)
+    {
+        return collect($response)->map(function ($response){
+            if ($response->answer_type == Question::SELECT_MULTIPLE || $response->answer_type == Question::DROP_DOWN_LIST) {
+                return collect(json_decode($response->answer))->map(function ($answer){
+                    return [
+                        'answer'=>Answer::find($answer)->choice
+                        ];
+                })->implode('answer',',');
+
+            }
+            return $response->answer;
+
+        });
+
+    }
     /**
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     public function collection()
     {
-        $templates = Template::get();
-        foreach ($templates as $template) {
-            $datas = Question::where('template_id', 10)->with(['responses', 'answer'])->get();
-            $responseDetails = collect();
-            foreach ($datas as $data) {
-                foreach ($data->responses as $key => $respons) {
-                    $response = collect();
-                    if ($key == 0) {
-                        $response['question'] = $data->question;
-                        if ($respons->answer_type == Question::SELECT_MULTIPLE) {
-                            $data = collect(json_decode($respons->answer))->toArray();
-                            $choice = collect();
-                            foreach ($data as $key => $ans) {
-                                $choice[] = Answer::find($ans)->choice;
-                            }
-                            $response['answer'] = $choice;
-                        } elseif ($respons->answer_type == Question::DROP_DOWN_LIST) {
-                            $data = collect(json_decode($respons->answer))->toArray();
-                            foreach ($data as $ans) {
-                                $response['answer'] = Answer::find($ans)->choice;
-                            }
-                        } else {
-                            $response['answer'] = $respons->answer;
-                        }
-                    } else {
-                        $response['question'] = null;
-                        $response['answer'] = $respons->answer;
-                    }
+        return  Template::where('id',$this->templateId)->with(['questions','questions.responses'])->get()
+            ->pluck('questions')->flatten(1)->map(function ($question){
+                return[
+                    'question' => $question->question,
+                    'answer'=>$this->extractAnswer($question->responses)
 
-                    $responseDetails->push($response);
-                };
-            }
+                ];
+            });
 
-            return $responseDetails;
-
-
-            return new Collection($responseDetails);
-        }
     }
 }
+

@@ -75,3 +75,6 @@ Route::get('excel-report/{id}', "ResponseController@exportResponses")->name('exp
 
 
 Route::resource('surveyTypes', 'SurveyTypeController');
+
+
+Route::resource('sentSurveys', 'SentSurveysController');

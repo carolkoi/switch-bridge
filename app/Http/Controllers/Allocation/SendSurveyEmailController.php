@@ -52,6 +52,7 @@ class SendSurveyEmailController extends Controller
             $token = Uuid::generate()->string;
             Mail::to($staff_email)->send(new SurveyEmail($template, $token));
             Allocation::where('user_id', $staff->user_id)->update(['email_sent' => 1]);
+
         }
 
     }

@@ -1,1 +1,1 @@
- {{$template['type']}}
+ {{$template->surveyType->type}}

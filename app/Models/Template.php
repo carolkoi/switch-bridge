@@ -87,4 +87,8 @@ class Template extends Model
     public function surveyType(){
         return $this->belongsTo(SurveyType::class, 'survey_type_id');
     }
+
+    public function surveyUuids(){
+        return $this->hasMany(SentSurveys::class);
+    }
 }

@@ -41,6 +41,9 @@
                                     <li> {{ App\Models\Answer::find($ans)->choice}}</li>
                     @endforeach
                     @endif
+                                @if($answer->answer_type == App\Models\Question::RATING)
+                                    <li> {{$answer->answer}} </li>
+                    @endif
                     @endforeach
 
                 </ul>

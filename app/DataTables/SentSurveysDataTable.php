@@ -2,11 +2,11 @@
 
 namespace App\DataTables;
 
-use App\Models\Response;
+use App\Models\SentSurveys;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
 
-class ResponseDataTable extends DataTable
+class SentSurveysDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -18,38 +18,18 @@ class ResponseDataTable extends DataTable
     {
         $dataTable = new EloquentDataTable($query);
 
-        return $dataTable
-            ->addColumn('type', function($query){
-                return $query->template->surveyType->type;
-            })
-            ->addColumn('Title', 'responses.datatables_title')
-
-            ->addColumn('users', function ($query){
-              return  $query->template->allocations->count();
-            })
-            ->addColumn('responses', function ($query){
-                return $query->countRespondentsByTemplateId($query->template_id, $query->question_id);
-            })
-            ->addColumn('% received', function ($query){
-                $respondents = $query->countRespondentsByTemplateId($query->template_id, $query->question_id);
-                $allocations = $query->template->allocations->count();
-               $percent = $respondents/$allocations;
-               return $percent * 100;
-            })
-
-            ->addColumn('action', 'responses.datatables_actions')
-            ->rawColumns(['Title','action','type']);
+        return $dataTable->addColumn('action', 'sent_surveys.datatables_actions');
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\Response $model
+     * @param \App\Models\SentSurveys $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Response $model)
+    public function query(SentSurveys $model)
     {
-        return $model->with(['template','template.allocations', 'template.surveyType'])->groupBy('template_id')->newQuery();
+        return $model->newQuery();
     }
 
     /**
@@ -71,7 +51,7 @@ class ResponseDataTable extends DataTable
                     ['extend' => 'create', 'className' => 'btn btn-default btn-sm no-corner',],
                     ['extend' => 'export', 'className' => 'btn btn-default btn-sm no-corner',],
                     ['extend' => 'print', 'className' => 'btn btn-default btn-sm no-corner',],
-//                    ['extend' => 'reset', 'className' => 'btn btn-default btn-sm no-corner',],
+                    ['extend' => 'reset', 'className' => 'btn btn-default btn-sm no-corner',],
                     ['extend' => 'reload', 'className' => 'btn btn-default btn-sm no-corner',],
                 ],
             ]);
@@ -85,12 +65,7 @@ class ResponseDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'type',
-            'Title',
-//            'Description',
-            'users',
-            'responses',
-            '% received'
+            'token'
         ];
     }
 
@@ -101,6 +76,6 @@ class ResponseDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'responsesdatatable_' . time();
+        return 'sent_surveysdatatable_' . time();
     }
 }

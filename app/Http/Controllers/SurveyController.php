@@ -8,6 +8,8 @@ use App\Http\Requests\CreateSurveyRequest;
 use App\Http\Requests\UpdateSurveyRequest;
 use App\Models\Allocation;
 use App\Models\Options;
+use App\Models\SentSurveys;
+use App\Repositories\SentSurveysRepository;
 use App\Repositories\SurveyRepository;
 use App\Models\Template;
 use App\Models\Response;
@@ -22,10 +24,13 @@ class SurveyController extends AppBaseController
 {
     /** @var  SurveyRepository */
     private $surveyRepository;
+    private $sentSurveysRepository;
 
-    public function __construct(SurveyRepository $surveyRepo)
+
+    public function __construct(SurveyRepository $surveyRepo, SentSurveysRepository $sentSurveyRepo)
     {
         $this->surveyRepository = $surveyRepo;
+        $this->sentSurveysRepository = $sentSurveyRepo;
     }
 
     /**
@@ -58,7 +63,6 @@ class SurveyController extends AppBaseController
      */
     public function store(CreateSurveyRequest $request)
     {
-
         $input = $request->except(['_token', 'survey_uuid', 'template_id']);
 //        check if the end date of survey has passed and if the
 // check if late response is set is set to receive late responses
@@ -67,9 +71,8 @@ class SurveyController extends AppBaseController
         $template = Template::find($request->input('template_id'));
 
         if (carbon::now()->lte($template->valid_until) OR ($setting->value == true)) {
-
             // check if the uuid already exist, user cant respond to the same survey twice
-            $response = Response::where('survey_uuid', '=', $request->input('survey_uuid'))
+            $response = SentSurveys::where('token', '=', $request->input('survey_uuid'))
                 ->first();
             // if response does not exist proceed to save
             if ($response == null) {
@@ -82,8 +85,11 @@ class SurveyController extends AppBaseController
                         'question_id' => $map[2],
                         'answer_type' => $map[3],
                         'answer' => is_array($resp) ? json_encode($resp) : (is_int($resp) ? strval($resp) : $resp),
-                        'survey_uuid' => $request['survey_uuid']
+                        'sent_survey_id' => SentSurveys::where('template_id',$map[1])->first()->id
                     ]);
+                    $this->sentSurveysRepository->saveResponseUuid($map[1], $request->input('survey_uuid'));
+
+
                 }
 
 //        $survey = $this->surveyRepository->create($input);

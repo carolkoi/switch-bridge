@@ -9,7 +9,7 @@
                     <div class="card-header">
                         <section class="content-header">
                             <h1>
-                                {{  $questions->name}} {{$questions->type}}
+                                {{  $questions->name}}
                             </h1>
                         </section>
 
