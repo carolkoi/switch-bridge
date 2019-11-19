@@ -1,8 +1,5 @@
-<!-- Template Id Field -->
-{{--<div class="form-group col-sm-6">--}}
-{{--    {!! Form::label('template_id', 'Template Id:') !!}--}}
+
     {!! Form::hidden('template_id', $template_id, ['class' => 'form-control']) !!}
-{{--</div>--}}
 
 <!-- Question Field -->
 <div class="form-group ">
@@ -10,8 +7,16 @@
     {!! Form::text('question', null, ['class' => 'form-control']) !!}
 </div>
 <!-- Type Field -->
+    @if($template->survey_type_id == 4)
+        <div class="form-group ">
+
+            {!! Form::radio('type', '7', true, ['onclick' => 'getTemplate(7);']) !!} &nbsp;&nbsp;
+            {!! Form::label('type', 'Rating') !!}
+        </div>
+
+    @else
 <div class="form-group ">
-    {!! Form::label('type', 'Question Type:') !!}
+    {!! Form::label('type', 'Answer Type:') !!}
 <br/><br/>
     {!! Form::radio('type', '1', true, ['onclick' => 'getTemplate(1);']) !!} &nbsp;
     {!! Form::label('type', 'Text Input') !!}
@@ -30,7 +35,11 @@
     &nbsp;
     {!! Form::radio('type', '3', false, ['onclick' => 'getTemplate(3);']) !!} &nbsp;&nbsp;
     {!! Form::label('type', 'List') !!}
+
+    {!! Form::radio('type', '7', false, ['onclick' => 'getTemplate(7);']) !!} &nbsp;&nbsp;
+    {!! Form::label('type', 'Rating') !!}
 </div>
+    @endif
 <div class="row">
     <div class="col-md-6 selectAnswer" style="display:none;">
         <div id="InputContainer">
@@ -52,11 +61,19 @@
 </div>
 
 <!--required field-->
+    @if($template->survey_type_id == 4)
 <div class="form-group">
     {!! Form::label('status', 'Mark Question as Required:') !!}
     &nbsp;&nbsp;&nbsp;
-    {!! Form::checkbox('status') !!}
+    {!! Form::checkbox('status',1, true) !!}
 </div>
+@else
+        <div class="form-group">
+            {!! Form::label('status', 'Mark Question as Required:') !!}
+            &nbsp;&nbsp;&nbsp;
+        {!! Form::checkbox('status') !!}
+        </div>
+            @endif
 
 <!-- Description Field -->
 <div class="form-group">

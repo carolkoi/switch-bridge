@@ -14,4 +14,4 @@
 {{--</div>--}}
 {{--{!! Form::close() !!}--}}
 {{--<br/>--}}
-    <a href="{{route('send.survey',$template_id)}}" class='btn btn-info'>Send</a>
+    <a href="{{route('send.survey',$template_id)}}" class='btn btn-primary pull-left'>Send</a>

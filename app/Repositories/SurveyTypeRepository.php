@@ -2,30 +2,22 @@
 
 namespace App\Repositories;
 
-use App\Models\Template;
+use App\Models\SurveyType;
 use App\Repositories\BaseRepository;
 
 /**
- * Class TemplateRepository
+ * Class SurveyTypeRepository
  * @package App\Repositories
- * @version October 28, 2019, 8:30 am UTC
+ * @version November 18, 2019, 7:38 am UTC
 */
 
-class TemplateRepository extends BaseRepository
+class SurveyTypeRepository extends BaseRepository
 {
     /**
      * @var array
      */
     protected $fieldSearchable = [
-        'surveyType.type',
-        'name',
-        'description',
-        'status',
-        'valid_from',
-        'valid_until',
-        'email_msg',
-        'user.first_name',
-        'user.last_name'
+        'type'
     ];
 
     /**
@@ -43,6 +35,6 @@ class TemplateRepository extends BaseRepository
      **/
     public function model()
     {
-        return Template::class;
+        return SurveyType::class;
     }
 }

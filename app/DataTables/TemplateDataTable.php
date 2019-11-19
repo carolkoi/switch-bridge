@@ -21,12 +21,12 @@ class TemplateDataTable extends DataTable
 
         return $dataTable
             ->addColumn('created by', 'templates.datatables_created_by')
-            ->editColumn('type', function ($query){
-                return $query->type;
+            ->addColumn('type',function ($query){
+                return $query->surveyType->type;
             })
 //            ->editColumn('status', 'templates.datatables_status')
             ->editColumn('name','templates.datables_column_name')
-            ->addColumn('no of Questions', 'templates.datatables_question')
+            ->addColumn('Questions', 'templates.datatables_question')
             ->addColumn('action', 'templates.datatables_actions')
             ->editColumn('valid_from', function ($query){
 //                return $query->valid_from->format('Y-m-d');
@@ -36,7 +36,8 @@ class TemplateDataTable extends DataTable
 //                return $query->valid_until->format('Y-m-d');
                 return Carbon::parse($query->valid_until)->format('d-m-Y');
             })
-            ->rawColumns(['name','status','action', 'no of Questions', 'Created By']);
+//            ->addColumn('preview', 'templates.datatables_preview')
+            ->rawColumns(['name','status','action', 'Questions', 'Created By', 'preview']);
     }
 
     /**
@@ -47,7 +48,7 @@ class TemplateDataTable extends DataTable
      */
     public function query(Template $model)
     {
-        return $model->with(['user', 'questions'])->newQuery();
+        return $model->with(['user', 'questions', 'surveyType'])->newQuery();
     }
 
     /**
@@ -76,6 +77,7 @@ class TemplateDataTable extends DataTable
             ]);
     }
 
+
     /**
      * Get columns.
      *
@@ -89,7 +91,8 @@ class TemplateDataTable extends DataTable
             'valid_from',
             'valid_until',
             'created by',
-            'no of Questions',
+            'Questions',
+//            'preview'
 //            'status'
 //            'Questions'
         ];

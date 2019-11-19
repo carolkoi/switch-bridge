@@ -1,19 +1,19 @@
 <fieldset class="col-sm-6"><legend>    {!! Form::label('type', 'Survey Type') !!}</legend>
-    <!-- Type Field -->
+    <!-- SurveyType Id Field -->
+
     <div class="form-group">
-        {!! Form::radio('type', 'survey', 'checked',['class' => 'survey_type'])!!} &nbsp;&nbsp;&nbsp;
-        {!! Form::label('type', 'Survey') !!}
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        {!! Form::radio('type', 'poll', false, ['class' => 'survey_type'])!!} &nbsp;&nbsp;&nbsp;
-        {!! Form::label('type', 'Poll') !!}
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        {!! Form::radio('type', 'feedback', false, ['class' => 'survey_type']) !!} &nbsp;&nbsp;&nbsp;
-        {!! Form::label('type', 'Feedback') !!}
+        {!! Form::label('survey_type_id', 'Type:') !!}
+        <select class="form-control" name="survey_type_id" id="survey_type_id">
+            @foreach($survey_types as $survey_type)
+                <option value="{{$survey_type->id}}">{{$survey_type->type}}</option>
+            @endforeach
+        </select>
     </div>
+    <br>
     <!-- Template Id Field -->
 
     <div class="form-group">
-        {!!   Form::select('template_id', [], null, ['placeholder' => '---Select---', 'id'=>"template_id", 'class' => 'form-control']); !!}
+        {!!   Form::select('template_id', [], null, ['id'=>"template_id", 'class' => 'form-control']); !!}
 
     </div>
 
@@ -60,7 +60,7 @@
 
 
     <div class="form-group" id="others_email">
-        {!! Form::label('others', 'Others:') !!}
+        {!! Form::label('others', 'Add Email:') !!}
         <select class="form-control" name="others[]" id="mails" multiple>
             <option disabled="disabled">-- Add email--</option>
         </select>

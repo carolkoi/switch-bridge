@@ -48,8 +48,9 @@ class QuestionController extends AppBaseController
      */
     public function create($id)
     {
+        $template = Template::with('surveyType')->find($id);
         $questions = Question::ByTemplate($id)->get();
-        return view('questions.index', ['template_id' => $id, 'questions' => $questions]);
+        return view('questions.index', ['template_id' => $id, 'questions' => $questions, 'template' => $template]);
     }
 
     /**

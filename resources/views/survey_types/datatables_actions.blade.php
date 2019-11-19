@@ -1,9 +1,9 @@
-{!! Form::open(['route' => ['templates.destroy', $id], 'method' => 'delete']) !!}
+{!! Form::open(['route' => ['surveyTypes.destroy', $id], 'method' => 'delete']) !!}
 <div class='btn-group'>
-    <a href="{{ route('templates.show', $id) }}" class='btn btn-default btn-xs'>
+    <a href="{{ route('surveyTypes.show', $id) }}" class='btn btn-default btn-xs'>
         <i class="glyphicon glyphicon-eye-open"></i>
     </a>
-    <a href="{{ route('templates.edit', $id) }}" class='btn btn-default btn-xs'>
+    <a href="{{ route('surveyTypes.edit', $id) }}" class='btn btn-default btn-xs'>
         <i class="glyphicon glyphicon-edit"></i>
     </a>
     {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', [
@@ -13,5 +13,3 @@
     ]) !!}
 </div>
 {!! Form::close() !!}
-{{--<br>--}}
-{{--<a href="{{route('survey.preview',$id)}}" class='btn btn-primary pull-left'>Preview</a>--}}

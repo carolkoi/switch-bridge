@@ -10,6 +10,7 @@ use App\Mail\SendEmailQuestionnaire;
 use App\Mail\SendSurveyEmail;
 use App\Models\Allocation;
 use App\Models\Client;
+use App\Models\SurveyType;
 use App\Models\Template;
 use App\Models\User;
 use App\Repositories\AllocationRepository;
@@ -37,7 +38,6 @@ class AllocationController extends AppBaseController
      */
     public function index(AllocationDataTable $allocationDataTable)
     {
-//        dd(Allocation::with('template')->groupBy(['template_id'])->get()->toArray());
         return $allocationDataTable->render('allocations.index');
     }
 
@@ -49,7 +49,8 @@ class AllocationController extends AppBaseController
     public function create()
     {
         $templates = Template::get();
-        return view('allocations.create', ['templates' => $templates, 'users' => User::get(), 'clients' => Client::get()]);
+        return view('allocations.create', ['templates' => $templates,
+            'users' => User::get(), 'clients' => Client::get(), 'survey_types' => SurveyType::get()]);
     }
 
     /**
@@ -65,30 +66,34 @@ class AllocationController extends AppBaseController
         $users = $request->input('user_id');
         $clients = $request->input('client_id');
         $others = $request->input('others');
-        if($others){
-        foreach ($others as $other){
-            $input['others'] = serialize($other);
-            $allocation = $this->allocationRepository->create($input);
-        }
-        unset($input['others']);
-        }
-        if (is_array($users)){
-        foreach ($users as $user) {
-            $input['user_id'] = $user;
-            $allocation = $this->allocationRepository->create($input);
-        }
-        unset($input['user_id']);
-        }
-        if ($clients) {
-            foreach ($clients as $client) {
-                $input['client_id'] = $client;
-                $allocation = $this->allocationRepository->create($input);
+        $template = Template::where('id',$input['template_id'])->with('questions')->first();
+        if (count($template->questions) > 0){
+            if($others){
+                foreach ($others as $other){
+                    $input['others'] = serialize($other);
+                    $allocation = $this->allocationRepository->create($input);
+                }
+                unset($input['others']);
             }
+            if (is_array($users)){
+                foreach ($users as $user) {
+                    $input['user_id'] = $user;
+                    $allocation = $this->allocationRepository->create($input);
+                }
+                unset($input['user_id']);
+            }
+            if ($clients) {
+                foreach ($clients as $client) {
+                    $input['client_id'] = $client;
+                    $allocation = $this->allocationRepository->create($input);
+                }
+            }
+
+            Flash::success('Survey allocated successfully.');
+            return redirect(route('allocations.index'));
         }
-
-        Flash::success('Survey allocated successfully.');
-
-        return redirect(route('allocations.index'));
+        flash('You cannot allocate a survey with no questions')->error();
+        return redirect()->route('allocations.index');
     }
 
     /**
@@ -206,7 +211,7 @@ class AllocationController extends AppBaseController
     }
     public function getSurveyType($type){
         // Fetch survey by type
-        $surveyData = Template::where('type', $type)->get()->pluck('name','id');
+        $surveyData = Template::where('survey_type_id', $type)->get()->pluck('name','id');
         return response()->json(['data' => $surveyData]);
     }
 

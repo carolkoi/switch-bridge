@@ -125,4 +125,5 @@ class Allocation extends Model
         return $query->where(['template_id' => $template_id])->count();
     }
 
+
 }

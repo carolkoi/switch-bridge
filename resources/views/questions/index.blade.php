@@ -1,18 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
+{{--    <div class="container">--}}
         <div class="row">
                 <div class="col-md-6">
                     <div class="card">
                     <section class="content-header">
                         <h1 class="pull-left">Create Question</h1>
-                        <h1 class="pull-right">
-                            <h1 class="">
-                                <a  href="{{ url('/templates')}}" class="btn btn-success pull-left"> Back</a>
-
-                            </h1>
-                        </h1>
+                        <a  href="{{ url('/templates')}}" class="btn btn-default pull-right"> Back</a>
                     </section>
                     <br/>
                     @include('questions.create')
@@ -22,11 +17,13 @@
                 <div class="col-md-6">
                     <div class="card">
                         <section class="content-header">
-                            <h1 class="pull-left">Available Questions</h1>
+                            <h1 class="pull-left">{{$template->name}} Questions</h1>
+                            <a href="{{route('survey.preview',$template->id)}}" class='btn btn-primary pull-right'>Preview</a>
 
                         </section>
-                        <br/><br/>
-                        <div class="card-body">
+                        <br/><br>
+                        <div class="box box-primary">
+                            <div class="box-body ">
                             @if(count($questions) < 1)
                                 <div class="alert alert-danger"> No Questions yet</div>
                             @endif
@@ -35,7 +32,7 @@
                                 <table class="table-bordered">
                                     <tr>
                                     <div class="row form-group div1">
-                                        <div class="col-md-6">
+                                        <div class="col-md-8">
                                             {{ $count ++}} . {{$question->question}}
                                         </div>
                                         <div class="col-md-4">
@@ -81,14 +78,19 @@
                                                     <li>{{$ans->choice}}</li>
                                                 @endforeach
                                             @endif
+                                                @if($question->type == App\Models\Question::RATING)
+                                                    <label class="badge badge-success">Rating input</label>
+                                                @endif
 
                                         </ul>
 
                             @endforeach
                         </div>
-                    </div></div>
+                    </div>
+                    </div>
 
         </div>
+    </div>
     </div>
 
 @endsection

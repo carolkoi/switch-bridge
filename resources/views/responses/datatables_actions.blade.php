@@ -1,6 +1,6 @@
 {{--{!! Form::open(['route' => ['responses.destroy', $id], 'method' => 'delete']) !!}--}}
 {{--<div class='btn-group'>--}}
-    <a href="{{ route('responses.show', $template['id']) }}" class='btn btn-info'>
+    <a href="{{ route('responses.show', $template['id']) }}" class='btn btn-primary pull-left'>
         Show
     </a>
 {{--    <a href="{{ route('responses.edit', $id) }}" class='btn btn-default btn-xs'>--}}

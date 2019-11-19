@@ -23,14 +23,15 @@ class Template extends Model
 
 
     public $fillable = [
-        'type',
+        'user_id',
+        'survey_type_id',
         'name',
         'description',
         'status',
         'valid_from',
         'valid_until',
         'email_msg',
-        'user_id'
+
     ];
 
     /**
@@ -81,5 +82,9 @@ class Template extends Model
     }
     public function responses(){
         return $this->hasManyThrough('App\Models\Response', 'App\Models\Question', 'template_id');
+    }
+
+    public function surveyType(){
+        return $this->belongsTo(SurveyType::class, 'survey_type_id');
     }
 }

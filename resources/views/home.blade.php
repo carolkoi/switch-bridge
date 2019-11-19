@@ -24,37 +24,59 @@
                 </div>
             </div>
             <div class="box-body">
-                <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="col-md-3 col-sm-6 col-xs-12">
                     <div class="info-box">
                         <span class="info-box-icon bg-aqua"><i class="fa fa-file"></i></span>
 
                         <div class="info-box-content">
                             <span class="info-box-text">Surveys</span>
-                            <span class="info-box-number">{{$templates->where('type', 'Survey')->count()}}</span>
+                            <span class="info-box-number">
+                                    {{$templates->where('survey_type_id', 1)->count()}}
+                                </span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
                     <!-- /.info-box -->
                 </div>
-                <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="col-md-3 col-sm-6 col-xs-12">
                     <div class="info-box">
                         <span class="info-box-icon bg-red"><i class="fa fa-file-text"></i></span>
 
                         <div class="info-box-content">
                             <span class="info-box-text">Polls</span>
-                            <span class="info-box-number">{{$templates->where('type', 'Poll')->count()}}</span>
+                            <span class="info-box-number">
+                                    {{$templates->where('survey_type_id', 2)->count()}}
+                                </span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
                     <!-- /.info-box -->
                 </div>
-                <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="col-md-3 col-sm-6 col-xs-12">
                     <div class="info-box">
                         <span class="info-box-icon bg-green"><i class="fa fa-file-text"></i></span>
 
                         <div class="info-box-content">
                             <span class="info-box-text">Feedback</span>
-                            <span class="info-box-number">{{$templates->where('type', 'Feedback')->count()}}</span>
+                            <span class="info-box-number">
+                            {{$templates->where('survey_type_id', 3)->count()}}
+
+                            </span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-yellow"><i class="fa fa-file-text"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">Evaluation</span>
+                            <span class="info-box-number">
+                            {{$templates->where('survey_type_id', 4)->count()}}
+
+                            </span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -72,7 +94,7 @@
             <!-- /.box-body -->
             <div class="box-footer">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Templates</h3>
+                    <h3 class="box-title">Surveys</h3>
 
                     <div class="box-tools pull-right">
                         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -96,7 +118,7 @@
 
                             @foreach($templates as $template)
                                 <tr>
-                                    <td>{{$template->type}}</td>
+                                    <td>{{$template->surveyType->type}}</td>
                                     <td>{{$template->name}}</td>
                                     <td>{{$template->allocations->count()}}</td>
 {{--                                    <td>--}}

@@ -49,6 +49,7 @@ Route::resource('answers', 'AnswerController');
 
 Route::resource('allocations', 'Allocation\AllocationController');
 Route::get('survey-response/{id}/{token}', 'SurveyController@show');
+Route::get('survey-preview/{id}', 'SurveyController@preview')->name('survey.preview');
 
 Route::resource('survey', 'SurveyController');
 
@@ -66,7 +67,11 @@ Route::prefix('settings')->group(function () {
     Route::resource('options', 'OptionsController');
 
     Route::resource('approvalWorkflows', 'ApprovalWorkflowController');
+    Route::resource('surveyTypes', 'SurveyTypeController');
 });
 Route::get('excel-report/{id}', "ResponseController@exportResponses")->name('export-responses');
 
 
+
+
+Route::resource('surveyTypes', 'SurveyTypeController');

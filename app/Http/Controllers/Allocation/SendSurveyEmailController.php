@@ -31,9 +31,11 @@ class SendSurveyEmailController extends Controller
             Flash::success('Survey email sent successfully.');
             return redirect(route('allocations.index'));
         }
-            Flash::success('There is an error! Survey deadline has passed or the survey is not yet approved for allocation.');
+            Flash::error('There is an error! Survey deadline has passed.');
             return redirect(route('allocations.index'));
         }
+        Flash::error('There is an error! The survey is not yet approved for allocation.');
+        return redirect(route('allocations.index'));
 
     }
 

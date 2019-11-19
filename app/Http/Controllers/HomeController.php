@@ -25,8 +25,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $templates = Template::with('questions')->get();
-        $responses = Response::get();
-        return view('home', compact(['templates', 'responses']));
+        $templates = Template::with(['questions', 'surveyType'])->get();
+//        dd($templates);
+        return view('home', compact('templates'));
     }
 }

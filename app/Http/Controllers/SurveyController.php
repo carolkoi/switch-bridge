@@ -113,6 +113,18 @@ class SurveyController extends AppBaseController
         return view('surveys.create', compact('token', 'questions'));
     }
 
+    public function preview($id)
+    {
+        $questions = Template::with(['questions.answer'])->find($id);
+        if (empty($questions->questions)) {
+            Flash::error('Survey has no questions');
+
+            return redirect(route('templates.index'));
+        }
+
+        return view('surveys.showpreview', compact('questions'));
+    }
+
     /**
      * Show the form for editing the specified Survey.
      *

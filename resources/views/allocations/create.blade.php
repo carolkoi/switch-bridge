@@ -2,7 +2,26 @@
 <style>
     .select2-container--default .select2-selection--multiple .select2-selection__choice {
         background-color: #3c8dbc !important;
+    }
+    .modal {
+        display:    none;
+        position:   fixed;
+        z-index:    1000;
+        top:        0;
+        left:       0;
+        height:     100%;
+        width:      100%;
+        background: rgba( 255, 255, 255, .8 )
+        url('http://i.stack.imgur.com/FhHRx.gif')
+        50% 50%
+        no-repeat;
+    }
+    body.loading {
+        overflow: hidden;
+    }
 
+    body.loading .modal {
+        display: block;
     }
 </style>
 
@@ -27,11 +46,13 @@
             </div>
         </div>
     </div>
+    <div class="modal"><!-- Place at bottom of page -->
+    <p>Please Wait...</p></div>
 @endsection
 @section('scripts')
     <script>
         jQuery(document).ready(function () {
-            $("#user_id, #client_id, #template_id, #mails").select2({
+            $("#user_id, #client_id, #template_id, #mails, #survey_type_id").select2({
                 tags: true,
                 tokenSeparators: [',', ' '],
             });
@@ -39,19 +60,17 @@
             $('#client').on('click', function () {
                 $('#client_list').show();
             });
-
             $('#others').on('click', function () {
                 $('#others_email').show();
             });
 
-
-            let selectedType = $('input[type=radio][name=type]:checked').val();
+            //changing survey types
+            let selectedType = $('#survey_type_id :selected').val();
             setDropDownOptions(selectedType);
 
-            $('.survey_type').on('change', function () {
-                let type = $('input[type=radio][name=type]:checked').val();
+            $('#survey_type_id').on('change', function () {
+                let type = $('#survey_type_id :selected').val();
                 setDropDownOptions(type);
-
             });
         });
 
@@ -59,6 +78,8 @@
 
             $.ajax({
                 url: '/survey-type/' + type,
+                beforeSend: function() { $('.modal').show(); },
+                complete: function() { $('.modal').hide(); },
                 type: 'get',
                 dataType: "json",
                 success: function (response) {
@@ -77,8 +98,7 @@
                 },
 
             });
-
-
+            return false;
         }
     </script>
 @endsection

@@ -1,9 +1,8 @@
 @extends('layouts.app')
-
 @section('content')
     <section class="content-header col-sm-offset-2" >
         <h1>
-            Survey
+            Add Survey
         </h1>
     </section>
     <div class="content">
@@ -14,7 +13,7 @@
 
                     <div class="box-body" style="margin-left: 50px; margin-right: 50px">
                         <div class="row">
-                            {!! Form::open(['route' => 'templates.store', 'style' => 'width:auto']) !!}
+                            {!! Form::open(['route' => 'templates.store', 'style' => 'width:auto', 'name' => 'my_templates']) !!}
 
                             @include('templates.fields')
 
@@ -26,15 +25,4 @@
         </div>
     </div>
 @endsection
-@section('scripts')
-    <script>
-        $(function () {
-            // Replace the <textarea id="editor1"> with a CKEditor
-            // instance, using default configuration.
-            CKEDITOR.replace('editor1')
-            //bootstrap WYSIHTML5 - text editor
-            $('.textarea').wysihtml5()
-        })
-    </script>
-    @endsection
 

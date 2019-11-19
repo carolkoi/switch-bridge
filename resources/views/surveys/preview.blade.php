@@ -9,7 +9,7 @@
         <label>{{ $count ++}} . {{$question->question}} </label>
         @if($question->type == App\Models\Question::USER_INPUT)
             <input type="text" {{($question->status == 1) ? 'required="required"' : ''}}
-                   name="su_{{$questions->id}}_{{$question->id}}_{{$question->type}}"
+            name="su_{{$questions->id}}_{{$question->id}}_{{$question->type}}"
                    class="form-control">
         @endif
         @if($question->type == App\Models\Question::SELECT_ONE)
@@ -31,12 +31,12 @@
         @if($question->type == App\Models\Question::DATE)
             <input type="text"
                    name="su_{{$questions->id}}_{{$question->id}}_{{$question->type}}"
-                   class="form-control" id="date_id" autocomplete="off" {{($question->status == 1) ? 'required="required"' : ''}}>
+                   class="form-control" id="date_id" {{($question->status == 1) ? 'required="required"' : ''}}>
         @endif
         @section('scripts')
             <script type="text/javascript">
                 $('#date_id').datetimepicker({
-                    format: 'YYYY-MM-DD',
+                    format: 'YYYY-MM-DD HH:mm:ss',
                     useCurrent: false
                 })
             </script>
@@ -60,11 +60,8 @@
             <input type="number" min="1" max="10"
                    name="su_{{$questions->id}}_{{$question->id}}_{{$question->type}}"
                    class="form-control" {{($question->status == 1) ? 'required="required"' : ''}}>
-            @endif
+        @endif
     </div>
 @endforeach
 
-@if(count($questions->questions) !== 0 )
-    <button type="submit" class="btn btn-sm btn-primary"> Submit</button>
-@endif
 

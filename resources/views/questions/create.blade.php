@@ -1,11 +1,4 @@
-{{--@extends('layouts.app')--}}
 
-{{--@section('content')--}}
-{{--    <section class="content-header">--}}
-{{--        <h1>--}}
-{{--            Question--}}
-{{--        </h1>--}}
-{{--    </section>--}}
     <div class="content">
         @include('adminlte-templates::common.errors')
         <div class="box box-primary">
@@ -41,6 +34,8 @@
                 $('.selectAnswer').css({'display':'none'});
             }else if(id == 6){
                 $('.selectAnswer').css({'display':'inline-block'});
+            }else if(id ==7){
+                $('.selectAnswer').css({'display':'none'});
             }
         }
 

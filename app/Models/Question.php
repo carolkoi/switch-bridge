@@ -20,6 +20,7 @@ class Question extends Model
     const DATE = 4;
     const NUMBER = 5;
     const DROP_DOWN_LIST = 6;
+    const RATING = 7;
 
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';

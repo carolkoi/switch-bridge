@@ -7,6 +7,7 @@ use App\Http\Requests;
 use App\Http\Requests\CreateTemplateRequest;
 use App\Http\Requests\UpdateTemplateRequest;
 use App\Models\Question;
+use App\Models\SurveyType;
 use App\Models\Template;
 use App\Repositories\TemplateRepository;
 use App\User;
@@ -43,7 +44,8 @@ class TemplateController extends AppBaseController
      */
     public function create()
     {
-        return view('templates.create');
+        $survey_types = SurveyType::all();
+        return view('templates.create', compact('survey_types'));
     }
 
     /**
@@ -97,6 +99,7 @@ class TemplateController extends AppBaseController
      */
     public function edit($id)
     {
+
         $template = $this->templateRepository->find($id);
 
         if (empty($template)) {
@@ -104,8 +107,8 @@ class TemplateController extends AppBaseController
 
             return redirect(route('templates.index'));
         }
-
-        return view('templates.edit')->with('template', $template);
+        $survey_types = SurveyType::all();
+        return view('templates.edit', compact('survey_types'))->with('template', $template);
     }
 
     /**

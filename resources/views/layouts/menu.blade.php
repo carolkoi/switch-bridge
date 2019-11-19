@@ -4,22 +4,6 @@
     </li>
 
 
-    <li class="treeview {{ Request::is('people*') ? 'active menu-open' : '' }}">
-        <a class="dropdown-toggle" href="#">
-            <i class="fa fa-users"></i> <span>Users</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-        </a>
-        <ul class="treeview-menu">
-            <li class="{{ Request::is('people/users*') ? 'active' : '' }}">
-                <a href="{!! route('users.index') !!}"><i class="fa fa-users"></i><span>Staffs</span></a>
-            </li>
-            <li class="{{ Request::is('people/clients*') ? 'active' : '' }}">
-                <a href="{!! route('clients.index') !!}"><i class="fa fa-users"></i><span>Clients</span></a>
-            </li>
-        </ul>
-    </li>
 
     <li class="{{ Request::is('templates*') ? 'active' : '' }}">
         <a href="{!! route('templates.index') !!}"><i class="fa fa-file-text"></i><span>Surveys</span></a>
@@ -49,6 +33,22 @@
             </li>
         </ul>
     </li>
+    <li class="treeview {{ Request::is('people*') ? 'active menu-open' : '' }}">
+        <a class="dropdown-toggle" href="#">
+            <i class="fa fa-users"></i> <span>Users</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li class="{{ Request::is('people/users*') ? 'active' : '' }}">
+                <a href="{!! route('users.index') !!}"><i class="fa fa-users"></i><span>Staffs</span></a>
+            </li>
+            <li class="{{ Request::is('people/clients*') ? 'active' : '' }}">
+                <a href="{!! route('clients.index') !!}"><i class="fa fa-users"></i><span>Clients</span></a>
+            </li>
+        </ul>
+    </li>
 
     <li class="treeview {{ Request::is('settings*') ? 'active menu-open' : '' }}">
         <a class="dropdown-toggle" href="#">
@@ -64,9 +64,14 @@
 
             <li class="{{ Request::is('settings/approvalWorkflows*') ? 'active' : '' }}">
                 <a href="{!! route('approvalWorkflows.index') !!}"><i class="fa fa-tasks"></i><span>Approval Workflows</span></a>
-            </li> </li>
+            </li>
+            <li class="{{ Request::is('settings/surveyTypes*') ? 'active' : '' }}">
+                <a href="{!! route('surveyTypes.index') !!}"><i class="fa fa-edit"></i><span>Survey Types</span></a>
+            </li>
         </ul>
     </li>
+
+
 
 
 
