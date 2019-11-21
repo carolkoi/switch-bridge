@@ -45,9 +45,10 @@ class SurveyType extends Model
     use SoftDeletes;
 
     public $table = 'survey_type';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
+    const EVALUATION = true;
 
 
     protected $dates = ['deleted_at'];
@@ -55,7 +56,10 @@ class SurveyType extends Model
 
 
     public $fillable = [
-        'type'
+        'type',
+        'status',
+        'range_from',
+        'range_to'
     ];
 
     /**

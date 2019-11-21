@@ -55,16 +55,24 @@
 
     </div>
 </div>
+<br>
+<!--required field-->
+
+    <div class="form-group col-md-8">
+        {!! Form::label('status', 'Mark Question as Required:') !!}
+        &nbsp;&nbsp;&nbsp;
+        {!! Form::checkbox('status',$question->status) !!}
+    </div>
 
 <!-- Description Field -->
 <div class="form-group col-md-8">
     {!! Form::label('description', 'Description:') !!}
-    {!! Form::textarea('description', null, ['class' => 'form-control']) !!}
+    {!! Form::textarea('description', $question->description, ['class' => 'form-control']) !!}
 </div>
 
 
 <!-- Submit Field -->
 <div class="form-group col-md-8">
-    {!! Form::submit('Create', ['class' => 'btn btn-primary']) !!}
+    {!! Form::submit('Update', ['class' => 'btn btn-primary']) !!}
     {{--    <a href="{!! route('questions.index') !!}" class="btn btn-default">Cancel</a>--}}
 </div>

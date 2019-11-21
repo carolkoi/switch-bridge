@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Requests\CreateQuestionRequest;
 use App\Http\Requests\UpdateQuestionRequest;
 use App\Models\Question;
+use App\Models\SurveyType;
 use App\Models\Template;
 use App\Repositories\AnswerRepository;
 use App\Repositories\QuestionRepository;
@@ -49,8 +50,13 @@ class QuestionController extends AppBaseController
     public function create($id)
     {
         $template = Template::with('surveyType')->find($id);
+
         $questions = Question::ByTemplate($id)->get();
-        return view('questions.index', ['template_id' => $id, 'questions' => $questions, 'template' => $template]);
+        $surveyType = SurveyType::get();
+        return view('questions.index', ['template_id' => $id,
+            'questions' => $questions,
+            'template' => $template,
+            'surveyType' => $surveyType]);
     }
 
     /**
@@ -134,13 +140,15 @@ class QuestionController extends AppBaseController
     {
         $question = $this->questionRepository->find($id);
         $template_id = $question->template_id;
+        $input = $request->all();
+        $input['status'] = $request->input('status') ? $request->input('status') : 0;
         if (empty($question)) {
             Flash::error('Question not found');
 
             return redirect(route('questions.index'));
         }
 
-        $question = $this->questionRepository->update($request->all(), $id);
+        $question = $this->questionRepository->update($input, $id);
 
         if (($question['type'] == Question::SELECT_MULTIPLE OR $question['type'] == Question::DROP_DOWN_LIST)) {
             if ((empty($request['options']))) {

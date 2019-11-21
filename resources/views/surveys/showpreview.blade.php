@@ -62,6 +62,7 @@
     <script>
         jQuery(document).ready(function () {
             $('#dropdown').select2();
+            $('#rating').rating();
         });
     </script>
 @endsection

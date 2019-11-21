@@ -15,7 +15,9 @@
                     <td>
                         @foreach($response->responses as $answer)
                             @if($answer->answer_type == App\Models\Question::USER_INPUT)
+                                <ol type="1">
                                 <li>{{ $answer->answer}}</li>
+                                </ol>
                             @endif
 
                             @if($answer->answer_type == App\Models\Question::SELECT_ONE)

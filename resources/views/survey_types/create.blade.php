@@ -22,3 +22,12 @@
         </div>
     </div>
 @endsection
+@section('scripts')
+    <script>
+        $(document).ready(function () {
+            $("input[type='checkbox']").on('click', function () {
+                $('.addRatingRange').css({'display':'inline-block'});
+            });
+        });
+    </script>
+    @endsection

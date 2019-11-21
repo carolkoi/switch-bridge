@@ -57,10 +57,10 @@
             </select>
         @endif
         @if($question->type == App\Models\Question::RATING)
-            <input type="number" min="1" max="10"
+            <input id="rating" min="1" max="{{$questions->surveyType->range_to}}"
                    name="su_{{$questions->id}}_{{$question->id}}_{{$question->type}}"
-                   class="form-control" {{($question->status == 1) ? 'required="required"' : ''}}>
-            @endif
+                   class="rating rating-loading" data-min="0" data-max="{{$questions->surveyType->range_to}}" data-step="1" data-size="xs" {{($question->status == 1) ? 'required="required"' : ''}}>
+        @endif
     </div>
 @endforeach
 

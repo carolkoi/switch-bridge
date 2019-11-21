@@ -18,7 +18,9 @@ class SurveyTypeDataTable extends DataTable
     {
         $dataTable = new EloquentDataTable($query);
 
-        return $dataTable->addColumn('action', 'survey_types.datatables_actions');
+        return $dataTable->editColumn('status', 'survey_types.datatables_status')
+        ->addColumn('action', 'survey_types.datatables_actions')
+            ->rawColumns(['status', 'action']);
     }
 
     /**
@@ -65,7 +67,8 @@ class SurveyTypeDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'type'
+            'type',
+            'status',
         ];
     }
 

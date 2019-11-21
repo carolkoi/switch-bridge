@@ -71,13 +71,7 @@
         </ul>
     </li>
 
-
-
-
-
-
-
-<li class="{{ Request::is('sentSurveys*') ? 'active' : '' }}">
-    <a href="{!! route('sentSurveys.index') !!}"><i class="fa fa-edit"></i><span>Sent Surveys</span></a>
-</li>
+{{--<li class="{{ Request::is('sentSurveys*') ? 'active' : '' }}">--}}
+{{--    <a href="{!! route('sentSurveys.index') !!}"><i class="fa fa-edit"></i><span>Sent Surveys</span></a>--}}
+{{--</li>--}}
 

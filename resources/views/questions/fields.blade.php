@@ -1,4 +1,3 @@
-
     {!! Form::hidden('template_id', $template_id, ['class' => 'form-control']) !!}
 
 <!-- Question Field -->
@@ -7,9 +6,8 @@
     {!! Form::text('question', null, ['class' => 'form-control']) !!}
 </div>
 <!-- Type Field -->
-    @if($template->survey_type_id == 4)
-        <div class="form-group ">
-
+    @if($template->surveyType->status == 1)
+    <div class="form-group ">
             {!! Form::radio('type', '7', true, ['onclick' => 'getTemplate(7);']) !!} &nbsp;&nbsp;
             {!! Form::label('type', 'Rating') !!}
         </div>
@@ -18,26 +16,24 @@
 <div class="form-group ">
     {!! Form::label('type', 'Answer Type:') !!}
 <br/><br/>
-    {!! Form::radio('type', '1', true, ['onclick' => 'getTemplate(1);']) !!} &nbsp;
+    {!! Form::radio('type', '1', true, ['onclick' => 'getTemplate(1);']) !!}&nbsp;&nbsp;
     {!! Form::label('type', 'Text Input') !!}
     &nbsp;
-    {!! Form::radio('type', '4', false, ['onclick' => 'getTemplate(4);']) !!} &nbsp;
+    {!! Form::radio('type', '4', false, ['onclick' => 'getTemplate(4);']) !!}&nbsp;
     {!! Form::label('type', 'Date') !!}
     &nbsp;
-    {!! Form::radio('type', '5', false, ['onclick' => 'getTemplate(5);']) !!} &nbsp;
+    {!! Form::radio('type', '5', false, ['onclick' => 'getTemplate(5);']) !!}&nbsp;&nbsp;
     {!! Form::label('type', 'Number') !!}
     &nbsp;
-    {!! Form::radio('type', '2', false, ['onclick' => 'getTemplate(2);']) !!} &nbsp;
+    {!! Form::radio('type', '2', false, ['onclick' => 'getTemplate(2);']) !!}&nbsp;&nbsp;
     {!! Form::label('type', 'True/False') !!}
     &nbsp;
-    {!! Form::radio('type', '6', false, ['onclick' => 'getTemplate(6);']) !!} &nbsp;
+    {!! Form::radio('type', '6', false, ['onclick' => 'getTemplate(6);']) !!}&nbsp;&nbsp;
     {!! Form::label('type', 'Dropdown List' )!!}
     &nbsp;
-    {!! Form::radio('type', '3', false, ['onclick' => 'getTemplate(3);']) !!} &nbsp;&nbsp;
+    {!! Form::radio('type', '3', false, ['onclick' => 'getTemplate(3);']) !!}&nbsp;&nbsp;
     {!! Form::label('type', 'List') !!}
-
-    {!! Form::radio('type', '7', false, ['onclick' => 'getTemplate(7);']) !!} &nbsp;&nbsp;
-    {!! Form::label('type', 'Rating') !!}
+    &nbsp;
 </div>
     @endif
 <div class="row">
@@ -61,7 +57,7 @@
 </div>
 
 <!--required field-->
-    @if($template->survey_type_id == 4)
+    @if($template->surveyType->status == 1)
 <div class="form-group">
     {!! Form::label('status', 'Mark Question as Required:') !!}
     &nbsp;&nbsp;&nbsp;

@@ -63,6 +63,7 @@ class SurveyController extends AppBaseController
      */
     public function store(CreateSurveyRequest $request)
     {
+//        dd($request->all());
         $input = $request->except(['_token', 'survey_uuid', 'template_id']);
 //        check if the end date of survey has passed and if the
 // check if late response is set is set to receive late responses
@@ -85,7 +86,7 @@ class SurveyController extends AppBaseController
                         'question_id' => $map[2],
                         'answer_type' => $map[3],
                         'answer' => is_array($resp) ? json_encode($resp) : (is_int($resp) ? strval($resp) : $resp),
-                        'sent_survey_id' => SentSurveys::where('template_id',$map[1])->first()->id
+//                        'sent_survey_id' => SentSurveys::where('template_id',$map[1])->first()->id
                     ]);
                     $this->sentSurveysRepository->saveResponseUuid($map[1], $request->input('survey_uuid'));
 
@@ -115,7 +116,7 @@ class SurveyController extends AppBaseController
      */
     public function show($id, $token)
     {
-        $questions = Template::with(['questions.answer'])->find($id);
+        $questions = Template::with(['questions.answer', 'surveyType'])->find($id);
         return view('surveys.create', compact('token', 'questions'));
     }
 
