@@ -41,7 +41,7 @@
 
 {{--                                    <div class="box-body" style="margin-left: 50px; margin-right: 50px">--}}
                                         <div class="row">
-                                            {!! Form::open(['style' => 'width:100%']) !!}
+                                            {!! Form::open(['style' => 'width:100%', 'id' => 'surveyForm']) !!}
 
                                             @include('surveys.preview')
 
@@ -55,14 +55,29 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+
 @endsection
 @section('scripts')
-    <script>
-        jQuery(document).ready(function () {
-            $('#dropdown').select2();
-            $('#rating').rating();
+    <script type="text/javascript">
+        $('#dropdown').select2();
+        $('#date_id').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm:ss',
+            useCurrent: false
+        });
+        var somethingChanged = false;
+        $('.rating-survey').change(function() {
+            somethingChanged = true;
+            // get all the inputs into an array.
+            var $inputs = $('#surveyForm :input.rating');
+            // get an associative array of just the values.
+            var total = 0;
+            $inputs.each(function() {
+                if(typeof total == 'number') {
+                    total = parseInt($(this).val()) + parseInt(total);
+                }
+            });
+            console.log(total);
+            $("#score").html(total);
         });
     </script>
 @endsection

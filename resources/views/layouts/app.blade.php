@@ -13,5 +13,7 @@
     @include('layouts.admin-lite.includes.footer')
 </div>
 @include('layouts.admin-lite.scripts.scripts')
+
+
 </body>
 </html>

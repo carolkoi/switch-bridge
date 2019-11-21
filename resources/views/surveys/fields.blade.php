@@ -33,14 +33,6 @@
                    name="su_{{$questions->id}}_{{$question->id}}_{{$question->type}}"
                    class="form-control" id="date_id" autocomplete="off" {{($question->status == 1) ? 'required="required"' : ''}}>
         @endif
-        @section('scripts')
-            <script type="text/javascript">
-                $('#date_id').datetimepicker({
-                    format: 'YYYY-MM-DD',
-                    useCurrent: false
-                })
-            </script>
-        @endsection
         @if($question->type == App\Models\Question::NUMBER)
             <input type="number" min="1"
                    name="su_{{$questions->id}}_{{$question->id}}_{{$question->type}}"
@@ -57,12 +49,23 @@
             </select>
         @endif
         @if($question->type == App\Models\Question::RATING)
-            <input id="rating" min="1" max="{{$questions->surveyType->range_to}}"
+            <span class="rating-survey">
+            <input min="1" max="{{$questions->surveyType->range_to}}"
                    name="su_{{$questions->id}}_{{$question->id}}_{{$question->type}}"
-                   class="rating rating-loading" data-min="0" data-max="{{$questions->surveyType->range_to}}" data-step="1" data-size="xs" {{($question->status == 1) ? 'required="required"' : ''}}>
+                   class="rating rating-loading" data-min="0" data-max="{{$questions->surveyType->range_to}}"
+                   data-step="1" data-size="xs" {{($question->status == 1) ? 'required="required"' : ''}}>
+            </span>
         @endif
     </div>
+    @if($questions->surveyType->status == 1)
+        <input type="hidden" name="total" class="form-control" id="score_rate">
+    @endif
 @endforeach
+@if($questions->surveyType->status == 1)
+    <div class="pull-right"> <b>Total Rating Score:<p id="score"></p></b>
+
+    </div>
+@endif
 
 @if(count($questions->questions) !== 0 )
     <button type="submit" class="btn btn-sm btn-primary"> Submit</button>

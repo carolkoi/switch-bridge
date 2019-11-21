@@ -23,15 +23,20 @@ class SendSurveyEmailController extends Controller
     {
         $setting = Options::where('option_name', 'automatic_survey_send')->first();
         $allocations = Allocation::where(['template_id' => $id, 'status' => true])->with('template')->get();
-        foreach ($allocations as $allocation){
-        if (Carbon::now()->lte($allocation->template->valid_until)) {
-            $this->sendToClient($id);
-            $this->sendToStaff($id);
-            $this->sendToOther($id);
-            Flash::success('Survey email sent successfully.');
-            return redirect(route('allocations.index'));
-        }
-            Flash::error('There is an error! Survey deadline has passed.');
+
+        foreach ($allocations as $allocation) {
+            if ($allocation->email_sent == 0) {
+                if (Carbon::now()->lte($allocation->template->valid_until)) {
+                    $this->sendToClient($id);
+                    $this->sendToStaff($id);
+                    $this->sendToOther($id);
+                    Flash::success('Survey email sent successfully.');
+                    return redirect(route('allocations.index'));
+                }
+                Flash::error('There is an error! Survey deadline has passed.');
+                return redirect(route('allocations.index'));
+            }
+            Flash::error($allocation->template->name. ' '.' survey already sent to these users.');
             return redirect(route('allocations.index'));
         }
         Flash::error('There is an error! The survey is not yet approved for allocation.');
@@ -43,7 +48,7 @@ class SendSurveyEmailController extends Controller
     {
         $staffs = Allocation::where(['template_id' => $id, 'status' => true])
             ->whereNotNull('user_id')
-            ->with('template')
+            ->with(['template'])
             ->get();
 
         foreach ($staffs as $staff){

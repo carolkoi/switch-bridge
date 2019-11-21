@@ -93,7 +93,7 @@ class Response extends Model
         'question_id',
         'answer_type',
         'answer',
-//        'survey_uuid'
+        'survey_uuid'
 //        'sent_survey_id'
     ];
 

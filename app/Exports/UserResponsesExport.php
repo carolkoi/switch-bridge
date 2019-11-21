@@ -5,11 +5,13 @@ namespace App\Exports;
 use App\Models\Template;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use App\Models\Question;
 use App\Models\Answer;
 use App\Models\Response;
 
-class UserResponsesExport implements FromCollection
+class UserResponsesExport implements FromCollection, WithHeadings, ShouldAutoSize
 {
     protected $templateId;
 
@@ -54,6 +56,14 @@ class UserResponsesExport implements FromCollection
 
 
 }
+    public function headings(): array
+    {
+        return [
+            'Questions',
+            'Responses',
+
+        ];
+    }
 }
 
 //public function collection()

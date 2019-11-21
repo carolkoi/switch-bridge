@@ -20,3 +20,4 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.2/js/star-rating.min.js"></script>
 
 @yield('scripts')
+

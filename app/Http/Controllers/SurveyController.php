@@ -63,8 +63,7 @@ class SurveyController extends AppBaseController
      */
     public function store(CreateSurveyRequest $request)
     {
-//        dd($request->all());
-        $input = $request->except(['_token', 'survey_uuid', 'template_id']);
+        $input = $request->except(['_token', 'survey_uuid', 'template_id', 'total']);
 //        check if the end date of survey has passed and if the
 // check if late response is set is set to receive late responses
         $setting = Options::where('option_name', 'receive_late_response')->first();
@@ -73,7 +72,7 @@ class SurveyController extends AppBaseController
 
         if (carbon::now()->lte($template->valid_until) OR ($setting->value == true)) {
             // check if the uuid already exist, user cant respond to the same survey twice
-            $response = SentSurveys::where('token', '=', $request->input('survey_uuid'))
+            $response = Response::where('survey_uuid', '=', $request->input('survey_uuid'))
                 ->first();
             // if response does not exist proceed to save
             if ($response == null) {
@@ -86,7 +85,8 @@ class SurveyController extends AppBaseController
                         'question_id' => $map[2],
                         'answer_type' => $map[3],
                         'answer' => is_array($resp) ? json_encode($resp) : (is_int($resp) ? strval($resp) : $resp),
-//                        'sent_survey_id' => SentSurveys::where('template_id',$map[1])->first()->id
+                        'survey_uuid' => $request->input('survey_uuid')
+
                     ]);
                     $this->sentSurveysRepository->saveResponseUuid($map[1], $request->input('survey_uuid'));
 

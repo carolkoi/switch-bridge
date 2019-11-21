@@ -3,6 +3,7 @@
         <thead>
         <th>Questions</th>
         <th>Responses</th>
+        <th>Total</th>
         </thead>
         <tbody>
         @php( $count =1 )
@@ -13,11 +14,10 @@
                 </td>
                 <ul>
                     <td>
+
                         @foreach($response->responses as $answer)
-                            @if($answer->answer_type == App\Models\Question::USER_INPUT)
-                                <ol type="1">
+                        @if($answer->answer_type == App\Models\Question::USER_INPUT)
                                 <li>{{ $answer->answer}}</li>
-                                </ol>
                             @endif
 
                             @if($answer->answer_type == App\Models\Question::SELECT_ONE)
@@ -48,10 +48,12 @@
                     @endif
                     @endforeach
 
-                </ul>
                 </td>
+                </ul>
+                <td></td>
             </tr>
         @endforeach
         </tbody>
+
     </table>
 </div>
