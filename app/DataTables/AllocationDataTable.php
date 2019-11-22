@@ -18,22 +18,21 @@ class AllocationDataTable extends DataTable
     {
         $dataTable = new EloquentDataTable($query);
 
-        return $dataTable->addColumn('type', function ($query){
-            return $query->template->surveyType->type;
-        })->addColumn('title', function ($query){
+        return $dataTable
+            ->addColumn('type', 'allocations.datatables_type')
+            ->addColumn('title', function ($query){
             return $query->template->name;
         })
             ->addColumn('date range', function ($query){
             return $query->template->valid_from->format('Y/m/d'). ' - ' .$query->template->valid_until->format('Y/m/d');
         })
             ->addColumn('status', 'allocations.datatables_status')
-
             ->addColumn('users', function ($query){
            return $query->CountUsersByTemplateId($query->template_id, $query->user_type);
 //            return count($query['user_type']);
         })
         ->addColumn('action', 'allocations.datatables_actions')
-            ->rawColumns(['status','action']);
+            ->rawColumns(['type', 'status', 'action']);
     }
 
     /**
