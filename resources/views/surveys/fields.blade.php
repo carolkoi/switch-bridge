@@ -57,10 +57,10 @@
             </span>
         @endif
     </div>
-    @if($questions->surveyType->status == 1)
-        <input type="hidden" name="total" class="form-control" id="score_rate">
-    @endif
 @endforeach
+@if($questions->surveyType->status == 1)
+    <input type="hidden" name="total" class="form-control" id="score_rate">
+@endif
 @if($questions->surveyType->status == 1)
     <div class="pull-right"> <b>Total Rating Score:<p id="score"></p></b>
 

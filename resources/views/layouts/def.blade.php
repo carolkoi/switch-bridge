@@ -74,10 +74,9 @@
             }
         });
         $("#score").html(total);
-        return total;
+        $("#score_rate").val(total);
+
     });
 
-    $('#surveyForm').on('submit', function () {
 
-    })
 </script>

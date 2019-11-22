@@ -85,8 +85,8 @@ class SurveyController extends AppBaseController
                         'question_id' => $map[2],
                         'answer_type' => $map[3],
                         'answer' => is_array($resp) ? json_encode($resp) : (is_int($resp) ? strval($resp) : $resp),
-                        'survey_uuid' => $request->input('survey_uuid')
-
+                        'survey_uuid' => $request->input('survey_uuid'),
+                        'total' => $request->input('total')
                     ]);
                     $this->sentSurveysRepository->saveResponseUuid($map[1], $request->input('survey_uuid'));
 

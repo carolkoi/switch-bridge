@@ -55,7 +55,19 @@
             $("#user_id, #client_id, #template_id, #mails, #survey_type_id").select2({
                 tags: true,
                 tokenSeparators: [',', ' '],
+                createTag: function(term, data) {
+                    var value = term.term;
+                    if(validateEmail(value)) {
+                        return {
+                            id: value,
+                            text: value
+                        };
+                    }
+                    return null;
+                }
+
             });
+
             $('#client_list, #others_email').css({'display': 'none'});
             $('#client').on('click', function () {
                 $('#client_list').show();
@@ -99,6 +111,10 @@
 
             });
             return false;
+        }
+        function validateEmail(email) {
+            var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(email);
         }
     </script>
 @endsection

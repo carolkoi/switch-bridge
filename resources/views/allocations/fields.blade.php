@@ -61,7 +61,7 @@
 
     <div class="form-group" id="others_email">
         {!! Form::label('others', 'Add Email:') !!}
-        <select class="form-control" name="others[]" id="mails" multiple>
+        <select class="form-control" name="others[]" id="mails" type="email" multiple>
             <option disabled="disabled">-- Add email--</option>
         </select>
     </div>

@@ -1,6 +1,7 @@
 <div class="card-body">
     <table class="table table-striped table-boardered">
         <thead>
+        <th>#</th>
         <th>Questions</th>
         <th>Responses</th>
         <th>Total</th>
@@ -10,6 +11,7 @@
 
         @foreach($responses as $response)
             <tr>
+                <td></td>
                 <td>{{ $count ++}} . {{$response->question}}
                 </td>
                 <ul>

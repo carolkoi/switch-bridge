@@ -118,7 +118,7 @@
 
                             @foreach($templates as $template)
                                 <tr>
-                                    <td>{{$template->surveyType->type}}</td>
+                                    <td>{{$template->surveyType['type']}}</td>
                                     <td>{{$template->name}}</td>
                                     <td>{{$template->allocations->count()}}</td>
 {{--                                    <td>--}}
