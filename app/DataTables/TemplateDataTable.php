@@ -21,19 +21,18 @@ class TemplateDataTable extends DataTable
         $dataTable = new EloquentDataTable($query);
         return $dataTable
             ->addColumn('created by', 'templates.datatables_created_by')
-            ->addColumn('type', function ($query) {
-                return $query->surveyType->type;
-            })
+            ->addColumn('type', 'templates.datatables_type')
             ->editColumn('name', 'templates.datables_column_name')
             ->addColumn('Questions', 'templates.datatables_question')
             ->addColumn('action', 'templates.datatables_actions')
             ->editColumn('valid_from', function ($query) {
+
                 return Carbon::parse($query->valid_from)->format('d-m-Y');
             })
             ->editColumn('valid_until', function ($query) {
                 return Carbon::parse($query->valid_until)->format('d-m-Y');
             })
-            ->rawColumns(['name', 'status', 'action', 'Questions', 'Created By', 'preview']);
+            ->rawColumns(['name', 'status', 'action', 'Questions', 'Created By', 'type']);
     }
 
     /**
