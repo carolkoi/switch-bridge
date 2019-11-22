@@ -5,7 +5,7 @@ namespace App\DataTables;
 use App\Models\Allocation;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
-
+use Carbon\Carbon;
 class AllocationDataTable extends DataTable
 {
     /**
@@ -21,9 +21,7 @@ class AllocationDataTable extends DataTable
         return $dataTable
             ->addColumn('type', 'allocations.datatables_type')
             ->addColumn('title', 'allocations.datatables_title')
-            ->addColumn('date range', function ($query){
-            return $query->template->valid_from->format('Y/m/d'). ' - ' .$query->template->valid_until->format('Y/m/d');
-        })
+            ->addColumn('date range', 'allocations.datatables_date_range')
             ->addColumn('status', 'allocations.datatables_status')
             ->addColumn('users', function ($query){
            return $query->CountUsersByTemplateId($query->template_id, $query->user_type);

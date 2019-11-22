@@ -1,1 +1,1 @@
-{{$template['valid_from']->format('Y/m/d'). ' - ' .$template['valid_to']->format('Y/m/d')}}
+{{date('d / m / Y', strtotime($template['valid_from'])). ' - ' .date('d / m / Y', strtotime($template['valid_until']))}}
