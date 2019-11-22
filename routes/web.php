@@ -12,15 +12,12 @@
 */
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/','Auth\LoginController@showLoginForm');
 
-
-Auth::routes();
+//Auth::routes(['register' => false, 'login' => false]);
 
 Route::get('/home', 'HomeController@index');
-Auth::routes();
+Auth::routes(['register' => false]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 
