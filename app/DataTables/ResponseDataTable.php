@@ -19,14 +19,10 @@ class ResponseDataTable extends DataTable
         $dataTable = new EloquentDataTable($query);
 
         return $dataTable
-            ->addColumn('type', function($query){
-                return $query->template->surveyType->type;
-            })
+            ->addColumn('type', 'responses.datatables_type')
             ->addColumn('Title', 'responses.datatables_title')
 
-            ->addColumn('users', function ($query){
-              return  $query->template->allocations->count();
-            })
+            ->addColumn('users', 'responses.datatables_user')
             ->addColumn('responses', function ($query){
                 return $query->countRespondentsByTemplateId($query->template_id, $query->question_id);
             })
@@ -38,7 +34,7 @@ class ResponseDataTable extends DataTable
             })
 
             ->addColumn('action', 'responses.datatables_actions')
-            ->rawColumns(['Title','action','type']);
+            ->rawColumns(['Title','action','type', 'users']);
     }
 
     /**

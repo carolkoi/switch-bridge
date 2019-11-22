@@ -20,9 +20,7 @@ class AllocationDataTable extends DataTable
 
         return $dataTable
             ->addColumn('type', 'allocations.datatables_type')
-            ->addColumn('title', function ($query){
-            return $query->template->name;
-        })
+            ->addColumn('title', 'allocations.datatables_title')
             ->addColumn('date range', function ($query){
             return $query->template->valid_from->format('Y/m/d'). ' - ' .$query->template->valid_until->format('Y/m/d');
         })
@@ -43,7 +41,7 @@ class AllocationDataTable extends DataTable
      */
     public function query(Allocation $model)
     {
-        return $model->with(['template.user', 'template.questions', 'template.surveyType'])->groupBy(['template_id'])->newQuery();
+        return $model->with(['template', 'template.user', 'template.questions', 'template.surveyType'])->groupBy(['template_id'])->newQuery();
     }
 
     /**
