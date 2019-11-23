@@ -64,7 +64,7 @@
     {!! Form::checkbox('status',1, true) !!}
 </div>
 @else
-        <div class="form-group">
+        <div class="form-group" id="required_id">
             {!! Form::label('status', 'Mark Question as Required:') !!}
             &nbsp;&nbsp;&nbsp;
         {!! Form::checkbox('status') !!}

@@ -8,13 +8,14 @@ use App\Http\Requests;
 use App\Http\Requests\CreateResponseRequest;
 use App\Http\Requests\UpdateResponseRequest;
 use App\Models\Question;
+use App\Models\Response;
 use App\Repositories\ResponseRepository;
 use App\Models\Template;
 use App\Repositories\SentSurveysRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Maatwebsite\Excel\Facades\Excel;
-use Response;
+use Response as HttpResponse;
 
 class ResponseController extends AppBaseController
 {
@@ -65,9 +66,13 @@ class ResponseController extends AppBaseController
         return redirect(route('responses.index'));
     }
 
+//    public function show($template_id)
+//    {
+//
+//    }
+
     public function show($template_id)
     {
-//        $response = $this->responseRepository->find($template_id);
         $responses = Question::where('template_id',$template_id)
             ->with(['answer','responses'])
             ->get();
@@ -79,7 +84,10 @@ class ResponseController extends AppBaseController
             'id' => $template_id,
             'template' => $template
         ]);
-    }
+
+        }
+
+
 
     public function exportResponses($id)
     {

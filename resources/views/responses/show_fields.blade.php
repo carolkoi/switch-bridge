@@ -18,7 +18,7 @@
                     <td>
 
                         @foreach($response->responses as $answer)
-                        @if($answer->answer_type == App\Models\Question::USER_INPUT)
+                            @if($answer->answer_type == App\Models\Question::USER_INPUT)
                                 <li>{{ $answer->answer}}</li>
                             @endif
 
@@ -30,7 +30,8 @@
                                 @foreach($data as $ans)
                                     <li> {{ App\Models\Answer::find($ans)->choice }}</li>
                                 @endforeach
-                            @endif
+                                    <hr>
+                                @endif
 
                             @if($answer->answer_type == App\Models\Question::DATE)
                                 <li> {{$answer->answer}} </li>
@@ -43,14 +44,21 @@
                                 @php($data = collect(json_decode($answer->answer))->toArray())
                                 @foreach($data as $ans)
                                     <li> {{ App\Models\Answer::find($ans)->choice}}</li>
-                    @endforeach
-                    @endif
-                                @if($answer->answer_type == App\Models\Question::RATING)
-                                    <li> {{$answer->answer}} </li>
-                    @endif
-                    @endforeach
+                                @endforeach
+                            @endif
+                            @if($answer->answer_type == App\Models\Question::RATING)
+                                <li> {{$answer->answer}} </li>
+                            @endif
+                        @endforeach
 
-                </td>
+                    </td>
+                    <td>
+                        @foreach($response->responses as $answer)
+                            @if($answer->answer_type == App\Models\Question::RATING)
+                                <li> {{$answer->total}} </li>
+                            @endif
+                    @endforeach
+                    </td>
                 </ul>
                 <td></td>
             </tr>

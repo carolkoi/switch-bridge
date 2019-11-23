@@ -79,8 +79,6 @@ class SurveyController extends AppBaseController
                 foreach ($input as $key => $resp) {
                     $map = explode('_', $key);
                     Response::create([
-                        'user_id' => NULL,
-                        'client_id' => NULL,
                         'template_id' => $map[1],
                         'question_id' => $map[2],
                         'answer_type' => $map[3],

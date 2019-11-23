@@ -28,6 +28,8 @@
 
             }else if(id == 3){
                 $('.selectAnswer').css({'display':'inline-block'});
+                $('#required_id').css({'display':'none'});
+
             }else if(id == 4){
                 $('.selectAnswer').css({'display':'none'});
             }else if(id == 5){

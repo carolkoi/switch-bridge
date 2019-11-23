@@ -71,8 +71,6 @@ class SendSurveyEmailController extends Controller
             $template = Template::find($staff->template_id);
             $staff_email = User::find($staff->user_id)->email;
             $token = Uuid::generate()->string;
-//            Mail::to($staff_email)->send(new SurveyEmail($template, $token));
-//            SendSurveyEmailJob::dispatch($template, new SurveyEmail($template, $token))->delay(1);
             $this->dispatch(new SendSurveyEmailJob($template,$token,$staff_email));
             Allocation::where('user_id', $staff->user_id)->update(['email_sent' => 1]);
 
@@ -90,10 +88,6 @@ class SendSurveyEmailController extends Controller
             $template = Template::find($client->template_id);
             $client_email = Client::find($client->client_id)->email;
             $token = Uuid::generate()->string;
-//            Mail::to($client_email)->send(new SurveyEmail($template, $token));
-//            SendSurveyEmailJob::dispatch($template, new SurveyEmail($template, $token))->delay(1);
-//            $this->dispatch(new SendSurveyEmailJob($template, $token));
-//            $this->dispatch(new SendSurveyEmailJob());
             $this->dispatch(new SendSurveyEmailJob($template,$token,$client_email));
             Allocation::where('client_id', $client->client_id)->update(['email_sent' => 1]);
 
@@ -111,10 +105,6 @@ class SendSurveyEmailController extends Controller
             $template = Template::find($other->template_id);
             $email = unserialize($other->others);
             $token = Uuid::generate()->string;
-//            Mail::to($email)->send(new SurveyEmail($template, $token));
-//            $this->dispatch(new SendSurveyEmailJob($template, $token));
-//            SendSurveyEmailJob::dispatch(new SurveyEmail($template, $token))->delay(1);
-//            $this->dispatch(new SendSurveyEmailJob());
             $this->dispatch(new SendSurveyEmailJob($template,$token,$email));
             Allocation::whereNull(['client_id', 'user_id'])->update(['email_sent' => 1]);
         }
