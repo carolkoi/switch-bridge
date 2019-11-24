@@ -8,7 +8,7 @@
 <!-- Type Field -->
     @if($template->surveyType->status == 1)
     <div class="form-group ">
-            {!! Form::radio('type', '7', true, ['onclick' => 'getTemplate(7);']) !!} &nbsp;&nbsp;
+            {!! Form::radio('type', '7', true, ['id'=>'evaluation_id']) !!} &nbsp;&nbsp;
             {!! Form::label('type', 'Rating') !!}
         </div>
 
@@ -58,7 +58,7 @@
 
 <!--required field-->
     @if($template->surveyType->status == 1)
-<div class="form-group">
+<div class="form-group" id="evaluation_required_id">
     {!! Form::label('status', 'Mark Question as Required:') !!}
     &nbsp;&nbsp;&nbsp;
     {!! Form::checkbox('status',1, true) !!}

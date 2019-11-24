@@ -17,27 +17,43 @@
     </div>
 {{--@endsection--}}
 @section('scripts')
+
     <script >
+        $(document).ready(function () {
+           if( $('#evaluation_id').is(':checked')){
+               $("#evaluation_required_id").attr('value', this.checked ? 1 : 0).hide();
+               console.log()
+               $('.selectAnswer').css({'display':'none'});
+           }
+        })
 
         function getTemplate(id){
             if(id == 1){
                 $('.selectAnswer').css({'display':'none'});
+                $('#required_id').show();
 
             }else if(id == 2){
                 $('.selectAnswer').css({'display':'none'});
+                $('#required_id').show();
 
             }else if(id == 3){
                 $('.selectAnswer').css({'display':'inline-block'});
-                $('#required_id').css({'display':'none'});
+                $('#required_id').hide().on('mouseleave', function () {
+                    $('#required_id').hide();
+                })
 
             }else if(id == 4){
                 $('.selectAnswer').css({'display':'none'});
+                $('#required_id').show();
             }else if(id == 5){
                 $('.selectAnswer').css({'display':'none'});
+                $('#required_id').show();
             }else if(id == 6){
                 $('.selectAnswer').css({'display':'inline-block'});
+                $('#required_id').show();
             }else if(id ==7){
                 $('.selectAnswer').css({'display':'none'});
+                $('#evaluation_required_id').attr('value', this.checked ? 1 : 0).hide();
             }
         }
 
