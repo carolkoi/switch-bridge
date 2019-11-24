@@ -19,22 +19,6 @@ use Webpatser\Uuid\Uuid;
 
 class SendSurveyEmailController extends Controller
 {
-    //
-//    public function setEmailDelay(){
-//        //Delaying email jobs
-//        $baseDelay = json_encode(now());
-//        $getDelay = json_encode(
-//            cache('jobs.' . SendSurveyEmailJob::class, $baseDelay)
-//        );
-//        $setDelay = Carbon::parse(
-//            $getDelay->date
-//        )->addSeconds(10);
-//
-//        cache([
-//            'jobs.' . SendSurveyEmailJob::class => json_encode($setDelay)
-//        ], 5);
-//        return;
-//    }
     public function emailSurvey($id)
     {
         $setting = Options::where('option_name', 'automatic_survey_send')->first();
@@ -72,6 +56,9 @@ class SendSurveyEmailController extends Controller
             $staff_email = User::find($staff->user_id)->email;
             $token = Uuid::generate()->string;
             $this->dispatch(new SendSurveyEmailJob($template,$token,$staff_email));
+            if(env('MAIL_HOST', false) == 'smtp.mailtrap.io'){
+                sleep(1); //use usleep(500000) for half a second or less
+            }
             Allocation::where('user_id', $staff->user_id)->update(['email_sent' => 1]);
 
         }
@@ -89,6 +76,9 @@ class SendSurveyEmailController extends Controller
             $client_email = Client::find($client->client_id)->email;
             $token = Uuid::generate()->string;
             $this->dispatch(new SendSurveyEmailJob($template,$token,$client_email));
+            if(env('MAIL_HOST', false) == 'smtp.mailtrap.io'){
+                sleep(1); //use usleep(500000) for half a second or less
+            }
             Allocation::where('client_id', $client->client_id)->update(['email_sent' => 1]);
 
         }
@@ -106,6 +96,9 @@ class SendSurveyEmailController extends Controller
             $email = unserialize($other->others);
             $token = Uuid::generate()->string;
             $this->dispatch(new SendSurveyEmailJob($template,$token,$email));
+            if(env('MAIL_HOST', false) == 'smtp.mailtrap.io'){
+                sleep(1); //use usleep(500000) for half a second or less
+            }
             Allocation::whereNull(['client_id', 'user_id'])->update(['email_sent' => 1]);
         }
 
