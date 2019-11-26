@@ -31,8 +31,8 @@ class UserResponsesExport implements FromCollection, WithHeadings, ShouldAutoSiz
     }
 
 
-public function collection()
-{
+    public function collection()
+    {
         $datas = Question::where('template_id', $this->templateId)->with(['responses','answer'])->get();
         $responseDetails = collect();
         foreach($datas as $data){
@@ -40,8 +40,10 @@ public function collection()
                 $response = collect();
                 if(empty($key)){
                     $response['question'] = $data->question;
+
                     if ($respons->answer_type == Question::SELECT_MULTIPLE){
                         $data = collect(json_decode($respons->answer))->toArray();
+
                         $choice = [];
                         foreach ($data as $ans){
                             $choice[] = Answer::find($ans)->choice;
@@ -69,7 +71,7 @@ public function collection()
 
 
         return new Collection($responseDetails);
-}
+    }
 }
 
 
