@@ -1,8 +1,8 @@
 @extends('layouts.def')
 
 @section('content')
-    <div class="container" style="margin-left: 150px">
-        <div class="row">
+    <div class="container">
+        <div class="row justify-content-center">
             <div class="col-md-8 offset-md-2">
                 <div class="card">
 
@@ -38,7 +38,7 @@
                             @php($count =1)
                             <div class="content">
                                 @include('adminlte-templates::common.errors')
-                                <div class="box box-primary">
+{{--                                <div class="box box-primary">--}}
 
                                     <div class="box-body" style="margin-left: 50px; margin-right: 50px">
                                         <div class="row">
@@ -49,7 +49,7 @@
                                             {!! Form::close() !!}
                                         </div>
                                     </div>
-                                </div>
+{{--                                </div>--}}
                             </div>
                         @endif
                     </div>
