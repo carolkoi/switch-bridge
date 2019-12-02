@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-8 offset-md-2">
+            <div class="col-md-8">
                 <div class="card">
 
                     <div class="card-header">
@@ -42,7 +42,7 @@
 
                                     <div class="box-body" style="margin-left: 50px; margin-right: 50px">
                                         <div class="row">
-                                            {!! Form::open(['route' => 'survey.store', 'style' => 'width:100%']) !!}
+                                            {!! Form::open(['route' => 'survey.store', 'style' => 'width:100%', 'id' => 'surveyForm']) !!}
 
                                             @include('surveys.fields')
 
@@ -60,13 +60,12 @@
 @endsection
 @section('scripts')
     <script type="text/javascript">
+        $('#dropdown').select2();
+        // $('.rating').rating();
         $('#date_id').datetimepicker({
-            format: 'YYYY-MM-DD HH:mm:ss',
+            format: 'YYYY-MM-DD',
             useCurrent: false
         });
-        $('#dropdown').select2();
-        $('.rating').rating();
-
         var somethingChanged = false;
         $('.rating-survey').change(function() {
             somethingChanged = true;
@@ -81,6 +80,7 @@
             });
             console.log(total);
             $("#score").html(total);
+            $("#score_rate").val(total);
         });
     </script>
 @endsection

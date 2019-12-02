@@ -62,8 +62,6 @@
 @endforeach
         @if($questions->surveyType->status == 1)
             <div class="pull-right"> <b>Total Rating Score:<p id="score"></p></b>
-
-
             </div>
         @endif
 

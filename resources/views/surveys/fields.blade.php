@@ -9,7 +9,7 @@
         <label>{{ $count ++}} . {{$question->question}} </label>
         @if($question->type == App\Models\Question::USER_INPUT)
             <input type="text" {{($question->status == 1) ? 'required="required"' : ''}}
-                   name="su_{{$questions->id}}_{{$question->id}}_{{$question->type}}"
+            name="su_{{$questions->id}}_{{$question->id}}_{{$question->type}}"
                    class="form-control">
         @endif
         @if($question->type == App\Models\Question::SELECT_ONE)
@@ -23,7 +23,8 @@
         @if($question->type == App\Models\Question::SELECT_MULTIPLE)
             @foreach($question->answer as $ans)
                 <br/>
-                <input type="checkbox" name="su_{{$questions->id}}_{{$question->id}}_{{$question->type}}[]" value="{{ $ans->id }}"
+                <input type="checkbox" name="su_{{$questions->id}}_{{$question->id}}_{{$question->type}}[]"
+                       value="{{ $ans->id }}"
                     {{($question->status == 1) ? 'required="required"' : ''}}>
                 <label> {{$ans->choice}}</label>
             @endforeach
@@ -31,8 +32,9 @@
         @if($question->type == App\Models\Question::DATE)
             <input type="text"
                    name="su_{{$questions->id}}_{{$question->id}}_{{$question->type}}"
-                   class="form-control" id="date_id" autocomplete="off" {{($question->status == 1) ? 'required="required"' : ''}}>
+                   class="form-control" id="date_id" {{($question->status == 1) ? 'required="required"' : ''}}>
         @endif
+
         @if($question->type == App\Models\Question::NUMBER)
             <input type="number" min="1"
                    name="su_{{$questions->id}}_{{$question->id}}_{{$question->type}}"
@@ -41,7 +43,8 @@
 
         @if($question->type == App\Models\Question::DROP_DOWN_LIST)
             <br/>
-            <select class="form-control" name="su_{{$questions->id}}_{{$question->id}}_{{$question->type}}" id="dropdown" {{($question->status == 1) ? 'required="required"' : ''}}>
+            <select class="form-control" name="su_{{$questions->id}}_{{$question->id}}_{{$question->type}}"
+                    id="dropdown" {{($question->status == 1) ? 'required="required"' : ''}}>
                 @foreach($question->answer as $ans)
                     <br/>
                     <option value="{{ $ans->id }}">{{$ans->choice}}</option>
@@ -60,38 +63,13 @@
 @endforeach
 @if($questions->surveyType->status == 1)
     <input type="hidden" name="total" class="form-control" id="score_rate">
-@endif
-@if($questions->surveyType->status == 1)
-    <div class="pull-right"> <b>Total Rating Score:<p id="score"></p></b>
 
-    </div>
+    <div class="pull-right"> <b>Total Rating Score:<p id="score"></p></b></div>
 @endif
 
 @if(count($questions->questions) !== 0 )
     <button type="submit" class="btn btn-sm btn-primary"> Submit</button>
 @endif
-<script type="text/javascript">
-    $('#dropdown').select2();
-    $('#date_id').datetimepicker({
-        format: 'YYYY-MM-DD',
-        useCurrent: false
-    });
-    var somethingChanged = false;
-    $('.rating-survey').change(function() {
-        somethingChanged = true;
-        // get all the inputs into an array.
-        var $inputs = $('#surveyForm :input.rating');
-        // get an associative array of just the values.
-        var total = 0;
-        $inputs.each(function() {
-            if(typeof total == 'number') {
-                total = parseInt($(this).val()) + parseInt(total);
-            }
-        });
-        console.log(total);
-        $("#score_rate").html(total);
-        $("#score").html(total);
-    });
-</script>
+
 
 
