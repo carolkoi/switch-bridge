@@ -4,12 +4,10 @@ namespace App\Models;
 
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\MediaLibrary\HasMedia\HasMedia;
-use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 
-class Question extends Model implements HasMedia
+
+class Question extends Model
 {
-    use HasMediaTrait;
     use SoftDeletes;
 
     public $table = 'questions';
