@@ -60,8 +60,9 @@
 @section('scripts')
     <script type="text/javascript">
         $('#dropdown').select2();
+        $('.rating').rating();
         $('#date_id').datetimepicker({
-            format: 'YYYY-MM-DD HH:mm:ss',
+            format: 'YYYY-MM-DD',
             useCurrent: false
         });
         var somethingChanged = false;

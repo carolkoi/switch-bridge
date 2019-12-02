@@ -1,4 +1,5 @@
 @include('layouts.admin-lite.includes.survey_head')
+
 <body>
 <div id="app">
     <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
@@ -27,5 +28,6 @@
     </main>
 </div>
 @include('layouts.admin-lite.scripts.survey_script')
+
 </body>
 </html>

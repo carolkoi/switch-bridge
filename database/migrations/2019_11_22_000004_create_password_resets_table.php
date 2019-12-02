@@ -24,7 +24,7 @@ class CreatePasswordResetsTable extends Migration
             $table->engine = 'InnoDB';
             $table->string('email');
             $table->string('token');
-            $table->timestamp('created_at');
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
 
             $table->index(["email"], 'password_resets_email_index');
         });

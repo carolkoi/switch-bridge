@@ -11,10 +11,11 @@
         left:       0;
         height:     100%;
         width:      100%;
-        background: rgba( 255, 255, 255, .8 )
-        url('http://i.stack.imgur.com/FhHRx.gif')
-        50% 50%
-        no-repeat;
+        background-image: url('http://i.stack.imgur.com/FhHRx.gif');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+
     }
     body.loading {
         overflow: hidden;
@@ -23,6 +24,13 @@
     body.loading .modal {
         display: block;
     }
+    .select2-container--default .select2-selection--single{
+        border-radius: unset;
+    }
+    .select2-container .select2-selection--single {
+        height: unset;
+    }
+
 </style>
 
 @section('content')
@@ -48,11 +56,12 @@
     </div>
     <div class="modal"><!-- Place at bottom of page -->
     <p>Please Wait...</p></div>
+
 @endsection
 @section('scripts')
     <script>
         jQuery(document).ready(function () {
-            $("#user_id, #client_id, #template_id, #mails, #survey_type_id").select2({
+            $(".select2").select2({
                 tags: true,
                 tokenSeparators: [',', ' '],
                 createTag: function(term, data) {
@@ -87,11 +96,12 @@
         });
 
         let setDropDownOptions = function (type) {
+            // beforeSend: function() { $('.modal').show(); }we,
+            // complete: function() { $('.modal').hide(); },
+            // $(document).ajaxStart(function() { Pace.restart(); });
 
             $.ajax({
                 url: '/survey-type/' + type,
-                beforeSend: function() { $('.modal').show(); },
-                complete: function() { $('.modal').hide(); },
                 type: 'get',
                 dataType: "json",
                 success: function (response) {

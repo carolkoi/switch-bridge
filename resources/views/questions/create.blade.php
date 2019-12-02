@@ -6,7 +6,7 @@
             <div class="box-body ">
                 <div class="row">
                     <div class="col-md-12">
-                    {!! Form::open(['url' => '/question', 'method' => 'POST']) !!}
+                    {!! Form::open(['url' => '/question', 'method' => 'POST', 'files'=>'true']) !!}
 
                         @include('questions.fields')
                     {!! Form::close() !!}

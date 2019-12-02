@@ -42,9 +42,9 @@
 
                                     <div class="box-body" style="margin-left: 50px; margin-right: 50px">
                                         <div class="row">
-                                            {!! Form::open(['route' => 'survey.store', 'style' => 'width:100%', 'id' => 'surveyForm']) !!}
+                                            {!! Form::open(['route' => 'survey.store', 'style' => 'width:100%']) !!}
 
-                                                @include('surveys.fields')
+                                            @include('surveys.fields')
 
                                             {!! Form::close() !!}
                                         </div>
@@ -60,11 +60,13 @@
 @endsection
 @section('scripts')
     <script type="text/javascript">
-        $('#dropdown').select2();
         $('#date_id').datetimepicker({
             format: 'YYYY-MM-DD HH:mm:ss',
             useCurrent: false
         });
+        $('#dropdown').select2();
+        $('.rating').rating();
+
         var somethingChanged = false;
         $('.rating-survey').change(function() {
             somethingChanged = true;
@@ -78,7 +80,6 @@
                 }
             });
             console.log(total);
-            $("#score_rate").html(total);
             $("#score").html(total);
         });
     </script>

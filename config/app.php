@@ -1,5 +1,7 @@
 <?php
 
+use WizPack\Workflow\Providers\WorkflowApprovalServiceProvider;
+
 return [
 
     /*
@@ -182,6 +184,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        WorkflowApprovalServiceProvider::class
+
 
     ],
 

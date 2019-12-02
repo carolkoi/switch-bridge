@@ -28,7 +28,7 @@ class CreateTemplatesTable extends Migration
             $table->string('name');
             $table->text('email_msg')->nullable()->default(null);
             $table->string('description');
-            $table->tinyInteger('status')->default('0');
+            $table->tinyInteger('approved')->default('0');
             $table->date('valid_from')->nullable()->default(null);
             $table->date('valid_until')->nullable()->default(null);
 

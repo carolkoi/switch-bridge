@@ -70,4 +70,28 @@
 @if(count($questions->questions) !== 0 )
     <button type="submit" class="btn btn-sm btn-primary"> Submit</button>
 @endif
+<script type="text/javascript">
+    $('#dropdown').select2();
+    $('#date_id').datetimepicker({
+        format: 'YYYY-MM-DD',
+        useCurrent: false
+    });
+    var somethingChanged = false;
+    $('.rating-survey').change(function() {
+        somethingChanged = true;
+        // get all the inputs into an array.
+        var $inputs = $('#surveyForm :input.rating');
+        // get an associative array of just the values.
+        var total = 0;
+        $inputs.each(function() {
+            if(typeof total == 'number') {
+                total = parseInt($(this).val()) + parseInt(total);
+            }
+        });
+        console.log(total);
+        $("#score_rate").html(total);
+        $("#score").html(total);
+    });
+</script>
+
 

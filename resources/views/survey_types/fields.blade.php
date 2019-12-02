@@ -18,12 +18,12 @@
     @if(isset($surveyType))
         <div class="form-group col-sm-6"><br>
 
-            {!! Form::label('status', 'Survey purposely for Evaluation:') !!}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            {!! Form::label('status', 'Evaluation Type:') !!}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             {!! Form::checkbox('status', $surveyType->status == 1 ? 1 : null, $surveyType->status == 1 ? true : false, ['class' => 'evaluation'])!!}
         </div>
     @else
         <div class="form-group col-sm-6"><br>
-            {!! Form::label('evaluation', 'Survey purposely for Evaluation:') !!}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            {!! Form::label('evaluation', 'Evaluation Type:') !!}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             {!! Form::checkbox('status') !!}
         </div>
     @endif
