@@ -6,10 +6,12 @@ use App\Response;
 use App\User;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use WizPack\Workflow\Interfaces\ApprovableInterface;
+use WizPack\Workflow\Traits\ApprovableTrait;
 
-class Template extends Model
+class Template extends Model implements ApprovableInterface
 {
-    use SoftDeletes;
+    use SoftDeletes,ApprovableTrait;
 
     public $table = 'templates';
 
@@ -90,5 +92,16 @@ class Template extends Model
 
     public function surveyUuids(){
         return $this->hasMany(SentSurveys::class);
+    }
+
+    /**
+     * a link to view the approval details i.e. a link to show in your controller
+     * method to be defined on the model
+     *
+     * @return mixed
+     */
+    public function previewLink()
+    {
+        return env('APP_URL')."/allocations";
     }
 }

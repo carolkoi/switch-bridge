@@ -3,7 +3,7 @@
 @if(isset($template))
 <div class="form-group">
     {!! Form::label('survey_type_id', 'Type:') !!}
-    <select class="form-control" name="survey_type_id" id="survey_type_id">
+    <select class="form-control select2" name="survey_type_id" id="survey_type_id">
         @foreach($survey_types as $survey_type)
             <option value="{{$survey_type->id}}"{{$template->survey_type_id ==$survey_type->id ? 'selected="selected"' : ''}}>{{$survey_type->type}}</option>
         @endforeach
@@ -54,16 +54,16 @@
     </div>
     @endif
 
-@section('scripts')
-    <script type="text/javascript">
-        $('#survey_type_id').select2();
-        $('#email_msg').summernote();
-        $('#valid_from, #valid_until').datetimepicker({
-            format: 'YYYY-MM-DD',
-            useCurrent: false
-        })
-    </script>
-@endsection
+{{--@section('js')--}}
+{{--    <script type="text/javascript">--}}
+{{--        $('#survey_type_id').select2();--}}
+{{--        $('#email_msg').summernote();--}}
+{{--        $('#valid_from, #valid_until').datetimepicker({--}}
+{{--            format: 'YYYY-MM-DD',--}}
+{{--            useCurrent: false--}}
+{{--        })--}}
+{{--    </script>--}}
+{{--@endsection--}}
 
 
 <!-- Valid Until Field -->
@@ -90,7 +90,7 @@
 <!-- Email Msg Field -->
 <div class="form-group">
     {!! Form::label('email_msg', 'Email Message:') !!}
-    {!! Form::textarea('email_msg', null, ['id' => 'email_msg', 'required' => 'required']) !!}
+    {!! Form::textarea('email_msg', null, ['id' => 'editor1', 'required' => 'required', 'class' => 'textarea']) !!}
 </div>
 
 <!-- Submit Field -->
@@ -98,3 +98,16 @@
     {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}
     <a href="{!! route('templates.index') !!}" class="btn btn-default">Cancel</a>
 </div>
+
+@section('js')
+
+    <script>
+        // $('.textarea').wysihtml5();
+        CKEDITOR.replace('editor1')
+        $('#survey_type_id').select2();
+        $('#valid_from, #valid_until').datetimepicker({
+            format: 'YYYY-MM-DD',
+            useCurrent: false
+        })
+    </script>
+    @endsection

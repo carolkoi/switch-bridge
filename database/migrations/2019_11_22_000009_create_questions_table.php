@@ -28,6 +28,7 @@ class CreateQuestionsTable extends Migration
             $table->integer('type');
             $table->unsignedInteger('answer_id')->nullable()->default(null);
             $table->tinyInteger('status')->default('0');
+            $table->text('attachment')->nullable()->default(null);
             $table->mediumText('description')->nullable()->default(null);
             $table->softDeletes();
             $table->nullableTimestamps();

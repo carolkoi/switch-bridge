@@ -12,6 +12,7 @@
         "ext-json": "*",
         "barryvdh/laravel-ide-helper": "^2.6",
         "barryvdh/laravel-snappy": "^0.4.6",
+        "league/fractal": "^0.18.0",
         "doctrine/dbal": "~2.3",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "~6.0",
@@ -22,6 +23,7 @@
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "^5.8.0",
+        "spatie/laravel-medialibrary": "^7.0.0",
         "webpatser/laravel-uuid": "^3.0",
         "yajra/laravel-datatables-buttons": "^4.6",
         "yajra/laravel-datatables-html": "^4.4",
@@ -48,8 +50,12 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/"
+            "App\\": "app/",
+            "WizPack\\": "wizpack/"
         },
+        "files": [
+            "wizpack/Workflow/Helpers/helpers.php"
+        ],
         "classmap": [
             "database/seeds",
             "database/factories"

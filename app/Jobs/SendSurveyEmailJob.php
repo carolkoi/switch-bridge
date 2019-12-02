@@ -14,7 +14,7 @@ use App\Mail\SurveyEmail;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
-class SendSurveyEmailJob
+class SendSurveyEmailJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 

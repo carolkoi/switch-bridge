@@ -32,6 +32,7 @@ class User extends Model
 
 
     public $fillable = [
+        'name',
         'first_name',
         'last_name',
         'email',
@@ -69,6 +70,11 @@ class User extends Model
     }
     public function templates(){
         return $this->hasMany(Template::class);
+    }
+
+    public function getNameAttribute()
+    {
+        return $this->attributes['first_name']." ".$this->attributes['last_name'];
     }
 
 
