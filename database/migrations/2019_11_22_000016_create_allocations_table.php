@@ -24,13 +24,14 @@ class CreateAllocationsTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('user_type')->nullable()->default(null);
-            $table->unsignedInteger('client_id')->nullable();
+            $table->unsignedInteger('client_id')->nullable()->default(null);
             $table->unsignedInteger('user_id')->nullable()->default(null);
             $table->string('type', 45)->nullable()->default(null);
             $table->tinyInteger('status')->nullable()->default('0');
             $table->unsignedInteger('template_id');
             $table->text('others')->nullable()->default(null);
             $table->tinyInteger('email_sent')->nullable()->default('0');
+            $table->tinyInteger('approved')->nullable()->default('0');
 
             $table->index(["user_id"], 'fk_allocations_users1_idx');
             $table->softDeletes();

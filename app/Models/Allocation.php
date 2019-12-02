@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use WizPack\Workflow\Interfaces\ApprovableInterface;
+use WizPack\Workflow\Traits\ApprovableTrait;
 
 /**
  * @SWG\Definition(
@@ -85,6 +87,7 @@ class Allocation extends Model
         'others',
         'type',
         'status',
+        'approved',
         'template_id'
     ];
 
@@ -124,6 +127,4 @@ class Allocation extends Model
     public function scopeCountAllUsersByTemplateId($query, $template_id){
         return $query->where(['template_id' => $template_id])->count();
     }
-
-
 }

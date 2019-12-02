@@ -21,10 +21,11 @@ class SendSurveyEmailController extends Controller
 {
     public function emailSurvey($id)
     {
+        $now = Carbon::now()->addMinute(1);
         $setting = Options::where('option_name', 'automatic_survey_send')->first();
-        $allocations = Allocation::where(['template_id' => $id, 'status' => true])->with('template')->get();
-
+        $allocations = Allocation::where(['template_id' => $id])->with('template')->get();
         foreach ($allocations as $allocation) {
+            if ($allocation->template->approved == 1){
             if ($allocation->email_sent == 0) {
                 if (Carbon::now()->lte($allocation->template->valid_until)) {
                     $this->sendToClient($id);
@@ -36,8 +37,9 @@ class SendSurveyEmailController extends Controller
                 Flash::error('There is an error! Survey deadline has passed.');
                 return redirect(route('allocations.index'));
             }
-            Flash::error($allocation->template->name. ' '.' survey already sent to these users.');
+            Flash::error($allocation->template->name . ' ' . ' survey already sent to these users.');
             return redirect(route('allocations.index'));
+        }
         }
         Flash::error('There is an error! The survey is not yet approved for allocation.');
         return redirect(route('allocations.index'));
@@ -46,16 +48,18 @@ class SendSurveyEmailController extends Controller
 
     public function sendToStaff($id)
     {
-        $staffs = Allocation::where(['template_id' => $id, 'status' => true])
+        $now = Carbon::now()->addMinute(1);
+        $staffs = Allocation::where(['template_id' => $id])
             ->whereNotNull('user_id')
             ->with(['template'])
             ->get();
+
 
         foreach ($staffs as $staff){
             $template = Template::find($staff->template_id);
             $staff_email = User::find($staff->user_id)->email;
             $token = Uuid::generate()->string;
-            $this->dispatch(new SendSurveyEmailJob($template,$token,$staff_email));
+            $this->dispatch((new SendSurveyEmailJob($template,$token,$staff_email))->delay($now));
             Allocation::where('user_id', $staff->user_id)->update(['email_sent' => 1]);
 
         }
@@ -64,7 +68,8 @@ class SendSurveyEmailController extends Controller
 
     public function sendToClient($id)
     {
-        $clients = Allocation::where(['template_id' => $id, 'status' => true])
+        $now = Carbon::now()->addMinute(1);
+        $clients = Allocation::where(['template_id' => $id])
             ->whereNotNull('client_id')
             ->with('template')
             ->get();
@@ -72,7 +77,7 @@ class SendSurveyEmailController extends Controller
             $template = Template::find($client->template_id);
             $client_email = Client::find($client->client_id)->email;
             $token = Uuid::generate()->string;
-            $this->dispatch(new SendSurveyEmailJob($template,$token,$client_email));
+            $this->dispatch((new SendSurveyEmailJob($template,$token,$client_email))->delay($now));
             Allocation::where('client_id', $client->client_id)->update(['email_sent' => 1]);
 
         }
@@ -81,7 +86,8 @@ class SendSurveyEmailController extends Controller
 
     public function sendToOther($id)
     {
-        $others = Allocation::where(['template_id' => $id, 'status' => true])
+        $now = Carbon::now()->addMinute(1);
+        $others = Allocation::where(['template_id' => $id])
             ->whereNotNull('others')
             ->with('template')
             ->get();
@@ -89,8 +95,8 @@ class SendSurveyEmailController extends Controller
             $template = Template::find($other->template_id);
             $email = unserialize($other->others);
             $token = Uuid::generate()->string;
-            $this->dispatch(new SendSurveyEmailJob($template,$token,$email));
-            Allocation::whereNull(['client_id', 'user_id'])->update(['email_sent' => 1]);
+            $this->dispatch((new SendSurveyEmailJob($template,$token,$email))->delay($now));
+            Allocation::where(['others', serialize($other->others)])->update(['email_sent' => 1]);
         }
 
     }

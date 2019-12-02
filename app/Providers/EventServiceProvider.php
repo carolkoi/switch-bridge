@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Events\Workflow\ApprovalRequestRaised;
+use App\Events\Workflow\WorkflowStageApproved;
+use App\Listeners\Workflow\WhenApprovalRequestIsRaised;
+use App\Listeners\Workflow\WhenWorkflowStageIsApproved;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -18,6 +22,12 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        ApprovalRequestRaised::class => [
+            WhenApprovalRequestIsRaised::class,
+        ],
+        WorkflowStageApproved::class => [
+            WhenWorkflowStageIsApproved::class
+        ]
     ];
 
     /**

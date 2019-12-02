@@ -89,6 +89,11 @@ class AllocationController extends AppBaseController
                 }
             }
 
+            //initiating the approval request
+            $allocations = Template::find($input['template_id']);
+            $approval = new Template();
+            $approval->addApproval($allocations);
+
             Flash::success('Survey allocated successfully.');
             return redirect(route('allocations.index'));
         }
@@ -219,16 +224,21 @@ class AllocationController extends AppBaseController
     public function approveSurvey($id, $action)
     {
 
-        $allocations = Allocation::where('template_id',$id)->get();
-        foreach ($allocations as $allocation){
-            if($action){
+        $allocations = Template::find($id);
 
-                $allocation->update(['status' => Allocation::APPROVED]);
+        $approval = new Template();
+        $approval->addApproval($allocations);
 
-            }else{
-                $allocation->update(['status' => !Allocation::APPROVED]);
-            }
-        }
+//        dd("done");
+//        foreach ($allocations as $allocation){
+//            if($action){
+//
+//                $allocation->update(['status' => Allocation::APPROVED]);
+//
+//            }else{
+//                $allocation->update(['status' => !Allocation::APPROVED]);
+//            }
+//        }
 
 
             return redirect()->route('allocations.index');

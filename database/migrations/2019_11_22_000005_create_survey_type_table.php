@@ -26,7 +26,7 @@ class CreateSurveyTypeTable extends Migration
             $table->string('type', 100);
             $table->tinyInteger('status')->nullable()->default('0');
             $table->integer('range_from')->nullable()->default('1');
-            $table->integer('range_to')->nullable();
+            $table->integer('range_to')->nullable()->default(null);
             $table->softDeletes();
             $table->nullableTimestamps();
         });

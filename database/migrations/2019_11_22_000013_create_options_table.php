@@ -23,7 +23,7 @@ class CreateOptionsTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->string('option_name')->nullable();
+            $table->string('option_name')->nullable()->default(null);
             $table->string('questions');
             $table->tinyInteger('value')->nullable()->default('0');
             $table->softDeletes();

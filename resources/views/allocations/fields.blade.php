@@ -3,7 +3,7 @@
 
     <div class="form-group">
         {!! Form::label('survey_type_id', 'Type:') !!}
-        <select class="form-control" name="survey_type_id" id="survey_type_id">
+        <select class="form-control select2" name="survey_type_id" id="survey_type_id">
             @foreach($survey_types as $survey_type)
                 <option value="{{$survey_type->id}}">{{$survey_type->type}}</option>
             @endforeach
@@ -13,7 +13,7 @@
     <!-- Template Id Field -->
 
     <div class="form-group">
-        {!!   Form::select('template_id', [], null, ['id'=>"template_id", 'class' => 'form-control']); !!}
+        {!!   Form::select('template_id', [], null, ['id'=>"template_id", 'class' => 'form-control select2']); !!}
 
     </div>
 
@@ -38,7 +38,7 @@
 
     <div class="form-group">
         {!! Form::label('user_id', 'Staffs:') !!}
-        <select class="form-control" name="user_id[]" id="user_id" placeholder="---Select Staff--" multiple>
+        <select class="form-control select2" name="user_id[]" id="user_id" placeholder="---Select Staff--" multiple>
             <option disabled="disabled">-- Select Staffs --</option>
             @foreach($users as $user)
                 <option value="{{$user->id}}">{{$user->first_name.' '.$user->last_name}}</option>
@@ -50,7 +50,7 @@
 
     <div class="form-group" id="client_list">
         {!! Form::label('client_id', 'Clients:') !!}
-        <select class="form-control" name="client_id[]" id="client_id" multiple>
+        <select class="form-control select2" name="client_id[]" id="client_id" multiple>
             <option disabled="disabled">-- Select Clients--</option>
             @foreach($clients as $client)
                 <option value="{{$client->id}}">{{$client->first_name.' '.$client->last_name}}</option>
@@ -61,7 +61,7 @@
 
     <div class="form-group" id="others_email">
         {!! Form::label('others', 'Add Email:') !!}
-        <select class="form-control" name="others[]" id="mails" type="email" multiple>
+        <select class="form-control select2" name="others[]" id="mails" type="email" multiple>
             <option disabled="disabled">-- Add email--</option>
         </select>
     </div>

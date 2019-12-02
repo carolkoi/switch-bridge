@@ -26,9 +26,9 @@ class CreateResponsesTable extends Migration
             $table->unsignedInteger('template_id');
             $table->unsignedInteger('question_id');
             $table->integer('answer_type');
-            $table->string('answer');
+            $table->string('answer')->nullable()->default(null);
             $table->text('survey_uuid');
-            $table->decimal('total')->nullable();
+            $table->decimal('total', 10, 0)->nullable()->default(null);
             $table->softDeletes();
             $table->nullableTimestamps();
         });

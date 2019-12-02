@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
-use App\Template;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 
-class Question extends Model
+class Question extends Model implements HasMedia
 {
+    use HasMediaTrait;
     use SoftDeletes;
 
     public $table = 'questions';
@@ -36,7 +38,8 @@ class Question extends Model
         'type',
         'answer_id',
         'status',
-        'description'
+        'description',
+        'attachment'
     ];
 
     /**

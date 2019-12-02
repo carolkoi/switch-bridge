@@ -14,6 +14,7 @@ use App\Repositories\AnswerRepository;
 use App\Repositories\QuestionRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
+use Illuminate\Support\Facades\Input;
 use Response;
 
 class QuestionController extends AppBaseController
@@ -69,6 +70,13 @@ class QuestionController extends AppBaseController
     public function store(CreateQuestionRequest $request)
     {
         $input = $request->all();
+        if (Input::hasFile('attachment')) {
+            $name = trim($request->file('attachment')->getClientOriginalName());
+            $destinationPath = 'uploads';
+            $request->file('attachment')->move($destinationPath, $name);
+            $input['attachment'] = $name;
+        }
+
         $question = $this->questionRepository->create($input);
 
         if (($question['type'] == Question::SELECT_MULTIPLE OR $question['type'] == Question::DROP_DOWN_LIST)) {
