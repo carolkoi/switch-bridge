@@ -63,7 +63,6 @@ class SurveyController extends AppBaseController
      */
     public function store(CreateSurveyRequest $request)
     {
-        dd($request->all());
         $input = $request->except(['_token', 'survey_uuid', 'template_id', 'total']);
 //        check if the end date of survey has passed and if the
 // check if late response is set is set to receive late responses

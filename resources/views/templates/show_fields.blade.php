@@ -1,7 +1,7 @@
 <!-- Type Field -->
 <div class="form-group">
     {!! Form::label('type', 'Type:') !!}
-    <p>{!! $template->type !!}</p>
+    <p>{!! $template->surveyType->type !!}</p>
 </div>
 
 <!-- Name Field -->

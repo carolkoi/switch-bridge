@@ -66,7 +66,7 @@ class User extends Model
         'password' => 'required'
     ];
     public function allocations(){
-        return $this->hasMany(Allocation::class);
+        return $this->hasMany(Allocation::class, 'user_id', 'id');
     }
     public function templates(){
         return $this->hasMany(Template::class);
@@ -74,7 +74,7 @@ class User extends Model
 
     public function getNameAttribute()
     {
-        return $this->attributes['first_name']." ".$this->attributes['last_name'];
+        return $this->first_name." ".$this->last_name;
     }
 
 

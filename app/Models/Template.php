@@ -104,4 +104,28 @@ class Template extends Model implements ApprovableInterface
     {
         return env('APP_URL')."/allocations";
     }
+
+    /**
+     * marking the approval as complete
+     * @param $id
+     */
+    public function markApprovalComplete($id)
+    {
+        $model = self::find($id);
+        $model->approved = 1;
+//        $model->approved_at = Carbon::now();
+        $model->save();
+    }
+
+    /**
+     * marking the approval as rejected
+     * @param $id
+     */
+    public function markApprovalAsRejected($id)
+    {
+        $model = self::find($id);
+        $model->approved = 2;
+//        $model->rejected_at = Carbon::now();
+        $model->save();
+    }
 }

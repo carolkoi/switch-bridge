@@ -3,7 +3,7 @@
 @if(isset($template))
 <div class="form-group">
     {!! Form::label('survey_type_id', 'Type:') !!}
-    <select class="form-control select2" name="survey_type_id" id="survey_type_id">
+    <select class="form-control select2" name="survey_type_id" id="select2">
         @foreach($survey_types as $survey_type)
             <option value="{{$survey_type->id}}"{{$template->survey_type_id ==$survey_type->id ? 'selected="selected"' : ''}}>{{$survey_type->type}}</option>
         @endforeach
@@ -12,7 +12,7 @@
 @else
     <div class="form-group">
         {!! Form::label('survey_type_id', 'Type:') !!}
-        <select class="form-control" name="survey_type_id" id="survey_type_id">
+        <select class="form-control select2" name="survey_type_id" id="survey_type_id">
             @foreach($survey_types as $survey_type)
                 <option value="{{$survey_type->id}}">{{$survey_type->type}}</option>
             @endforeach
@@ -102,9 +102,7 @@
 @section('js')
 
     <script>
-        // $('.textarea').wysihtml5();
         CKEDITOR.replace('editor1')
-        $('#survey_type_id').select2();
         $('#valid_from, #valid_until').datetimepicker({
             format: 'YYYY-MM-DD',
             useCurrent: false

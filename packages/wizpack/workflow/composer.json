@@ -1,0 +1,44 @@
+{
+    "name": "wizpack/workflow",
+    "description": ":description",
+    "license": "license",
+    "authors": [
+        {
+            "name": "Johnson Didinya",
+            "email": "didinkaj@gmail.com",
+            "homepage": "https://jdk.co.ke"
+        }
+    ],
+    "homepage": "https://github.com/didinkaj/workflow",
+    "keywords": ["Wizpack", "workflow"],
+    "require": {
+        "illuminate/support": "~5|~6"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~7.0",
+        "mockery/mockery": "^1.1",
+        "orchestra/testbench": "~3.0",
+        "sempro/phpunit-pretty-print": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Wizpack\\Workflow\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Wizpack\\Workflow\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Wizpack\\Workflow\\Providers\\WizPackApprovalServiceProvider",
+                "Wizpack\\Workflow\\Providers\\WorkflowApprovalServiceProvider"
+            ],
+            "aliases": {
+                "workflow": "Wizpack\\Workflow\\Facades\\WorkflowApproval"
+            }
+        }
+    }
+}

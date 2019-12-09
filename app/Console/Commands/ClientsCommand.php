@@ -51,6 +51,7 @@ class ClientsCommand extends Command
                     'contact_id' => $client->idPeople,
                     'first_name' => $client->cFirstName,
                     'last_name' => $client->cLastName,
+                    'name' => $client->cFirstName.' '.$client->cLastName,
                     'initials' => $client->cInitials,
                     'email' => $client->cEmail,
                     'company_account'=> $client->peopleClient['Account'],

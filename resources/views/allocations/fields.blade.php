@@ -38,24 +38,16 @@
 
     <div class="form-group">
         {!! Form::label('user_id', 'Staffs:') !!}
-        <select class="form-control select2" name="user_id[]" id="user_id" placeholder="---Select Staff--" multiple>
-            <option disabled="disabled">-- Select Staffs --</option>
-            @foreach($users as $user)
-                <option value="{{$user->id}}">{{$user->first_name.' '.$user->last_name}}</option>
-            @endforeach
-        </select>
+        {!! Form::select('user_id[]', $users, $template->allocations->users('id')->toArray(),
+        ['class' => 'form-control select2', 'multiple' => 'multiple'])!!}
     </div>
 
     <!-- Client Id Field -->
 
     <div class="form-group" id="client_list">
         {!! Form::label('client_id', 'Clients:') !!}
-        <select class="form-control select2" name="client_id[]" id="client_id" multiple>
-            <option disabled="disabled">-- Select Clients--</option>
-            @foreach($clients as $client)
-                <option value="{{$client->id}}">{{$client->first_name.' '.$client->last_name}}</option>
-            @endforeach
-        </select>
+        {!! Form::select('client_id[]', $clients, $template->allocations->clients,
+        ['class' => 'form-control select2', 'multiple' => 'multiple']) !!}
     </div>
 
 

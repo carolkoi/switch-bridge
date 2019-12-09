@@ -50,7 +50,7 @@ class AllocationController extends AppBaseController
     {
         $templates = Template::get();
         return view('allocations.create', ['templates' => $templates,
-            'users' => User::get(), 'clients' => Client::get(), 'survey_types' => SurveyType::get()]);
+            'users' => User::get()->pluck('name', 'id'), 'clients' => Client::get()->pluck('name', 'id'), 'survey_types' => SurveyType::get()]);
     }
 
     /**
@@ -62,20 +62,20 @@ class AllocationController extends AppBaseController
      */
     public function store(CreateAllocationRequest $request)
     {
-        $input = $request->except('user_id', 'client_id','others');
+        $input = $request->except('user_id', 'client_id', 'others');
         $users = $request->input('user_id');
         $clients = $request->input('client_id');
         $others = $request->input('others');
-        $template = Template::where('id',$input['template_id'])->with('questions')->first();
-        if (count($template->questions) > 0){
-            if($others){
-                foreach ($others as $other){
+        $template = Template::where('id', $input['template_id'])->with('questions')->first();
+        if (count($template->questions) > 0) {
+            if ($others) {
+                foreach ($others as $other) {
                     $input['others'] = serialize($other);
                     $allocation = $this->allocationRepository->create($input);
                 }
                 unset($input['others']);
             }
-            if (is_array($users)){
+            if (is_array($users)) {
                 foreach ($users as $user) {
                     $input['user_id'] = $user;
                     $allocation = $this->allocationRepository->create($input);
@@ -104,7 +104,7 @@ class AllocationController extends AppBaseController
     /**
      * Display the specified Allocation.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
@@ -124,32 +124,45 @@ class AllocationController extends AppBaseController
     /**
      * Show the form for editing the specified Allocation.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
     public function edit($id)
     {
-        $allocation = $this->allocationRepository->find($id);
-        $template = Template::find($allocation->template_id);
-        $user = User::find($allocation->user_id);
-        $client = Client::find($allocation->client_id);
-        $users = User::get();
-        $clients = Client::get();
+        $template = Template::with(['allocations.users', 'allocations.clients'])->find($id);
+//        $allocations = Allocation::with(['users', 'clients'])->where('template_id', $template->id)->get();
 
+        $selected_users = [];
+        $selected_clients = [];
+        foreach ($template->allocations as $allocation) {
+            if (empty(!$allocation->user_id)){
+                $selected_users[] = $allocation->users->pluck('name', 'id');
+            }
+            if (empty(!$allocation->client_id)){
+                $selected_clients[] = $allocation->clients->pluck('name', 'id');
+            }
+
+        }
+        $template['selected_users'] = $selected_users;
+        $template['selected_clients'] = $selected_clients;
+        $users = User::all()->pluck('name', 'id');
+        $clients = Client::all()->pluck('name', 'id');
         if (empty($allocation)) {
             Flash::error('Allocation not found');
 
             return redirect(route('allocations.index'));
         }
 
-        return view('allocations.edit', compact('allocation','template', 'users', 'clients', 'user', 'client'));
+        return view('allocations.edit', ['allocation' => $allocation, 'template' => $template,
+            'selected_users' => $selected_users, 'selected_clients' => $selected_clients,
+            'users' => $users, 'clients' => $clients]);
     }
 
     /**
      * Update the specified Allocation in storage.
      *
-     * @param  int              $id
+     * @param int $id
      * @param UpdateAllocationRequest $request
      *
      * @return Response
@@ -165,9 +178,9 @@ class AllocationController extends AppBaseController
 
             return redirect(route('allocations.index'));
         }
-        if ($requestdata['user_type'] == 'staff'){
+        if ($requestdata['user_type'] == 'staff') {
             $staffs = $request['user_id'];
-            foreach ($staffs as $staff){
+            foreach ($staffs as $staff) {
                 $requestdata['user_id'] = $staff;
                 $allocation = $this->allocationRepository->create($requestdata, $id);
                 $staff_email = User::find($staff)->email;
@@ -175,9 +188,9 @@ class AllocationController extends AppBaseController
 
             }
         }
-        if ($allocation->user_type == 'client'){
+        if ($allocation->user_type == 'client') {
             $clients = $request->input('client_id');
-            foreach ($clients as $client){
+            foreach ($clients as $client) {
                 $all_update['client_id'] = $client;
                 $allocation = $this->allocationRepository->update($all_update, $id);
                 $client_mail = Client::find($client)->email;
@@ -194,7 +207,7 @@ class AllocationController extends AppBaseController
     /**
      * Remove the specified Allocation from storage.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
@@ -214,9 +227,11 @@ class AllocationController extends AppBaseController
 
         return redirect(route('allocations.index'));
     }
-    public function getSurveyType($type){
+
+    public function getSurveyType($type)
+    {
         // Fetch survey by type
-        $surveyData = Template::where('survey_type_id', $type)->get()->pluck('name','id');
+        $surveyData = Template::where('survey_type_id', $type)->get()->pluck('name', 'id');
         return response()->json(['data' => $surveyData]);
     }
 
@@ -229,22 +244,9 @@ class AllocationController extends AppBaseController
         $approval = new Template();
         $approval->addApproval($allocations);
 
-//        dd("done");
-//        foreach ($allocations as $allocation){
-//            if($action){
-//
-//                $allocation->update(['status' => Allocation::APPROVED]);
-//
-//            }else{
-//                $allocation->update(['status' => !Allocation::APPROVED]);
-//            }
-//        }
 
-
-            return redirect()->route('allocations.index');
-        }
-
-
+        return redirect()->route('allocations.index');
+    }
 
 
 }

@@ -31,8 +31,9 @@ class CreateWorkflowsTable extends Migration
             $table->longText('payload')->nullable()->default(null);
             $table->unsignedInteger('sent_by')->nullable()->default(null);
             $table->tinyInteger('approved')->nullable()->default('0');
-            $table->timestamp('approved_on')->nullable()->default(null);
+            $table->timestamp('approved_at')->nullable()->default(null);
             $table->unsignedInteger('awaiting_stage_id');
+            $table->timestamp('rejected_at')->nullable()->default(null);
 
             $table->index(["awaiting_stage_id"], 'fk_transaction_approvals_transaction_approval_stages1_idx');
 

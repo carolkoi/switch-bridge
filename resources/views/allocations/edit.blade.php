@@ -11,7 +11,7 @@
        <div class="box box-primary">
            <div class="box-body">
                <div class="row">
-                   {!! Form::model($allocation, ['route' => ['allocations.update', $allocation->id], 'method' => 'patch']) !!}
+                   {!! Form::model($template, ['route' => ['allocations.update', $template->id], 'method' => 'patch']) !!}
 
                         @include('allocations.editfields')
 

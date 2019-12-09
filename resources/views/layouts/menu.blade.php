@@ -49,6 +49,7 @@
             </li>
         </ul>
     </li>
+    @include("wizpack::layouts.menu")
 
     <li class="treeview {{ Request::is('settings*') ? 'active menu-open' : '' }}">
         <a class="dropdown-toggle" href="#">
@@ -59,50 +60,11 @@
         </a>
         <ul class="treeview-menu">
             <li class="{{ Request::is('settings/options*') ? 'active' : '' }}">
-                <a href="{!! route('options.index') !!}"><i class="fa fa-bars"></i><span>Options</span></a>
-            </li>
-
-            <li class="{{ Request::is('settings/approvalWorkflows*') ? 'active' : '' }}">
-                <a href="{!! route('approvalWorkflows.index') !!}"><i class="fa fa-tasks"></i><span>Approval Workflows</span></a>
+                <a href="{!! route('options.index') !!}"><i class="fa fa-bars"></i><span>Optional Settings</span></a>
             </li>
             <li class="{{ Request::is('settings/surveyTypes*') ? 'active' : '' }}">
                 <a href="{!! route('surveyTypes.index') !!}"><i class="fa fa-edit"></i><span>Survey Types</span></a>
             </li>
-        </ul>
-    </li>
-    <li class="{{ Request::is('approvals*') ? 'active' : '' }}">
-        <a href="{!! route('approvals.index') !!}"><i class="fa fa-edit"></i><span>Approvals</span></a>
-    </li>
-
-    <li class="{{ Request::is('workflow*') ? 'active' : '' }} treeview">
-        <a href="#">
-            <i class="fa fa-dashboard"></i> <span>WorkFlow</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-        </a>
-        <ul class="treeview-menu">
-
-            <li class="{{ Request::is('workflowStages*') ? 'active' : '' }}">
-                <a href="{!! route('workflowStages.index') !!}"><i class="fa fa-edit"></i><span>Workflow Stages</span></a>
-            </li>
-            <li class="{{ Request::is('workflowStageApprovers*') ? 'active' : '' }}">
-                <a href="{!! route('workflowStageApprovers.index') !!}"><i class="fa fa-edit"></i><span>Workflow Stage Approvers</span></a>
-            </li>
-
-            <li class="{{ Request::is('workflowStageCheckLists*') ? 'active' : '' }}">
-                <a href="{!! route('workflowStageCheckLists.index') !!}"><i class="fa fa-edit"></i><span>Workflow Stage Check Lists</span></a>
-            </li>
-
-            <li class="{{ Request::is('workflowStageTypes*') ? 'active' : '' }}">
-                <a href="{!! route('workflowStageTypes.index') !!}"><i
-                        class="fa fa-edit"></i><span>Workflow Stage Types</span></a>
-            </li>
-
-            <li class="{{ Request::is('workflowTypes*') ? 'active' : '' }}">
-                <a href="{!! route('workflowTypes.index') !!}"><i class="fa fa-edit"></i><span>Workflow Types</span></a>
-            </li>
-
         </ul>
     </li>
 

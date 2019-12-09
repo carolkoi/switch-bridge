@@ -81,7 +81,7 @@ class Client extends Model
     use SoftDeletes;
 
     public $table = 'clients';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -98,7 +98,8 @@ class Client extends Model
         'email',
         'company_account',
         'company_id',
-        'company_name'
+        'company_name',
+        'name'
     ];
 
     /**
@@ -127,5 +128,6 @@ class Client extends Model
         'email' => 'required'
     ];
 
-    
+
+
 }

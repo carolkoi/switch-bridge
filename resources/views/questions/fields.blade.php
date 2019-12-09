@@ -55,12 +55,12 @@
     </div>
 </div>
 
-    <!-- File Attachment Field -->
-    <div class="form-group">
-        {!! Form::label('attachment', 'File Upload:') !!}
-        <br>
-        {!! Form::file('attachment', null, ['class' => 'form-control dropzone', 'rows' =>3]) !!}
-    </div>
+{{--    <!-- File Attachment Field -->--}}
+{{--    <div class="form-group">--}}
+{{--        {!! Form::label('attachment', 'File Upload:') !!}--}}
+{{--        <br>--}}
+{{--        {!! Form::file('attachment', null, ['class' => 'form-control dropzone', 'rows' =>3]) !!}--}}
+{{--    </div>--}}
 
 <!--required field-->
     @if($template->surveyType->status == 1)

@@ -31,6 +31,7 @@ class OptionsController extends AppBaseController
     public function index()
     {
         $settings = Options::all();
+//        dd($settings);
         return view('options.index', compact('settings'));
     }
 

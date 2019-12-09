@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use WizPack\Workflow\Interfaces\ApprovableInterface;
 use WizPack\Workflow\Traits\ApprovableTrait;
 
+
 /**
  * @SWG\Definition(
  *      definition="Allocation",
@@ -118,6 +119,13 @@ class Allocation extends Model
     public function template()
     {
         return $this->belongsTo(Template::class, 'template_id','id');
+    }
+    public function users(){
+        return $this->hasMany(User::class, 'id', 'user_id');
+    }
+
+    public function clients(){
+        return $this->hasMany(Client::class, 'id', 'client_id');
     }
 
     public function scopeCountUsersByTemplateId($query, $template_id, $user_type){

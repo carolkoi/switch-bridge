@@ -51,10 +51,10 @@
     "autoload": {
         "psr-4": {
             "App\\": "app/",
-            "WizPack\\": "wizpack/"
+            "WizPack\\Workflow\\": "packages/wizpack/workflow/src"
         },
         "files": [
-            "wizpack/Workflow/Helpers/helpers.php"
+            "packages/wizpack/workflow/src/Helpers/helpers.php"
         ],
         "classmap": [
             "database/seeds",

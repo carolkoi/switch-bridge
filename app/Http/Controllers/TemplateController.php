@@ -77,7 +77,7 @@ class TemplateController extends AppBaseController
     public function show($id)
     {
 
-        $template = $this->templateRepository->find($id);
+        $template = Template::with('surveyType')->find($id);
 
         $questions = Question::where('template_id',$template->id)->get();
         if (empty($template)) {

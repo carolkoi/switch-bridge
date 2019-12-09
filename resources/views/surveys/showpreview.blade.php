@@ -59,7 +59,7 @@
 @endsection
 @section('scripts')
     <script type="text/javascript">
-        $('#dropdown').select2();
+        // $('#dropdown').select2();
         $('#date_id').datetimepicker({
             format: 'YYYY-MM-DD',
             useCurrent: false
