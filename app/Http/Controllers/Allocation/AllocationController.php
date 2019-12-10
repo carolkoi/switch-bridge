@@ -10,6 +10,7 @@ use App\Mail\SendEmailQuestionnaire;
 use App\Mail\SendSurveyEmail;
 use App\Models\Allocation;
 use App\Models\Client;
+use App\Models\Question;
 use App\Models\SurveyType;
 use App\Models\Template;
 use App\Models\User;
@@ -49,8 +50,9 @@ class AllocationController extends AppBaseController
     public function create()
     {
         $templates = Template::get();
+        $survey_type = SurveyType::get()->pluck('type', 'id');
         return view('allocations.create', ['templates' => $templates,
-            'users' => User::get()->pluck('name', 'id'), 'clients' => Client::get()->pluck('name', 'id'), 'survey_types' => SurveyType::get()]);
+            'users' => User::get()->pluck('name', 'id'), 'clients' => Client::get()->pluck('name', 'id'), 'survey_type' => $survey_type]);
     }
 
     /**
@@ -110,15 +112,44 @@ class AllocationController extends AppBaseController
      */
     public function show($id)
     {
-        $allocation = $this->allocationRepository->find($id);
+        $template = Template::with(['allocations.user', 'allocations.client'])->find($id);
+        $questions = Question::where('template_id',$id)->get();
+        $selected_users = $this->getAllocatedUsers($template->allocations);
+        $selected_clients = $this->getAllocatedClients($template->allocations);
+        $selected_mails = $this->getAllocatedMails($template->allocations);
+        $allocation['selected_users'] = $selected_users;
+        $allocation['selected_clients'] = $selected_clients;
+        $allocation['selected_mails'] = $selected_mails;
 
-        if (empty($allocation)) {
-            Flash::error('Allocation not found');
 
-            return redirect(route('allocations.index'));
-        }
+        return view('allocations.show')->with(['allocation' => $allocation,
+            'template' => $template, 'user' => User::find($template->user_id), 'questions' => $questions]);
+    }
 
-        return view('allocations.show')->with('allocation', $allocation);
+    private function getAllocatedUsers($allocation)
+    {
+        return collect($allocation)->filter(function ($allocation) {
+            return !empty($allocation->user_id);
+        })->map(function ($allocation){
+            return $allocation->user_id;
+        });
+
+    }
+
+    private function getAllocatedClients($allocation){
+        return collect($allocation)->filter(function ($allocation) {
+            return !empty($allocation->client_id);
+        })->map(function ($allocation){
+            return $allocation->client_id;
+        });
+    }
+
+    private function getAllocatedMails($allocation){
+        return collect($allocation)->filter(function ($allocation) {
+            return !empty($allocation->others);
+        })->map(function ($allocation){
+            return \Opis\Closure\unserialize($allocation->others);
+        });
     }
 
     /**
@@ -130,24 +161,23 @@ class AllocationController extends AppBaseController
      */
     public function edit($id)
     {
-        $template = Template::with(['allocations.users', 'allocations.clients'])->find($id);
-//        $allocations = Allocation::with(['users', 'clients'])->where('template_id', $template->id)->get();
+        $template = Template::with(['allocations.user', 'allocations.client'])->find($id);
+        $selected_users = $this->getAllocatedUsers($template->allocations);
+        $selected_clients = $this->getAllocatedClients($template->allocations);
+        $selected_mails = $this->getAllocatedMails($template->allocations);
 
-        $selected_users = [];
-        $selected_clients = [];
-        foreach ($template->allocations as $allocation) {
-            if (empty(!$allocation->user_id)){
-                $selected_users[] = $allocation->users->pluck('name', 'id');
-            }
-            if (empty(!$allocation->client_id)){
-                $selected_clients[] = $allocation->clients->pluck('name', 'id');
-            }
+        $allocation['selected_users'] = $selected_users;
+        $allocation['selected_clients'] = $selected_clients;
+        $allocation['selected_mails'] = $selected_mails;
+        $allocation['template_id']= (int)$id;
+        $allocation['survey_type_id']= $template->survey_type_id;
+//        dd($allocation['selected_mails'], $allocation['selected_clients'], $allocation['selected_users']);
 
-        }
-        $template['selected_users'] = $selected_users;
-        $template['selected_clients'] = $selected_clients;
-        $users = User::all()->pluck('name', 'id');
-        $clients = Client::all()->pluck('name', 'id');
+        $users = User::get()->pluck('name', 'id');
+        $clients = Client::get()->pluck('name', 'id');
+        $survey_type = SurveyType::get()->pluck('type', 'id');
+        $templates = Template::where('survey_type_id', $template->survey_type_id)->get()->pluck('name', 'id');
+
         if (empty($allocation)) {
             Flash::error('Allocation not found');
 
@@ -155,8 +185,7 @@ class AllocationController extends AppBaseController
         }
 
         return view('allocations.edit', ['allocation' => $allocation, 'template' => $template,
-            'selected_users' => $selected_users, 'selected_clients' => $selected_clients,
-            'users' => $users, 'clients' => $clients]);
+            'users' => $users, 'clients' => $clients, 'survey_type' => $survey_type, 'templates' => $templates]);
     }
 
     /**
@@ -169,41 +198,51 @@ class AllocationController extends AppBaseController
      */
     public function update($id, UpdateAllocationRequest $request)
     {
-        $allocation = $this->allocationRepository->find($id);
-        $requestdata = $request->except(['user_id', 'client_id']);
-        $template = Template::find($allocation->template_id);
 
-        if (empty($allocation)) {
-            Flash::error('Allocation not found');
-
-            return redirect(route('allocations.index'));
-        }
-        if ($requestdata['user_type'] == 'staff') {
-            $staffs = $request['user_id'];
-            foreach ($staffs as $staff) {
-                $requestdata['user_id'] = $staff;
-                $allocation = $this->allocationRepository->create($requestdata, $id);
-                $staff_email = User::find($staff)->email;
-                Mail::to($staff_email)->send(new SendSurveyEmail($template));
-
+        $template = Template::with(['allocations'])->find($id);
+        //get all the allocations for the survey
+        $allocations = Allocation::where('template_id', $id)->get();
+        $input = $request->except('user_id', 'client_id', 'others');
+        $users = $request->input('user_id');
+        $clients = $request->input('client_id');
+        $others = $request->input('others');
+        foreach ($allocations as $allocation) {
+            if ($users) {
+                foreach ($users as $user) {
+                    $input['user_id'] = $user;
+                    $allocation = Allocation::updateOrCreate([
+                        'id' => $allocation->id,
+                        'template_id' => $allocation->template_id
+                    ],
+                        $input);
+                }
+                unset($input['user_id']);
             }
-        }
-        if ($allocation->user_type == 'client') {
-            $clients = $request->input('client_id');
-            foreach ($clients as $client) {
-                $all_update['client_id'] = $client;
-                $allocation = $this->allocationRepository->update($all_update, $id);
-                $client_mail = Client::find($client)->email;
-                Mail::to($client_mail)->send(new SendSurveyEmail($template));
-
+            if ($clients) {
+                foreach ($clients as $client) {
+                    $input['client_id'] = $client;
+                    $allocation = Allocation::updateOrCreate([
+                        'id' => $allocation->id,
+                        'template_id' => $allocation->template_id
+                    ],
+                        $input);
+                }
             }
+            if ($others) {
+                foreach ($others as $other) {
+                    $input['others'] = serialize($other);
+                    $allocation = Allocation::updateOrCreate([
+                        'id' => $allocation->id,
+                        'template_id' => $allocation->template_id
+                    ],
+                        $input);
+                }
+            }
+            unset($input['others']);
         }
-
-        Flash::success('Survey allocation updated successfully.');
 
         return redirect(route('allocations.index'));
     }
-
     /**
      * Remove the specified Allocation from storage.
      *

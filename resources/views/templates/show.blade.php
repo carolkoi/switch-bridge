@@ -8,6 +8,8 @@
     </section>
     <div class="content">
         <div class="box box-primary">
+            <div class="box-body">
+                <div class="row" style="padding-left: 20px">
             <div class="col-md-12">
                 <!-- Custom Tabs -->
                 <div class="nav-tabs-custom">
@@ -46,5 +48,6 @@
             </div>
             </div>
         </div>
+    </div>
     </div>
 @endsection

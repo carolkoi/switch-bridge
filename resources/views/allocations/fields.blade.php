@@ -3,19 +3,21 @@
 
     <div class="form-group">
         {!! Form::label('survey_type_id', 'Type:') !!}
-        <select class="form-control select2" name="survey_type_id" id="survey_type_id">
-            @foreach($survey_types as $survey_type)
-                <option value="{{$survey_type->id}}">{{$survey_type->type}}</option>
-            @endforeach
-        </select>
+        {!! Form::select('survey_type_id', $survey_type, isset($allocation) ? $allocation['survey_type_id'] : null, ['class' => 'form-control select2']) !!}
     </div>
     <br>
     <!-- Template Id Field -->
+@if(isset($allocation))
+        <div class="form-group">
+            {!!   Form::select('template_id', $templates, $allocation['template_id'], ['id'=>"template_id", 'class' => 'form-control select2']); !!}
+        </div>
+    @else
+        <div class="form-group">
+            {!!   Form::select('template_id', [], null, ['id'=>"template_id", 'class' => 'form-control select2']); !!}
 
-    <div class="form-group">
-        {!!   Form::select('template_id', [], null, ['id'=>"template_id", 'class' => 'form-control select2']); !!}
+        </div>
+    @endif
 
-    </div>
 
 </fieldset>
 
@@ -38,7 +40,7 @@
 
     <div class="form-group">
         {!! Form::label('user_id', 'Staffs:') !!}
-        {!! Form::select('user_id[]', $users, $template->allocations->users('id')->toArray(),
+        {!! Form::select('user_id[]', $users, isset($allocation['selected_users'])?$allocation['selected_users']:null,
         ['class' => 'form-control select2', 'multiple' => 'multiple'])!!}
     </div>
 
@@ -46,17 +48,26 @@
 
     <div class="form-group" id="client_list">
         {!! Form::label('client_id', 'Clients:') !!}
-        {!! Form::select('client_id[]', $clients, $template->allocations->clients,
+        {!! Form::select('client_id[]', $clients, isset($allocation['selected_clients'])?$allocation['selected_clients']:null,
         ['class' => 'form-control select2', 'multiple' => 'multiple']) !!}
     </div>
 
+    @if(isset($allocation))
+        <div class="form-group" id="others_email">
+            {!! Form::label('others', 'Add Email:') !!}
+            {!! Form::select('others[]', $allocation['selected_mails'], $allocation['selected_mails'],
+        ['class' => 'form-control select2', 'multiple' => 'multiple', 'id' => 'mails']) !!}
+        </div>
+        @else
+        <div class="form-group" id="others_email">
+            {!! Form::label('others', 'Add Email:') !!}
+            {!! Form::select('others[]', [], null,
+        ['class' => 'form-control select2', 'multiple' => 'multiple', 'id' => 'mails']) !!}
+        </div>
+        @endif
 
-    <div class="form-group" id="others_email">
-        {!! Form::label('others', 'Add Email:') !!}
-        <select class="form-control select2" name="others[]" id="mails" type="email" multiple>
-            <option disabled="disabled">-- Add email--</option>
-        </select>
-    </div>
+
+
 
 
 </fieldset>

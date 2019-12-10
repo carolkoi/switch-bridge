@@ -4,17 +4,17 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateWorkflowStageApproversTable extends Migration
+class CreateAllocationUserTable extends Migration
 {
     /**
      * Schema table name to migrate
      * @var string
      */
-    public $tableName = 'workflow_stage_approvers';
+    public $tableName = 'allocation_user';
 
     /**
      * Run the migrations.
-     * @table workflow_stage_approvers
+     * @table allocation_user
      *
      * @return void
      */
@@ -23,25 +23,23 @@ class CreateWorkflowStageApproversTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
+            $table->unsignedInteger('allocation_id');
             $table->unsignedInteger('user_id');
-            $table->unsignedInteger('granted_by');
-            $table->unsignedInteger('workflow_stage_id');
-            $table->unsignedInteger('workflow_stage_type_id');
 
-            $table->index(["workflow_stage_type_id"], 'fk_transaction_approvers_transaction_approval_stages1_idx');
+            $table->index(["allocation_id"], 'fk_allocation_user_allocations1_idx');
 
-            $table->index(["workflow_stage_id"], 'fk_transaction_approvers_transaction_approval_stages2_idx');
+            $table->index(["user_id"], 'fk_allocation_user_users1_idx');
             $table->softDeletes();
             $table->nullableTimestamps();
 
 
-            $table->foreign('workflow_stage_type_id', 'fk_transaction_approvers_transaction_approval_stages1_idx')
-                ->references('id')->on('workflow_stage_type')
+            $table->foreign('allocation_id', 'fk_allocation_user_allocations1_idx')
+                ->references('id')->on('allocations')
                 ->onDelete('no action')
                 ->onUpdate('no action');
 
-            $table->foreign('workflow_stage_id', 'fk_transaction_approvers_transaction_approval_stages2_idx')
-                ->references('id')->on('workflow_stages')
+            $table->foreign('user_id', 'fk_allocation_user_users1_idx')
+                ->references('id')->on('users')
                 ->onDelete('no action')
                 ->onUpdate('no action');
         });

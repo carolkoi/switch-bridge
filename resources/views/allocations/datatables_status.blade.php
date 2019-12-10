@@ -1,7 +1,9 @@
 @if($template['approved'])
     <label class="badge label-success"> Approved</label>
-@else
-    <label class="badge label-success"> Pending</label>
+@elseif($template['rejected'])
+    <label class="badge label-danger"> Rejected</label>
+    @else
+    <label class="badge label-warning"> Pending</label>
 @endif
 {{--<br/>--}}
 {{--@if(!$status)--}}

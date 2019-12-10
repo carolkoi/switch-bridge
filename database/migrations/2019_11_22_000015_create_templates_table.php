@@ -31,6 +31,9 @@ class CreateTemplatesTable extends Migration
             $table->tinyInteger('approved')->default('0');
             $table->date('valid_from')->nullable()->default(null);
             $table->date('valid_until')->nullable()->default(null);
+            $table->tinyInteger('rejected')->nullable()->default('0');
+            $table->timestamp('approved_at')->nullable()->default(null);
+            $table->timestamp('rejected_at')->nullable()->default(null);
 
             $table->index(["survey_type_id"], 'fk_templates_survey_type_idx');
 

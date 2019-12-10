@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Response;
 use App\User;
+use Carbon\Carbon;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use WizPack\Workflow\Interfaces\ApprovableInterface;
@@ -29,10 +30,11 @@ class Template extends Model implements ApprovableInterface
         'survey_type_id',
         'name',
         'description',
-        'status',
         'valid_from',
         'valid_until',
         'email_msg',
+        'approved',
+        'rejected'
 
     ];
 
@@ -113,7 +115,7 @@ class Template extends Model implements ApprovableInterface
     {
         $model = self::find($id);
         $model->approved = 1;
-//        $model->approved_at = Carbon::now();
+        $model->approved_at = Carbon::now();
         $model->save();
     }
 
@@ -124,8 +126,8 @@ class Template extends Model implements ApprovableInterface
     public function markApprovalAsRejected($id)
     {
         $model = self::find($id);
-        $model->approved = 2;
-//        $model->rejected_at = Carbon::now();
+        $model->rejected = 1;
+        $model->rejected_at = Carbon::now();
         $model->save();
     }
 }

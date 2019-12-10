@@ -26,6 +26,7 @@ class CreateClientsTable extends Migration
             $table->integer('contact_id')->nullable()->default(null);
             $table->string('first_name', 45)->nullable()->default(null);
             $table->string('last_name', 45)->nullable()->default(null);
+            $table->string('name', 100)->nullable();
             $table->string('initials', 45)->nullable()->default(null);
             $table->string('email');
             $table->string('company_account', 45)->nullable()->default(null);

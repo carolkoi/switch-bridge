@@ -120,12 +120,12 @@ class Allocation extends Model
     {
         return $this->belongsTo(Template::class, 'template_id','id');
     }
-    public function users(){
-        return $this->hasMany(User::class, 'id', 'user_id');
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id','id');
     }
 
-    public function clients(){
-        return $this->hasMany(Client::class, 'id', 'client_id');
+    public function client(){
+        return $this->belongsTo(Client::class, 'client_id', 'id');
     }
 
     public function scopeCountUsersByTemplateId($query, $template_id, $user_type){
@@ -135,4 +135,12 @@ class Allocation extends Model
     public function scopeCountAllUsersByTemplateId($query, $template_id){
         return $query->where(['template_id' => $template_id])->count();
     }
+
+//    public function users(){
+//        return $this->belongsToMany('App\Models\User', 'allocation_user', 'allocation_id', 'user_id');
+//    }
+//
+//    public function clients(){
+//        return $this->belongsToMany('App\Models\Client', 'allocation_client', 'allocation_id', 'client_id');
+//    }
 }

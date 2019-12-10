@@ -1,30 +1,21 @@
-<!-- User Type Field -->
-<div class="form-group">
-    {!! Form::label('user_type', 'User Type:') !!}
-    <p>{!! $allocation->user_type !!}</p>
-</div>
+{{--<fieldset class="col-md-6" style="border:1px solid; padding: 5px;  border-color: #e5e5e5">--}}
+{{--    <legend>Survey Details</legend>--}}
+    <!-- Template Id Field -->
+    <div class="form-group">
+        {!! Form::label('template_id', 'Survey:') !!}
+        <p>{!! $template->name !!}</p>
+    </div>
 
-<!-- Client Id Field -->
-<div class="form-group">
-    {!! Form::label('client_id', 'Client Id:') !!}
-    <p>{!! $allocation->client_id !!}</p>
-</div>
+    <div class="form-group">
+        {!! Form::label('template_id', 'Timeline:') !!}
+        <p>{!!date('d-m-Y', strtotime($template->valid_from)). ' to ' .date('d-m-Y', strtotime($template->valid_until))!!}</p>
+    </div>
+    <div class="form-group">
+        {!! Form::label('template_id', 'Created By:') !!}
+        <p>{!!$user->name!!}</p>
+    </div>
 
-<!-- User Id Field -->
-<div class="form-group">
-    {!! Form::label('user_id', 'User Id:') !!}
-    <p>{!! $allocation->user_id !!}</p>
-</div>
+{{--</fieldset>--}}
 
-<!-- Type Field -->
-<div class="form-group">
-    {!! Form::label('type', 'Type:') !!}
-    <p>{!! $allocation->type !!}</p>
-</div>
 
-<!-- Template Id Field -->
-<div class="form-group">
-    {!! Form::label('template_id', 'Template Id:') !!}
-    <p>{!! $allocation->template_id !!}</p>
-</div>
 
