@@ -23,14 +23,31 @@ class CreateResponsesTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
+            $table->unsignedInteger('user_id')->nullable();
+            $table->unsignedInteger('client_id')->nullable();
             $table->unsignedInteger('template_id');
             $table->unsignedInteger('question_id');
             $table->integer('answer_type');
             $table->string('answer')->nullable()->default(null);
             $table->text('survey_uuid');
             $table->decimal('total', 10, 0)->nullable()->default(null);
+
+            $table->index(["user_id"], 'fk_responses_users1_idx');
+
+            $table->index(["client_id"], 'fk_responses_clients1_idx');
             $table->softDeletes();
             $table->nullableTimestamps();
+
+
+            $table->foreign('client_id', 'fk_responses_clients1_idx')
+                ->references('id')->on('clients')
+                ->onDelete('no action')
+                ->onUpdate('no action');
+
+            $table->foreign('user_id', 'fk_responses_users1_idx')
+                ->references('id')->on('users')
+                ->onDelete('no action')
+                ->onUpdate('no action');
         });
     }
 
