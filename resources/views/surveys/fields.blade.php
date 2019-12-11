@@ -2,6 +2,9 @@
 @isset($token, $questions)
     <input type="hidden" class="form-control" value="{{$token}}" name="survey_uuid">
     <input type="hidden" class="form-control" value="{{$questions->id}}" name="template_id">
+    <input type="hidden" class="form-control" value="{{$user_id}}" name="user_id">
+    <input type="hidden" class="form-control" value="{{$client_id}}" name="client_id">
+
 @endisset
 @foreach($questions->questions as $question)
     <div class="form-group">

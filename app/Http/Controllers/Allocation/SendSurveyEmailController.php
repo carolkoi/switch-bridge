@@ -59,7 +59,7 @@ class SendSurveyEmailController extends Controller
             $template = Template::find($staff->template_id);
             $staff_email = User::find($staff->user_id)->email;
             $token = Uuid::generate()->string;
-            $this->dispatch((new SendSurveyEmailJob($template,$token,$staff_email))->delay($now));
+            $this->dispatch((new SendSurveyEmailJob($template,$token,$staff_email, $staff->user_id))->delay($now));
             Allocation::where('user_id', $staff->user_id)->update(['email_sent' => 1]);
 
         }
@@ -77,7 +77,7 @@ class SendSurveyEmailController extends Controller
             $template = Template::find($client->template_id);
             $client_email = Client::find($client->client_id)->email;
             $token = Uuid::generate()->string;
-            $this->dispatch((new SendSurveyEmailJob($template,$token,$client_email))->delay($now));
+            $this->dispatch((new SendSurveyEmailJob($template,$token,$client_email, $client->client_id))->delay($now));
             Allocation::where('client_id', $client->client_id)->update(['email_sent' => 1]);
 
         }
@@ -96,7 +96,7 @@ class SendSurveyEmailController extends Controller
             $email = unserialize($other->others);
             $token = Uuid::generate()->string;
             $this->dispatch((new SendSurveyEmailJob($template,$token,$email))->delay($now));
-            Allocation::where(['others', serialize($other->others)])->update(['email_sent' => 1]);
+            Allocation::where(['others'=> $other->others])->update(['email_sent' => 1]);
         }
 
     }

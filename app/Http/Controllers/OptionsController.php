@@ -58,6 +58,7 @@ class OptionsController extends AppBaseController
 //        dd($request->all());
         $this->automateSurveysending( $request);
         $this->receiveLateResponses( $request);
+        $this->receiveResponsesAnonymously($request);
 
 
         Flash::success('Setting question saved successfully.');
@@ -81,6 +82,14 @@ class OptionsController extends AppBaseController
         Options::where('option_name', 'receive_late_response' )->update(['value'=>$receiveLateResponse]);
 
 }
+
+    public function receiveResponsesAnonymously(CreateOptionsRequest $request){
+        $input = $request->all();
+        $receiveResponsesAnonymously = $request->get('anonymous_responses');
+
+        Options::where('option_name', 'anonymous_responses' )->update(['value'=>$receiveResponsesAnonymously]);
+
+    }
 
 
     /**

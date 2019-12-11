@@ -26,11 +26,13 @@ class SendSurveyEmailJob implements ShouldQueue
     protected $template;
     protected $token;
     protected $email;
-    public function __construct(Template $template, $token, $email)
+    protected $id;
+    public function __construct(Template $template, $token, $email, $id)
     {
         $this->template = $template;
         $this->token = $token;
         $this->email = $email;
+        $this->id = $id;
     }
 
     /**
@@ -42,7 +44,7 @@ class SendSurveyEmailJob implements ShouldQueue
     {
         Log::info("job dispached");
 //      return app(SendSurveyEmailController::class)->emailSurvey($this->template->id);
-        Mail::to($this->email)->send(new SurveyEmail($this->template, $this->token));
+        Mail::to($this->email)->send(new SurveyEmail($this->template, $this->token, $this->id));
 
 
     }

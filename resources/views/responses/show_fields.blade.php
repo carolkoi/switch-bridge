@@ -1,5 +1,6 @@
 <div class="card-body">
-    <table class="table table-striped table-boardered">
+    <div class="table-responsive">
+    <table class="table table-striped table-bordered">
         <thead>
         <th>#</th>
         <th>Questions</th>
@@ -12,7 +13,7 @@
         @foreach($responses as $response)
             <tr>
                 <td></td>
-                <td>{{ $count ++}} . {{$response->question}}
+                <td> {{$response->question}}
                 </td>
                 <ul>
                     <td>
@@ -66,4 +67,7 @@
         </tbody>
 
     </table>
+    </div>
+    {{$responses->links()}}
 </div>
+

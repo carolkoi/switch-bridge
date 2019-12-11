@@ -52,7 +52,7 @@
                                 {!! Form::label('anonymous_responses', 'Receive responses anonymously') !!}
                             </div>
                             <div class="col-md-4">
-                                <input type="checkbox" {{$settings[1]->value == true ? 'checked="checked"':''}}data-toggle="toggle"
+                                <input type="checkbox" {{$settings[2]->value == true ? 'checked="checked"':''}}data-toggle="toggle"
                                        data-on="YES" data-off="NO" data-offstyle="danger"
                                        name="anonymous_responses" data-size="small" value="1">
                             </div>

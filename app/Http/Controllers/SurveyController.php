@@ -63,14 +63,15 @@ class SurveyController extends AppBaseController
      */
     public function store(CreateSurveyRequest $request)
     {
-        $input = $request->except(['_token', 'survey_uuid', 'template_id', 'total']);
+        $input = $request->except(['_token', 'survey_uuid', 'template_id', 'total', 'user_id', 'client_id']);
 //        check if the end date of survey has passed and if the
 // check if late response is set is set to receive late responses
-        $setting = Options::where('option_name', 'receive_late_response')->first();
+        $late_response_setting = Options::where('option_name', 'receive_late_response')->first();
+        $anonymous_response_setting = Options::where('option_name', 'anonymous_responses')->first();
 //        get current date
         $template = Template::find($request->input('template_id'));
 
-        if (carbon::now()->lte($template->valid_until) OR ($setting->value == true)) {
+        if (carbon::now()->lte($template->valid_until) OR ($late_response_setting->value == true)) {
             // check if the uuid already exist, user cant respond to the same survey twice
             $response = Response::where('survey_uuid', '=', $request->input('survey_uuid'))
                 ->first();
@@ -79,6 +80,8 @@ class SurveyController extends AppBaseController
                 foreach ($input as $key => $resp) {
                     $map = explode('_', $key);
                     Response::create([
+                        'user_id' => $anonymous_response_setting == true && $request->input('user_id') != null ? $request->input('user_id') : NULL,
+                        'client_id' => $anonymous_response_setting == true && $request->input('client_id') != null ? $request->input('client_id') : NULL,
                         'template_id' => $map[1],
                         'question_id' => $map[2],
                         'answer_type' => $map[3],
@@ -114,8 +117,19 @@ class SurveyController extends AppBaseController
      */
     public function show($id, $token)
     {
-        $questions = Template::with(['questions.answer', 'surveyType'])->find($id);
-        return view('surveys.create', compact('token', 'questions'));
+        $questions = Template::with(['questions.answer', 'surveyType', 'allocations'])->find($id);
+        $allocations = Allocation::where('template_id', $id)->get();
+        foreach ($allocations as $allocation){
+            if (!empty($allocation->user_id)){
+                $user_id = $allocation->user_id;
+                $client_id = NULL;
+            }
+            if (!empty($allocation->client_id)){
+                $user_id = NULL;
+                $client_id = $allocation->client_id;
+            }
+        }
+        return view('surveys.create', compact('token', 'questions', 'user_id', 'client_id'));
     }
 
     public function preview($id)

@@ -75,7 +75,7 @@ class ResponseController extends AppBaseController
     {
         $responses = Question::where('template_id',$template_id)
             ->with(['answer','responses'])
-            ->get();
+            ->paginate();
         $template = Template::find($template_id);
 
 
