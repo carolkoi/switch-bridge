@@ -12,5 +12,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
          $this->call(OptionsTableSeeder::class);
+         $this->call(WorkflowTypesTableSeeder::class);
+
     }
 }

@@ -1,8 +1,11 @@
 {!! Form::open(['route' => ['allocations.destroy', $template_id], 'method' => 'delete']) !!}
 <div class='btn-group'>
-    <a href="{{ route('allocations.show', $template_id) }}" class='btn btn-default btn-sm'>
-        <i class="glyphicon glyphicon-eye-open"></i>
-    </a>
+    @if(!$approved)
+        <a href="{{ route('allocations.show', $template_id) }}" class='btn btn-default btn-sm'>
+            <i class="glyphicon glyphicon-eye-open"></i>
+        </a>
+        @endif
+
     <a href="{{ route('allocations.edit', $template_id) }}" class='btn btn-default btn-sm'>
         <i class="glyphicon glyphicon-edit"></i>
     </a>
