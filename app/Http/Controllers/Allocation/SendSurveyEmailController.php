@@ -95,7 +95,7 @@ class SendSurveyEmailController extends Controller
             $template = Template::find($other->template_id);
             $email = unserialize($other->others);
             $token = Uuid::generate()->string;
-            $this->dispatch((new SendSurveyEmailJob($template,$token,$email))->delay($now));
+            $this->dispatch((new SendSurveyEmailJob($template,$token,$email, 1))->delay($now));
             Allocation::where(['others'=> $other->others])->update(['email_sent' => 1]);
         }
 

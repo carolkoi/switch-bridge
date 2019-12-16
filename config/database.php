@@ -99,7 +99,7 @@ return [
 
         'sqlsrv' => [
             'driver' => 'sqlsrv',
-            'host' => env('DB_HOST_SAGE', 'localhost'),
+            'host' => env('DB_HOST_SAGE', '192.168.1.50'),
             'port' => env('DB_PORT_SAGE', '1433'),
             'database' => env('DB_DATABASE_SAGE', 'forge'),
             'username' => env('DB_USERNAME_SAGE', 'forge'),

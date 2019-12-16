@@ -69,8 +69,6 @@ Route::prefix('settings')->group(function () {
 Route::get('excel-report/{id}', "ResponseController@exportResponses")->name('export-responses');
 
 
-
-
 Route::resource('surveyTypes', 'SurveyTypeController');
 
 

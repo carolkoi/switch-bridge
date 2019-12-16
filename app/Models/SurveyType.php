@@ -59,7 +59,8 @@ class SurveyType extends Model
         'type',
         'status',
         'range_from',
-        'range_to'
+        'range_to',
+        'response_status'
     ];
 
     /**

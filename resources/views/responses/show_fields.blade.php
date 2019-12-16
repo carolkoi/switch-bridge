@@ -31,7 +31,7 @@
                                 @foreach($data as $ans)
                                     <li> {{ App\Models\Answer::find($ans)->choice }}</li>
                                 @endforeach
-                                    <hr>
+{{--                                    <hr>--}}
                                 @endif
 
                             @if($answer->answer_type == App\Models\Question::DATE)

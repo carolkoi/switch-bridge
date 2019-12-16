@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateSurveyRequest;
 use App\Models\Allocation;
 use App\Models\Options;
 use App\Models\SentSurveys;
+use App\Models\SurveyType;
 use App\Repositories\SentSurveysRepository;
 use App\Repositories\SurveyRepository;
 use App\Models\Template;
@@ -67,9 +68,9 @@ class SurveyController extends AppBaseController
 //        check if the end date of survey has passed and if the
 // check if late response is set is set to receive late responses
         $late_response_setting = Options::where('option_name', 'receive_late_response')->first();
-        $anonymous_response_setting = Options::where('option_name', 'anonymous_responses')->first();
 //        get current date
         $template = Template::find($request->input('template_id'));
+        $anonymous_response = SurveyType::where('id', $template->survey_type_id)->first();
 
         if (carbon::now()->lte($template->valid_until) OR ($late_response_setting->value == true)) {
             // check if the uuid already exist, user cant respond to the same survey twice
@@ -80,8 +81,8 @@ class SurveyController extends AppBaseController
                 foreach ($input as $key => $resp) {
                     $map = explode('_', $key);
                     Response::create([
-                        'user_id' => $anonymous_response_setting == true && $request->input('user_id') != null ? $request->input('user_id') : NULL,
-                        'client_id' => $anonymous_response_setting == true && $request->input('client_id') != null ? $request->input('client_id') : NULL,
+                        'user_id' => $anonymous_response->reponse_status == true && $request->input('user_id') != null ? $request->input('user_id') : NULL,
+                        'client_id' => $anonymous_response->reponse_status == true && $request->input('client_id') != null ? $request->input('client_id') : NULL,
                         'template_id' => $map[1],
                         'question_id' => $map[2],
                         'answer_type' => $map[3],

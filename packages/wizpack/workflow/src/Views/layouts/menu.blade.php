@@ -18,9 +18,9 @@
             <a href="{!! route('wizpack::workflowStageApprovers.index') !!}"><i class="fa fa-edit"></i><span>Workflow Stage Approvers</span></a>
         </li>
 
-        <li class="{{ Request::is('wizpack/workflowStageCheckLists*') ? 'active' : '' }}">
-            <a href="{!! route('wizpack::workflowStageCheckLists.index') !!}"><i class="fa fa-edit"></i><span>Workflow Stage Check Lists</span></a>
-        </li>
+{{--        <li class="{{ Request::is('wizpack/workflowStageCheckLists*') ? 'active' : '' }}">--}}
+{{--            <a href="{!! route('wizpack::workflowStageCheckLists.index') !!}"><i class="fa fa-edit"></i><span>Workflow Stage Check Lists</span></a>--}}
+{{--        </li>--}}
 
         <li class="{{ Request::is('wizpack/workflowStageTypes*') ? 'active' : '' }}">
             <a href="{!! route('wizpack::workflowStageTypes.index') !!}"><i

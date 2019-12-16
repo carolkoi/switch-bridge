@@ -68,7 +68,7 @@ use WizPack\Workflow\Traits\ApprovableTrait;
  */
 class Allocation extends Model
 {
-    use SoftDeletes;
+//    use SoftDeletes;
 
     public $table = 'allocations';
 

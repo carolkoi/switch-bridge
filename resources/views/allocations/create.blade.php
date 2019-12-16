@@ -84,6 +84,22 @@
             $('#others').on('click', function () {
                 $('#others_email').show();
             });
+            $("input[name='user_type']").on("click",function(){
+                if ($(this).hasClass("staff_select") && this.checked) // or $(this).is(":checked")
+                    $('.staff_list').fadeIn('slow');
+                else
+                    $('.staff_list').fadeOut('slow');
+
+                if ($(this).hasClass("client_select") && this.checked) // or $(this).is(":checked")
+                    $('.client_list').fadeIn('slow');
+                else
+                    $('.client_list').fadeOut('slow');
+
+                if ($(this).hasClass("mail_add") && this.checked) // or $(this).is(":checked")
+                    $('.mail_list').fadeIn('slow');
+                else
+                    $('.mail_list').fadeOut('slow');
+            });
 
             //changing survey types
             let selectedType = $('#survey_type_id :selected').val();

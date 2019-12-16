@@ -52,6 +52,7 @@ class SurveyTypeController extends AppBaseController
     public function store(CreateSurveyTypeRequest $request)
     {
         $input = $request->all();
+//        dd($input);
         $surveyType = $this->surveyTypeRepository->create($input);
 
         Flash::success('Survey Type saved successfully.');
@@ -112,6 +113,7 @@ class SurveyTypeController extends AppBaseController
         $surveyType = $this->surveyTypeRepository->find($id);
         $input = $request->except('status');
         $input['status'] = $request->input('status') ? 1 : 0;
+        $input['response_status'] = $request->input('response_status') ? 1 : 0;
 
         if (empty($surveyType)) {
             Flash::error('Survey Type not found');

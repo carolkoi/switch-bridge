@@ -148,7 +148,9 @@ class AllocationController extends AppBaseController
         return collect($allocation)->filter(function ($allocation) {
             return !empty($allocation->others);
         })->map(function ($allocation){
-            return \Opis\Closure\unserialize($allocation->others);
+            return [
+            unserialize($allocation->others) => unserialize($allocation->others)
+        ];
         });
     }
 
@@ -161,7 +163,7 @@ class AllocationController extends AppBaseController
      */
     public function edit($id)
     {
-        $template = Template::with(['allocations.user', 'allocations.client'])->find($id);
+        $template = Template::with(['allocations'])->find($id);
         $selected_users = $this->getAllocatedUsers($template->allocations);
         $selected_clients = $this->getAllocatedClients($template->allocations);
         $selected_mails = $this->getAllocatedMails($template->allocations);
@@ -200,48 +202,36 @@ class AllocationController extends AppBaseController
     {
 
         $template = Template::with(['allocations'])->find($id);
-        //get all the allocations for the survey
-        $allocations = Allocation::where('template_id', $id)->get();
+        foreach($template->allocations as $allocation){
+            $this->allocationRepository->delete($allocation->id);
+        }
+//        dd($request->all());
         $input = $request->except('user_id', 'client_id', 'others');
         $users = $request->input('user_id');
         $clients = $request->input('client_id');
         $others = $request->input('others');
-        foreach ($allocations as $allocation) {
-            if ($users) {
+            if ($others) {
+                foreach ($others as $other) {
+                    $input['others'] = serialize($other);
+                    $allocation = $this->allocationRepository->create($input);
+                }
+                unset($input['others']);
+            }
+            if (is_array($users)) {
                 foreach ($users as $user) {
                     $input['user_id'] = $user;
-                    $allocation = Allocation::updateOrCreate([
-                        'id' => $allocation->id,
-                        'template_id' => $allocation->template_id
-                    ],
-                        $input);
+                    $allocation = $this->allocationRepository->create($input);
                 }
                 unset($input['user_id']);
             }
             if ($clients) {
                 foreach ($clients as $client) {
                     $input['client_id'] = $client;
-                    $allocation = Allocation::updateOrCreate([
-                        'id' => $allocation->id,
-                        'template_id' => $allocation->template_id
-                    ],
-                        $input);
+                    $allocation = $this->allocationRepository->create($input);
                 }
             }
-            if ($others) {
-                foreach ($others as $other) {
-                    $input['others'] = serialize($other);
-                    $allocation = Allocation::updateOrCreate([
-                        'id' => $allocation->id,
-                        'template_id' => $allocation->template_id
-                    ],
-                        $input);
-                }
-            }
-            unset($input['others']);
-        }
-
-        return redirect(route('allocations.index'));
+            Flash::success('Survey allocation updated successfully.');
+            return redirect(route('allocations.index'));
     }
     /**
      * Remove the specified Allocation from storage.
@@ -252,15 +242,11 @@ class AllocationController extends AppBaseController
      */
     public function destroy($id)
     {
-        $allocation = $this->allocationRepository->find($id);
-
-        if (empty($allocation)) {
-            Flash::error('Allocation not found');
-
-            return redirect(route('allocations.index'));
+        $template = Template::with(['allocations'])->find($id);
+        foreach($template->allocations as $allocation){
+            $this->allocationRepository->delete($allocation->id);
         }
 
-        $this->allocationRepository->delete($id);
 
         Flash::success('Allocation deleted successfully.');
 

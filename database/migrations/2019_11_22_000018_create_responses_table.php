@@ -23,8 +23,8 @@ class CreateResponsesTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->unsignedInteger('user_id')->nullable();
-            $table->unsignedInteger('client_id')->nullable();
+            $table->unsignedInteger('user_id')->nullable()->default(null);
+            $table->unsignedInteger('client_id')->nullable()->default(null);
             $table->unsignedInteger('template_id');
             $table->unsignedInteger('question_id');
             $table->integer('answer_type');
