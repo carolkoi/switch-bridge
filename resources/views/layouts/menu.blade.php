@@ -17,22 +17,22 @@
         <a href="{!! route('responses.index') !!}"><i class="fa fa-reply-all"></i><span>Responses</span></a>
     </li>
 
-    <li class="treeview {{ Request::is('report*') ? 'active menu-open' : '' }}">
-        <a class="dropdown-toggle" href="#">
-            <i class="fa fa-book"></i> <span>Reports</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-        </a>
-        <ul class="treeview-menu">
-            <li class="{{ Request::is('report/surveyReports*') ? 'active' : '' }}">
-                <a href="{!! route('surveyReports.index') !!}"><i class="fa fa-file"></i><span>Survey Reports</span></a>
-            </li>
-            <li class="{{ Request::is('report/responseReports*') ? 'active' : '' }}">
-                <a href="{!! route('responseReports.index') !!}"><i class="fa fa-file-o"></i><span>Response Reports</span></a>
-            </li>
-        </ul>
-    </li>
+{{--    <li class="treeview {{ Request::is('report*') ? 'active menu-open' : '' }}">--}}
+{{--        <a class="dropdown-toggle" href="#">--}}
+{{--            <i class="fa fa-book"></i> <span>Reports</span>--}}
+{{--            <span class="pull-right-container">--}}
+{{--              <i class="fa fa-angle-left pull-right"></i>--}}
+{{--            </span>--}}
+{{--        </a>--}}
+{{--        <ul class="treeview-menu">--}}
+{{--            <li class="{{ Request::is('report/surveyReports*') ? 'active' : '' }}">--}}
+{{--                <a href="{!! route('surveyReports.index') !!}"><i class="fa fa-file"></i><span>Survey Reports</span></a>--}}
+{{--            </li>--}}
+{{--            <li class="{{ Request::is('report/responseReports*') ? 'active' : '' }}">--}}
+{{--                <a href="{!! route('responseReports.index') !!}"><i class="fa fa-file-o"></i><span>Response Reports</span></a>--}}
+{{--            </li>--}}
+{{--        </ul>--}}
+{{--    </li>--}}
     <li class="treeview {{ Request::is('people*') ? 'active menu-open' : '' }}">
         <a class="dropdown-toggle" href="#">
             <i class="fa fa-users"></i> <span>Users</span>
