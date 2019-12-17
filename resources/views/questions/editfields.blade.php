@@ -58,10 +58,10 @@
 <br>
 <!--required field-->
 
-    <div class="form-group col-md-8">
+    <div class="form-group col-md-8" id="evaluation_required_id">
         {!! Form::label('status', 'Mark Question as Required:') !!}
         &nbsp;&nbsp;&nbsp;
-        {!! Form::checkbox('status',$question->status) !!}
+        {!! Form::checkbox('status',$question->status ) !!}
     </div>
 
 <!-- Description Field -->
@@ -76,3 +76,4 @@
     {!! Form::submit('Update', ['class' => 'btn btn-primary']) !!}
     {{--    <a href="{!! route('questions.index') !!}" class="btn btn-default">Cancel</a>--}}
 </div>
+

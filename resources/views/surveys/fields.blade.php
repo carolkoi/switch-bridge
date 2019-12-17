@@ -46,7 +46,7 @@
 
         @if($question->type == App\Models\Question::DROP_DOWN_LIST)
             <br/>
-            <select class="form-control" name="su_{{$questions->id}}_{{$question->id}}_{{$question->type}}"
+            <select class="form-control select2" name="su_{{$questions->id}}_{{$question->id}}_{{$question->type}}"
                     id="dropdown" {{($question->status == 1) ? 'required="required"' : ''}}>
                 @foreach($question->answer as $ans)
                     <br/>
