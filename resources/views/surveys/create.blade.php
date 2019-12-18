@@ -1,5 +1,25 @@
 @extends('layouts.def')
+<style>
+    .select2-container--default .select2-selection--single{
+        border-radius: unset;
+    }
 
+    .select2-container--default .select2-selection--single, .select2-selection .select2-selection--single {
+        border: 1px solid #d2d6de;
+        border-radius: 0;
+        padding: 4px 12px;
+        height: 34px;
+    }
+    .select2-container--default .select2-selection--single {
+        background-color: #fff;
+        /* border: 1px solid #aaa; */
+        border-radius: 4px;
+    }
+    .select2-container--default .select2-selection--single {
+        border-radius: unset;
+    }
+
+</style>
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
@@ -60,8 +80,9 @@
 @endsection
 @section('scripts')
     <script type="text/javascript">
-        // $('#dropdown').select2();
-        // $('.rating').rating();
+        $(".select2").select2({
+            width: '100%',
+        });
         $('#date_id').datetimepicker({
             format: 'YYYY-MM-DD',
             useCurrent: false

@@ -50,7 +50,27 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <!--Star rating -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.2/css/star-rating.min.css" />
+    <style>
+        .select2-container--default .select2-selection--single{
+            border-radius: unset;
+        }
 
+        .select2-container--default .select2-selection--single, .select2-selection .select2-selection--single {
+            border: 1px solid #d2d6de;
+            border-radius: 0;
+            padding: 4px 12px;
+            height: 34px;
+        }
+        .select2-container--default .select2-selection--single {
+            background-color: #fff;
+            /* border: 1px solid #aaa; */
+            border-radius: 4px;
+        }
+        .select2-container--default .select2-selection--single {
+            border-radius: unset;
+        }
+
+    </style>
 
     @yield('css')
 </head>

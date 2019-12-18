@@ -47,13 +47,6 @@
 <script src="{{asset('admin-lte/bower_components/PACE/pace.min.js')}}"></script>
 <!--Star Rating-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.2/js/star-rating.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $(".select2").select2({
-            width: '100%',
-        });
-    });
-</script>
 
 @yield('scripts')
 @yield('js')

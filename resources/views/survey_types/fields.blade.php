@@ -60,19 +60,18 @@
                     </div>
                 </div>
             </div>
-
         </div>
     @endif
     @if(isset($surveyType))
     <!--anonymous response field-->
         <div class="form-group col-sm-6"><br>
-            {!! Form::label('response', 'Anonymous Response:') !!}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            {!! Form::label('response', 'Show respondents Identity:') !!}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             {!! Form::checkbox('response_status', $surveyType->response_status == 1 ? 1 : null, $surveyType->response_status == 1 ? true : false) !!}
         </div>
         @else
     <!--anonymous response field-->
         <div class="form-group col-sm-6"><br>
-            {!! Form::label('response', 'Anonymous Response:') !!}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            {!! Form::label('response', 'Show respondents Identity:') !!}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             {!! Form::checkbox('response_status') !!}
         </div>
         @endif

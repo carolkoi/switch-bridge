@@ -39,18 +39,19 @@ class UserResponsesExport implements FromCollection, WithHeadings, ShouldAutoSiz
         $answers = [];
         //numeric,dropdown,multiple,text
         foreach ($datas as $data){
+//            $info['questions'] = $data->question;
             foreach ($data->responses as $response){
                 if ($data->type == Question::SELECT_MULTIPLE || $data->type == Question::DROP_DOWN_LIST){
+                    $multiple_answers = collect(json_decode($response->answer))->toArray();
                     $answers = [];
-               foreach ($data->answer as $choice){
-                   $answers[] = $choice->choice;
+               foreach ($multiple_answers as $ans){
+                   $answers[] = Answer::find($ans)->choice;;
                }
 
                 }
-
                 $info[] = [
                     'question' => $data->question,
-                    'responses' => $data->type == Question::SELECT_MULTIPLE ? $answers : $response->answer
+                    'responses' => $data->type == Question::SELECT_MULTIPLE || $data->type == Question::DROP_DOWN_LIST ? $answers : $response->answer
 
                     ];
 

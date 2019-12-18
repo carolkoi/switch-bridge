@@ -9,6 +9,8 @@ use App\Http\Requests\CreateResponseRequest;
 use App\Http\Requests\UpdateResponseRequest;
 use App\Models\Question;
 use App\Models\Response;
+use App\Models\SentSurveys;
+use App\Models\SurveyType;
 use App\Repositories\ResponseRepository;
 use App\Models\Template;
 use App\Repositories\SentSurveysRepository;
@@ -75,10 +77,31 @@ class ResponseController extends AppBaseController
     {
         $responses = Question::where('template_id',$template_id)
             ->with(['answer','responses'])
-            ->paginate();
-        $template = Template::find($template_id);
+            ->paginate(5);
 
+        $template = Template::with('surveyType')->find($template_id);
 
+        if ($template->surveyType->status == 1) {
+            $questions = Question::where('template_id', $template_id)->with('responses')->get();
+            $respondents = Response::where('template_id', $template_id)->groupBy('survey_uuid')->get()->count();
+            $ave = 0;
+            foreach ($questions as $que_resp) {
+                foreach ($que_resp->responses as $resp) {
+                     $ave += $resp->answer;
+                }
+//                dd($ave);
+
+            }
+
+            return view('responses.evaluation', [
+                'responses' => $responses,
+                'id' => $template_id,
+                'template' => $template,
+                'average' => $ave,
+                'respondents' => $respondents,
+                'questions' => $questions
+            ]);
+        }else
         return  view('responses.show',[
             'responses' => $responses,
             'id' => $template_id,
