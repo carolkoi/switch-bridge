@@ -11,22 +11,28 @@
             @php( $count =1 )
             @php( $ave =0 )
 
-            @foreach($responses as $response)
-
+            @foreach($questions as $response)
                 <tr>
                     <td>#</td>
                     <td> {{$response->question}}</td>
-                        <td>
-                            @foreach($response->responses as $answer)
-                                <table>
-                                    <tr>
-                                            <td> {{$answer->answer}} </td>
-                                        @endforeach
-                                    </tr>
-                                </table>
+                    <td>
+                        @foreach($response->responses as $answer)
+                            <table>
+                                <tr>
+                                    <td> {{$answer->answer}} </td>
+                                    @endforeach
+                                </tr>
+                            </table>
 
-                        </td>
-                        <td> {{$average / $respondents}} </td>
+                    </td>
+                    <td>
+                        @foreach($response->responses as $response)
+                            @if ($loop->last)
+                                {{ $response->total_responses / $respondents}}
+                            @endif
+
+                        @endforeach
+                    </td>
                 </tr>
             @endforeach
             </tbody>

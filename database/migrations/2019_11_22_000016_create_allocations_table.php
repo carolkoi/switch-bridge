@@ -26,6 +26,7 @@ class CreateAllocationsTable extends Migration
             $table->string('user_type')->nullable()->default(null);
             $table->unsignedInteger('client_id')->nullable()->default(null);
             $table->unsignedInteger('user_id')->nullable()->default(null);
+            $table->unsignedInteger('vendor_id')->nullable()->default(null);
             $table->string('type', 45)->nullable()->default(null);
             $table->tinyInteger('status')->nullable()->default('0');
             $table->unsignedInteger('template_id');

@@ -84,6 +84,7 @@ class Allocation extends Model
     public $fillable = [
         'user_type',
         'client_id',
+        'vendor_id',
         'user_id',
         'others',
         'type',
@@ -126,6 +127,9 @@ class Allocation extends Model
 
     public function client(){
         return $this->belongsTo(Client::class, 'client_id', 'id');
+    }
+    public function vendor(){
+        return $this->belongsTo(Vendor::class, 'vendor_id', 'id');
     }
 
     public function scopeCountUsersByTemplateId($query, $template_id, $user_type){

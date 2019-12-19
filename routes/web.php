@@ -75,3 +75,6 @@ Route::resource('surveyTypes', 'SurveyTypeController');
 Route::resource('sentSurveys', 'SentSurveysController');
 
 
+
+
+Route::resource('vendors', 'VendorController');

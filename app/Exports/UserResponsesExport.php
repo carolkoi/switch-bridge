@@ -22,83 +22,76 @@ class UserResponsesExport implements FromCollection, WithHeadings, ShouldAutoSiz
 
     public function headings(): array
     {
-        return [
-            'Questions',
-            'Responses',
-            'Total'
+        $template = Template::with('surveyType')->find($this->templateId);
 
-        ];
+        if ($template->surveyType->status == 1){
+            return [
+                'Questions',
+                'Rating',
+                'Average Rating'
+
+            ];
+        }else
+            return [
+                'Questions',
+                'Responses',
+            ];
+
     }
 
 
     public function collection()
     {
         $datas = Question::where('template_id', $this->templateId)->with(['responses','answer'])->get();
+        $template = Template::with('surveyType')->find($this->templateId);
 
         $info = [];
         $answers = [];
+        $respondents = 0;
         //numeric,dropdown,multiple,text
         foreach ($datas as $data){
 //            $info['questions'] = $data->question;
-            foreach ($data->responses as $response){
-                if ($data->type == Question::SELECT_MULTIPLE || $data->type == Question::DROP_DOWN_LIST){
+            foreach ($data->responses as $key => $response) {
+
+                if ($data->type == Question::SELECT_MULTIPLE || $data->type == Question::DROP_DOWN_LIST) {
                     $multiple_answers = collect(json_decode($response->answer))->toArray();
                     $answers = [];
-               foreach ($multiple_answers as $ans){
-                   $answers[] = Answer::find($ans)->choice;;
-               }
-
+                    foreach ($multiple_answers as $ans) {
+                        $answers[] = Answer::find($ans)->choice;
+                    }
                 }
-                $info[] = [
-                    'question' => $data->question,
-                    'responses' => $data->type == Question::SELECT_MULTIPLE || $data->type == Question::DROP_DOWN_LIST ? $answers : $response->answer
+                $responses = implode(',', $answers);
+                if ($data->type == Question::RATING){
+                    $respondents = count($data->responses);
+                    $total = $data->responses->reduce(function ($acc, $response){
+                        return $response['total_rating'] = $acc + $response->answer;
+
+                    });
+                }
+
+                if ($template->surveyType->status == 1){
+                    $info[] = [
+                        'question' => empty($key) ? $data->question : null,
+                        'responses' => $data->type == Question::SELECT_MULTIPLE || $data->type == Question::DROP_DOWN_LIST ? $responses : $response->answer,
+                        'average' => empty($key) ? null :($response->total_rating / $respondents)
+
+                    ];
+
+                }else
+                    $info[] = [
+                        'question' => empty($key) ? $data->question : null,
+                        'responses' => $data->type == Question::SELECT_MULTIPLE || $data->type == Question::DROP_DOWN_LIST ? $responses : $response->answer
 
                     ];
 
             }
 
-        }
+            }
+
 
         return new Collection($info);
 
-//        $responseDetails = collect();
-//        foreach($datas as $data){
-//
-//            foreach($data->responses as $key => $respons){
-//                $response = collect();
-//                if(empty($key)){
-//                    $response['question'] = $data->question;
-//
-//                    if ($respons->answer_type == Question::SELECT_MULTIPLE){
-//                        $data = collect(json_decode($respons->answer))->toArray();
-//
-//                        $choice = [];
-//                        foreach ($data as $ans){
-//                            $choice[] = Answer::find($ans)->choice;
-//                        }
-//                        $response['answer'] = implode(',', $choice );
-//                    }elseif ($respons->answer_type == Question::DROP_DOWN_LIST){
-//                        $data = collect(json_decode($respons->answer))->toArray();
-//                        foreach ($data as $ans){
-//                            $response['answer'] = Answer::find($ans)->choice;
-//                        }
-//                    }else{
-//                        $response['answer'] = $respons->answer;
-//                    }
-//                }else{
-//                    $response['question'] = null;
-//                    $response['answer'] = $respons->answer;
-//                    $response['total'] = $respons->total;
-//                }
-//
-//                $responseDetails->push($response);
-//            };
-//        }
-//dd($responseDetails);
-//        return $responseDetails;
 
-
-//        return new Collection($info);
     }
 }
 

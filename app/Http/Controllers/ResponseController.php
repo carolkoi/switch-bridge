@@ -18,6 +18,7 @@ use Flash;
 use App\Http\Controllers\AppBaseController;
 use Maatwebsite\Excel\Facades\Excel;
 use Response as HttpResponse;
+use function foo\func;
 
 class ResponseController extends AppBaseController
 {
@@ -83,15 +84,16 @@ class ResponseController extends AppBaseController
 
         if ($template->surveyType->status == 1) {
             $questions = Question::where('template_id', $template_id)->with('responses')->get();
-            $respondents = Response::where('template_id', $template_id)->groupBy('survey_uuid')->get()->count();
-            $ave = 0;
+//            $respondents = Response::where('template_id', $template_id)->groupBy('survey_uuid')->get()->count();
             foreach ($questions as $que_resp) {
-                foreach ($que_resp->responses as $resp) {
-                     $ave += $resp->answer;
-                }
-//                dd($ave);
+            $respondents = count($que_resp->responses);
+                $ave = $que_resp->responses->reduce(function ($acc, $item) {
+                    return $item['total_responses'] = $acc + $item->answer;
+
+                });
 
             }
+
 
             return view('responses.evaluation', [
                 'responses' => $responses,

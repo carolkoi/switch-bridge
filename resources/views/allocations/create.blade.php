@@ -77,7 +77,7 @@
 
             });
 
-            $('#client_list, #others_email').css({'display': 'none'});
+            $('#client_list, #others_email, #supplier_list').css({'display': 'none'});
             $('#client').on('click', function () {
                 $('#client_list').show();
             });
@@ -94,6 +94,11 @@
                     $('.client_list').fadeIn('slow');
                 else
                     $('.client_list').fadeOut('slow');
+
+                if ($(this).hasClass("supplier_select") && this.checked) // or $(this).is(":checked")
+                    $('.supplier_list').fadeIn('slow');
+                else
+                    $('.supplier_list').fadeOut('slow');
 
                 if ($(this).hasClass("mail_add") && this.checked) // or $(this).is(":checked")
                     $('.mail_list').fadeIn('slow');

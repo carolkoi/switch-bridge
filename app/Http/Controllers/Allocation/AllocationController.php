@@ -14,6 +14,7 @@ use App\Models\Question;
 use App\Models\SurveyType;
 use App\Models\Template;
 use App\Models\User;
+use App\Models\Vendor;
 use App\Repositories\AllocationRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
@@ -52,7 +53,10 @@ class AllocationController extends AppBaseController
         $templates = Template::get();
         $survey_type = SurveyType::get()->pluck('type', 'id');
         return view('allocations.create', ['templates' => $templates,
-            'users' => User::get()->pluck('name', 'id'), 'clients' => Client::get()->pluck('name', 'id'), 'survey_type' => $survey_type]);
+            'users' => User::get()->pluck('name', 'id'),
+            'clients' => Client::get()->pluck('name', 'id'),
+            'vendors' => Vendor::get()->pluck('name', 'id'),
+            'survey_type' => $survey_type]);
     }
 
     /**
@@ -67,6 +71,7 @@ class AllocationController extends AppBaseController
         $input = $request->except('user_id', 'client_id', 'others');
         $users = $request->input('user_id');
         $clients = $request->input('client_id');
+        $vendors = $request->input('vendor_id');
         $others = $request->input('others');
         $template = Template::where('id', $input['template_id'])->with('questions')->first();
         if (count($template->questions) > 0) {
@@ -87,6 +92,12 @@ class AllocationController extends AppBaseController
             if ($clients) {
                 foreach ($clients as $client) {
                     $input['client_id'] = $client;
+                    $allocation = $this->allocationRepository->create($input);
+                }
+            }
+            if ($vendors) {
+                foreach ($vendors as $vendor) {
+                    $input['vendor_id'] = $vendor;
                     $allocation = $this->allocationRepository->create($input);
                 }
             }

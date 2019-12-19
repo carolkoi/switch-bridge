@@ -31,8 +31,10 @@
         {!! Form::radio('user_type', 'client', false, ['id' =>'client', 'class' => 'client_select'])!!} &nbsp;
         {!! Form::label('user_type', 'Clients') !!}
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-        {!! Form::radio('user_type', 'others', false, ['id' =>'others', 'class' => 'mail_add'])!!} &nbsp;
+        {!! Form::radio('user_type', 'vendor', false, ['id' =>'supplier', 'class' => 'supplier_select'])!!} &nbsp;
+        {!! Form::label('user_type', 'Suppliers') !!}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {!! Form::radio('user_type', 'other', false, ['id' =>'others', 'class' => 'mail_add'])!!} &nbsp;
         {!! Form::label('user_type', 'Others') !!}
     </div>
 
@@ -49,6 +51,14 @@
     <div class="form-group client_list" id="client_list">
         {!! Form::label('client_id', 'Clients:') !!}
         {!! Form::select('client_id[]', $clients, isset($allocation['selected_clients'])? $allocation['selected_clients']:null,
+        ['class' => 'form-control select2', 'multiple' => 'multiple']) !!}
+    </div>
+
+    <!-- Supplier Id Field -->
+
+    <div class="form-group supplier_list" id="supplier_list">
+        {!! Form::label('vendor_id', 'Suppliers:') !!}
+        {!! Form::select('vendor_id[]', $vendors, isset($allocation['selected_suppliers'])? $allocation['selected_suppliers']:null,
         ['class' => 'form-control select2', 'multiple' => 'multiple']) !!}
     </div>
 
