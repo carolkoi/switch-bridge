@@ -10,6 +10,7 @@ use App\Models\Client;
 use App\Models\Options;
 use App\Models\Template;
 use App\Models\User;
+use App\Models\Vendor;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
@@ -30,6 +31,7 @@ class SendSurveyEmailController extends Controller
                 if (Carbon::now()->lte($allocation->template->valid_until)) {
                     $this->sendToClient($id);
                     $this->sendToStaff($id);
+                    $this->sendToVendor($id);
                     $this->sendToOther($id);
                     Flash::success('Survey email sent successfully.');
                     return redirect(route('allocations.index'));
@@ -82,6 +84,21 @@ class SendSurveyEmailController extends Controller
 
         }
 
+    }
+
+    public function sendToVendor($id){
+        $now = Carbon::now()->addMinute(1);
+        $template = Template::find($id);
+        $vendors = Allocation::where('template_id', $id)
+            ->whereNotNull('vendor_id')
+            ->with('template')
+            ->get();
+        foreach ($vendors as $vendor){
+            $vendor_mail = Vendor::find($vendor->vendor_id)->email;
+            $token = Uuid::generate()->string;
+            $this->dispatch((new SendSurveyEmailJob($template,$token,$vendor_mail, $vendor->vendor_id))->delay($now));
+            Allocation::where('vendor_id', $vendor->vendor_id)->update(['email_sent' => 1]);
+        }
     }
 
     public function sendToOther($id)

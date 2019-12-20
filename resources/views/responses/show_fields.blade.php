@@ -22,7 +22,6 @@
                             <table>
                                 <tr>
 
-
                             @if($answer->answer_type == App\Models\Question::USER_INPUT)
                                 <td>{{ $answer->answer}}</td>
                             @endif
@@ -37,7 +36,7 @@
                                             <td>{{ App\Models\Answer::find($ans)->choice }}{{' '.','.' '}}</td>
 
                                     @endforeach
-                                    <br>
+{{--                                    <br>--}}
 
                                 @endif
 
@@ -45,7 +44,7 @@
                                 <td> {{$answer->answer}} </td>
                             @endif
                             @if($answer->answer_type == App\Models\Question::NUMBER)
-                                <li>{{ $answer->answer }}</li>
+                                <td>{{ $answer->answer }}</td>
                             @endif
 
                             @if($answer->answer_type == App\Models\Question::DROP_DOWN_LIST)
@@ -55,7 +54,7 @@
                                         <td>{{ App\Models\Answer::find($ans)->choice }}</td>
 
                                 @endforeach
-                                <br>
+{{--                                <br>--}}
                             @endif
 
                         @endforeach

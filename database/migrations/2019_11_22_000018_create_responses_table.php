@@ -24,6 +24,7 @@ class CreateResponsesTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->unsignedInteger('user_id')->nullable()->default(null);
+            $table->unsignedInteger('vendor_id')->nullable()->default(null);
             $table->unsignedInteger('client_id')->nullable()->default(null);
             $table->unsignedInteger('template_id');
             $table->unsignedInteger('question_id');
@@ -31,6 +32,8 @@ class CreateResponsesTable extends Migration
             $table->string('answer')->nullable()->default(null);
             $table->text('survey_uuid');
             $table->decimal('total', 10, 0)->nullable()->default(null);
+
+            $table->index(["vendor_id"], 'fk_responses_vendors1_idx');
 
             $table->index(["user_id"], 'fk_responses_users1_idx');
 
@@ -46,6 +49,11 @@ class CreateResponsesTable extends Migration
 
             $table->foreign('user_id', 'fk_responses_users1_idx')
                 ->references('id')->on('users')
+                ->onDelete('no action')
+                ->onUpdate('no action');
+
+            $table->foreign('vendor_id', 'fk_responses_vendors1_idx')
+                ->references('id')->on('vendors')
                 ->onDelete('no action')
                 ->onUpdate('no action');
         });

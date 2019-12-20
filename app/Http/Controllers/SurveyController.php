@@ -64,13 +64,14 @@ class SurveyController extends AppBaseController
      */
     public function store(CreateSurveyRequest $request)
     {
-        $input = $request->except(['_token', 'survey_uuid', 'template_id', 'total', 'user_id', 'client_id']);
+        $input = $request->except(['_token', 'survey_uuid', 'template_id', 'total',
+            'user_id', 'client_id', 'vendor_id']);
 //        check if the end date of survey has passed and if the
 // check if late response is set is set to receive late responses
         $late_response_setting = Options::where('option_name', 'receive_late_response')->first();
 //        get current date
         $template = Template::find($request->input('template_id'));
-        $anonymous_response = SurveyType::where('id', $template->survey_type_id)->first();
+        $setting = SurveyType::where('id', $template->survey_type_id)->first();
 
         if (carbon::now()->lte($template->valid_until) OR ($late_response_setting->value == true)) {
             // check if the uuid already exist, user cant respond to the same survey twice
@@ -81,8 +82,9 @@ class SurveyController extends AppBaseController
                 foreach ($input as $key => $resp) {
                     $map = explode('_', $key);
                     Response::create([
-                        'user_id' => $anonymous_response->reponse_status == true && $request->input('user_id') != null ? $request->input('user_id') : NULL,
-                        'client_id' => $anonymous_response->reponse_status == true && $request->input('client_id') != null ? $request->input('client_id') : NULL,
+                        'user_id' => $setting->reponse_status == 1 && $request->input('user_id' != null) ? $request->input('user_id') : NULL,
+                        'client_id' => ($setting->reponse_status == 1 && $request->input('client_id') != null) ? $request->input('client_id') : NULL,
+                        'vendor_id' => ($setting->reponse_status == 1 && $request->input('vendor_id') != null) ? $request->input('vendor_id') : NULL,
                         'template_id' => $map[1],
                         'question_id' => $map[2],
                         'answer_type' => $map[3],
@@ -124,13 +126,20 @@ class SurveyController extends AppBaseController
             if (!empty($allocation->user_id)){
                 $user_id = $allocation->user_id;
                 $client_id = NULL;
+                $vendor_id = NULL;
             }
             if (!empty($allocation->client_id)){
                 $user_id = NULL;
+                $vendor_id = NULL;
                 $client_id = $allocation->client_id;
             }
+            if (!empty($allocation->vendor_id)){
+                $user_id = NULL;
+                $client_id = NULL;
+                $vendor_id = $allocation->vendor_id;
+            }
         }
-        return view('surveys.create', compact('token', 'questions', 'user_id', 'client_id'));
+        return view('surveys.create', compact('token', 'questions', 'user_id', 'client_id', 'vendor_id'));
     }
 
     public function preview($id)

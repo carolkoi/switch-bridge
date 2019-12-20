@@ -42,10 +42,13 @@
         </a>
         <ul class="treeview-menu">
             <li class="{{ Request::is('people/users*') ? 'active' : '' }}">
-                <a href="{!! route('users.index') !!}"><i class="fa fa-users"></i><span>Staffs</span></a>
+                <a href="{!! route('users.index') !!}"><i class="fa fa-user-o"></i><span>Staffs</span></a>
             </li>
             <li class="{{ Request::is('people/clients*') ? 'active' : '' }}">
-                <a href="{!! route('clients.index') !!}"><i class="fa fa-users"></i><span>Clients</span></a>
+                <a href="{!! route('clients.index') !!}"><i class="fa fa-user-circle-o"></i><span>Clients</span></a>
+            </li>
+            <li class="{{ Request::is('people/vendors*') ? 'active' : '' }}">
+                <a href="{!! route('vendors.index') !!}"><i class="fa fa-user-circle"></i><span>Vendors</span></a>
             </li>
         </ul>
     </li>
@@ -105,7 +108,5 @@
     </li>
 
 
-<li class="{{ Request::is('vendors*') ? 'active' : '' }}">
-    <a href="{!! route('vendors.index') !!}"><i class="fa fa-edit"></i><span>Vendors</span></a>
-</li>
+
 

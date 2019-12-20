@@ -25,6 +25,7 @@ Route::prefix('people')->group(function () {
     Route::resource('clients', 'ClientController');
 
     Route::resource('users', 'UserController');
+    Route::resource('vendors', 'VendorController');
 });
 Route::resource('templates', 'TemplateController');
 
@@ -77,4 +78,3 @@ Route::resource('sentSurveys', 'SentSurveysController');
 
 
 
-Route::resource('vendors', 'VendorController');

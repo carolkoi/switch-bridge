@@ -24,7 +24,7 @@ class AllocationDataTable extends DataTable
             ->addColumn('date range', 'allocations.datatables_date_range')
             ->addColumn('status', 'allocations.datatables_status')
             ->addColumn('users', function ($query){
-           return $query->CountUsersByTemplateId($query->template_id, $query->user_type);
+           return $query->CountUsersByTemplateId($query->template_id);
 //            return count($query['user_type']);
         })
         ->addColumn('action', 'allocations.datatables_actions')

@@ -58,7 +58,7 @@
 
     <div class="form-group supplier_list" id="supplier_list">
         {!! Form::label('vendor_id', 'Suppliers:') !!}
-        {!! Form::select('vendor_id[]', $vendors, isset($allocation['selected_suppliers'])? $allocation['selected_suppliers']:null,
+        {!! Form::select('vendor_id[]', $vendors, isset($allocation['selected_vendors'])? $allocation['selected_vendors']:null,
         ['class' => 'form-control select2', 'multiple' => 'multiple']) !!}
     </div>
 

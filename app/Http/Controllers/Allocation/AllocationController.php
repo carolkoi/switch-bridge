@@ -68,36 +68,52 @@ class AllocationController extends AppBaseController
      */
     public function store(CreateAllocationRequest $request)
     {
-        $input = $request->except('user_id', 'client_id', 'others');
+        $input = $request->except('user_id', 'client_id', 'others', 'vendor_id', 'user_type');
         $users = $request->input('user_id');
         $clients = $request->input('client_id');
         $vendors = $request->input('vendor_id');
         $others = $request->input('others');
         $template = Template::where('id', $input['template_id'])->with('questions')->first();
         if (count($template->questions) > 0) {
-            if ($others) {
+            if (!empty($others)) {
                 foreach ($others as $other) {
                     $input['others'] = serialize($other);
+                    $input['user_id'] = null;
+                    $input['client_id'] = null;
+                    $input['vendor_id'] = null;
+                    $input['user_type'] = 'other';
                     $allocation = $this->allocationRepository->create($input);
                 }
                 unset($input['others']);
             }
-            if (is_array($users)) {
+            if (!empty($users)) {
                 foreach ($users as $user) {
                     $input['user_id'] = $user;
+                    $input['others'] = null;
+                    $input['client_id'] = null;
+                    $input['vendor_id'] = null;
+                    $input['user_type'] = 'staff';
                     $allocation = $this->allocationRepository->create($input);
                 }
                 unset($input['user_id']);
             }
-            if ($clients) {
+            if (!empty($clients)) {
                 foreach ($clients as $client) {
                     $input['client_id'] = $client;
+                    $input['user_id'] = null;
+                    $input['others'] = null;
+                    $input['vendor_id'] = null;
+                    $input['user_type'] = 'client';
                     $allocation = $this->allocationRepository->create($input);
                 }
             }
-            if ($vendors) {
+            if (!empty($vendors)) {
                 foreach ($vendors as $vendor) {
                     $input['vendor_id'] = $vendor;
+                    $input['client_id'] = null;
+                    $input['user_id'] = null;
+                    $input['others'] = null;
+                    $input['user_type'] = 'supplier';
                     $allocation = $this->allocationRepository->create($input);
                 }
             }
@@ -165,6 +181,14 @@ class AllocationController extends AppBaseController
         });
     }
 
+    private function getAllocatedVendors($allocation){
+        return collect($allocation)->filter(function ($allocation){
+            return !empty($allocation->vendor_id);
+        })->map(function ($allocation){
+            return $allocation->vendor_id;
+        });
+    }
+
     /**
      * Show the form for editing the specified Allocation.
      *
@@ -178,16 +202,19 @@ class AllocationController extends AppBaseController
         $selected_users = $this->getAllocatedUsers($template->allocations);
         $selected_clients = $this->getAllocatedClients($template->allocations);
         $selected_mails = $this->getAllocatedMails($template->allocations);
+        $selected_vendors = $this->getAllocatedVendors($template->allocations);
 
         $allocation['selected_users'] = $selected_users;
         $allocation['selected_clients'] = $selected_clients;
         $allocation['selected_mails'] = $selected_mails;
+        $allocation['selected_vendors'] = $selected_vendors;
         $allocation['template_id']= (int)$id;
         $allocation['survey_type_id']= $template->survey_type_id;
 //        dd($allocation['selected_mails'], $allocation['selected_clients'], $allocation['selected_users']);
 
         $users = User::get()->pluck('name', 'id');
         $clients = Client::get()->pluck('name', 'id');
+        $vendors = Vendor::get()->pluck('name', 'id');
         $survey_type = SurveyType::get()->pluck('type', 'id');
         $templates = Template::where('survey_type_id', $template->survey_type_id)->get()->pluck('name', 'id');
 
@@ -198,7 +225,8 @@ class AllocationController extends AppBaseController
         }
 
         return view('allocations.edit', ['allocation' => $allocation, 'template' => $template,
-            'users' => $users, 'clients' => $clients, 'survey_type' => $survey_type, 'templates' => $templates]);
+            'users' => $users, 'clients' => $clients, 'survey_type' => $survey_type,
+            'templates' => $templates, 'vendors' => $vendors]);
     }
 
     /**
@@ -216,28 +244,50 @@ class AllocationController extends AppBaseController
         foreach($template->allocations as $allocation){
             $this->allocationRepository->delete($allocation->id);
         }
-//        dd($request->all());
-        $input = $request->except('user_id', 'client_id', 'others');
+        $input = $request->except('user_id', 'client_id', 'others', 'vendor_id', 'user_type');
         $users = $request->input('user_id');
         $clients = $request->input('client_id');
+        $vendors = $request->input('vendor_id');
         $others = $request->input('others');
-            if ($others) {
+            if (!empty($others)) {
                 foreach ($others as $other) {
                     $input['others'] = serialize($other);
+                    $input['user_id'] = null;
+                    $input['client_id'] = null;
+                    $input['vendor_id'] = null;
+                    $input['user_type'] = 'other';
                     $allocation = $this->allocationRepository->create($input);
                 }
                 unset($input['others']);
             }
-            if (is_array($users)) {
+            if (!empty($users)) {
                 foreach ($users as $user) {
                     $input['user_id'] = $user;
+                    $input['others'] = null;
+                    $input['client_id'] = null;
+                    $input['vendor_id'] = null;
+                    $input['user_type'] = 'staff';
                     $allocation = $this->allocationRepository->create($input);
                 }
                 unset($input['user_id']);
             }
-            if ($clients) {
+            if (!empty($clients)) {
                 foreach ($clients as $client) {
                     $input['client_id'] = $client;
+                    $input['user_id'] = null;
+                    $input['others'] = null;
+                    $input['vendor_id'] = null;
+                    $input['user_type'] = 'client';
+                    $allocation = $this->allocationRepository->create($input);
+                }
+            }
+            if (!empty($vendors)) {
+                foreach ($vendors as $vendor) {
+                    $input['vendor_id'] = $vendor;
+                    $input['client_id'] = null;
+                    $input['user_id'] = null;
+                    $input['others'] = null;
+                    $input['user_type'] = 'supplier';
                     $allocation = $this->allocationRepository->create($input);
                 }
             }
