@@ -48,6 +48,7 @@ class UserResponsesExport implements FromCollection, WithHeadings, ShouldAutoSiz
         $info = [];
         $answers = [];
         $respondents = 0;
+        $total = 0;
         //numeric,dropdown,multiple,text
         foreach ($datas as $data){
 //            $info['questions'] = $data->question;
@@ -63,11 +64,13 @@ class UserResponsesExport implements FromCollection, WithHeadings, ShouldAutoSiz
                 $responses = implode(',', $answers);
                 if ($data->type == Question::RATING){
                     $respondents = count($data->responses);
+
                     $total = $data->responses->reduce(function ($acc, $response){
                         return $response['total_rating'] = $acc + $response->answer;
 
                     });
                 }
+//                dd($response->total_rating);
 
                 if ($template->surveyType->status == 1){
                     $info[] = [
