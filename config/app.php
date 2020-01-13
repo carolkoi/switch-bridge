@@ -188,8 +188,6 @@ return [
         App\Providers\RouteServiceProvider::class,
         WorkflowApprovalEventServiceProvider::class,
         WizPackApprovalServiceProvider::class,
-
-
     ],
 
     /*

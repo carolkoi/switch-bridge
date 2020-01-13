@@ -86,22 +86,28 @@ class ResponseController extends AppBaseController
             $questions = Question::where('template_id', $template_id)->with('responses')->get();
 //            $respondents = Response::where('template_id', $template_id)->groupBy('survey_uuid')->get()->count();
             foreach ($questions as $que_resp) {
-            $respondents = count($que_resp->responses);
+                $respondents = count($que_resp->responses);
                 $ave = $que_resp->responses->reduce(function ($acc, $item) {
                     return $item['total_responses'] = $acc + $item->answer;
 
                 });
 
             }
-
-
+            foreach ($questions as $que_resp) {
+                $tot_resp = Response::where('template_id', $template_id)->groupBy('survey_uuid')->get()->count();
+                $total_responses = $que_resp->responses->reduce(function ($acc, $item) {
+                    return $item['total_average'] = $acc + $item->total;
+                });
+            }
             return view('responses.evaluation', [
                 'responses' => $responses,
                 'id' => $template_id,
                 'template' => $template,
                 'average' => $ave,
                 'respondents' => $respondents,
-                'questions' => $questions
+                'questions' => $questions,
+                'tot_resp' => $tot_resp,
+                'total_response' => $total_responses
             ]);
         }else
         return  view('responses.show',[

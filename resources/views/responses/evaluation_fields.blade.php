@@ -19,10 +19,10 @@
                         @foreach($response->responses as $answer)
                             <table>
                                 <tr>
-                                    <td> {{$answer->answer}} </td>
-                                    @endforeach
+                                    <td> {{$answer->answer}}</td>
                                 </tr>
                             </table>
+                        @endforeach
 
                     </td>
                     <td>
@@ -39,5 +39,6 @@
 
         </table>
     </div>
+    <p><b>Total Average : {{ $response->total_average / $respondents}}</b> </p>
     {{$responses->links()}}
 </div>

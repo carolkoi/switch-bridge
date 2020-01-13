@@ -113,7 +113,7 @@ class QuestionController extends AppBaseController
             return redirect(url('questions', ['id' => $question->template_id]));
         }
 
-        return view('questions.show')->with(['question' => $question, 'template_id' => $question->template_id]);
+        return view('questions.show')->with(['question' => $question, 'template' => Template::find($question->template_id)]);
     }
 
     /**
@@ -127,13 +127,17 @@ class QuestionController extends AppBaseController
     {
         $question = $this->questionRepository->find($id);
         $template_id = $question->template_id;
+
+        $template = Template::with('surveyType')->find($question->template_id);
+        $surveyType = SurveyType::get();
         if (empty($question)) {
             Flash::error('Question not found');
 
             return redirect(url('questions', ['id' => $question->template_id]));
         }
 
-        return view('questions.edit')->with(['question' => $question, 'template_id' => $template_id]);
+        return view('questions.edit')->with(['question' => $question, 'template_id' => $template_id,
+            'template' => $template, 'surveyType' => $surveyType]);
     }
 
     /**

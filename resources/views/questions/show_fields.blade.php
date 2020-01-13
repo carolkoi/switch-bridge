@@ -1,7 +1,7 @@
 <!-- Template Id Field -->
 <div class="form-group">
     {!! Form::label('template_id', 'Template Id:') !!}
-    <p>{!! $question->template_id !!}</p>
+    <p>{!! $template->name !!}</p>
 </div>
 
 <!-- Question Field -->
@@ -16,17 +16,17 @@
     <p>{!! $question->type !!}</p>
 </div>
 
-<!-- Answer Id Field -->
-<div class="form-group">
-    {!! Form::label('answer_id', 'Answer Id:') !!}
-    <p>{!! $question->answer_id !!}</p>
-</div>
+{{--<!-- Answer Id Field -->--}}
+{{--<div class="form-group">--}}
+{{--    {!! Form::label('answer_id', 'Answer Id:') !!}--}}
+{{--    <p>{!! $question->answer_id !!}</p>--}}
+{{--</div>--}}
 
-<!-- Status Field -->
-<div class="form-group">
-    {!! Form::label('status', 'Status:') !!}
-    <p>{!! $question->status !!}</p>
-</div>
+{{--<!-- Status Field -->--}}
+{{--<div class="form-group">--}}
+{{--    {!! Form::label('status', 'Status:') !!}--}}
+{{--    <p>{!! $question->status !!}</p>--}}
+{{--</div>--}}
 
 <!-- Description Field -->
 <div class="form-group">

@@ -77,9 +77,6 @@
         @endif
 
 
-
-
-
 </fieldset>
 
 <!-- Submit Field -->

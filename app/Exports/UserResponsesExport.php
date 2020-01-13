@@ -28,7 +28,8 @@ class UserResponsesExport implements FromCollection, WithHeadings, ShouldAutoSiz
             return [
                 'Questions',
                 'Rating',
-                'Average Rating'
+                'Average Rating Per Question',
+                'Total Average'
 
             ];
         }else
@@ -43,6 +44,7 @@ class UserResponsesExport implements FromCollection, WithHeadings, ShouldAutoSiz
     public function collection()
     {
         $datas = Question::where('template_id', $this->templateId)->with(['responses','answer'])->get();
+        $xx = Response::where('template_id', $this->templateId)->get()->count();
         $template = Template::with('surveyType')->find($this->templateId);
 
         $info = [];
@@ -51,7 +53,6 @@ class UserResponsesExport implements FromCollection, WithHeadings, ShouldAutoSiz
         $total = 0;
         //numeric,dropdown,multiple,text
         foreach ($datas as $data){
-//            $info['questions'] = $data->question;
             foreach ($data->responses as $key => $response) {
 
                 if ($data->type == Question::SELECT_MULTIPLE || $data->type == Question::DROP_DOWN_LIST) {
@@ -65,18 +66,20 @@ class UserResponsesExport implements FromCollection, WithHeadings, ShouldAutoSiz
                 if ($data->type == Question::RATING){
                     $respondents = count($data->responses);
 
-                    $total = $data->responses->reduce(function ($acc, $response){
-                        return $response['total_rating'] = $acc + $response->answer;
+                    $data->responses->reduce(function ($acc, $response){
+                        return $response['ave_rating'] = $acc + $response->answer;
+                    });
+                    $data->responses->reduce(function ($acc, $response){
+                        return $response['total_rating'] = $acc + $response->total;
 
                     });
                 }
-//                dd($response->total_rating);
-
                 if ($template->surveyType->status == 1){
                     $info[] = [
                         'question' => empty($key) ? $data->question : null,
                         'responses' => $data->type == Question::SELECT_MULTIPLE || $data->type == Question::DROP_DOWN_LIST ? $responses : $response->answer,
-                        'average' => empty($key) ? null :($response->total_rating / $respondents)
+                        'average' => count($data->responses) -1 == $key ? $response->ave_rating / $respondents : null,
+                        'total_average' => count($data->responses) -1 == $key ? $response->total_rating / $respondents: null
 
                     ];
 
@@ -88,7 +91,7 @@ class UserResponsesExport implements FromCollection, WithHeadings, ShouldAutoSiz
                     ];
 
             }
-
+//dd($info);
             }
 
 

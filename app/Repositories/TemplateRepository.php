@@ -17,7 +17,7 @@ class TemplateRepository extends BaseRepository
      * @var array
      */
     protected $fieldSearchable = [
-        'type',
+//        'type',
         'name',
         'description',
         'status',

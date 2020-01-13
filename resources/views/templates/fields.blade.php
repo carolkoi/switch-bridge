@@ -54,17 +54,6 @@
     </div>
     @endif
 
-{{--@section('js')--}}
-{{--    <script type="text/javascript">--}}
-{{--        $('#survey_type_id').select2();--}}
-{{--        $('#email_msg').summernote();--}}
-{{--        $('#valid_from, #valid_until').datetimepicker({--}}
-{{--            format: 'YYYY-MM-DD',--}}
-{{--            useCurrent: false--}}
-{{--        })--}}
-{{--    </script>--}}
-{{--@endsection--}}
-
 
 <!-- Valid Until Field -->
 @if(isset($template))
