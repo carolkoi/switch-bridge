@@ -36,7 +36,7 @@
         @if($question->type == App\Models\Question::DATE)
             <input type="text"
                    name="su_{{$questions->id}}_{{$question->id}}_{{$question->type}}"
-                   class="form-control" id="date_id" {{($question->status == 1) ? 'required="required"' : ''}}>
+                   class="form-control" id="date_id" autocomplete="off" {{($question->status == 1) ? 'required="required"' : ''}}>
         @endif
 
         @if($question->type == App\Models\Question::NUMBER)

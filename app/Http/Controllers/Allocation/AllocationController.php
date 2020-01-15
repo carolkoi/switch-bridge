@@ -326,7 +326,6 @@ class AllocationController extends AppBaseController
     {
 
         $allocations = Template::find($id);
-
         $approval = new Template();
         $approval->addApproval($allocations);
 

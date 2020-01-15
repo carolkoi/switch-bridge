@@ -19,7 +19,7 @@
     @endif
 @if($template['approved'])
     <div class='btn-group'>
-<a href="{{route('send.survey',$template_id)}}" class='btn btn-primary'>Send</a>
+<a href="{{route('send.survey',$template_id)}}" class='btn btn-primary send'>Send</a>
     </div>
     @endif
 @if($template['rejected'])
@@ -41,4 +41,11 @@
     </div>
     {!! Form::close() !!}
 @endif
+@section('scripts')
+    <script>
+        $('.send').click(function() {
+            $(this).prop('disabled',true);
+        });
+    </script>
+    @endsection
 
