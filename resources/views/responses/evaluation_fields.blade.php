@@ -5,7 +5,7 @@
             <th>#</th>
             <th>Questions</th>
             <th>Rating</th>
-            <th>Average</th>
+            <th>Average Per Question</th>
             </thead>
             <tbody>
             @php( $count =1 )
@@ -35,10 +35,11 @@
                     </td>
                 </tr>
             @endforeach
+            <tr><td></td><td></td><td></td><td><b>Total Average : {{ $response->total_average / $respondents}}</b></td></tr>
             </tbody>
 
         </table>
     </div>
-    <p><b>Total Average : {{ $response->total_average / $respondents}}</b> </p>
+{{--    <p><b>Total Average : {{ $response->total_average / $respondents}}</b> </p>--}}
     {{$responses->links()}}
 </div>

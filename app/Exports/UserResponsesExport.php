@@ -52,7 +52,8 @@ class UserResponsesExport implements FromCollection, WithHeadings, ShouldAutoSiz
         $respondents = 0;
         $total = 0;
         //numeric,dropdown,multiple,text
-        foreach ($datas as $data){
+        $dataKey = count($datas)-1;
+        foreach ($datas as $num => $data){
             foreach ($data->responses as $key => $response) {
 
                 if ($data->type == Question::SELECT_MULTIPLE || $data->type == Question::DROP_DOWN_LIST) {
@@ -79,9 +80,13 @@ class UserResponsesExport implements FromCollection, WithHeadings, ShouldAutoSiz
                         'question' => empty($key) ? $data->question : null,
                         'responses' => $data->type == Question::SELECT_MULTIPLE || $data->type == Question::DROP_DOWN_LIST ? $responses : $response->answer,
                         'average' => count($data->responses) -1 == $key ? $response->ave_rating / $respondents : null,
-//                        'total_average' => count($data->responses) -1 == $key ? $response->total_rating / $respondents: null
-
                     ];
+                    if($num == $dataKey) {
+                        $average = ['', '', 'total_average' => count($data->responses) - 1 == $key ? $response->total_rating / $respondents : null];
+                        array_push($info, $average);
+                    }
+
+
 
                 }else
                     $info[] = [
