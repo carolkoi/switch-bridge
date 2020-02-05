@@ -70,6 +70,7 @@ class WorkflowStagesController extends AppBaseController
     public function store(CreateWorkflowStagesRequest $request)
     {
         $input = $request->all();
+//        dd($input);
 
         $workflowStages = $this->workflowStagesRepository->create($input);
 

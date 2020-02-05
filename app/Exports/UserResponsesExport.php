@@ -29,7 +29,7 @@ class UserResponsesExport implements FromCollection, WithHeadings, ShouldAutoSiz
                 'Questions',
                 'Rating',
                 'Average Rating Per Question',
-                'Total Average'
+//                'Total Average'
 
             ];
         }else
@@ -79,7 +79,7 @@ class UserResponsesExport implements FromCollection, WithHeadings, ShouldAutoSiz
                         'question' => empty($key) ? $data->question : null,
                         'responses' => $data->type == Question::SELECT_MULTIPLE || $data->type == Question::DROP_DOWN_LIST ? $responses : $response->answer,
                         'average' => count($data->responses) -1 == $key ? $response->ave_rating / $respondents : null,
-                        'total_average' => count($data->responses) -1 == $key ? $response->total_rating / $respondents: null
+//                        'total_average' => count($data->responses) -1 == $key ? $response->total_rating / $respondents: null
 
                     ];
 

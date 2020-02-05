@@ -42,7 +42,7 @@ class EmployeesCommand extends Command
 
             $client = new Client();
 
-            $employeeUrl = 'http://hr-demo.dnsalias.com/api/v1/employees';
+            $employeeUrl = 'http://hr-demo.dnsalias.com/api/v1/hr-employees';
 
             $response = json_decode($client->get($employeeUrl, [
                 'headers' => [

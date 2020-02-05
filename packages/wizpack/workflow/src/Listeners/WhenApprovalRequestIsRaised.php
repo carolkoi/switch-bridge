@@ -69,7 +69,7 @@ class WhenApprovalRequestIsRaised
             $approvers = $workflow->workflowStages->pluck('workflowApprovers')->first()->pluck('user')->toArray();
             Mail::to($approvers)
                 ->cc(Auth::user())
-                ->send(new WorkflowApprovalRequestMail($workflow, $workflow->workflowStages, $event->model, $response->first()));
+                ->send(new WorkflowApprovalRequestMail($workflow, $workflow->workflowStages, $event->model,  $response->first()));
         }
 
     }

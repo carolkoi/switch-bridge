@@ -16,22 +16,22 @@
 <div class="form-group ">
     {!! Form::label('type', 'Answer Type:') !!}
 <br/><br/>
-    {!! Form::radio('type', '1', true, ['onclick' => 'getTemplate(1);']) !!}&nbsp;
+    {!! Form::radio('type', '1', true, ['onclick' => 'getTemplate(1);']) !!}
     {!! Form::label('type', 'Text Input') !!}
     &nbsp;
-    {!! Form::radio('type', '4', false, ['onclick' => 'getTemplate(4);']) !!}&nbsp;
+    {!! Form::radio('type', '4', false, ['onclick' => 'getTemplate(4);']) !!}
     {!! Form::label('type', 'Date') !!}
     &nbsp;
-    {!! Form::radio('type', '5', false, ['onclick' => 'getTemplate(5);']) !!}&nbsp;
+    {!! Form::radio('type', '5', false, ['onclick' => 'getTemplate(5);']) !!}
     {!! Form::label('type', 'Number') !!}
     &nbsp;
-    {!! Form::radio('type', '2', false, ['onclick' => 'getTemplate(2);']) !!}&nbsp;
+    {!! Form::radio('type', '2', false, ['onclick' => 'getTemplate(2);']) !!}
     {!! Form::label('type', 'True/False') !!}
     &nbsp;
-    {!! Form::radio('type', '6', false, ['onclick' => 'getTemplate(6);']) !!}&nbsp;
+    {!! Form::radio('type', '6', false, ['onclick' => 'getTemplate(6);']) !!}
     {!! Form::label('type', 'Dropdown List' )!!}
     &nbsp;
-    {!! Form::radio('type', '3', false, ['onclick' => 'getTemplate(3);']) !!}&nbsp;&nbsp;
+    {!! Form::radio('type', '3', false, ['onclick' => 'getTemplate(3);']) !!}
     {!! Form::label('type', 'List') !!}
     &nbsp;
 </div>

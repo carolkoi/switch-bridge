@@ -30,7 +30,8 @@ class ResponseDataTable extends DataTable
                 $respondents = $query->countRespondentsByTemplateId($query->template_id, $query->question_id);
                 $allocations = $query->template->allocations->count();
                $percent = $respondents/$allocations;
-               return $percent * 100;
+               $percentage = $percent * 100;
+               return number_format((float)$percentage, 2, '.', '');
             })
 
             ->addColumn('action', 'responses.datatables_actions')

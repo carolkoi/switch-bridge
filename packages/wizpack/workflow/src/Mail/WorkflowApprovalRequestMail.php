@@ -16,6 +16,7 @@ class WorkflowApprovalRequestMail extends Mailable
     public $model;
     public $url;
     public $text;
+    public $previewUrl;
 
     /**
      * Create a new message instance.
@@ -32,6 +33,7 @@ class WorkflowApprovalRequestMail extends Mailable
         $this->model = $model;
         $this->url = 'wizpack/approvals/'.$workflowInfo['workflow_id'];
         $this->text = 'view approval';
+        $this->previewUrl = 'allocations/'.$model['id'];
     }
 
     /**

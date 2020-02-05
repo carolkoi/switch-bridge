@@ -14,6 +14,7 @@
 
                     </div>
                 </div>
+
                 <div class="col-md-6">
                     <div class="card">
                         <section class="content-header">
