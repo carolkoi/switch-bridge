@@ -47,7 +47,7 @@
 
                         </div>
                         <br/><br/>
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <div class="col-md-6">
                                 {!! Form::label('anonymous_responses', 'Receive responses anonymously') !!}
                             </div>
@@ -58,7 +58,7 @@
                             </div>
 
                         </div>
-                        <br/><br/>
+                        <br/><br/> -->
 
                         <!-- Submit Field -->
                         <div class="form-group col-md-6">
