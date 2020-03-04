@@ -85,9 +85,6 @@ class UserResponsesExport implements FromCollection, WithHeadings, ShouldAutoSiz
                         $average = ['', '', 'total_average' => count($data->responses) - 1 == $key ? $response->total_rating / $respondents : null];
                         array_push($info, $average);
                     }
-
-
-
                 }else
                     $info[] = [
                         'question' => empty($key) ? $data->question : null,

@@ -50,7 +50,6 @@
                             @if($answer->answer_type == App\Models\Question::DROP_DOWN_LIST)
                                 @php($data = collect(json_decode($answer->answer))->toArray())
                                 @foreach($data as $ans)
-
                                         <td>{{ App\Models\Answer::find($ans)->choice }}</td>
 
                                 @endforeach

@@ -42,7 +42,7 @@ class EmployeesCommand extends Command
 
             $client = new Client();
 
-            $employeeUrl = 'http://hr-demo.dnsalias.com/api/v1/hr-employees';
+            $employeeUrl = 'http://esl-hr.wizag.co.ke:9000/api/v1/hr-employees';
 
             $response = json_decode($client->get($employeeUrl, [
                 'headers' => [
@@ -50,7 +50,6 @@ class EmployeesCommand extends Command
                 ]
 
             ])->getBody());
-
             return collect($response)->each(function ($user) {
                 $data = [
                     "email" => $user->email,
@@ -58,6 +57,7 @@ class EmployeesCommand extends Command
                     "first_name" => $user->first_name,
                     "last_name" => $user->last_name,
                     'name' => $user->first_name.' '.$user->last_name,
+                    'role_id' => $user->role_id
                 ];
 
                 User::updateOrCreate([
