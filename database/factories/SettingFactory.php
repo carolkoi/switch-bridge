@@ -8,9 +8,18 @@ use Faker\Generator as Faker;
 $factory->define(Setting::class, function (Faker $faker) {
 
     return [
-        'template_id' => $faker->randomDigitNotNull,
-        'created_at' => $faker->date('Y-m-d H:i:s'),
-        'updated_at' => $faker->date('Y-m-d H:i:s'),
-        'deleted_at' => $faker->date('Y-m-d H:i:s')
+        'date_time_added' => $faker->randomDigitNotNull,
+        'added_by' => $faker->randomDigitNotNull,
+        'date_time_modified' => $faker->randomDigitNotNull,
+        'modified_by' => $faker->randomDigitNotNull,
+        'source_ip' => $faker->word,
+        'latest_ip' => $faker->word,
+        'setting_profile' => $faker->word,
+        'setting_name' => $faker->word,
+        'setting_value' => $faker->word,
+        'setting_type' => $faker->word,
+        'setting_status' => $faker->word,
+        'record_version' => $faker->randomDigitNotNull,
+        'deleted_at' => $faker->word
     ];
 });
