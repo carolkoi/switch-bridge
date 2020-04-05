@@ -25,6 +25,6 @@ class FailedTransactionsController extends Controller
      */
     public function index(FailedTransactionsDataTable $failedTransactionsDataTable)
     {
-        return $failedTransactionsDataTable->render('transactions.index');
+        return $failedTransactionsDataTable->render('transactions.failed_index');
     }
 }

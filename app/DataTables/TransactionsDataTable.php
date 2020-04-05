@@ -19,6 +19,9 @@ class TransactionsDataTable extends DataTable
         $dataTable = new EloquentDataTable($query);
 
         return $dataTable
+            ->addColumn('id', function ($query){
+                return $query->iso_id;
+            })
             ->addColumn('partner', function ($query){
                 return $query->req_field123;
             })
@@ -50,7 +53,7 @@ class TransactionsDataTable extends DataTable
                 return $query->req_field102;
             })
             ->addColumn('response', function ($query){
-                return $query->res_field44." "."("."Response Code:".($query->res_field39 ? $query->res_field39: null).")";
+                return $query->res_field44;
             })
             ->escapeColumns('response')
             ->addColumn('receiver_bank', function ($query){
@@ -93,10 +96,10 @@ class TransactionsDataTable extends DataTable
                 'stateSave' => true,
                 'order'     => [[0, 'desc']],
                 'buttons'   => [
-                    ['extend' => 'create', 'className' => 'btn btn-default btn-sm no-corner',],
+//                    ['extend' => 'create', 'className' => 'btn btn-default btn-sm no-corner',],
                     ['extend' => 'export', 'className' => 'btn btn-default btn-sm no-corner',],
                     ['extend' => 'print', 'className' => 'btn btn-default btn-sm no-corner',],
-                    ['extend' => 'reset', 'className' => 'btn btn-default btn-sm no-corner',],
+//                    ['extend' => 'reset', 'className' => 'btn btn-default btn-sm no-corner',],
                     ['extend' => 'reload', 'className' => 'btn btn-default btn-sm no-corner',],
                 ],
             ]);
@@ -110,21 +113,24 @@ class TransactionsDataTable extends DataTable
     protected function getColumns()
     {
         return [
-//            'iso_id',
-            'partner',
-            'txn_time',
-            'txn_status',
-            'txn_type',
-            'txn_ref',
+//            'id' => [
+//                'visible' => false
+//            ],
+            'partner' => ['name' => 'req_field123'],
+            'txn_time' => ['name' => 'req_field7'],
+            'txn_status' => ['name' => 'res_field48'],
+            'txn_type'  => ['name' => 'req_field41'],
+            'txn_ref'  => ['name' => 'req_field37'],
 //            'req_field49',
-            'amt_sent',
-            'amt_received',
-            'sender',
-            'receiver',
-            'receiver_acc/No',
-            'response',
+            'amt_sent'  => ['name' => 'req_field49'],
+            'amt_received'  => ['name' => 'req_field5'],
+            'sender'  => ['name' => 'req_field105'],
+//        'req_field105',
+            'receiver'  => ['name' => 'req_field108'],
+            'receiver_acc/No'  => ['name' => 'req_field102'],
+            'response'  => ['name' => 'res_field44'],
 //            'res_field39',
-            'receiver_bank',
+            'receiver_bank'  => ['name' => 'req_field112'],
 //            'aml_listed',
 //            'posted'
         ];

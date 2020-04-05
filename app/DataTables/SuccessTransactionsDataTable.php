@@ -50,7 +50,7 @@ class SuccessTransactionsDataTable extends DataTable
                 return $query->req_field102;
             })
             ->addColumn('response', function ($query){
-                return $query->res_field44." "."(".$query->res_field39.")";
+                return $query->res_field44;
             })
             ->addColumn('receiver_bank', function ($query){
                 return $query->req_field112;
@@ -109,24 +109,29 @@ class SuccessTransactionsDataTable extends DataTable
     protected function getColumns()
     {
         return [
-//            'iso_id',
-            'partner',
-            'txn_time',
-            'txn_status',
-            'txn_type',
-            'txn_ref',
+//            'id' => [
+//                'visible' => false
+//            ],
+            'partner' => ['name' => 'req_field123'],
+            'txn_time' => ['name' => 'req_field7'],
+            'txn_status' => ['name' => 'res_field48'],
+            'txn_type'  => ['name' => 'req_field41'],
+            'txn_ref'  => ['name' => 'req_field37'],
 //            'req_field49',
-            'amt_sent',
-            'amt_received',
-            'sender',
-            'receiver',
-            'receiver_acc/No',
-            'response',
+            'amt_sent'  => ['name' => 'req_field49'],
+            'amt_received'  => ['name' => 'req_field5'],
+            'sender'  => ['name' => 'req_field105'],
+//        'req_field105',
+            'receiver'  => ['name' => 'req_field108'],
+            'receiver_acc/No'  => ['name' => 'req_field102'],
+            'response'  => ['name' => 'res_field44'],
 //            'res_field39',
-            'receiver_bank',
+            'receiver_bank'  => ['name' => 'req_field112'],
 //            'aml_listed',
 //            'posted'
+
         ];
+
     }
 
     /**

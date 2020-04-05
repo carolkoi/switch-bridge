@@ -27,7 +27,7 @@ class SuccessTransactionsController extends AppBaseController
      */
     public function index(SuccessTransactionsDataTable $successTransactionsDataTable)
     {
-        return $successTransactionsDataTable->render('transactions.index');
+        return $successTransactionsDataTable->render('transactions.success_index');
     }
 
     /**

@@ -7,4 +7,17 @@
 @section('scripts')
     @include('layouts.datatables_js')
     {!! $dataTable->scripts() !!}
+    <script>
+        let table = $('#dataTableBuilder').DataTable( {
+            retrieve: true,
+            paging: false,
+            ajax: "data.json"
+        } );
+
+        setInterval( function () {
+            table.ajax.reload( null, false ); // user paging is not reset on reload
+        }, 10000 );
+        // $('#dataTableBuilder').DataTable().ajax.reload(null, false);
+    </script>
+
 @endsection

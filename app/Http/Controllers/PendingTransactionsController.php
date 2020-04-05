@@ -17,6 +17,6 @@ class PendingTransactionsController extends Controller
      */
     public function index(PendingTransactionsDataTable $pendingTransactionsDataTable)
     {
-        return $pendingTransactionsDataTable->render('transactions.index');
+        return $pendingTransactionsDataTable->render('transactions.pending_index');
     }
 }

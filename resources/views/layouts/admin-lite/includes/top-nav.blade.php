@@ -35,7 +35,7 @@
                                  class="img-circle" alt="User Image"/>
                             <p>
                                 {!! Auth::user() ? Auth::user()->name : redirect('/')!!}
-                                <small>{!!  Auth::user()->msisdn ." "."(". Auth::user()->status.")" !!}</small>
+                                <small>{!! Auth::user() ? Auth::user()->msisdn : redirect('/') !!}</small>
 {{--                                <small>{!! Auth::user() ? Auth::user()->status : redirect('/')!!}</small>--}}
 
                                 <small>Member since {!! Auth::user() ? Auth::user()->created_at->format('M. Y') : redirect('/')!!}</small>
