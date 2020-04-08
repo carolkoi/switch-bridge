@@ -3,7 +3,7 @@
 @section('content')
     <section class="content-header">
         <h1>
-            Transactions
+            Aml Maker Checker
         </h1>
     </section>
     <div class="content">
@@ -11,20 +11,13 @@
         <div class="box box-primary">
             <div class="box-body">
                 <div class="row">
-                    {!! Form::open(['route' => 'transactions.store']) !!}
+                    {!! Form::open(['route' => 'amlMakerCheckers.store']) !!}
 
-                        @include('transactions.fields')
+                        @include('aml_maker_checkers.fields')
 
                     {!! Form::close() !!}
                 </div>
             </div>
         </div>
     </div>
-@endsection
-@section('scripts')
-<script>
-alert('here')
-    CKEDITOR.replace('editor')
-
-</script>
 @endsection

@@ -87,13 +87,7 @@
 </li>
 
 
-{{--<li class="{{ Request::is('switchSettings*') ? 'active' : '' }}">--}}
-{{--    <a href="{!! route('switchSettings.index') !!}"><i class="fa fa-edit"></i><span>Switch Settings</span></a>--}}
-{{--</li>--}}
-
-{{--<li class="{{ Request::is('companies*') ? 'active' : '' }}">--}}
-{{--    <a href="{!! route('companies.index') !!}"><i class="fa fa-edit"></i><span>Companies</span></a>--}}
-{{--</li>--}}
-
-
+<li class="{{ Request::is('amlMakerCheckers*') ? 'active' : '' }}">
+    <a href="{!! route('amlMakerCheckers.index') !!}"><i class="fa fa-edit"></i><span>Aml Maker Checkers</span></a>
+</li>
 
