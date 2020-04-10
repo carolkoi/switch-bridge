@@ -5,6 +5,7 @@ RUN curl -s https://getcomposer.org/installer | php
 COPY composer.phar /usr/bin/composer
 RUN alias composer='php composer.phar'
 
+
 COPY . /var/www/localhost/htdocs/
 COPY httpd.conf /etc/httpd/conf/httpd.conf
 RUN sed -i '/LoadModule rewrite_module/s/^#//g' /etc/httpd/conf/httpd.conf

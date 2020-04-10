@@ -10,6 +10,7 @@ use App\Repositories\CompanyRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
+use App\Models\Company;
 
 class CompanyController extends AppBaseController
 {
@@ -69,7 +70,7 @@ class CompanyController extends AppBaseController
      */
     public function show($id)
     {
-        $company = $this->companyRepository->find($id);
+        $company = Company::where('companyid',$id)->first();
 
         if (empty($company)) {
             Flash::error('Company not found');
@@ -89,7 +90,7 @@ class CompanyController extends AppBaseController
      */
     public function edit($id)
     {
-        $company = $this->companyRepository->find($id);
+        $company = Company::where('companyid',$id)->first();
 
         if (empty($company)) {
             Flash::error('Company not found');
@@ -110,7 +111,7 @@ class CompanyController extends AppBaseController
      */
     public function update($id, UpdateCompanyRequest $request)
     {
-        $company = $this->companyRepository->find($id);
+        $company = Company::where('companyid',$id)->first();
 
         if (empty($company)) {
             Flash::error('Company not found');
@@ -118,7 +119,7 @@ class CompanyController extends AppBaseController
             return redirect(route('companies.index'));
         }
 
-        $company = $this->companyRepository->update($request->all(), $id);
+        $company = $company = Company::where('companyid',$id)->update($request->all());
 
         Flash::success('Company updated successfully.');
 

@@ -1,27 +1,26 @@
-FROM php:7.2-fpm
+FROM alpine:3
+RUN apk --update add wget \
+  curl \
+  git \
+  grep \
+  build-base \
+  libmemcached-dev \
+  libmcrypt-dev \
+  libxml2-dev \
+  imagemagick-dev \
+  pcre-dev \
+  libtool \
+  make \
+  autoconf \
+  g++ \
+  cyrus-sasl-dev \
+  libgsasl-dev \
+  supervisor
+RUN apk update && apk add openssl php7-openssl php7-tokenizer php-phar  php7-apache2 php7-pdo_pgsql php7-ctype php7-mbstring php7-pgsql php7-session php7-pdo php7-cli php7-curl php7-json php7-cli php7-mcrypt curl tzdata
 
-COPY composer.lock composer.json /var/www/
+RUN rm /var/cache/apk/* && \
+    mkdir -p /var/www
 
-COPY database /var/www/database
+COPY supervisord-app.conf /etc/supervisord.conf
 
-WORKDIR /var/www
-
-RUN apt-get update && apt-get -y install git && apt-get -y install zip
-
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-
-COPY . /var/www
-
-RUN chown -R www-data:www-data \
-        /var/www/storage \
-        /var/www/bootstrap/cache
-
-RUN  apt-get install -y libmcrypt-dev \
-        libmagickwand-dev --no-install-recommends \
-        && pecl install mcrypt-1.0.2 \
-        && docker-php-ext-install pdo_mysql \
-        && docker-php-ext-enable mcrypt
-
-RUN mv .env.prod .env
-
-RUN php artisan optimize
+ENTRYPOINT ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisord.conf"]

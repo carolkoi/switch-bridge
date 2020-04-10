@@ -1,6 +1,20 @@
-version: '3.4'
+version: '2'
 
 services:
+
+  # The Database
+  database:
+    image: postgres:12.1
+    container_name: Bridge_db
+    #      image: postgresql- 12.1
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    environment:
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+    ports:
+      - 5432:5432
 
   #  The Application
   app:
@@ -8,46 +22,31 @@ services:
     build:
       context: ./
       dockerfile: development/app.dockerfile
-    working_dir: /var/www
+    working_dir: /var/www/html
     volumes:
-      - .storage/:/var/www/storage
-    env_file: '.env.prod'
+      - ./:/var/www/html
     environment:
-      - "DB_PORT=3306"
-      - "REDIS_HOST=database"
+      - "DB_PORT=5432"
+      - "DB_HOST=database"
 
   # The Web Server
   web:
-    container_name: nginx_server
+    container_name: bridge_server
     build:
       context: ./
       dockerfile: development/web.dockerfile
-    volumes:
-      - ./storage/logs/:/var/log/nginx
+    working_dir: /var/www/html
+    volumes_from:
+      - app
     ports:
       - 8990:80
-
-      # The Database
-  database:
-    image: postgres:12.1
-    container_name: Bridge_db
-#      image: postgresql- 12.1
-    volumes:
-          - ./data/postgres:/var/lib/postgresql/data
-    environment:
-#          - "PGSQL_DATABASE=superbridge"
-          - "DB_USERNAME=postgres"
-          - "DB_PASSWORD=postgres"
-#          - "PGSQL_ROOT_PASSWORD=Coding1!"
-    ports:
-          - 8991:3306
 
         # redis
 #    cache:
 #  image: redis:3.0-alpine
 
-#  volumes:
-#    postgres-data:
+volumes:
+  dbdata:
 #version: '2'
 #
 #services:

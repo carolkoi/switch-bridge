@@ -89,9 +89,9 @@ class ProviderDataTable extends DataTable
             'id',
 //            'companyid',
             'provider',
-            'service_name',
+            'service_name' => ['name' => 'moneyservicename' ],
 //            'provideridentifier',
-            'account_number',
+            'account_number' => ['name' => 'accountnumber' ],
 //            'serviceprovidercategoryid',
 //            'cutofflimit',
 //            'settlementaccount',
@@ -99,7 +99,7 @@ class ProviderDataTable extends DataTable
 //            'c2bbalance',
 //            'processingmode',
 //            'addedby',
-            'provider_type',
+            'provider_type' => ['name' => 'provider_type' ],
             'status'
         ];
     }

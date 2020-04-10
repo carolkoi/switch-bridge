@@ -85,11 +85,11 @@ class CompanyDataTable extends DataTable
     {
         return [
             'id',
-            'company_name',
-            'company_address',
-            'company_email',
-            'contact_person',
-            'company_type',
+            'company_name' => ['name' => 'companyname' ],
+            'company_address' => ['name' => 'companyaddress' ],
+            'company_email' => ['name' => 'companyemail' ],
+            'contact_person' => ['name' => 'contactperson' ],
+            'company_type' => ['name' => 'companytype' ],
         ];
     }
 

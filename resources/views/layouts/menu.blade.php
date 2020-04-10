@@ -85,9 +85,19 @@
         </li>
     </ul>
 </li>
-
-
-<li class="{{ Request::is('amlMakerCheckers*') ? 'active' : '' }}">
-    <a href="{!! route('amlMakerCheckers.index') !!}"><i class="fa fa-edit"></i><span>Aml Maker Checkers</span></a>
+<li class="treeview {{ Request::is('checker*') ? 'active menu-open' : '' }}">
+    <a class="dropdown-toggle" href="#">
+        <span class="glyphicon glyphicon-repeat"></span><span>Reprocessing</span>
+        <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+    </a>
+    <ul class="treeview-menu">
+       <li class="{{ Request::is('/checker/amlMakerCheckers*') ? 'active' : '' }}">
+    <a href="{!! route('amlMakerCheckers.index') !!}"><i class="fa fa-search"></i><span>Aml Maker Checkers</span></a>
 </li>
+    </ul>
+</li>
+
+
 

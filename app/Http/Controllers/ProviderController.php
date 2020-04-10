@@ -10,6 +10,7 @@ use App\Repositories\ProviderRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
+use App\Models\Provider;
 
 class ProviderController extends AppBaseController
 {
@@ -69,7 +70,7 @@ class ProviderController extends AppBaseController
      */
     public function show($id)
     {
-        $provider = $this->providerRepository->find($id);
+        $provider = Provider::where('serviceproviderid', $id)->first();
 
         if (empty($provider)) {
             Flash::error('Provider not found');
@@ -89,7 +90,7 @@ class ProviderController extends AppBaseController
      */
     public function edit($id)
     {
-        $provider = $this->providerRepository->find($id);
+        $provider = Provider::where('serviceproviderid', $id)->first();
 
         if (empty($provider)) {
             Flash::error('Provider not found');
@@ -110,7 +111,7 @@ class ProviderController extends AppBaseController
      */
     public function update($id, UpdateProviderRequest $request)
     {
-        $provider = $this->providerRepository->find($id);
+        $provider = Provider::where('serviceproviderid', $id)->first();
 
         if (empty($provider)) {
             Flash::error('Provider not found');
@@ -118,7 +119,7 @@ class ProviderController extends AppBaseController
             return redirect(route('providers.index'));
         }
 
-        $provider = $this->providerRepository->update($request->all(), $id);
+        $provider = $provider = Provider::where('serviceproviderid', $id)->update($request->all());
 
         Flash::success('Provider updated successfully.');
 

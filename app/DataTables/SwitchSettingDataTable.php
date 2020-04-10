@@ -89,10 +89,10 @@ class SwitchSettingDataTable extends DataTable
 //            'source_ip',
 //            'latest_ip',
             'id',
-            'service_provider',
-            'setting',
+            'service_provider' => ['name' => 'setting_profile' ],
+            'setting' => ['name' => 'setting_name' ],
             'setting_value',
-            'value_type',
+            'value_type' => ['name' => 'setting_type' ],
             'status',
 //            'record_version'
         ];

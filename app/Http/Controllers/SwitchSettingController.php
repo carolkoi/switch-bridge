@@ -10,6 +10,7 @@ use App\Repositories\SwitchSettingRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
+use App\Models\SwitchSetting;
 
 class SwitchSettingController extends AppBaseController
 {
@@ -69,7 +70,7 @@ class SwitchSettingController extends AppBaseController
      */
     public function show($id)
     {
-        $switchSetting = $this->switchSettingRepository->find($id);
+        $switchSetting = SwitchSetting::where('setting_id', $id)->first();
 
         if (empty($switchSetting)) {
             Flash::error('Switch Setting not found');
@@ -89,7 +90,8 @@ class SwitchSettingController extends AppBaseController
      */
     public function edit($id)
     {
-        $switchSetting = $this->switchSettingRepository->find($id);
+        $switchSetting = SwitchSetting::where('setting_id', $id)->first();
+
 
         if (empty($switchSetting)) {
             Flash::error('Switch Setting not found');
@@ -110,7 +112,8 @@ class SwitchSettingController extends AppBaseController
      */
     public function update($id, UpdateSwitchSettingRequest $request)
     {
-        $switchSetting = $this->switchSettingRepository->find($id);
+        $switchSetting = SwitchSetting::where('setting_id', $id)->first();
+
 
         if (empty($switchSetting)) {
             Flash::error('Switch Setting not found');
@@ -118,7 +121,7 @@ class SwitchSettingController extends AppBaseController
             return redirect(route('switchSettings.index'));
         }
 
-        $switchSetting = $this->switchSettingRepository->update($request->all(), $id);
+        $switchSetting = SwitchSetting::where('setting_id', $id)->update($request->all());
 
         Flash::success('Switch Setting updated successfully.');
 

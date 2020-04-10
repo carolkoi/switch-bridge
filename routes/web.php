@@ -13,10 +13,6 @@
 
 
 Route::get('/','Auth\LoginController@showLoginForm');
-//Route::post('/login','Auth\LoginController@login');
-//Route::post('/logout','Auth\LoginController@logout');
-//Route::get('/', ['uses' => 'AdminController@index']);
-//Route::any('/verify-user', ['uses' => 'AdminController@auth'])->name('user.verify');
 
 Auth::routes(['register' => false]);
 
@@ -63,6 +59,8 @@ Route::prefix('services')->group(function () {
 
 //Route::get('aMLCheckers', 'AML-CheckerController@index')->name('aMLCheckers.index');
 //Route::resource('aMLCheckers', 'AML-CheckerController');
+Route::prefix('checker')->group(function () {
+//    Route::resource('serviceProviders', 'ServiceProvidersController');
+    Route::resource('amlMakerCheckers', 'AmlMakerCheckerController');
+});
 
-
-Route::resource('amlMakerCheckers', 'AmlMakerCheckerController');
