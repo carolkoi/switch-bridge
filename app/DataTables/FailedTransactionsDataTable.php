@@ -40,9 +40,9 @@ class FailedTransactionsDataTable extends DataTable
             ->addColumn('amt_received', function ($query){
                 return $query->req_field5;
             })
-//            ->addColumn('sender', function ($query){
-//                return $query->req_field105;
-//            })
+            ->addColumn('sender', function ($query){
+               return $query->req_field105;
+            })
             ->addColumn('receiver', function ($query){
                 return $query->req_field108;
             })
