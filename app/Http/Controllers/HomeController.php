@@ -24,7 +24,8 @@ class HomeController extends Controller
      */
     public function index()
     {
+    $all_transactions = Transactions::all();
         $transactions = Transactions::paginate(10);
-        return view('home', ['transactions' => $transactions] );
+        return view('home', ['transactions' => $transactions, 'all_transactions' => $all_transactions] );
     }
 }

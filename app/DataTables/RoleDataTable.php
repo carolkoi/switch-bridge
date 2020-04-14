@@ -2,12 +2,12 @@
 
 namespace App\DataTables;
 
-use App\Models\User;
+use App\Models\Role;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
-use App\Models\Company;
+use App\Models\User;
 
-class UserDataTable extends DataTable
+class RoleDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -20,24 +20,21 @@ class UserDataTable extends DataTable
         $dataTable = new EloquentDataTable($query);
 
         return $dataTable
-        ->addColumn('role', function ($query){
-            return $query->role['rolename'];
-            })
-        ->addColumn('company', function ($query){
-            return $query->company['companyname'];
-            })
-        ->addColumn('action', 'users.datatables_actions');
+        ->addColumn('added_by', function($query){
+        return User::where('id', $query->addedby)->first()['name'];
+        })
+        ->addColumn('action', 'roles.datatables_actions');
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\User $model
+     * @param \App\Models\Role $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(User $model)
+    public function query(Role $model)
     {
-        return $model->with(['role', 'company'])->newQuery();
+        return $model->with('user')->newQuery();
     }
 
     /**
@@ -73,19 +70,12 @@ class UserDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'company' => [
-                'name' => 'company.companyname'
-            ],
-            'role' => [
-                'name' => 'role.rolename'
-            ],
-            'name',
-            'contact_person',
-            'email',
-            //'password',
-            'msisdn',
-            'status',
-           // 'remember_token'
+            'rolename',
+            'description',
+            //'roletype',
+            //'rolestatus',
+            'added_by',
+            //'ipaddress'
         ];
     }
 
@@ -96,6 +86,6 @@ class UserDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'usersdatatable_' . time();
+        return 'rolesdatatable_' . time();
     }
 }

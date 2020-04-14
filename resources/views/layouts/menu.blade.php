@@ -98,6 +98,25 @@
 </li>
     </ul>
 </li>
+<li class="treeview {{ Request::is('members*') ? 'active menu-open' : '' }}">
+    <a class="dropdown-toggle" href="#">
+        <span class="glyphicon glyphicon-lock"></span><span>Administration</span>
+        <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+    </a>
+    <ul class="treeview-menu">
+       <li class="{{ Request::is('members/users*') ? 'active' : '' }}">
+    <a href="{!! route('users.index') !!}"><i class="fa fa-users"></i><span>Users</span></a>
+</li>
+<li class="{{ Request::is('members/roles*') ? 'active' : '' }}">
+    <a href="{!! route('roles.index') !!}"><i class="fa fa-user-plus"></i><span>Roles</span></a>
+</li>
+    </ul>
+</li>
+
+
+
 
 
 

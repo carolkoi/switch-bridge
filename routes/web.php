@@ -64,3 +64,10 @@ Route::prefix('checker')->group(function () {
     Route::resource('amlMakerCheckers', 'AmlMakerCheckerController');
 });
 
+Route::prefix('members')->group(function () {
+    Route::resource('users', 'UserController');
+    Route::resource('roles', 'RoleController');
+});
+
+
+

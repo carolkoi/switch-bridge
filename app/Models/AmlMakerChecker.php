@@ -112,6 +112,8 @@ class AmlMakerChecker extends Model
     use SoftDeletes;
 
     public $table = 'tbl_cus_blacklist';
+    // Primary key
+    public $primaryKey = 'blacklist_id';
 
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';

@@ -11,8 +11,9 @@
     <section class="content">
 
         <!-- Default box -->
-        <div class="box">
+        <div class="box box-info">
             <div class="box-header with-border">
+            <h1 class="box-title">Statistical Report</h1>
 
                 <div class="box-tools pull-right">
                     <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title=""
@@ -36,13 +37,12 @@
                 {{--                </div>--}}
                 <div class="col-md-3 col-sm-6 col-xs-12">
                     <div class="info-box">
-                        <span class="info-box-icon bg-aqua"><i class="fa fa-file"></i></span>
+                        <span class="info-box-icon bg-aqua"><i class="fa fa-dollar"></i></span>
 
                         <div class="info-box-content">
                             <span class="info-box-text">All Transactions</span>
                             <span class="info-box-number">
-{{--                                    {{$templates->where('survey_type_id', 1)->count()}}--}}
-                                27
+                                  {{count($all_transactions->all())}}
                                 </span>
                         </div>
                         <!-- /.info-box-content -->
@@ -51,12 +51,12 @@
                 </div>
                 <div class="col-md-3 col-sm-6 col-xs-12">
                     <div class="info-box">
-                        <span class="info-box-icon bg-red"><i class="fa fa-file-text"></i></span>
+                        <span class="info-box-icon bg-red"><i class="fa fa-dollar"></i></span>
 
                         <div class="info-box-content">
                             <span class="info-box-text">Failed Transactions</span>
                             <span class="info-box-number">
-{{--                                    {{$templates->where('survey_type_id', 2)->count()}}--}}12
+                                       {{$all_transactions->where('res_field48', 'FAILED')->count()}}
                                 </span>
                         </div>
                         <!-- /.info-box-content -->
@@ -65,13 +65,12 @@
                 </div>
                 <div class="col-md-3 col-sm-6 col-xs-12">
                     <div class="info-box">
-                        <span class="info-box-icon bg-green"><i class="fa fa-file-text"></i></span>
+                        <span class="info-box-icon bg-green"><i class="fa fa-dollar"></i></span>
 
                         <div class="info-box-content">
                             <span class="info-box-text">Successful Transactions</span>
                             <span class="info-box-number">
-{{--                            {{$templates->where('survey_type_id', 3)->count()}}--}}
-7
+                            {{$all_transactions->where('res_field48', 'COMPLETED')->count()}}
                             </span>
                         </div>
                         <!-- /.info-box-content -->
@@ -80,13 +79,12 @@
                 </div>
                 <div class="col-md-3 col-sm-6 col-xs-12">
                     <div class="info-box">
-                        <span class="info-box-icon bg-yellow"><i class="fa fa-file-text"></i></span>
+                        <span class="info-box-icon bg-yellow"><i class="fa fa-dollar"></i></span>
 
                         <div class="info-box-content">
                             <span class="info-box-text">Pending Transactions</span>
                             <span class="info-box-number">
-{{--                            {{$templates->where('survey_type_id', 4)->count()}}--}}
-2
+                                {{$all_transactions->where('res_field48', 'UPLOADED')->count()}}
                             </span>
                         </div>
                         <!-- /.info-box-content -->
@@ -168,26 +166,8 @@
                                     <td>{{ $transaction->req_field102  }}</td>
                                     <td>{{ $transaction->res_field44. " ". "(".$transaction->res_field39.")"}}</td>
                                     <td>{{ $transaction->req_field112 }}</td>
-                                    {{--                                <td>{{ $transaction->req_field104  }}</td>--}}
-                                    {{--                                <td>{{ $transaction->sync_message  }}</td>--}}
-                                    {{--                                <td>{{ $transaction->sent }}</td>--}}
-                                    {{--                                <td>{{ $transaction->aml_check_sent }}</td>--}}
-                                    {{--                                <td>{{ $transaction->posted }}</td>--}}
-                                    {{--                                <td>{{ $transaction->aml_check_sent }}</td>--}}
 
-                                    {{--                                <td class="text-success">Successful</td>--}}
-                                    {{--                                <td>{{ $transaction->res_field4 }}</td>--}}
-                                    {{--                                <td>USD</td>--}}
-                                    {{--                                <td>{{ $transaction->req_field2 }}</td>--}}
 
-                                    {{--                <td class="text-right">--}}
-                                    {{--                    <div class="btn-group btn-hspace">--}}
-                                    {{--                        <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">Open <span class="icon-dropdown mdi mdi-chevron-down"></span></button>--}}
-                                    {{--                        <div class="dropdown-menu" role="menu"><a class="dropdown-item" href="{{url('/show/transaction/'.$transaction->iso_id)}}">View</a><a class="dropdown-item" href="#">Edit</a><a class="dropdown-item" href="#">Delete</a>--}}
-                                    {{--                            <div class="dropdown-divider"></div><a class="dropdown-item" href="#">Separated link</a>--}}
-                                    {{--                        </div>--}}
-                                    {{--                    </div>--}}
-                                    {{--                </td>--}}
                                 </tr>
                             @endforeach
 

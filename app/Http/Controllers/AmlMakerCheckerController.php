@@ -11,6 +11,8 @@ use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
 use App\Models\AmlMakerChecker;
+use Carbon\Carbon;
+use Auth;
 
 class AmlMakerCheckerController extends AppBaseController
 {
@@ -53,10 +55,14 @@ class AmlMakerCheckerController extends AppBaseController
     public function store(CreateAmlMakerCheckerRequest $request)
     {
         $input = $request->all();
-
+        $input['added_by'] = Auth::user()->id;
+        $input['modified_by'] = Auth::user()->id;
+        //$input['date_time_added'] = Carbon::now();
+        //$input['date_time_modified'] = Carbon::now();
+        //dd($input);
         $amlMakerChecker = $this->amlMakerCheckerRepository->create($input);
 
-        Flash::success('Aml Maker Checker saved successfully.');
+        Flash::success('Member blacklist record saved successfully.');
 
         return redirect(route('amlMakerCheckers.index'));
     }
@@ -121,7 +127,7 @@ class AmlMakerCheckerController extends AppBaseController
 
         $amlMakerChecker = AmlMakerChecker::where('blacklist_id', $blacklist_id)->update($request->except(['_method', '_token']));
 
-        Flash::success('Aml Maker Checker updated successfully.');
+        Flash::success('Member blacklist record updated successfully.');
 
         return redirect(route('amlMakerCheckers.index'));
     }
@@ -138,14 +144,14 @@ class AmlMakerCheckerController extends AppBaseController
         $amlMakerChecker = $this->amlMakerCheckerRepository->find($id);
 
         if (empty($amlMakerChecker)) {
-            Flash::error('Aml Maker Checker not found');
+            Flash::error('Blacklist record not found');
 
             return redirect(route('amlMakerCheckers.index'));
         }
 
         $this->amlMakerCheckerRepository->delete($id);
 
-        Flash::success('Aml Maker Checker deleted successfully.');
+        Flash::success('Blacklist record deleted successfully.');
 
         return redirect(route('amlMakerCheckers.index'));
     }
