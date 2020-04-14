@@ -29,21 +29,6 @@
         backend:
           aliases:
             - app
-      # The Database
-
-    database:
-      container_name: Bridge_db
-      #      image: postgresql- 12.1
-      build:
-        context: '.'
-      volumes:
-        - dbdata:/var/lib/postgresql/data
-      networks:
-        backend:
-          aliases:
-            - db
-      ports:
-        - 5432:5432
 
   networks:
     backend:
