@@ -1,37 +1,37 @@
 <!-- Companyname Field -->
 <div class="form-group">
-    {!! Form::label('companyname', 'Companyname:') !!}
+    {!! Form::label('companyname', 'Company Name:') !!}
     <p>{!! $company->companyname !!}</p>
 </div>
 
 <!-- Companyaddress Field -->
 <div class="form-group">
-    {!! Form::label('companyaddress', 'Companyaddress:') !!}
+    {!! Form::label('companyaddress', 'Company Address:') !!}
     <p>{!! $company->companyaddress !!}</p>
 </div>
 
 <!-- Companyemail Field -->
 <div class="form-group">
-    {!! Form::label('companyemail', 'Companyemail:') !!}
+    {!! Form::label('companyemail', 'Company Email:') !!}
     <p>{!! $company->companyemail !!}</p>
 </div>
 
 <!-- Contactperson Field -->
 <div class="form-group">
-    {!! Form::label('contactperson', 'Contactperson:') !!}
+    {!! Form::label('contactperson', 'Contact Person:') !!}
     <p>{!! $company->contactperson !!}</p>
 </div>
 
 <!-- Companytype Field -->
 <div class="form-group">
-    {!! Form::label('companytype', 'Companytype:') !!}
+    {!! Form::label('companytype', 'Company Type:') !!}
     <p>{!! $company->companytype !!}</p>
 </div>
 
 <!-- Addedby Field -->
 <div class="form-group">
-    {!! Form::label('addedby', 'Addedby:') !!}
-    <p>{!! $company->addedby !!}</p>
+    {!! Form::label('addedby', 'Added by:') !!}
+    <p>{!! \App\Models\User::where('id',$company->addedby)->first()->name !!}</p>
 </div>
 
 <!-- Ipaddress Field -->

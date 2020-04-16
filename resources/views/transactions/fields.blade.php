@@ -1,13 +1,17 @@
 
 <!-- Res Field48 Field -->
 <div class="form-group col-sm-6">
+{{--    <select id="txn-status-id" class="form-control select2">--}}
+{{--        <option></option>--}}
+{{--    </select>--}}
     {!! Form::label('res_field48', 'Transaction Status:') !!}
     {!!Form::select('res_field48',
-        array('COMPLETED' => 'COMPLETED',
-                'AML-APPROVED' => 'AML-APPROVED',
-                'UPLOADED' => 'PENDING',
-                'FAILED' => 'FAILED'
-                ), isset($transactions) ? $transactions->res_field48 : null, ['class' => 'form-control select2'])!!}
+        array('AML-APPROVED' => 'AML-APPROVED',
+                'FAILED' => 'FAILED',
+                'INIT-FAILED' => 'INIT-FAILED',
+                'AML-FAILED' => 'AML-FAILED',
+                ), isset($transactions) ? $transactions->res_field48 : null, ['class' => 'form-control select2',
+                 'id' => 'txn-status-id'])!!}
 </div>
 
 <!-- Aml Listed Field -->

@@ -70,7 +70,8 @@ class Company extends Model
     use SoftDeletes;
 
     public $table = 'tbl_cmp_company';
-    
+    public $primaryKey = 'companyid';
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -117,10 +118,8 @@ class Company extends Model
         'contactperson' => 'required',
         'companytype' => 'required',
         'addedby' => 'required',
-        'ipaddress' => 'required',
-        'created_at' => 'required',
-        'updated_at' => 'required'
+        'ipaddress' => 'string'
     ];
 
-    
+
 }

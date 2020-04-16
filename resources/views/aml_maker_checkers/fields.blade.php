@@ -35,7 +35,7 @@
 <!-- Blacklist Source Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('blacklist_source', 'Blacklist Source:') !!}
-    {!! Form::text('blacklist_source', null, ['class' => 'form-control']) !!}
+    {!! Form::file('blacklist_source', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Response Field -->

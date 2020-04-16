@@ -2054,7 +2054,6 @@ class Transactions extends Model
      * @var array
      */
     public static $rules = [
-        'req_field3' => 'required'
     ];
 
 
