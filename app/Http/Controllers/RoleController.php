@@ -6,11 +6,11 @@ use App\DataTables\RoleDataTable;
 use App\Http\Requests;
 use App\Http\Requests\CreateRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
+use App\Models\Role;
 use App\Repositories\RoleRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
-use Auth;
 
 class RoleController extends AppBaseController
 {
@@ -30,7 +30,9 @@ class RoleController extends AppBaseController
      */
     public function index(RoleDataTable $roleDataTable)
     {
-        return $roleDataTable->render('roles.index');
+            $roles = Role::all();
+            return view('roles.myindex', ['roles' => $roles]);
+//        return $roleDataTable->render('roles.index');
     }
 
     /**
@@ -53,9 +55,11 @@ class RoleController extends AppBaseController
     public function store(CreateRoleRequest $request)
     {
         $input = $request->all();
-        $input['addedby'] = Auth::user()->id;
+        $permissions = \Spatie\Permission\Models\Permission::pluck('name');
+//        dd($permissions);
 
         $role = $this->roleRepository->create($input);
+        $role->givePermissionTo($permissions);
 
         Flash::success('Role saved successfully.');
 

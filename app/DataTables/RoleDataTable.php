@@ -5,7 +5,6 @@ namespace App\DataTables;
 use App\Models\Role;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
-use App\Models\User;
 
 class RoleDataTable extends DataTable
 {
@@ -19,11 +18,7 @@ class RoleDataTable extends DataTable
     {
         $dataTable = new EloquentDataTable($query);
 
-        return $dataTable
-        ->addColumn('added_by', function($query){
-        return User::where('id', $query->addedby)->first()['name'];
-        })
-        ->addColumn('action', 'roles.datatables_actions');
+        return $dataTable->addColumn('action', 'roles.datatables_actions');
     }
 
     /**
@@ -34,7 +29,7 @@ class RoleDataTable extends DataTable
      */
     public function query(Role $model)
     {
-        return $model->with('user')->newQuery();
+        return $model->newQuery();
     }
 
     /**
@@ -70,12 +65,8 @@ class RoleDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'rolename',
-            'description',
-            //'roletype',
-            //'rolestatus',
-            'added_by',
-            //'ipaddress'
+            'name',
+            'guard_name'
         ];
     }
 
@@ -86,6 +77,6 @@ class RoleDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'rolesdatatable_' . time();
+        return '$MODEL_NAME_PLURAL_SNAKE_$datatable_' . time();
     }
 }

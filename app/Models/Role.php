@@ -10,40 +10,19 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      definition="Role",
  *      required={""},
  *      @SWG\Property(
- *          property="roleid",
- *          description="roleid",
+ *          property="id",
+ *          description="id",
  *          type="integer",
  *          format="int32"
  *      ),
  *      @SWG\Property(
- *          property="rolename",
- *          description="rolename",
+ *          property="name",
+ *          description="name",
  *          type="string"
  *      ),
  *      @SWG\Property(
- *          property="description",
- *          description="description",
- *          type="string"
- *      ),
- *      @SWG\Property(
- *          property="roletype",
- *          description="roletype",
- *          type="string"
- *      ),
- *      @SWG\Property(
- *          property="rolestatus",
- *          description="rolestatus",
- *          type="string"
- *      ),
- *      @SWG\Property(
- *          property="addedby",
- *          description="addedby",
- *          type="integer",
- *          format="int32"
- *      ),
- *      @SWG\Property(
- *          property="ipaddress",
- *          description="ipaddress",
+ *          property="guard_name",
+ *          description="guard_name",
  *          type="string"
  *      ),
  *      @SWG\Property(
@@ -57,6 +36,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *          description="updated_at",
  *          type="string",
  *          format="date-time"
+ *      ),
+ *      @SWG\Property(
+ *          property="deleted_at",
+ *          description="deleted_at",
+ *          type="string",
+ *          format="date-time"
  *      )
  * )
  */
@@ -64,24 +49,20 @@ class Role extends Model
 {
     use SoftDeletes;
 
-    public $table = 'tbl_sec_roles';
-    public $primaryKey = 'roleid';
+    public $table = 'roles';
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
 
     protected $dates = ['deleted_at'];
-    public $timestamps = false;
+    protected $guard_name = 'web';
 
 
 
     public $fillable = [
-        'rolename',
-        'description',
-        'roletype',
-        'rolestatus',
-        'addedby',
-        'ipaddress'
+        'name',
+        'guard_name'
     ];
 
     /**
@@ -90,13 +71,9 @@ class Role extends Model
      * @var array
      */
     protected $casts = [
-        'roleid' => 'integer',
-        'rolename' => 'string',
-        'description' => 'string',
-        'roletype' => 'string',
-        'rolestatus' => 'string',
-        'addedby' => 'integer',
-        'ipaddress' => 'string'
+        'id' => 'integer',
+        'name' => 'string',
+        'guard_name' => 'string'
     ];
 
     /**
@@ -105,15 +82,23 @@ class Role extends Model
      * @var array
      */
     public static $rules = [
-        'rolename' => 'required',
-        'description' => 'required',
-        'roletype' => 'required',
-        'rolestatus' => 'required',
-        'ipaddress' => 'required',
+        'name' => 'required',
+        'guard_name' => 'required',
     ];
-    public function user(){
-    return $this->belongsTo(User::class, 'id', 'role_id');
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     **/
+    public function modelHasRole()
+    {
+        return $this->hasOne(\App\Models\ModelHasRole::class);
     }
 
-
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     **/
+    public function permissions()
+    {
+        return $this->belongsToMany(\App\Models\Permission::class, 'role_has_permissions');
+    }
 }

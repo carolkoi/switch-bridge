@@ -6,10 +6,14 @@ use App\DataTables\UserDataTable;
 use App\Http\Requests;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\Company;
+use App\Models\Role;
+use App\Models\User;
 use App\Repositories\UserRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
+use Spatie\Permission\Models\Permission;
 
 class UserController extends AppBaseController
 {
@@ -29,6 +33,7 @@ class UserController extends AppBaseController
      */
     public function index(UserDataTable $userDataTable)
     {
+//        dd(User::all()->toArray());
         return $userDataTable->render('users.index');
     }
 
@@ -39,7 +44,9 @@ class UserController extends AppBaseController
      */
     public function create()
     {
-        return view('users.create');
+        $companies = Company::pluck('companyname', 'companyid');
+        $roles = \Spatie\Permission\Models\Role::pluck('name', 'id');
+        return view('users.create', ['companies' => $companies, 'roles' => $roles]);
     }
 
     /**
@@ -52,8 +59,14 @@ class UserController extends AppBaseController
     public function store(CreateUserRequest $request)
     {
         $input = $request->all();
-
+//        dd($input);
+        $role = \Spatie\Permission\Models\Role::where('id', $input['role_id'])->first()->name;
+        $permissions = \Spatie\Permission\Models\Permission::pluck('name');
         $user = $this->userRepository->create($input);
+        $user->assignRole($role);
+//        $user->givePermissionTo($permissions);
+//        $user->givePermissionTo('create roles');
+
 
         Flash::success('User saved successfully.');
 

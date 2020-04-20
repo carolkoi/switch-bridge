@@ -1,13 +1,13 @@
 <!-- Company Id Field -->
 <div class="form-group">
-    {!! Form::label('company_id', 'Company Id:') !!}
-    <p>{!! $user->company_id !!}</p>
+    {!! Form::label('company_id', 'Company:') !!}
+    <p>{!! \App\Models\Company::where('companyid', $user->company_id)->first()->companyname !!}</p>
 </div>
 
 <!-- Role Id Field -->
 <div class="form-group">
-    {!! Form::label('role_id', 'Role Id:') !!}
-    <p>{!! $user->role_id !!}</p>
+    {!! Form::label('role_id', 'Role:') !!}
+    <p>{!! implode(' ', $user->getRoleNames()->toArray()) !!}</p>
 </div>
 
 <!-- Name Field -->
@@ -29,10 +29,10 @@
 </div>
 
 <!-- Password Field -->
-<div class="form-group">
-    {!! Form::label('password', 'Password:') !!}
-    <p>{!! $user->password !!}</p>
-</div>
+{{--<div class="form-group">--}}
+{{--    {!! Form::label('password', 'Password:') !!}--}}
+{{--    <p>{!! $user->password !!}</p>--}}
+{{--</div>--}}
 
 <!-- Msisdn Field -->
 <div class="form-group">
@@ -46,9 +46,19 @@
     <p>{!! $user->status !!}</p>
 </div>
 
-<!-- Remember Token Field -->
-<div class="form-group">
-    {!! Form::label('remember_token', 'Remember Token:') !!}
-    <p>{!! $user->remember_token !!}</p>
-</div>
+{{--<!-- Remember Token Field -->--}}
+{{--<div class="form-group">--}}
+{{--    {!! Form::label('remember_token', 'Remember Token:') !!}--}}
+{{--    <p>{!! $user->remember_token !!}</p>--}}
+{{--</div>--}}
 
+<div class="form-group">
+    {!! Form::label('status', 'Permissions /Rights:') !!}
+    @foreach($user->getPermissionsViaRoles() as $permission)
+        <ul>
+            <li>  {!! $permission['name'];!!}
+            </li>
+        </ul>
+        @endforeach
+
+</div>

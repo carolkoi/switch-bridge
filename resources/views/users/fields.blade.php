@@ -1,13 +1,13 @@
 <!-- Company Id Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('company_id', 'Company Id:') !!}
-    {!! Form::number('company_id', null, ['class' => 'form-control']) !!}
+    {!! Form::label('company_id', 'Company:') !!}
+    {!! Form::select('company_id', $companies, null, ['class' => 'form-control select2']) !!}
 </div>
 
 <!-- Role Id Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('role_id', 'Role Id:') !!}
-    {!! Form::number('role_id', null, ['class' => 'form-control']) !!}
+    {!! Form::label('role_id', 'Role:') !!}
+    {!! Form::select('role_id', $roles, null, ['class' => 'form-control select2']) !!}
 </div>
 
 <!-- Name Field -->
@@ -41,16 +41,16 @@
 </div>
 
 <!-- Status Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('status', 'Status:') !!}
-    {!! Form::text('status', null, ['class' => 'form-control']) !!}
-</div>
+{{--<div class="form-group col-sm-6">--}}
+{{--    {!! Form::label('status', 'Status:') !!}--}}
+{{--    {!! Form::text('status', null, ['class' => 'form-control']) !!}--}}
+{{--</div>--}}
 
 <!-- Remember Token Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('remember_token', 'Remember Token:') !!}
-    {!! Form::text('remember_token', null, ['class' => 'form-control']) !!}
-</div>
+{{--<div class="form-group col-sm-6">--}}
+{{--    {!! Form::label('remember_token', 'Remember Token:') !!}--}}
+{{--    {!! Form::text('remember_token', null, ['class' => 'form-control']) !!}--}}
+{{--</div>--}}
 
 <!-- Submit Field -->
 <div class="form-group col-sm-12">

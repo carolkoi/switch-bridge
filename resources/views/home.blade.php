@@ -84,7 +84,7 @@
                         <div class="info-box-content">
                             <span class="info-box-text">Pending Transactions</span>
                             <span class="info-box-number">
-                                {{$all_transactions->where('res_field48', 'UPLOADED')->count()}}
+                                {{$all_transactions->WhereNotIn('res_field48', ['COMPLETED', 'FAILED'])->count()}}
                             </span>
                         </div>
                         <!-- /.info-box-content -->

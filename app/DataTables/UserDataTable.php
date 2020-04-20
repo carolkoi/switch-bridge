@@ -2,7 +2,9 @@
 
 namespace App\DataTables;
 
+use App\Models\Role;
 use App\Models\User;
+use App\Models\UserRole;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
 use App\Models\Company;
@@ -21,7 +23,7 @@ class UserDataTable extends DataTable
 
         return $dataTable
         ->addColumn('role', function ($query){
-            return $query->role['rolename'];
+            return \Spatie\Permission\Models\Role::where('id', $query->role_id)->first()['name'];
             })
         ->addColumn('company', function ($query){
             return $query->company['companyname'];
@@ -37,7 +39,7 @@ class UserDataTable extends DataTable
      */
     public function query(User $model)
     {
-        return $model->with(['role', 'company'])->newQuery();
+        return $model->with(['company'])->newQuery();
     }
 
     /**
@@ -76,9 +78,7 @@ class UserDataTable extends DataTable
             'company' => [
                 'name' => 'company.companyname'
             ],
-            'role' => [
-                'name' => 'role.rolename'
-            ],
+            'role',
             'name',
             'contact_person',
             'email',

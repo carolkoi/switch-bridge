@@ -67,7 +67,17 @@ Route::prefix('checker')->group(function () {
 Route::prefix('members')->group(function () {
     Route::resource('users', 'UserController');
     Route::resource('roles', 'RoleController');
+    Route::resource('permissions', 'PermissionController');
+
 });
 
 
+Route::resource('roles', 'RoleController');
 
+
+Route::resource('products', 'ProductController');
+
+Route::resource('paybills', 'PaybillController');
+
+
+Route::resource('comps', 'CompController');

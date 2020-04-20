@@ -108,15 +108,33 @@
     <ul class="treeview-menu">
        <li class="{{ Request::is('members/users*') ? 'active' : '' }}">
     <a href="{!! route('users.index') !!}"><i class="fa fa-users"></i><span>Users</span></a>
-</li>
-<li class="{{ Request::is('members/roles*') ? 'active' : '' }}">
-    <a href="{!! route('roles.index') !!}"><i class="fa fa-user-plus"></i><span>Roles</span></a>
-</li>
+    </li>
+    <li class="{{ Request::is('members/roles*') ? 'active' : '' }}">
+        <a href="{!! route('roles.index') !!}"><i class="fa fa-user-plus"></i><span>Roles</span></a>
+    </li>
+        <li class="{{ Request::is('members/permissions*') ? 'active' : '' }}">
+            <a href="{{ route('permissions.index') }}"><i class="fa fa-check-square-o"></i><span>Permissions</span></a>
+        </li>
     </ul>
 </li>
 
+{{--<li class="{{ Request::is('userRoles*') ? 'active' : '' }}">--}}
+{{--    <a href="{{ route('roles.index') }}"><i class="fa fa-edit"></i><span>Roles</span></a>--}}
+{{--</li>--}}
 
+{{--<li class="{{ Request::is('permissions*') ? 'active' : '' }}">--}}
+{{--    <a href="{{ route('permissions.index') }}"><i class="fa fa-edit"></i><span>Permissions</span></a>--}}
+{{--</li>--}}
 
+{{--<li class="{{ Request::is('products*') ? 'active' : '' }}">--}}
+{{--    <a href="{{ route('products.index') }}"><i class="fa fa-edit"></i><span>Products</span></a>--}}
+{{--</li>--}}
 
+{{--<li class="{{ Request::is('paybills*') ? 'active' : '' }}">--}}
+{{--    <a href="{{ route('paybills.index') }}"><i class="fa fa-edit"></i><span>Paybills</span></a>--}}
+{{--</li>--}}
 
+{{--<li class="{{ Request::is('comps*') ? 'active' : '' }}">--}}
+{{--    <a href="{{ route('comps.index') }}"><i class="fa fa-edit"></i><span>Comps</span></a>--}}
+{{--</li>--}}
 

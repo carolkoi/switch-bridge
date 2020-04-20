@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use Eloquent as Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Permission\Traits\HasRoles;
 
 /**
  * @SWG\Definition(
@@ -77,14 +79,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      )
  * )
  */
-class User extends Model
+class User extends Authenticatable
 {
-    use SoftDeletes;
+    use SoftDeletes, HasRoles;
 
     public $table = 'users';
 
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
+    protected $guard_name = 'web';
 
 
     protected $dates = ['deleted_at'];
@@ -134,9 +137,6 @@ class User extends Model
         'email' => 'required',
         'password' => 'required',
         'msisdn' => 'required',
-        'status' => 'required',
-        'created_at' => 'required',
-        'updated_at' => 'required'
     ];
 
     public function role(){

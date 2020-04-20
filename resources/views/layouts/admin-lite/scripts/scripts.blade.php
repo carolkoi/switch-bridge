@@ -1,4 +1,3 @@
-
 <!-- Scripts -->
 <script src="{{ asset('js/app.js') }}" ></script>
 <!-- jQuery 3 -->
@@ -51,7 +50,7 @@
 <!--Bootstrap toggle-->
 <script src="{{ asset('js/bootstrap4-toggle.min.js') }}" ></script>
 {{--<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>--}}
-
+{{--<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" defer></script>--}}
 <script>
     $(document).ready(function () {
         $(".select2").select2({

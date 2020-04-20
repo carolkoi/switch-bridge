@@ -8,14 +8,10 @@ use Faker\Generator as Faker;
 $factory->define(Role::class, function (Faker $faker) {
 
     return [
-        'rolename' => $faker->word,
-        'description' => $faker->word,
-        'roletype' => $faker->word,
-        'rolestatus' => $faker->word,
-        'addedby' => $faker->randomDigitNotNull,
-        'ipaddress' => $faker->word,
+        'name' => $faker->word,
+        'guard_name' => $faker->word,
         'created_at' => $faker->date('Y-m-d H:i:s'),
         'updated_at' => $faker->date('Y-m-d H:i:s'),
-        'deleted_at' => $faker->word
+        'deleted_at' => $faker->date('Y-m-d H:i:s')
     ];
 });
