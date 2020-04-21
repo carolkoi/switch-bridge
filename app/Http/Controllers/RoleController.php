@@ -11,6 +11,7 @@ use App\Repositories\RoleRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
+use Illuminate\Http\Request;
 
 class RoleController extends AppBaseController
 {
@@ -30,9 +31,9 @@ class RoleController extends AppBaseController
      */
     public function index(RoleDataTable $roleDataTable)
     {
-            $roles = Role::all();
-            return view('roles.myindex', ['roles' => $roles]);
-//        return $roleDataTable->render('roles.index');
+//            $roles = Role::all();
+//            return view('roles.myindex', ['roles' => $roles]);
+        return $roleDataTable->render('roles.index');
     }
 
     /**
@@ -55,16 +56,63 @@ class RoleController extends AppBaseController
     public function store(CreateRoleRequest $request)
     {
         $input = $request->all();
-        $permissions = \Spatie\Permission\Models\Permission::pluck('name');
+        $input['guard_name'] = 'web';
 //        dd($permissions);
 
         $role = $this->roleRepository->create($input);
-        $role->givePermissionTo($permissions);
 
         Flash::success('Role saved successfully.');
 
         return redirect(route('roles.index'));
     }
+    /**
+ * Display all permissions to assign to the role.
+ *
+ * @param  int $id
+ *
+ * @return Response
+ */
+    public function permission($id)
+    {
+//        dd('here');
+        $role = $this->roleRepository->find($id);
+//dd($role->toArray());
+        if (empty($role)) {
+            Flash::error('Role not found');
+
+            return redirect(route('roles.index'));
+        }
+
+        return view('roles.permissions')->with('role', $role);
+    }
+
+    /**
+     * Assign permissions to the role.
+     *
+     * @param  int $id
+     *
+     * @return Response
+     */
+    public function assign($id, Request $request)
+    {
+        $inputs = $request->all();
+
+        return collect($inputs)->each(function ($input) use ($id) {
+            $role = $this->roleRepository->find($id);
+//            dd($role);
+            $permission = $input['name'];
+            $role->givePermissionTo($permission);
+
+//            dd($permission);
+        });
+
+
+
+//        $permissions = Pe::pluck('name');
+
+
+    }
+
 
     /**
      * Display the specified Role.

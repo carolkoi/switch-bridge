@@ -10,3 +10,13 @@
     <p>{{ $role->guard_name }}</p>
 </div>
 
+<div class="form-group">
+    {!! Form::label(' ', 'Permissions /Rights:') !!}
+    @foreach($role->getAllPermissions() as $permission)
+        <ul>
+            <li>  {!! $permission['name'];!!}
+            </li>
+        </ul>
+    @endforeach
+
+</div>

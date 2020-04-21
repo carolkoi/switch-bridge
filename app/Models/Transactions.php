@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use WizPack\Workflow\Interfaces\ApprovableInterface;
+use WizPack\Workflow\Traits\ApprovableTrait;
 
 /**
  * @SWG\Definition(
@@ -1450,9 +1452,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      )
  * )
  */
-class Transactions extends Model
+class Transactions extends Model implements ApprovableInterface
 {
-    use SoftDeletes;
+    use SoftDeletes ,ApprovableTrait;
 
     public $table = 'tbl_sys_iso';
 
@@ -2057,4 +2059,27 @@ class Transactions extends Model
     ];
 
 
+    /**
+     * @inheritDoc
+     */
+    public function previewLink()
+    {
+        // TODO: Implement previewLink() method.
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function markApprovalComplete($id)
+    {
+        // TODO: Implement markApprovalComplete() method.
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function markApprovalAsRejected($id)
+    {
+        // TODO: Implement markApprovalAsRejected() method.
+    }
 }

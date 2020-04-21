@@ -53,7 +53,7 @@
 {{--</div>--}}
 
 <div class="form-group">
-    {!! Form::label('status', 'Permissions /Rights:') !!}
+    {!! Form::label('', 'Permissions /Rights:') !!}
     @foreach($user->getPermissionsViaRoles() as $permission)
         <ul>
             <li>  {!! $permission['name'];!!}

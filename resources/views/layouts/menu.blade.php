@@ -137,4 +137,5 @@
 {{--<li class="{{ Request::is('comps*') ? 'active' : '' }}">--}}
 {{--    <a href="{{ route('comps.index') }}"><i class="fa fa-edit"></i><span>Comps</span></a>--}}
 {{--</li>--}}
+@include("wizpack::layouts.menu")
 

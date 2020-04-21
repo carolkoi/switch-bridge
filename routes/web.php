@@ -1,4 +1,5 @@
 <?php
+use App\Http\Resources\Permission;
 
 /*
 |--------------------------------------------------------------------------
@@ -81,3 +82,10 @@ Route::resource('paybills', 'PaybillController');
 
 
 Route::resource('comps', 'CompController');
+Route::get('/assign-permission', function () {
+    return Permission::collection(\App\Models\Permission::paginate(10));
+});
+Route::get('role-permissions/{id}', 'RoleController@permission')->name('role.permission');
+Route::post('/assign-permissions/{id}', 'RoleController@assign');
+
+

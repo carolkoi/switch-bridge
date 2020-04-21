@@ -36,6 +36,18 @@
         "inView": true
     },
     {
+        "name": "description",
+        "dbType": "text:nullable",
+        "htmlType": "text",
+        "validations": "required",
+        "searchable": true,
+        "fillable": true,
+        "primary": false,
+        "inForm": true,
+        "inIndex": true,
+        "inView": true
+    },
+    {
         "name": "created_at",
         "dbType": "datetime:nullable",
         "htmlType": "date",

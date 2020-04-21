@@ -18,7 +18,10 @@ class RoleDataTable extends DataTable
     {
         $dataTable = new EloquentDataTable($query);
 
-        return $dataTable->addColumn('action', 'roles.datatables_actions');
+        return $dataTable
+            ->editColumn('name', 'roles.datatables_name')
+            ->escapeColumns('description')
+            ->addColumn('action', 'roles.datatables_actions');
     }
 
     /**
@@ -66,7 +69,8 @@ class RoleDataTable extends DataTable
     {
         return [
             'name',
-            'guard_name'
+//            'guard_name',
+            'description'
         ];
     }
 

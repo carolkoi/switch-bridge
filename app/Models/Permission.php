@@ -63,7 +63,8 @@ class Permission extends Model
 
     public $fillable = [
         'name',
-        'guard_name'
+        'guard_name',
+        'description'
     ];
 
     /**
@@ -74,7 +75,8 @@ class Permission extends Model
     protected $casts = [
         'id' => 'integer',
         'name' => 'string',
-        'guard_name' => 'string'
+        'guard_name' => 'string',
+        'description' => 'string'
     ];
 
     /**
@@ -84,7 +86,7 @@ class Permission extends Model
      */
     public static $rules = [
         'name' => 'required',
-        'guard_name' => 'required',
+//        'guard_name' => 'required',
     ];
 
     /**

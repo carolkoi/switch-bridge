@@ -30,9 +30,9 @@ class PermissionController extends AppBaseController
      */
     public function index(PermissionDataTable $permissionDataTable)
     {
-        $permissions = Permission::all();
-        return view('permissions.myindex', ['permissions' => $permissions]);
-//        return $permissionDataTable->render('permissions.index');
+//        $permissions = Permission::all();
+//        return view('permissions.myindex', ['permissions' => $permissions]);
+        return $permissionDataTable->render('permissions.index');
     }
 
     /**
@@ -55,7 +55,8 @@ class PermissionController extends AppBaseController
     public function store(CreatePermissionRequest $request)
     {
         $input = $request->all();
-
+        $input['guard_name'] = 'web';
+//dd($input);
         $permission = $this->permissionRepository->create($input);
 
         Flash::success('Permission saved successfully.');

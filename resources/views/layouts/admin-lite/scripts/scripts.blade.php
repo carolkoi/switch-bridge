@@ -46,11 +46,9 @@
 <script src="{{asset('admin-lte/bower_components/PACE/pace.min.js')}}"></script>
 <!--Star Rating-->
 <script src="{{ asset('js/star-rating.min.js') }}" ></script>
-{{--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.2/js/star-rating.min.js"></script>--}}
 <!--Bootstrap toggle-->
 <script src="{{ asset('js/bootstrap4-toggle.min.js') }}" ></script>
-{{--<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>--}}
-{{--<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" defer></script>--}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.js"></script>
 <script>
     $(document).ready(function () {
         $(".select2").select2({

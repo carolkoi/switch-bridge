@@ -6,7 +6,7 @@
 
 <!-- Guard Name Field -->
 <div class="form-group">
-    {!! Form::label('guard_name', 'Guard Name:') !!}
-    <p>{{ $permission->guard_name }}</p>
+    {!! Form::label('description', 'Description:') !!}
+    <p>{!! $permission->description !!} </p>
 </div>
 

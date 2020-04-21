@@ -45,7 +45,7 @@
                     @foreach($permissions as $permission)
                         <tr class="odd gradeX">
                             <td>{{ $permission->name  }}</td>
-                            <td>{{ $permission->guard_name  }}</td>
+                            <td>{!!  $permission->description!!} </td>
 
                             <td class="text-right">
 {{--                                <div class="btn-group btn-hspace">--}}

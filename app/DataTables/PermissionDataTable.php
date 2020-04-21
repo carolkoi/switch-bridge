@@ -18,7 +18,9 @@ class PermissionDataTable extends DataTable
     {
         $dataTable = new EloquentDataTable($query);
 
-        return $dataTable->addColumn('action', 'permissions.datatables_actions');
+        return $dataTable
+            ->escapeColumns('description')
+            ->addColumn('action', 'permissions.datatables_actions');
     }
 
     /**
@@ -66,7 +68,8 @@ class PermissionDataTable extends DataTable
     {
         return [
             'name',
-            'guard_name'
+//            'guard_name',
+            'description'
         ];
     }
 

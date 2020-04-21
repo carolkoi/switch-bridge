@@ -45,7 +45,7 @@
                     @foreach($roles as $role)
                         <tr class="odd gradeX">
                             <td>{{ $role->name  }}</td>
-                            <td>{{ $role->guard_name  }}</td>
+                            <td>{!! $role->description  !!}</td>
 
                             <td class="text-right">
                                 {{--                                <div class="btn-group btn-hspace">--}}
