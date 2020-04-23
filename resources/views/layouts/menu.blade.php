@@ -139,7 +139,7 @@
 {{--</li>--}}
 @include("wizpack::layouts.menu")
 
-<li class="{{ Request::is('tXNS*') ? 'active' : '' }}">
-    <a href="{{ route('tXNS.index') }}"><i class="fa fa-edit"></i><span>T X N S</span></a>
-</li>
+{{--<li class="{{ Request::is('tXNS*') ? 'active' : '' }}">--}}
+{{--    <a href="{{ route('tXNS.index') }}"><i class="fa fa-edit"></i><span>T X N S</span></a>--}}
+{{--</li>--}}
 
