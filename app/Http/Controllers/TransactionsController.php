@@ -124,9 +124,6 @@ class TransactionsController extends AppBaseController
         $request->session()->put('aml_listed', $request->get('aml_listed'));
         $request->session()->put('remarks', $request->get('res_field44'));
 
-//        dd($request->has('res_field48'));
-//        $data = $request->flashExcept(['_method', '_token']);
-//        dd($data);
         //initiating the approval request
         $approval = new Transactions();
         $approval->addApproval($transactions);

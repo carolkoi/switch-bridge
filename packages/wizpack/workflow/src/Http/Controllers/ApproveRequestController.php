@@ -68,14 +68,16 @@ class ApproveRequestController extends AppBaseController
 
         $stageId = $workflowStageToBeApproved['workflow_stage_type_id'] ?: $stageId;
 
-//        if($request->session()->has('txn_status') && $request->session()->has('aml_listed') && $request->session()->has('remarks')) {
-
+        if($request->session()->has('txn_status') && $request->session()->has('aml_listed') && $request->session()->has('remarks')) {
+//            dd(session('txn_status'), session('aml_listed'), session('remarks'));
+//dd('here');
             $transaction = Transactions::where('iso_id', $kdata[0]['model_id'])->update([
-                'res_field48' => $request->get('txn_status'),
-                'aml_listed' => $request->get('aml_listed'),
-                'res_field44' => $request->get('remarks'),
+                'res_field48' => session('txn_status'),
+                'aml_listed' => session('aml_listed'),
+                'res_field44' => session('remarks'),
             ]);
-//        }
+//            dd($transaction);
+        }
 
         $approvedStep = $this->workflowStepRepository->updateOrCreate([
             'workflow_stage_id' => $stageId,
