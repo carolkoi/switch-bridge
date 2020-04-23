@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUnused */
 
 namespace App\Http\Controllers;
 
@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateAmlMakerCheckerRequest;
 use App\Repositories\AmlMakerCheckerRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
+use Illuminate\Http\Request;
 use Response;
 use App\Models\AmlMakerChecker;
 use Carbon\Carbon;
@@ -54,13 +55,18 @@ class AmlMakerCheckerController extends AppBaseController
      */
     public function store(CreateAmlMakerCheckerRequest $request)
     {
-        $input = $request->all();
+//        dd($request->input('blacklist_source'));
+        $input = $request->except('blacklist_source');
         $input['added_by'] = Auth::user()->id;
         $input['modified_by'] = Auth::user()->id;
-        //$input['date_time_added'] = Carbon::now();
-        //$input['date_time_modified'] = Carbon::now();
+
+        $input['date_time_added'] = Carbon::now();
         //dd($input);
         $amlMakerChecker = $this->amlMakerCheckerRepository->create($input);
+//        dd($amlMakerChecker);
+        foreach ($request->input('blacklist_source', []) as $file) {
+            $amlMakerChecker->addMedia(storage_path('tmp/uploads/' . $file))->toMediaCollection('document');
+        }
 
         Flash::success('Member blacklist record saved successfully.');
 
@@ -124,8 +130,21 @@ class AmlMakerCheckerController extends AppBaseController
 
             return redirect(route('amlMakerCheckers.index'));
         }
+        $input = $request->except(['_method', '_token', 'blacklist_source']);
+        $input['date_time_modified'] = Carbon::now();
+//        dd($input);
 
-        $amlMakerChecker = AmlMakerChecker::where('blacklist_id', $blacklist_id)->update($request->except(['_method', '_token']));
+
+        $amlMakerChecker = AmlMakerChecker::where('blacklist_id', $blacklist_id)->update($input);
+        $amlMakerCheckerData = AmlMakerChecker::where('blacklist_id', $blacklist_id)->first();
+//        dd($amlMakerCheckerData);
+        if ($request->has('blacklist_source')) {
+
+            foreach ($request->input('blacklist_source', []) as $file) {
+//            dd($file, $amlMakerChecker);
+                $amlMakerCheckerData->addMedia(storage_path('tmp/uploads/' . $file))->toMediaCollection('document');
+            }
+        }
 
         Flash::success('Member blacklist record updated successfully.');
 
@@ -154,5 +173,26 @@ class AmlMakerCheckerController extends AppBaseController
         Flash::success('Blacklist record deleted successfully.');
 
         return redirect(route('amlMakerCheckers.index'));
+    }
+
+    public function storeMedia(Request $request)
+    {
+        $path = storage_path('tmp/uploads');
+
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
+
+        $file = $request->file('file');
+
+        $name = uniqid() . '_' . trim($file->getClientOriginalName());
+
+        $file->move($path, $name);
+
+        return response()->json([
+            'name' => $name,
+            'original_name' => $file->getClientOriginalName(),
+        ]);
+
     }
 }

@@ -106,7 +106,7 @@ class TransactionsController extends AppBaseController
     /**
      * Update the specified Transactions in storage.
      *
-     * @param  int              $id
+     * @param $iso_id
      * @param UpdateTransactionsRequest $request
      *
      * @return Response
@@ -114,17 +114,28 @@ class TransactionsController extends AppBaseController
     public function update($iso_id, UpdateTransactionsRequest $request)
     {
         $transactions = Transactions::where('iso_id', $iso_id)->first();
-
         if (empty($transactions)) {
             Flash::error('Transactions not found');
 
             return redirect(route('transactions.index'));
         }
+//        dd($request->get('res_field48'));
+        $request->session()->put('txn_status', $request->get('res_field48'));
+        $request->session()->put('aml_listed', $request->get('aml_listed'));
+        $request->session()->put('remarks', $request->get('res_field44'));
 
-        $transactions = Transactions::where('iso_id', $iso_id)->update($request->except(['_method', '_token']));
+//        dd($request->has('res_field48'));
+//        $data = $request->flashExcept(['_method', '_token']);
+//        dd($data);
+        //initiating the approval request
+        $approval = new Transactions();
+        $approval->addApproval($transactions);
+//        dd($request->all());
+
+//        $transactions = Transactions::where('iso_id', $iso_id)->update($request->except(['_method', '_token']));
 //        dd($transactions);
 
-        Flash::success('Transactions updated successfully.');
+        Flash::success('Approval to Update the Transaction sent successfully.');
 
         return redirect(route('transactions.index'));
     }

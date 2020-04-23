@@ -1,19 +1,29 @@
 
 <!-- Res Field48 Field -->
-<div class="form-group col-sm-6">
+{{--<div class="form-group col-sm-6">--}}
 {{--    <select id="txn-status-id" class="form-control select2">--}}
 {{--        <option></option>--}}
 {{--    </select>--}}
+{{--    {!! Form::label('res_field48', 'Transaction Status:') !!}--}}
+{{--    {!!Form::select('res_field48',--}}
+{{--        array('AML-APPROVED' => 'AML-APPROVED',--}}
+{{--                'FAILED' => 'FAILED',--}}
+{{--                'INIT-FAILED' => 'INIT-FAILED',--}}
+{{--                'AML-FAILED' => 'AML-FAILED',--}}
+{{--                ), isset($transactions) ? $transactions->res_field48 : null, ['class' => 'form-control select2',--}}
+{{--                 'id' => 'txn-status-id'])!!}--}}
+{{--</div>--}}
+
+<!-- Aml Listed Field -->
+
+<div class="form-group col-sm-6">
     {!! Form::label('res_field48', 'Transaction Status:') !!}
-    {!!Form::select('res_field48',
-        array('AML-APPROVED' => 'AML-APPROVED',
+    {!!Form::select('res_field48', array('AML-APPROVED' => 'AML-APPROVED',
                 'FAILED' => 'FAILED',
                 'INIT-FAILED' => 'INIT-FAILED',
                 'AML-FAILED' => 'AML-FAILED',
-                ), isset($transactions) ? $transactions->res_field48 : null, ['class' => 'form-control select2',
-                 'id' => 'txn-status-id'])!!}
+                ),isset($transactions) ? $transactions->res_field48 : null, ['class' => 'form-control select2'])!!}
 </div>
-
 <!-- Aml Listed Field -->
 
 <div class="form-group col-sm-6">

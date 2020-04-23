@@ -32,18 +32,20 @@
     ['class' => 'form-control select2']) !!}
 </div>
 
+
 <!-- Blacklist Source Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('blacklist_source', 'Blacklist Source:') !!}
-    {!! Form::file('blacklist_source', null, ['class' => 'form-control']) !!}
+    {{--    {!! Form::file('blacklist_source', null, ['class' => 'form-control']) !!}--}}
+    <div class="needsclick dropzone" id="document-dropzone"></div>
 </div>
 
+
 <!-- Response Field -->
-<div class="form-group col-sm-6 col-lg-6">
+<div class="form-group col-sm-12 col-lg-12">
     {!! Form::label('response', 'Reason for Blacklisting:') !!}
     {!! Form::textarea('response', null, ['class' => 'form-control', 'id' => 'editor']) !!}
 </div>
-
 
 <!-- Submit Field -->
 <div class="form-group col-sm-12">

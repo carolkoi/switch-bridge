@@ -10,8 +10,8 @@ use WizPack\Workflow\Models\Approvals;
 trait ApprovableTrait
 {
     protected static $approvalType = __CLASS__;
-    protected static $workflowType = 'survey_approval';
-    protected static $workflowName = 'Survey Approval';
+    protected static $workflowType = 'transaction_approval';
+    protected static $workflowName = 'Transaction Approval';
 
     /**
      *model listener

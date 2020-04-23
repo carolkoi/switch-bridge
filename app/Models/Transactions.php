@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use WizPack\Workflow\Interfaces\ApprovableInterface;
@@ -1457,6 +1458,7 @@ class Transactions extends Model implements ApprovableInterface
     use SoftDeletes ,ApprovableTrait;
 
     public $table = 'tbl_sys_iso';
+    public $primaryKey = 'iso_id';
 
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
@@ -1753,7 +1755,11 @@ class Transactions extends Model implements ApprovableInterface
         'aml_check_sent',
         'aml_check_retries',
         'aml_listed',
-        'posted'
+        'posted',
+        'maker_checker_approve_status',
+        'approved_at',
+        'maker_checker_reject_status',
+        'rejected_at'
     ];
 
     /**
@@ -2065,14 +2071,21 @@ class Transactions extends Model implements ApprovableInterface
     public function previewLink()
     {
         // TODO: Implement previewLink() method.
+        return env('APP_URL')."/all/transactions";
     }
 
     /**
      * @inheritDoc
+     * @noinspection PhpHierarchyChecksInspection
      */
     public function markApprovalComplete($id)
     {
         // TODO: Implement markApprovalComplete() method.
+        $model = self::find($id);
+//        dd($model);
+        $model->maker_checker_approve_status = true;
+        $model->approved_at = Carbon::now();
+        $model->save();
     }
 
     /**
@@ -2081,5 +2094,9 @@ class Transactions extends Model implements ApprovableInterface
     public function markApprovalAsRejected($id)
     {
         // TODO: Implement markApprovalAsRejected() method.
+        $model = self::find($id);
+        $model->maker_checker_reject_status = true;
+        $model->rejected_at = Carbon::now();
+        $model->save();
     }
 }

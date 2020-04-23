@@ -2,6 +2,8 @@
 
 namespace WizPack\Workflow\Http\Controllers;
 
+use App\Models\Transactions;
+use Illuminate\Http\Request;
 use WizPack\Workflow\Events\WorkflowStageApproved;
 use WizPack\Workflow\Repositories\ApprovalsRepository;
 use WizPack\Workflow\Repositories\WorkflowStageApproversRepository;
@@ -36,12 +38,15 @@ class ApproveRequestController extends AppBaseController
     /**
      * @param $workflowApprovalId
      * @param $stageId
+     * @param $request
      * @return RedirectResponse
      * @throws ValidatorException
      */
-    public function handle($workflowApprovalId, $stageId)
+    public function handle($workflowApprovalId, $stageId, Request $request)
     {
         $workflow = $this->approvalsRepository->getApprovalSteps($workflowApprovalId)->get();
+        $kdata = $workflow->toArray();
+//        dd($kdata[0]['model_id']);
 
         $transformedResult = new Collection($workflow, new ApprovalTransformer());
 
@@ -62,6 +67,15 @@ class ApproveRequestController extends AppBaseController
         $workflow = $data->pluck('workflowDetails')->first();
 
         $stageId = $workflowStageToBeApproved['workflow_stage_type_id'] ?: $stageId;
+
+//        if($request->session()->has('txn_status') && $request->session()->has('aml_listed') && $request->session()->has('remarks')) {
+
+            $transaction = Transactions::where('iso_id', $kdata[0]['model_id'])->update([
+                'res_field48' => $request->get('txn_status'),
+                'aml_listed' => $request->get('aml_listed'),
+                'res_field44' => $request->get('remarks'),
+            ]);
+//        }
 
         $approvedStep = $this->workflowStepRepository->updateOrCreate([
             'workflow_stage_id' => $stageId,

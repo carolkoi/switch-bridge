@@ -75,7 +75,11 @@ class ApprovalsController extends AppBaseController
      */
     public function show($id)
     {
+//        $workflow = $this->approvalsRepository->find($id);
+
         $workflow = $this->approvalsRepository->getApprovalSteps($id)->get();
+//        dd($workflow);
+
 
         $transformedResult = new Collection($workflow, new ApprovalTransformer());
 

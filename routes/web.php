@@ -87,5 +87,7 @@ Route::get('/assign-permission', function () {
 });
 Route::get('role-permissions/{id}', 'RoleController@permission')->name('role.permission');
 Route::post('/assign-permissions/{id}', 'RoleController@assign');
+Route::post('aml/media', 'AmlMakerCheckerController@storeMedia')
+    ->name('aml.storeMedia');
 
 

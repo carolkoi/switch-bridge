@@ -73,12 +73,12 @@
                                 </td>
                                 <td class="text-center" style="vertical-align: center">
                                     @if($stage['is_current_stage'] && $stage['canApproveStage'] && !$stage['is_stage_complete'])
-                                        <a href="{{url('/wizpack/workflowApproveRequest/'.$workflow['id'].'/'.$stage['id'])}}"
-                                           class="btn btn-primary btn-sm"> CheckList</a>
+{{--                                        <a href="{{url('/wizpack/workflowApproveRequest/'.$workflow['id'].'/'.$stage['id'])}}"--}}
+{{--                                           class="btn btn-primary btn-sm"> CheckList</a>--}}
                                         <a href="{{url('/wizpack/workflowApproveRequest/'.$workflow['id'].'/'.$stage['id'])}}"
                                            class="btn btn-success btn-sm">Approve</a>
                                         <a href="{{url('/wizpack/workflowRejecctRequest/'.$workflow['id'].'/'.$stage['id'])}}"
-                                           class="btn btn-danger btn-sm">Rejecct</a>
+                                           class="btn btn-danger btn-sm">Reject</a>
                                     @endif
                                 </td>
                             </tr>

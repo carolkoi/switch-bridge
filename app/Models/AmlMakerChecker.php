@@ -1,9 +1,12 @@
-<?php
+<?php /** @noinspection PhpHierarchyChecksInspection */
 
 namespace App\Models;
 
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\MediaLibrary\Models\Media;
 
 /**
  * @SWG\Definition(
@@ -107,9 +110,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      )
  * )
  */
-class AmlMakerChecker extends Model
+class AmlMakerChecker extends Model implements HasMedia
 {
-    use SoftDeletes;
+    use SoftDeletes, HasMediaTrait;
 
     public $table = 'tbl_cus_blacklist';
     // Primary key
@@ -178,6 +181,10 @@ class AmlMakerChecker extends Model
     public static $rules = [
 
     ];
+    public function media()
+    {
+        return $this->morphMany(Media::class, 'model');
+    }
 
 
 }
