@@ -33,7 +33,7 @@ class WorkflowApprovalRequestMail extends Mailable
         $this->model = $model;
         $this->url = 'wizpack/approvals/'.$workflowInfo['workflow_id'];
         $this->text = 'view approval';
-        $this->previewUrl = 'allocations/'.$model['id'];
+        $this->previewUrl = 'all/transactions/'.$model['iso_id'];
     }
 
     /**

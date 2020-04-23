@@ -16,6 +16,8 @@ class WorkflowApprovedMail extends Mailable
     public $approvalInfo;
     public $url;
     public $text;
+    public $model;
+    public $previewUrl;
 
     /**
      * Create a new message instance.

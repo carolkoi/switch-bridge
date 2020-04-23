@@ -91,3 +91,6 @@ Route::post('aml/media', 'AmlMakerCheckerController@storeMedia')
     ->name('aml.storeMedia');
 
 
+
+
+Route::resource('tXNS', 'TXNController');

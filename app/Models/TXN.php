@@ -2,15 +2,12 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use WizPack\Workflow\Interfaces\ApprovableInterface;
-use WizPack\Workflow\Traits\ApprovableTrait;
 
 /**
  * @SWG\Definition(
- *      definition="Transactions",
+ *      definition="TXN",
  *      required={""},
  *      @SWG\Property(
  *          property="date_time_added",
@@ -1450,23 +1447,30 @@ use WizPack\Workflow\Traits\ApprovableTrait;
  *          property="posted",
  *          description="posted",
  *          type="boolean"
+ *      ),
+ *      @SWG\Property(
+ *          property="maker_checker_approve_status",
+ *          description="maker_checker_approve_status",
+ *          type="boolean"
+ *      ),
+ *      @SWG\Property(
+ *          property="maker_checker_reject_status",
+ *          description="maker_checker_reject_status",
+ *          type="boolean"
  *      )
  * )
  */
-class Transactions extends Model implements ApprovableInterface
+class TXN extends Model
 {
-    use SoftDeletes ,ApprovableTrait;
+    use SoftDeletes;
 
     public $table = 'tbl_sys_iso';
-    public $primaryKey = 'iso_id';
-
+    
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
 
     protected $dates = ['deleted_at'];
-    public $timestamps = false;
-
 
 
 
@@ -1757,8 +1761,8 @@ class Transactions extends Model implements ApprovableInterface
         'aml_listed',
         'posted',
         'maker_checker_approve_status',
-        'approved_at',
         'maker_checker_reject_status',
+        'approved_at',
         'rejected_at'
     ];
 
@@ -2055,9 +2059,7 @@ class Transactions extends Model implements ApprovableInterface
         'aml_listed' => 'boolean',
         'posted' => 'boolean',
         'maker_checker_approve_status' => 'boolean',
-//        'approved_at' => 'datetime',
-        'maker_checker_reject_status' => 'boolean',
-//        'rejected_at' => 'datetime'
+        'maker_checker_reject_status' => 'boolean'
     ];
 
     /**
@@ -2066,41 +2068,8 @@ class Transactions extends Model implements ApprovableInterface
      * @var array
      */
     public static $rules = [
+        'req_field3' => 'required'
     ];
 
-
-    /**
-     * @inheritDoc
-     */
-    public function previewLink()
-    {
-        // TODO: Implement previewLink() method.
-        return env('APP_URL')."/all/transactions";
-    }
-
-    /**
-     * @inheritDoc
-     * @noinspection PhpHierarchyChecksInspection
-     */
-    public function markApprovalComplete($id)
-    {
-        // TODO: Implement markApprovalComplete() method.
-        $model = self::find($id);
-//        dd($model);
-        $model->maker_checker_approve_status = true;
-        $model->approved_at = Carbon::now();
-        $model->save();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function markApprovalAsRejected($id)
-    {
-        // TODO: Implement markApprovalAsRejected() method.
-        $model = self::find($id);
-        $model->maker_checker_reject_status = true;
-        $model->rejected_at = Carbon::now();
-        $model->save();
-    }
+    
 }
