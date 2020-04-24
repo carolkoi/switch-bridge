@@ -76,6 +76,6 @@ class WhenWorkflowStageIsApproved
 
         return Mail::to($allApprovers)
             ->cc($sentBy)
-            ->send(new WorkflowApprovedMail($workflowPayload, $approvedStep, $approvalInfo));
+            ->send(new WorkflowApprovedMail($workflowPayload, $approvedStep, $approvalInfo, $nextStageUpdate->model_id));
     }
 }

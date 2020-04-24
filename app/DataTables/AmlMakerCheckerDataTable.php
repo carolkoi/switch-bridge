@@ -95,7 +95,7 @@ class AmlMakerCheckerDataTable extends DataTable
             'blacklist_status',
             'reason' => [
             'name' => 'response'],
-            'blacklist_source',
+//            'blacklist_source',
            // 'remarks',
             //'blacklisted',
             //'blacklist_version'

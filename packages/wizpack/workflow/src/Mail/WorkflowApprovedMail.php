@@ -16,7 +16,7 @@ class WorkflowApprovedMail extends Mailable
     public $approvalInfo;
     public $url;
     public $text;
-    public $model;
+    public $model_id;
     public $previewUrl;
 
     /**
@@ -25,14 +25,16 @@ class WorkflowApprovedMail extends Mailable
      * @param $workflow
      * @param $approvedStep
      * @param $approvalInfo
+     * @param $model_id
      */
-    public function __construct($workflow, $approvedStep, $approvalInfo)
+    public function __construct($workflow, $approvedStep, $approvalInfo, $model_id)
     {
         $this->workflow = $workflow;
         $this->approvedStep = $approvedStep;
         $this->approvalInfo = $approvalInfo;
         $this->url = 'wizpack/approvals/'.$workflow['id'];
         $this->text = 'View approval';
+        $this->model_id = $model_id;
     }
 
     /**

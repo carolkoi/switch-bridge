@@ -60,8 +60,8 @@ class AmlMakerCheckerController extends AppBaseController
         $input['added_by'] = Auth::user()->id;
         $input['modified_by'] = Auth::user()->id;
 
-        $input['date_time_added'] = Carbon::now();
-        //dd($input);
+        $input['date_time_added'] = time();
+//        dd($input);
         $amlMakerChecker = $this->amlMakerCheckerRepository->create($input);
 //        dd($amlMakerChecker);
         foreach ($request->input('blacklist_source', []) as $file) {
@@ -131,7 +131,7 @@ class AmlMakerCheckerController extends AppBaseController
             return redirect(route('amlMakerCheckers.index'));
         }
         $input = $request->except(['_method', '_token', 'blacklist_source']);
-        $input['date_time_modified'] = Carbon::now();
+        $input['date_time_modified'] = time();
 //        dd($input);
 
 

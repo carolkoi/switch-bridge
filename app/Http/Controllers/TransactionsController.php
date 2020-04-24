@@ -123,6 +123,7 @@ class TransactionsController extends AppBaseController
         $request->session()->put('txn_status', $request->get('res_field48'));
         $request->session()->put('aml_listed', $request->get('aml_listed'));
         $request->session()->put('remarks', $request->get('res_field44'));
+        $request->session()->put('date_time_modified', time());
 
         //initiating the approval request
         $approval = new Transactions();

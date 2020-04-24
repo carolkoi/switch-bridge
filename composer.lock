@@ -1593,12 +1593,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/InfyOmLabs/laravel-generator.git",
-                "reference": "90eb130dff83d27020d846486439d066804bd4f0"
+                "reference": "16a7c84bfa021eeff4dd0c6390faff76a7eea9db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/InfyOmLabs/laravel-generator/zipball/90eb130dff83d27020d846486439d066804bd4f0",
-                "reference": "90eb130dff83d27020d846486439d066804bd4f0",
+                "url": "https://api.github.com/repos/InfyOmLabs/laravel-generator/zipball/16a7c84bfa021eeff4dd0c6390faff76a7eea9db",
+                "reference": "16a7c84bfa021eeff4dd0c6390faff76a7eea9db",
                 "shasum": ""
             },
             "require": {
@@ -1651,7 +1651,13 @@
                 "test",
                 "view"
             ],
-            "time": "2020-04-18T05:23:49+00:00"
+            "funding": [
+                {
+                    "url": "https://opencollective.com/infyomlabs",
+                    "type": "open_collective"
+                }
+            ],
+            "time": "2020-04-24T09:19:08+00:00"
         },
         {
             "name": "infyomlabs/swagger-generator",
