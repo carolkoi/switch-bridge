@@ -1837,11 +1837,13 @@ __webpack_require__.r(__webpack_exports__);
     assignPermission: function assignPermission() {
       // alert(this.selectedPermissions);
       // return console.log(this.selectedPermissions);
+      var uri = '/roles';
       axios.post('/assign-permissions/' + this.data, this.selectedPermissions).then(function (response) {
         console.log(response);
       })["catch"](function (err) {
         console.log(err);
-      }); // return window.location = uri;
+      });
+      return window.location = uri;
     }
   },
   created: function created() {
@@ -33132,14 +33134,6 @@ var render = function() {
                 ]
               )
             : _vm._e(),
-          _vm._v(" "),
-          _c("h2", [
-            _vm._v(
-              "\n                                        Derived output\n                                    "
-            )
-          ]),
-          _vm._v(" "),
-          _c("pre", [_vm._v(_vm._s(_vm.statusArr))]),
           _vm._v(" "),
           _c(
             "div",

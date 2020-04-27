@@ -1,5 +1,5 @@
 <li class="{{ Request::is('wizpack/approvals*') ? 'active' : '' }}">
-    <a href="{!! route('wizpack::approvals.index') !!}"><i class="fa fa-check-square-o"></i><span> All Approvals</span></a>
+    <a href="{!! route('wizpack::approvals.index') !!}"><i class="fa fa-check-square-o"></i><span>Approvals Requests</span></a>
 </li>
 
 <li class="{{ Request::is('wizpack/workflow*') ? 'active' : '' }} treeview">

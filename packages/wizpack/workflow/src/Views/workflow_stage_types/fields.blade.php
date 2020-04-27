@@ -1,18 +1,18 @@
 <!-- Name Field -->
-<div class="form-group col-sm-6">
+<div class="form-group">
     {!! Form::label('name', 'Name:') !!}
     {!! Form::text('name', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Slug Field -->
-<div class="form-group col-sm-6">
+<div class="form-group">
     {!! Form::label('slug', 'Slug:') !!}
     {!! Form::text('slug', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Weight Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('weight', 'Weight:') !!}
+<div class="form-group">
+    {!! Form::label('weight', 'Weightss:') !!}
     {!! Form::number('weight', null, ['class' => 'form-control']) !!}
 </div>
 

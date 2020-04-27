@@ -16,23 +16,33 @@
 
 <!-- Aml Listed Field -->
 
-<div class="form-group col-sm-6">
+<div class="form-group">
     {!! Form::label('res_field48', 'Transaction Status:') !!}
-    {!!Form::select('res_field48', array('AML-APPROVED' => 'AML-APPROVED',
-                'FAILED' => 'FAILED',
-                'INIT-FAILED' => 'INIT-FAILED',
-                'AML-FAILED' => 'AML-FAILED',
-                ),isset($transactions) ? $transactions->res_field48 : null, ['class' => 'form-control select2'])!!}
+    <select name="res_field48" id="res_field48_id" class="form-control select2" required>
+{{--        @foreach($employees as $emp)--}}
+            <option value="AML-APPROVED" {{$transactions->res_field48 ==="AML-APPROVED" ? 'selected="selected"' : ''}}>AML-APPROVED</option>
+            <option value="FAILED" {{$transactions->res_field48 ==="FAILED" ? 'selected="selected"' : ''}}>FAILED</option>
+            <option value="AML-FAILED" {{$transactions->res_field48 ==="AML-FAILED" ? 'selected="selected"' : ''}} disabled>AML-FAILED</option>
+            <option value="INIT-FAILED" {{$transactions->res_field48 ==="INIT-FAILED" ? 'selected="selected"' : ''}} disabled>INIT-FAILED</option>
+
+
+        {{--        @endforeach--}}
+    </select>
+{{--    {!!Form::select('res_field48', array('AML-APPROVED' => 'AML-APPROVED',--}}
+{{--                'FAILED' => 'FAILED',--}}
+{{--                'INIT-FAILED' => 'INIT-FAILED',--}}
+{{--                'AML-FAILED' => 'AML-FAILED',--}}
+{{--                ),isset($transactions) ? $transactions->res_field48 : null, ['class' => 'form-control select2'])!!}--}}
 </div>
 <!-- Aml Listed Field -->
 
-<div class="form-group col-sm-6">
+<div class="form-group">
     {!! Form::label('aml_listed', 'AML Listing Status:') !!}
     {!!Form::select('aml_listed', array('1' => 'LISTED', '0' => 'NOT LISTED'),
     isset($transactions) ? $transactions->aml_listed : null, ['class' => 'form-control select2'])!!}
 </div>
 <!-- Remarks Field -->
-<div class="form-group col-sm-6 col-lg-6">
+<div class="form-group">
     {!! Form::label('res_field44', 'Transaction Remarks:') !!}
     {!! Form::textarea('res_field44', null, ['id' => 'editor']) !!}
 </div>
@@ -53,6 +63,6 @@
 
 <!-- Submit Field -->
 <div class="form-group col-sm-12">
-    {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}
+    {!! Form::submit('Update', ['class' => 'btn btn-primary']) !!}
     <a href="{{ route('transactions.index') }}" class="btn btn-default">Cancel</a>
 </div>

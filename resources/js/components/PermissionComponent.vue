@@ -24,10 +24,10 @@
                         </tbody>
 
                     </table>
-                                        <h2>
-                                            Derived output
-                                        </h2>
-                                        <pre>{{statusArr}}</pre>
+<!--                                        <h2>-->
+<!--                                            Derived output-->
+<!--                                        </h2>-->
+<!--                                        <pre>{{statusArr}}</pre>-->
 
 
                     <div class="dataTables_paginate paging_simple_numbers" id="dataTableBuilder_paginate">
@@ -104,6 +104,7 @@
             assignPermission(){
                 // alert(this.selectedPermissions);
                 // return console.log(this.selectedPermissions);
+                let uri = '/roles';
                 axios.post('/assign-permissions/' + this.data,this.selectedPermissions).then((response)=>{
 
                     console.log(response);
@@ -111,7 +112,7 @@
                 }).catch(err => {
                     console.log(err)
                 })
-                // return window.location = uri;
+                return window.location = uri;
             }
         },
         created() {

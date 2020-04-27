@@ -14,7 +14,7 @@
                         <thead>
                         <tr class="thead-dark">
                             <th>#</th>
-                            <th>Workflow stage</th>
+                            <th>Approval stage Partner</th>
                             <th class="text-center">Order</th>
                             <th class="text-center">Approvers</th>
                             <th class="text-center" colspan="2">Approval Status</th>

@@ -142,6 +142,8 @@ class ApprovalsController extends AppBaseController
      */
     public function update($id, UpdateApprovalsRequest $request)
     {
+        dd('here');
+
         $approvals = $this->approvalsRepository->myApprovals()->find($id);
 
         if (empty($approvals)) {

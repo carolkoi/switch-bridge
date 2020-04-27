@@ -2,7 +2,7 @@
 
 @section('content')
     <section class="content-header">
-        <h1 class="pull-left">Approvals</h1>
+        <h1 class="pull-left">Transaction Approval Requests</h1>
 
     </section>
     <div class="content">
@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="text-center">
-        
+
         </div>
     </div>
 @endsection

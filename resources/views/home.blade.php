@@ -164,7 +164,7 @@
                                     <td>{{ $transaction->req_field105  }}</td>
                                     <td>{{ $transaction->req_field108   }}</td>
                                     <td>{{ $transaction->req_field102  }}</td>
-                                    <td>{{ $transaction->res_field44. " ". "(".$transaction->res_field39.")"}}</td>
+                                    <td>{!! $transaction->res_field44 !!} </td>
                                     <td>{{ $transaction->req_field112 }}</td>
 
 

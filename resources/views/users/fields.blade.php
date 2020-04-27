@@ -29,10 +29,10 @@
 </div>
 
 <!-- Password Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('password', 'Password:') !!}
-    {!! Form::password('password', ['class' => 'form-control']) !!}
-</div>
+{{--<div class="form-group col-sm-6">--}}
+{{--    {!! Form::label('password', 'Password:') !!}--}}
+{{--    {!! Form::password('password', ['class' => 'form-control']) !!}--}}
+{{--</div>--}}
 
 <!-- Msisdn Field -->
 <div class="form-group col-sm-6">

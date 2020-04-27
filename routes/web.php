@@ -15,7 +15,9 @@ use App\Http\Resources\Permission;
 
 Route::get('/','Auth\LoginController@showLoginForm');
 
-Auth::routes(['register' => false]);
+//Auth::routes(['register' => false]);
+Auth::routes();
+
 
 Route::get('/home', 'HomeController@index');
 //Auth::routes(['register' => false, 'login' => false, 'logout' => false]);

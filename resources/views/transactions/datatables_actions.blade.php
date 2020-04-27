@@ -1,5 +1,9 @@
 {{--{!! Form::open(['route' => ['transactions.destroy', $iso_id], 'method' => 'delete']) !!}--}}
-{{--@if($res_field48 === "COMPLETED")--}}
+@if($res_field48 === "COMPLETED" OR $res_field48 === "FAILED" OR auth()->user()->cannot('Update transactions'))
+    <a href="{{ route('transactions.show', $iso_id) }}" class='btn btn-primary'>
+        Show
+    </a>
+    @elseif(auth()->user()->can('Update transactions'))
 <div class='btn-group'>
     <a href="{{ route('transactions.show', $iso_id) }}" class='btn btn-primary btn-sm'>
         <i class="glyphicon glyphicon-eye-open"></i>
@@ -13,6 +17,7 @@
 {{--        'onclick' => "return confirm('Are you sure?')"--}}
 {{--    ]) !!}--}}
 </div>
+@endif
 
 {{--{!! Form::close() !!}--}}
 {{--@else--}}

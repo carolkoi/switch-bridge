@@ -147,6 +147,52 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: media; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.media (
+    id bigint NOT NULL,
+    model_type character varying(255) NOT NULL,
+    model_id bigint NOT NULL,
+    collection_name character varying(255) NOT NULL,
+    name character varying(255) NOT NULL,
+    file_name character varying(255) NOT NULL,
+    mime_type character varying(255),
+    disk character varying(255) NOT NULL,
+    size bigint NOT NULL,
+    manipulations json NOT NULL,
+    custom_properties json NOT NULL,
+    responsive_images json NOT NULL,
+    order_column integer,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.media OWNER TO postgres;
+
+--
+-- Name: media_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.media_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.media_id_seq OWNER TO postgres;
+
+--
+-- Name: media_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.media_id_seq OWNED BY public.media.id;
+
+
+--
 -- Name: migrations; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -159,26 +205,66 @@ CREATE TABLE public.migrations (
 ALTER TABLE public.migrations OWNER TO postgres;
 
 --
--- Name: settings; Type: TABLE; Schema: public; Owner: postgres
+-- Name: model_has_permissions; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.settings (
-    id integer NOT NULL,
-    template_id integer,
-    deleted_at timestamp(0) without time zone,
-    created_at timestamp(0) without time zone,
-    updated_at timestamp(0) without time zone
+CREATE TABLE public.model_has_permissions (
+    permission_id bigint NOT NULL,
+    model_type character varying(255) NOT NULL,
+    model_id bigint NOT NULL
 );
 
 
-ALTER TABLE public.settings OWNER TO postgres;
+ALTER TABLE public.model_has_permissions OWNER TO postgres;
 
 --
--- Name: settings_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: model_has_roles; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE SEQUENCE public.settings_id_seq
-    AS integer
+CREATE TABLE public.model_has_roles (
+    role_id bigint NOT NULL,
+    model_type character varying(255) NOT NULL,
+    model_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.model_has_roles OWNER TO postgres;
+
+--
+-- Name: password_resets; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.password_resets (
+    email character varying(255) NOT NULL,
+    token character varying(255) NOT NULL,
+    created_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.password_resets OWNER TO postgres;
+
+--
+-- Name: permissions; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.permissions (
+    id bigint NOT NULL,
+    name character varying(255) NOT NULL,
+    guard_name character varying(255) NOT NULL,
+    description text,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone,
+    deleted_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.permissions OWNER TO postgres;
+
+--
+-- Name: permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.permissions_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -186,35 +272,49 @@ CREATE SEQUENCE public.settings_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.settings_id_seq OWNER TO postgres;
+ALTER TABLE public.permissions_id_seq OWNER TO postgres;
 
 --
--- Name: settings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE public.settings_id_seq OWNED BY public.settings.id;
+ALTER SEQUENCE public.permissions_id_seq OWNED BY public.permissions.id;
 
 
 --
--- Name: surveys; Type: TABLE; Schema: public; Owner: postgres
+-- Name: role_has_permissions; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.surveys (
-    id integer NOT NULL,
-    deleted_at timestamp(0) without time zone,
-    created_at timestamp(0) without time zone,
-    updated_at timestamp(0) without time zone
+CREATE TABLE public.role_has_permissions (
+    permission_id bigint NOT NULL,
+    role_id bigint NOT NULL
 );
 
 
-ALTER TABLE public.surveys OWNER TO postgres;
+ALTER TABLE public.role_has_permissions OWNER TO postgres;
 
 --
--- Name: surveys_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: roles; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE SEQUENCE public.surveys_id_seq
-    AS integer
+CREATE TABLE public.roles (
+    id bigint NOT NULL,
+    name character varying(255) NOT NULL,
+    guard_name character varying(255) NOT NULL,
+    description text,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone,
+    deleted_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.roles OWNER TO postgres;
+
+--
+-- Name: roles_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.roles_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -222,13 +322,13 @@ CREATE SEQUENCE public.surveys_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.surveys_id_seq OWNER TO postgres;
+ALTER TABLE public.roles_id_seq OWNER TO postgres;
 
 --
--- Name: surveys_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: roles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE public.surveys_id_seq OWNED BY public.surveys.id;
+ALTER SEQUENCE public.roles_id_seq OWNED BY public.roles.id;
 
 
 --
@@ -503,48 +603,6 @@ ALTER TABLE public.tbl_sec_roles_roleid_seq OWNER TO postgres;
 --
 
 ALTER SEQUENCE public.tbl_sec_roles_roleid_seq OWNED BY public.tbl_sec_roles.roleid;
-
-
---
--- Name: tbl_switch_settings; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.tbl_switch_settings (
-    switchsettingid integer NOT NULL,
-    serviceproviderid integer NOT NULL,
-    setting character varying(255) NOT NULL,
-    settingvalue character varying(255) NOT NULL,
-    valuetype character varying(255) NOT NULL,
-    addedby integer NOT NULL,
-    ipaddress character varying(255) NOT NULL,
-    created_at timestamp(0) without time zone NOT NULL,
-    updated_at timestamp(0) without time zone NOT NULL,
-    deleted_at timestamp with time zone
-);
-
-
-ALTER TABLE public.tbl_switch_settings OWNER TO postgres;
-
---
--- Name: tbl_switch_settings_switchsettingid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.tbl_switch_settings_switchsettingid_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.tbl_switch_settings_switchsettingid_seq OWNER TO postgres;
-
---
--- Name: tbl_switch_settings_switchsettingid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.tbl_switch_settings_switchsettingid_seq OWNED BY public.tbl_switch_settings.switchsettingid;
 
 
 --
@@ -961,7 +1019,11 @@ CREATE TABLE public.tbl_sys_iso (
     aml_listed boolean DEFAULT false,
     posted boolean DEFAULT false,
     created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
-    deleted_at timestamp with time zone
+    deleted_at timestamp with time zone,
+    maker_checker_approve_status smallint DEFAULT 0,
+    maker_checker_reject_status smallint DEFAULT 0,
+    approved_at double precision,
+    rejected_at double precision
 );
 
 
@@ -1452,7 +1514,8 @@ CREATE TABLE public.tbl_sys_paybills (
     shortcode character varying,
     partnercode character varying,
     paybill_status character varying DEFAULT 'ACTIVE'::character varying,
-    record_version integer DEFAULT 0
+    record_version integer DEFAULT 0,
+    accountnumber character varying
 );
 
 
@@ -1551,6 +1614,86 @@ CREATE SEQUENCE public.tbl_trn_aml_id_seq
 ALTER TABLE public.tbl_trn_aml_id_seq OWNER TO postgres;
 
 --
+-- Name: tbl_trn_incidents_incident_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.tbl_trn_incidents_incident_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 2147483647
+    CACHE 1
+    CYCLE;
+
+
+ALTER TABLE public.tbl_trn_incidents_incident_id_seq OWNER TO postgres;
+
+--
+-- Name: tbl_trn_incidents; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tbl_trn_incidents (
+    date_time_added integer DEFAULT (date_part('epoch'::text, CURRENT_TIMESTAMP))::integer,
+    added_by integer,
+    date_time_modified integer DEFAULT (date_part('epoch'::text, CURRENT_TIMESTAMP))::integer,
+    modified_by integer,
+    user_activity_log_id integer,
+    source_ip character varying,
+    latest_ip character varying,
+    incident_id integer DEFAULT nextval('public.tbl_trn_incidents_incident_id_seq'::regclass) NOT NULL,
+    request_id integer,
+    request_number character varying,
+    partner_id character varying,
+    partner_name character varying,
+    transaction_ref character varying,
+    transaction_date character varying,
+    collection_branch character varying,
+    transaction_type character varying,
+    service_type character varying,
+    sender_type character varying,
+    sender_full_name character varying,
+    sender_address character varying,
+    sender_city character varying,
+    sender_country_code character varying,
+    sender_currency_code character varying,
+    sender_mobile character varying,
+    send_amount numeric DEFAULT 0,
+    sender_id_type character varying,
+    sender_id_number character varying,
+    receiver_type character varying,
+    receiver_full_name character varying,
+    receiver_country_code character varying,
+    receiver_currency_code character varying,
+    receiver_amount numeric DEFAULT 0,
+    receiver_city character varying,
+    receiver_address character varying,
+    receiver_mobile character varying,
+    mobile_operator character varying,
+    receiver_id_type character varying,
+    receiver_id_number character varying,
+    receiver_account character varying,
+    receiver_bank character varying,
+    receiver_bank_code character varying,
+    receiver_swiftcode character varying,
+    receiver_branch character varying,
+    receiver_branch_code character varying,
+    exchange_rate numeric DEFAULT 1,
+    commission_amount numeric DEFAULT 0,
+    paybill character varying,
+    remarks character varying,
+    callbacks character varying,
+    original_message text,
+    incident_code character varying,
+    incident_note character varying,
+    incident_description character varying,
+    record_version integer DEFAULT 0,
+    sent boolean DEFAULT false
+);
+
+
+ALTER TABLE public.tbl_trn_incidents OWNER TO postgres;
+
+--
 -- Name: tbl_trn_requests_request_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1583,6 +1726,7 @@ CREATE TABLE public.tbl_trn_requests (
     request_status character varying DEFAULT 'NEW'::character varying,
     transactions integer DEFAULT 0,
     transactions_value numeric,
+    original_message text,
     record_version integer DEFAULT 0
 );
 
@@ -1620,6 +1764,7 @@ CREATE TABLE public.tbl_trn_transactions (
     request_id integer,
     request_number character varying,
     partner_id character varying,
+    partner_name character varying,
     transaction_ref character varying,
     transaction_date character varying,
     collection_branch character varying,
@@ -1659,17 +1804,23 @@ CREATE TABLE public.tbl_trn_transactions (
     transaction_number character varying,
     transaction_hash character varying,
     transaction_status character varying DEFAULT 'NEW'::character varying,
+    original_message text,
     transaction_response character varying,
     switch_response character varying,
     query_status character varying,
     query_response character varying,
-    sent boolean DEFAULT false,
     callbacks character varying,
     callbacks_status character varying,
     queued_callbacks integer DEFAULT 0,
     completed_callbacks integer DEFAULT 0,
     callback_status integer DEFAULT 0,
-    record_version integer DEFAULT 0
+    record_version integer DEFAULT 0,
+    need_syncing boolean DEFAULT false,
+    synced boolean DEFAULT false,
+    sent boolean DEFAULT false,
+    incident_code character varying,
+    incident_description character varying,
+    incident_note character varying
 );
 
 
@@ -1691,7 +1842,8 @@ CREATE TABLE public.users (
     status character varying(255) NOT NULL,
     remember_token character varying(100),
     created_at timestamp(0) without time zone NOT NULL,
-    updated_at timestamp(0) without time zone NOT NULL
+    updated_at timestamp(0) without time zone NOT NULL,
+    deleted_at time without time zone
 );
 
 
@@ -1720,17 +1872,351 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
--- Name: settings id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: workflow_stage_approvers; Type: TABLE; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.settings ALTER COLUMN id SET DEFAULT nextval('public.settings_id_seq'::regclass);
+CREATE TABLE public.workflow_stage_approvers (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    granted_by integer NOT NULL,
+    workflow_stage_id integer NOT NULL,
+    workflow_stage_type_id integer NOT NULL,
+    deleted_at timestamp(0) without time zone,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.workflow_stage_approvers OWNER TO postgres;
+
+--
+-- Name: workflow_stage_approvers_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.workflow_stage_approvers_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.workflow_stage_approvers_id_seq OWNER TO postgres;
+
+--
+-- Name: workflow_stage_approvers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.workflow_stage_approvers_id_seq OWNED BY public.workflow_stage_approvers.id;
 
 
 --
--- Name: surveys id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: workflow_stage_checklist; Type: TABLE; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.surveys ALTER COLUMN id SET DEFAULT nextval('public.surveys_id_seq'::regclass);
+CREATE TABLE public.workflow_stage_checklist (
+    id integer NOT NULL,
+    name character varying(100),
+    text text,
+    status smallint,
+    workflow_stages_id integer NOT NULL,
+    deleted_at timestamp(0) without time zone,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.workflow_stage_checklist OWNER TO postgres;
+
+--
+-- Name: workflow_stage_checklist_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.workflow_stage_checklist_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.workflow_stage_checklist_id_seq OWNER TO postgres;
+
+--
+-- Name: workflow_stage_checklist_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.workflow_stage_checklist_id_seq OWNED BY public.workflow_stage_checklist.id;
+
+
+--
+-- Name: workflow_stage_type; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.workflow_stage_type (
+    id integer NOT NULL,
+    name character varying(100),
+    slug character varying(100),
+    weight integer,
+    deleted_at timestamp(0) without time zone,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.workflow_stage_type OWNER TO postgres;
+
+--
+-- Name: workflow_stage_type_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.workflow_stage_type_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.workflow_stage_type_id_seq OWNER TO postgres;
+
+--
+-- Name: workflow_stage_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.workflow_stage_type_id_seq OWNED BY public.workflow_stage_type.id;
+
+
+--
+-- Name: workflow_stages; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.workflow_stages (
+    id integer NOT NULL,
+    workflow_stage_type_id integer NOT NULL,
+    workflow_type_id integer NOT NULL,
+    weight integer,
+    deleted_at timestamp(0) without time zone,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.workflow_stages OWNER TO postgres;
+
+--
+-- Name: workflow_stages_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.workflow_stages_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.workflow_stages_id_seq OWNER TO postgres;
+
+--
+-- Name: workflow_stages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.workflow_stages_id_seq OWNED BY public.workflow_stages.id;
+
+
+--
+-- Name: workflow_step_checklist; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.workflow_step_checklist (
+    id integer NOT NULL,
+    name character varying(100),
+    user_id integer,
+    text text,
+    status smallint,
+    workflow_steps_id integer NOT NULL,
+    deleted_at timestamp(0) without time zone,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.workflow_step_checklist OWNER TO postgres;
+
+--
+-- Name: workflow_step_checklist_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.workflow_step_checklist_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.workflow_step_checklist_id_seq OWNER TO postgres;
+
+--
+-- Name: workflow_step_checklist_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.workflow_step_checklist_id_seq OWNED BY public.workflow_step_checklist.id;
+
+
+--
+-- Name: workflow_steps; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.workflow_steps (
+    id integer NOT NULL,
+    workflow_stage_id integer NOT NULL,
+    workflow_id integer NOT NULL,
+    user_id integer NOT NULL,
+    approved_at timestamp(0) without time zone,
+    rejected_at timestamp(0) without time zone,
+    weight integer,
+    deleted_at timestamp(0) without time zone,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.workflow_steps OWNER TO postgres;
+
+--
+-- Name: workflow_steps_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.workflow_steps_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.workflow_steps_id_seq OWNER TO postgres;
+
+--
+-- Name: workflow_steps_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.workflow_steps_id_seq OWNED BY public.workflow_steps.id;
+
+
+--
+-- Name: workflow_types; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.workflow_types (
+    id integer NOT NULL,
+    name character varying(255),
+    slug character varying(255),
+    type smallint DEFAULT '0'::smallint,
+    deleted_at timestamp(0) without time zone,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.workflow_types OWNER TO postgres;
+
+--
+-- Name: workflow_types_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.workflow_types_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.workflow_types_id_seq OWNER TO postgres;
+
+--
+-- Name: workflow_types_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.workflow_types_id_seq OWNED BY public.workflow_types.id;
+
+
+--
+-- Name: workflows; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.workflows (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    workflow_type character varying(255) NOT NULL,
+    model_id integer,
+    model_type character varying(45),
+    collection_name character varying(45),
+    payload text,
+    sent_by integer,
+    approved smallint DEFAULT '0'::smallint,
+    approved_at timestamp(0) without time zone,
+    rejected_at timestamp(0) without time zone,
+    awaiting_stage_id integer NOT NULL,
+    deleted_at timestamp(0) without time zone,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.workflows OWNER TO postgres;
+
+--
+-- Name: workflows_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.workflows_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.workflows_id_seq OWNER TO postgres;
+
+--
+-- Name: workflows_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.workflows_id_seq OWNED BY public.workflows.id;
+
+
+--
+-- Name: media id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.media ALTER COLUMN id SET DEFAULT nextval('public.media_id_seq'::regclass);
+
+
+--
+-- Name: permissions id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.permissions ALTER COLUMN id SET DEFAULT nextval('public.permissions_id_seq'::regclass);
+
+
+--
+-- Name: roles id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.roles ALTER COLUMN id SET DEFAULT nextval('public.roles_id_seq'::regclass);
 
 
 --
@@ -1762,13 +2248,6 @@ ALTER TABLE ONLY public.tbl_sec_roles ALTER COLUMN roleid SET DEFAULT nextval('p
 
 
 --
--- Name: tbl_switch_settings switchsettingid; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.tbl_switch_settings ALTER COLUMN switchsettingid SET DEFAULT nextval('public.tbl_switch_settings_switchsettingid_seq'::regclass);
-
-
---
 -- Name: tbl_sys_iso_eod_requests eod_request_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1797,6 +2276,70 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 
 
 --
+-- Name: workflow_stage_approvers id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.workflow_stage_approvers ALTER COLUMN id SET DEFAULT nextval('public.workflow_stage_approvers_id_seq'::regclass);
+
+
+--
+-- Name: workflow_stage_checklist id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.workflow_stage_checklist ALTER COLUMN id SET DEFAULT nextval('public.workflow_stage_checklist_id_seq'::regclass);
+
+
+--
+-- Name: workflow_stage_type id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.workflow_stage_type ALTER COLUMN id SET DEFAULT nextval('public.workflow_stage_type_id_seq'::regclass);
+
+
+--
+-- Name: workflow_stages id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.workflow_stages ALTER COLUMN id SET DEFAULT nextval('public.workflow_stages_id_seq'::regclass);
+
+
+--
+-- Name: workflow_step_checklist id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.workflow_step_checklist ALTER COLUMN id SET DEFAULT nextval('public.workflow_step_checklist_id_seq'::regclass);
+
+
+--
+-- Name: workflow_steps id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.workflow_steps ALTER COLUMN id SET DEFAULT nextval('public.workflow_steps_id_seq'::regclass);
+
+
+--
+-- Name: workflow_types id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.workflow_types ALTER COLUMN id SET DEFAULT nextval('public.workflow_types_id_seq'::regclass);
+
+
+--
+-- Name: workflows id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.workflows ALTER COLUMN id SET DEFAULT nextval('public.workflows_id_seq'::regclass);
+
+
+--
+-- Data for Name: media; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.media (id, model_type, model_id, collection_name, name, file_name, mime_type, disk, size, manipulations, custom_properties, responsive_images, order_column, created_at, updated_at) FROM stdin;
+\.
+
+
+--
 -- Data for Name: migrations; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1811,24 +2354,65 @@ COPY public.migrations (migration, batch) FROM stdin;
 2019_12_17_074413_CreateISOTable	2
 2019_12_17_072051_CreateSwitchSettingsTable	3
 2019_12_30_081942_CreateRefNoTable	4
-2019_11_22_000001_create_surveys_table	5
-2019_11_22_000003_create_settings_table	5
+2019_11_22_000004_create_password_resets_table	5
+2019_11_28_070658_create_media_table	5
+2019_12_01_000001_create_workflow_types_table	5
+2019_12_01_000002_create_workflow_stage_type_table	5
+2019_12_01_000006_create_workflow_stages_table	5
+2019_12_01_000007_create_workflow_stage_approvers_table	5
+2019_12_01_000008_create_workflow_stage_checklist_table	5
+2019_12_01_000009_create_workflows_table	5
+2019_12_01_000010_create_workflow_steps_table	5
+2019_12_01_000011_create_workflow_step_checklist_table	5
+2020_04_19_100555_create_permission_tables	5
 \.
 
 
 --
--- Data for Name: settings; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: model_has_permissions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.settings (id, template_id, deleted_at, created_at, updated_at) FROM stdin;
+COPY public.model_has_permissions (permission_id, model_type, model_id) FROM stdin;
 \.
 
 
 --
--- Data for Name: surveys; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: model_has_roles; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.surveys (id, deleted_at, created_at, updated_at) FROM stdin;
+COPY public.model_has_roles (role_id, model_type, model_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: password_resets; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.password_resets (email, token, created_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: permissions; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.permissions (id, name, guard_name, description, created_at, updated_at, deleted_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: role_has_permissions; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.role_has_permissions (permission_id, role_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: roles; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.roles (id, name, guard_name, description, created_at, updated_at, deleted_at) FROM stdin;
 \.
 
 
@@ -1869,6 +2453,7 @@ COPY public.tbl_cmp_product (productid, serviceproviderid, product, productcode,
 --
 
 COPY public.tbl_cus_blacklist (date_time_added, added_by, date_time_modified, modified_by, source_ip, latest_ip, blacklist_id, partner_id, customer_idnumber, transaction_number, customer_name, mobile_number, blacklist_status, response, blacklist_source, remarks, blacklisted, blacklist_version, created_at, deleted_at) FROM stdin;
+\N	\N	\N	\N	\N	\N	23038	\N	\N	\N	NAME	\N	FLAG	REASON	\N	\N	t	0	2020-04-03 10:15:16.212107+03	\N
 \N	\N	\N	\N	\N	\N	23463	\N	\N	\N	UNSACCO ADVANCES UNSACC	\N	0	\N	\N	\N	t	0	2020-04-03 10:15:16.212107+03	\N
 \N	\N	\N	\N	\N	\N	23464	\N	\N	\N	MOHAMED MALUKI	\N	0	\N	\N	\N	t	0	2020-04-03 10:15:16.212107+03	\N
 \N	\N	\N	\N	\N	\N	23465	\N	\N	\N	SAID SALIM	\N	0	\N	\N	\N	t	0	2020-04-03 10:15:16.212107+03	\N
@@ -6099,7 +6684,6 @@ COPY public.tbl_cus_blacklist (date_time_added, added_by, date_time_modified, mo
 \N	\N	\N	\N	\N	\N	27266	\N	\N	\N	ISSA MOHAMED ALII	\N	1	No matching results on ofac	\N	\N	f	0	2020-04-03 10:15:16.212107+03	\N
 \N	\N	\N	\N	\N	\N	27267	\N	\N	\N	SHAABAN ABDULAZIZ SHAABAN	\N	1	BOT ON OFAC	\N	\N	f	0	2020-04-03 10:15:16.212107+03	\N
 \N	\N	\N	\N	\N	\N	27268	\N	\N	\N	SWALEH MOHAMED KHAMIS	\N	1	No matching results on ofac	\N	\N	f	0	2020-04-03 10:15:16.212107+03	\N
-\N	\N	\N	\N	\N	\N	23038	\N	C986578	TR8945456	Caroline Wangui	0701154836	AML-LISTED	<p>The customer received a double disbursement. Requested to revert one and did not comply.</p>	OFAC	\N	t	0	2020-04-03 10:15:16.212107+03	\N
 \.
 
 
@@ -6131,26 +6715,6 @@ COPY public.tbl_pvd_serviceprovider (serviceproviderid, companyid, moneyservicen
 --
 
 COPY public.tbl_sec_roles (roleid, rolename, description, roletype, rolestatus, addedby, ipaddress, created_at, updated_at) FROM stdin;
-\.
-
-
---
--- Data for Name: tbl_switch_settings; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.tbl_switch_settings (switchsettingid, serviceproviderid, setting, settingvalue, valuetype, addedby, ipaddress, created_at, updated_at, deleted_at) FROM stdin;
-1	2	Auto Retrial Interval	1	HOURS	1	::1	2019-12-18 09:28:07	2019-12-18 09:28:07	\N
-2	2	CRB Source	CREDIT INFO	TEXT	1	::1	2019-12-18 09:28:17	2019-12-18 09:28:17	\N
-4	2	CUT OFF TIME	15.00	HOURS	1	::1	2019-12-18 09:30:33	2019-12-18 09:30:33	\N
-5	2	Delay Period 	2	HOURS	1	::1	2019-12-18 09:31:07	2019-12-18 09:31:07	\N
-6	1	Terms And Conditions Website	https://switchlinkafrica.co.ke/	TEXT	1	::1	2019-12-18 09:32:25	2019-12-18 09:32:25	\N
-7	2	SWTICH IP	105.123.111.333	TEXT	1	::1	2019-12-18 09:33:24	2019-12-18 09:33:24	\N
-8	2	SWTICH PORT	5501	TEXT	1	::1	2019-12-18 09:33:38	2019-12-18 09:33:38	\N
-9	2	AML CHECK	TRUE	BOOLEAN	1	::1	2019-12-18 12:16:56	2019-12-18 12:16:56	\N
-10	2	AML SOURCE	SAMPLE SOURCE	TEXT	1	::1	2019-12-18 12:17:13	2019-12-18 12:17:13	\N
-11	3	AML SOURCE	SAMPLE SOURCE	TEXT	1	::1	2019-12-18 12:18:23	2019-12-18 12:18:23	\N
-12	3	AML CHECK	TRUE	BOOLEAN	1	::1	2019-12-18 12:18:28	2019-12-18 12:18:28	\N
-3	2	Bridge Services Running	TRUE	BOOLEAN	1	::1	2019-12-18 09:29:39	2019-12-18 09:29:39	\N
 \.
 
 
@@ -7857,6 +8421,7 @@ COPY public.tbl_sys_currencies (date_time_added, added_by, date_time_modified, m
 1583931528	\N	1583931528	\N	155	East Carribean Dollar	XCD	ACTIVE	0
 1583931528	\N	1583931528	\N	156	Palladium (one troy ounce)	XPT	ACTIVE	0
 1583931528	\N	1583931528	\N	157	No Currency	XXX	ACTIVE	0
+1586349158	\N	1586349158	\N	158	United Arab Emirates Dirham	AED	ACTIVE	0
 \.
 
 
@@ -7885,61 +8450,9 @@ COPY public.tbl_sys_documents (date_time_added, added_by, date_time_modified, mo
 -- Data for Name: tbl_sys_iso; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.tbl_sys_iso (date_time_added, added_by, date_time_modified, modified_by, source_ip, latest_ip, iso_id, prev_iso_id, company_id, need_sync, synced, iso_source, iso_type, request_type, iso_status, iso_version, req_mti, req_field1, req_field2, req_field3, req_field4, req_field5, req_field6, req_field7, req_field8, req_field9, req_field10, req_field11, req_field12, req_field13, req_field14, req_field15, req_field16, req_field17, req_field18, req_field19, req_field20, req_field21, req_field22, req_field23, req_field24, req_field25, req_field26, req_field27, req_field28, req_field29, req_field30, req_field31, req_field32, req_field33, req_field34, req_field35, req_field36, req_field37, req_field38, req_field39, req_field40, req_field41, req_field42, req_field43, req_field44, req_field45, req_field46, req_field47, req_field48, req_field49, req_field50, req_field51, req_field52, req_field53, req_field54, req_field55, req_field56, req_field57, req_field58, req_field59, req_field60, req_field61, req_field62, req_field63, req_field64, req_field65, req_field66, req_field67, req_field68, req_field69, req_field70, req_field71, req_field72, req_field73, req_field74, req_field75, req_field76, req_field77, req_field78, req_field79, req_field80, req_field81, req_field82, req_field83, req_field84, req_field85, req_field86, req_field87, req_field88, req_field89, req_field90, req_field91, req_field92, req_field93, req_field94, req_field95, req_field96, req_field97, req_field98, req_field99, req_field100, req_field101, req_field102, req_field103, req_field104, req_field105, req_field106, req_field107, req_field108, req_field109, req_field110, req_field111, req_field112, req_field113, req_field114, req_field115, req_field116, req_field117, req_field118, req_field119, req_field120, req_field121, req_field122, req_field123, req_field124, req_field125, req_field126, req_field127, req_field128, res_mti, res_field1, res_field2, res_field3, res_field4, res_field5, res_field6, res_field7, res_field8, res_field9, res_field10, res_field11, res_field12, res_field13, res_field14, res_field15, res_field16, res_field17, res_field18, res_field19, res_field20, res_field21, res_field22, res_field23, res_field24, res_field25, res_field26, res_field27, res_field28, res_field29, res_field30, res_field31, res_field32, res_field33, res_field34, res_field35, res_field36, res_field37, res_field38, res_field39, res_field40, res_field41, res_field42, res_field43, res_field44, res_field45, res_field46, res_field47, res_field48, res_field49, res_field50, res_field51, res_field52, res_field53, res_field54, res_field55, res_field56, res_field57, res_field58, res_field59, res_field60, res_field61, res_field62, res_field63, res_field64, res_field65, res_field66, res_field67, res_field68, res_field69, res_field70, res_field71, res_field72, res_field73, res_field74, res_field75, res_field76, res_field77, res_field78, res_field79, res_field80, res_field81, res_field82, res_field83, res_field84, res_field85, res_field86, res_field87, res_field88, res_field89, res_field90, res_field91, res_field92, res_field93, res_field94, res_field95, res_field96, res_field97, res_field98, res_field99, res_field100, res_field101, res_field102, res_field103, res_field104, res_field105, res_field106, res_field107, res_field108, res_field109, res_field110, res_field111, res_field112, res_field113, res_field114, res_field115, res_field116, res_field117, res_field118, res_field119, res_field120, res_field121, res_field122, res_field123, res_field124, res_field125, res_field126, res_field127, res_field128, request, response, extra_data, sync_message, need_sending, sent, received, aml_check, aml_check_sent, aml_check_retries, aml_listed, posted, created_at, deleted_at) FROM stdin;
-1585897756473	0	1585897756473	\N	\N	\N	1594	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	410000	200000      	200000      	\N	20200403  	\N	9100    	\N	1585897756377  	100916	0403	0403	0403	\N	\N	0403	ro 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000027	faVtRHYcto	\N	\N	200402000027	\N	\N	\N	MPESA   	1405           	\N	\N	\N	\N	\N	\N	UAH	KES	\N	254720711388    	254720711388      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711388	\N	Jadzia Dax	Blair Wolff	11447 Daniel Islands, Port Veroniqueburgh, IL 27571-1977	Tbilisi	Felipe Abernathy	Apt. 623 5876 Katherine Divide, East Orvalstad, AR 47944	Nairobi	BRANCH	N/A	N/A	KEXXXXX	BRANCH A	N/A	SAFARICOM	sender_id_type	National ID	P	P	M	LULU	\N	\N	\N	\N	\N	0210	\N	\N	410000	200000      	\N	\N	20200403  	\N	\N	\N	\N	100916	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000027	\N	00	\N	\N	\N	\N	Posted Successfully	\N	\N	\N	COMPLETED	UAH	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711388	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05880200BABE681FC8C0D8000880000005FFFFE0410000200000      200000      20200403  9100    1585897756377  1009160403040304030403ro KEN2900    2900    2900    2900    08SWLU00041220040200002710faVtRHYcto200402000027MPESA   1405           UAHKES254720711388    254720711388      KEN20200403  12254720711388010Jadzia Dax011Blair Wolff05611447 Daniel Islands, Port Veroniqueburgh, IL 27571-1977007Tbilisi016Felipe Abernathy056Apt. 623 5876 Katherine Divide, East Orvalstad, AR 47944007Nairobi006BRANCH003N/A003N/A007KEXXXXX008BRANCH A003N/A009SAFARICOM014sender_id_type011National ID001P001PM004LULU	01280210B21800010A0180000000000004000000410000200000      20200403  100916040308SWLU0004200402000027090009AML-CHECKUAH12254720711388	01280210B21800010A0180000000000004000000410000200000      20200403  100916040308SWLU0004200402000027090009AML-CHECKUAH12254720711388	Pi1_5a7512e2-cd0c-c24b-2c76-08d7d79dff2e	t	t	t	t	t	1	f	t	2020-04-03 10:09:16.405026+03	\N
-1585897789796	0	1585897789796	\N	\N	\N	1611	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	104098364	410000	2528        	250000      	\N	20200403  	\N	9967    	\N	1585897789664  	100949	0403	0403	0403	\N	\N	0403	BEL	\N	KEN	\N	\N	\N	\N	\N	\N	20      	20      	20      	20      	UPESI0005	200402000049	104098364	\N	\N	200402000049	\N	\N	\N	MPESA   	1427           	\N	\N	\N	\N	\N	\N	USD	KES	\N	104098364       	104098364         	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	USD	\N	\N	\N	20200323  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	Mobile Payment - Safaricom	Javier test last name send	BEL	Bruxelles	Javier G. last name benf	Mobile Payment	Nairobi	07	N/A	N/A	07	07	N/A	SAFARICOM	sender_id_type	National ID	P	P	M	MONEYTRANS	\N	\N	\N	\N	\N	0210	\N	104098364	410000	2528        	\N	\N	20200403  	\N	\N	\N	\N	100949	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	UPESI0005	\N	\N	\N	\N	200402000049	\N	00	\N	\N	\N	\N	Posted Successfully	\N	\N	\N	COMPLETED	USD	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05360200FABE681FC8C0D8000880000005FFFFE0091040983644100002528        250000      20200403  9967    1585897789664  1009490403040304030403BELKEN20      20      20      20      09UPESI00051220040200004909104098364200402000049MPESA   1427           USDKES104098364       104098364         USD20200323  12254720711386026Mobile Payment - Safaricom026Javier test last name send003BEL009Bruxelles024Javier G. last name benf014Mobile Payment007Nairobi00207003N/A003N/A0020700207003N/A009SAFARICOM014sender_id_type011National ID001P001PM010MONEYTRANS	01400210F21800010A0180000000000004000000091040983644100002528        20200403  100949040309UPESI0005200402000049090009AML-CHECKUSD12254720711386	01400210F21800010A0180000000000004000000091040983644100002528        20200403  100949040309UPESI0005200402000049090009AML-CHECKUSD12254720711386	Pi1_5326e638-94de-c781-889e-08d7d79e055a	t	t	t	t	t	1	f	t	2020-04-03 10:09:49.695627+03	\N
-1585897789816	0	1585897789816	\N	\N	\N	1614	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	104098363	420000	2023        	200000      	\N	20200403  	\N	9967    	\N	1585897789648  	100949	0403	0403	0403	\N	\N	0403	BEL	\N	KEN	\N	\N	\N	\N	\N	\N	16      	16      	16      	16      	UPESI0005	200402000048	104098363	\N	\N	200402000048	\N	\N	\N	CASH    	1426           	\N	\N	\N	\N	\N	\N	USD	KES	\N	104098363       	104098363         	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	USD	\N	\N	\N	20200323  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	Upesi Money Transfer - Nairobi-CBD (ex Ngao Credit)	Javier test last name send	BEL	Bruxelles	Javier G. last name benf	3rd Floor, TrustForte Building, Moi Avenue, Nairobi	Nairobi	01	N/A	N/A	01	01	N/A	SAFARICOM	sender_id_type	National ID	P	P	C	MONEYTRANS	\N	\N	\N	\N	\N	0210	\N	104098363	420000	2023        	\N	\N	20200403  	\N	\N	\N	\N	100949	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	UPESI0005	\N	\N	\N	\N	200402000048	\N	10	\N	\N	\N	\N	Posted Successfully	\N	\N	\N	COMPLETED	USD	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05980200FABE681FC8C0D8000880000005FFFFE0091040983634200002023        200000      20200403  9967    1585897789648  1009490403040304030403BELKEN16      16      16      16      09UPESI00051220040200004809104098363200402000048CASH    1426           USDKES104098363       104098363         USD20200323  12254720711386051Upesi Money Transfer - Nairobi-CBD (ex Ngao Credit)026Javier test last name send003BEL009Bruxelles024Javier G. last name benf0513rd Floor, TrustForte Building, Moi Avenue, Nairobi007Nairobi00201003N/A003N/A0020100201003N/A009SAFARICOM014sender_id_type011National ID001P001PC010MONEYTRANS	01400210F21800010A0180000000000004000000091040983634200002023        20200403  100949040309UPESI0005200402000048090009AML-CHECKUSD12254720711386	01400210F21800010A0180000000000004000000091040983634200002023        20200403  100949040309UPESI0005200402000048090009AML-CHECKUSD12254720711386	\N	t	t	t	t	t	1	f	t	2020-04-03 10:09:49.703691+03	\N
-1585897790668	0	1585897790668	\N	\N	\N	1621	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	104098368	400000	3034        	300000      	\N	20200403  	\N	9967    	\N	1585897790615  	100950	0403	0403	0403	\N	\N	0403	BEL	\N	KEN	\N	\N	\N	\N	\N	\N	24      	24      	24      	24      	UPESI0005	200402000052	104098368	\N	\N	200402000052	\N	\N	\N	BANK    	1430           	\N	\N	\N	\N	\N	\N	USD	KES	\N	104098368       	104098368         	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	USD	\N	\N	\N	20200323  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	666555443	\N	National Bank of Kenya Limited - All offices of this payer (Bank Deposits)	Javier test last name send	BEL	Bruxelles	Javier G. last name benf	All offices of this payer (Bank Deposits)	Nairobi	12	NATIONAL BANK 	B0011	12	12	000	SAFARICOM	sender_id_type	National ID	P	P	B	MONEYTRANS	\N	\N	\N	\N	\N	0210	\N	104098368	400000	3034        	\N	\N	20200403  	\N	\N	\N	\N	100950	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	UPESI0005	\N	\N	\N	\N	200402000052	\N	10	\N	\N	\N	\N	Invalid remarks/length	\N	\N	\N	INIT-FAILED	USD	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	666555443	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	06210200FABE681FC8C0D8000880000005FFFFE0091040983684000003034        300000      20200403  9967    1585897790615  1009500403040304030403BELKEN24      24      24      24      09UPESI00051220040200005209104098368200402000052BANK    1430           USDKES104098368       104098368         USD20200323  09666555443074National Bank of Kenya Limited - All offices of this payer (Bank Deposits)026Javier test last name send003BEL009Bruxelles024Javier G. last name benf041All offices of this payer (Bank Deposits)007Nairobi00212014NATIONAL BANK 005B00110021200212003000009SAFARICOM014sender_id_type011National ID001P001PB010MONEYTRANS	01370210F21800010A0180000000000004000000091040983684000003034        20200403  100950040309UPESI0005200402000052090009AML-CHECKUSD09666555443	01370210F21800010A0180000000000004000000091040983684000003034        20200403  100950040309UPESI0005200402000052090009AML-CHECKUSD09666555443	Invalid remarks/length	t	t	f	t	t	1	f	f	2020-04-03 10:09:50.648561+03	\N
-1585897754456	0	1585897754456	\N	\N	\N	1585	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	420000	200000      	200000      	\N	20200403  	\N	9100    	\N	1585897754362  	100914	0403	0403	0403	\N	\N	0403	kn 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000018	sj9zImcJSf	\N	\N	200402000018	\N	\N	\N	CASH    	1396           	\N	\N	\N	\N	\N	\N	JPY	KES	\N	254720711388    	254720711388      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711388	\N	Kira Nerys	Tommie Howe	Suite 511 235 Kristofer Trace, North Careyport, MO 51789	San Salvador	Hugo Macejkovic DDS	Apt. 852 511 Greenholt Street, Batzville, ID 14916	Nairobi	BRANCH	N/A	N/A	KEXXXXX	BRANCH A	N/A	SAFARICOM	sender_id_type	National ID	P	P	C	LULU	\N	\N	\N	\N	\N	0210	\N	\N	420000	200000      	\N	\N	20200403  	\N	\N	\N	\N	100914	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000018	\N	10	\N	\N	\N	\N	Posted Successfully	\N	\N	\N	COMPLETED	JPY	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711388	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05900200BABE681FC8C0D8000880000005FFFFE0420000200000      200000      20200403  9100    1585897754362  1009140403040304030403kn KEN2900    2900    2900    2900    08SWLU00041220040200001810sj9zImcJSf200402000018CASH    1396           JPYKES254720711388    254720711388      KEN20200403  12254720711388010Kira Nerys011Tommie Howe056Suite 511 235 Kristofer Trace, North Careyport, MO 51789012San Salvador019Hugo Macejkovic DDS050Apt. 852 511 Greenholt Street, Batzville, ID 14916007Nairobi006BRANCH003N/A003N/A007KEXXXXX008BRANCH A003N/A009SAFARICOM014sender_id_type011National ID001P001PC004LULU	01280210B21800010A0180000000000004000000420000200000      20200403  100914040308SWLU0004200402000018090009AML-CHECKJPY12254720711388	01280210B21800010A0180000000000004000000420000200000      20200403  100914040308SWLU0004200402000018090009AML-CHECKJPY12254720711388	\N	t	t	t	t	t	1	f	t	2020-04-03 10:09:14.418213+03	\N
-1585897789805	0	1585897789805	\N	\N	\N	1616	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	104098433	400000	2023        	200000      	\N	20200403  	\N	9967    	\N	1585897789734  	100949	0403	0403	0403	\N	\N	0403	BEL	\N	KEN	\N	\N	\N	\N	\N	\N	16      	16      	16      	16      	UPESI0005	200402000043	104098433	\N	\N	200402000043	\N	\N	\N	BANK    	1421           	\N	\N	\N	\N	\N	\N	USD	KES	\N	104098433       	104098433         	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	USD	\N	\N	\N	20200402  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	+2548901234567	\N	Bank of India Kenya Limited - All offices of this payer (Bank Deposits)	MARIA JOSE BELGIUM	BEL	Brussels	TEST BANK TWO	All offices of this payer (Bank Deposits)	Nairobi	05	BANK OF INDIA	B0004	05	05	000	SAFARICOM	sender_id_type	National ID	P	P	B	MONEYTRANS	\N	\N	\N	\N	\N	0210	\N	104098433	400000	2023        	\N	\N	20200403  	\N	\N	\N	\N	100949	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	UPESI0005	\N	\N	\N	\N	200402000043	\N	10	\N	\N	\N	\N	Invalid remarks/length	\N	\N	\N	INIT-FAILED	USD	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	+2548901234567	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	06020200FABE681FC8C0D8000880000005FFFFE0091040984334000002023        200000      20200403  9967    1585897789734  1009490403040304030403BELKEN16      16      16      16      09UPESI00051220040200004309104098433200402000043BANK    1421           USDKES104098433       104098433         USD20200402  14+2548901234567071Bank of India Kenya Limited - All offices of this payer (Bank Deposits)018MARIA JOSE BELGIUM003BEL008Brussels013TEST BANK TWO041All offices of this payer (Bank Deposits)007Nairobi00205013BANK OF INDIA005B00040020500205003000009SAFARICOM014sender_id_type011National ID001P001PB010MONEYTRANS	01420210F21800010A0180000000000004000000091040984334000002023        20200403  100949040309UPESI0005200402000043090009AML-CHECKUSD14+2548901234567	01420210F21800010A0180000000000004000000091040984334000002023        20200403  100949040309UPESI0005200402000043090009AML-CHECKUSD14+2548901234567	Invalid remarks/length	t	t	f	t	t	1	f	f	2020-04-03 10:09:49.775356+03	\N
-1585897789809	0	1585897789809	\N	\N	\N	1615	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	104098429	420000	544         	53800       	\N	20200403  	\N	9967    	\N	1585897789695  	100949	0403	0403	0403	\N	\N	0403	BEL	\N	KEN	\N	\N	\N	\N	\N	\N	4       	4       	4       	4       	UPESI0005	200402000044	104098429	\N	\N	200402000044	\N	\N	\N	CASH    	1422           	\N	\N	\N	\N	\N	\N	USD	KES	\N	104098429       	104098429         	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	USD	\N	\N	\N	20200402  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	Upesi Money Transfer - Nairobi NHIF (ex Ngao Credit) 	MARIA JOSE BELGIUM	BEL	Brussels	TEST KENYA	2nd Floor, NHIF Building, Ragati Road, Nairobi	Nairobi	02	N/A	N/A	02	02	N/A	SAFARICOM	sender_id_type	National ID	P	P	C	MONEYTRANS	\N	\N	\N	\N	\N	0210	\N	104098429	420000	544         	\N	\N	20200403  	\N	\N	\N	\N	100949	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	UPESI0005	\N	\N	\N	\N	200402000044	\N	10	\N	\N	\N	\N	Posted Successfully	\N	\N	\N	COMPLETED	USD	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05720200FABE681FC8C0D8000880000005FFFFE009104098429420000544         53800       20200403  9967    1585897789695  1009490403040304030403BELKEN4       4       4       4       09UPESI00051220040200004409104098429200402000044CASH    1422           USDKES104098429       104098429         USD20200402  12254720711386053Upesi Money Transfer - Nairobi NHIF (ex Ngao Credit) 018MARIA JOSE BELGIUM003BEL008Brussels010TEST KENYA0462nd Floor, NHIF Building, Ragati Road, Nairobi007Nairobi00202003N/A003N/A0020200202003N/A009SAFARICOM014sender_id_type011National ID001P001PC010MONEYTRANS	01400210F21800010A018000000000000400000009104098429420000544         20200403  100949040309UPESI0005200402000044090009AML-CHECKUSD12254720711386	01400210F21800010A018000000000000400000009104098429420000544         20200403  100949040309UPESI0005200402000044090009AML-CHECKUSD12254720711386	\N	t	t	t	t	t	1	f	t	2020-04-03 10:09:49.723597+03	\N
-1585897752418	0	1585897752418	\N	\N	\N	1579	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	420000	200000      	200000      	\N	20200403  	\N	9100    	\N	1585897752362  	100912	0403	0403	0403	\N	\N	0403	ss 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000013	r92M0a44kr	\N	\N	200402000013	\N	\N	\N	CASH    	1391           	\N	\N	\N	\N	\N	\N	UGX	KES	\N	254720711388    	254720711388      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711388	\N	Harry Kim	Denyse Powlowski	5524 Ledner Stream, Port Isabelleport, DE 21497-1420	Monaco	Mr. Leone Nicolas	042 Ma Court, North Pierre, ME 32231	Nairobi	BRANCH	N/A	N/A	KEXXXXX	BRANCH A	N/A	SAFARICOM	sender_id_type	National ID	P	P	C	LULU	\N	\N	\N	\N	\N	0210	\N	\N	420000	200000      	\N	\N	20200403  	\N	\N	\N	\N	100912	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000013	\N	06	\N	\N	\N	\N	Exception When Sending AML Request	\N	\N	\N	AML-FAILED	UGX	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711388	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05680200BABE681FC8C0D8000880000005FFFFE0420000200000      200000      20200403  9100    1585897752362  1009120403040304030403ss KEN2900    2900    2900    2900    08SWLU00041220040200001310r92M0a44kr200402000013CASH    1391           UGXKES254720711388    254720711388      KEN20200403  12254720711388009Harry Kim016Denyse Powlowski0525524 Ledner Stream, Port Isabelleport, DE 21497-1420006Monaco017Mr. Leone Nicolas036042 Ma Court, North Pierre, ME 32231007Nairobi006BRANCH003N/A003N/A007KEXXXXX008BRANCH A003N/A009SAFARICOM014sender_id_type011National ID001P001PC004LULU	01280210B21800010A0180000000000004000000420000200000      20200403  100912040308SWLU0004200402000013090009AML-CHECKUGX12254720711388	01280210B21800010A0180000000000004000000420000200000      20200403  100912040308SWLU0004200402000013090009AML-CHECKUGX12254720711388	\N	t	f	f	t	t	1	t	f	2020-04-03 10:09:12.379825+03	\N
-1585897756483	0	1585897756483	\N	\N	\N	1595	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	400000	200000      	200000      	\N	20200403  	\N	9100    	\N	1585897756375  	100916	0403	0403	0403	\N	\N	0403	ss 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000029	tbY8tiZXrI	\N	\N	200402000029	\N	\N	\N	BANK    	1407           	\N	\N	\N	\N	\N	\N	HRK	KES	\N	254720711386    	254720711386      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	Nyota Uhuru	Mrs. Jordan Leuschke	9200 Nida Skyway, New Lolita, TN 65590	Hamilton	Mrs. Manual Kilback	Apt. 721 27997 Abbott Canyon, New Delshire, NH 50178-0092	Nairobi	BRANCH	STANDARD CHARTERED BANK	B0002	KEXXXXX	BRANCH A	000	SAFARICOM	sender_id_type	National ID	P	P	B	LULU	\N	\N	\N	\N	\N	0210	\N	\N	400000	200000      	\N	\N	20200403  	\N	\N	\N	\N	100916	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000029	\N	10	\N	\N	\N	\N	Invalid sendermobile/length	\N	\N	\N	INIT-FAILED	HRK	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	06070200BABE681FC8C0D8000880000005FFFFE0400000200000      200000      20200403  9100    1585897756375  1009160403040304030403ss KEN2900    2900    2900    2900    08SWLU00041220040200002910tbY8tiZXrI200402000029BANK    1407           HRKKES254720711386    254720711386      KEN20200403  12254720711386011Nyota Uhuru020Mrs. Jordan Leuschke0389200 Nida Skyway, New Lolita, TN 65590008Hamilton019Mrs. Manual Kilback057Apt. 721 27997 Abbott Canyon, New Delshire, NH 50178-0092007Nairobi006BRANCH023STANDARD CHARTERED BANK005B0002007KEXXXXX008BRANCH A003000009SAFARICOM014sender_id_type011National ID001P001PB004LULU	01280210B21800010A0180000000000004000000400000200000      20200403  100916040308SWLU0004200402000029090009AML-CHECKHRK12254720711386	01280210B21800010A0180000000000004000000400000200000      20200403  100916040308SWLU0004200402000029090009AML-CHECKHRK12254720711386	Invalid sendermobile/length	t	t	f	t	t	1	f	f	2020-04-03 10:09:16.471007+03	\N
-1585897789805	0	1585897789805	\N	\N	\N	1613	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	104098329	410000	1633        	161500      	\N	20200403  	\N	9967    	\N	1585897789654  	100949	0403	0403	0403	\N	\N	0403	BEL	\N	KEN	\N	\N	\N	\N	\N	\N	13      	13      	13      	13      	UPESI0005	200402000047	104098329	\N	\N	200402000047	\N	\N	\N	MPESA   	1425           	\N	\N	\N	\N	\N	\N	USD	KES	\N	104098329       	104098329         	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	USD	\N	\N	\N	20200309  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	Mobile Payment - Safaricom	MARIA JOSE BELGIUM	BEL	Brussels	TEST KENYA MBP	Mobile Payment	Nairobi	07	N/A	N/A	07	07	N/A	SAFARICOM	sender_id_type	National ID	P	P	M	MONEYTRANS	\N	\N	\N	\N	\N	0210	\N	104098329	410000	1633        	\N	\N	20200403  	\N	\N	\N	\N	100949	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	UPESI0005	\N	\N	\N	\N	200402000047	\N	00	\N	\N	\N	\N	Posted Successfully	\N	\N	\N	COMPLETED	USD	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05170200FABE681FC8C0D8000880000005FFFFE0091040983294100001633        161500      20200403  9967    1585897789654  1009490403040304030403BELKEN13      13      13      13      09UPESI00051220040200004709104098329200402000047MPESA   1425           USDKES104098329       104098329         USD20200309  12254720711386026Mobile Payment - Safaricom018MARIA JOSE BELGIUM003BEL008Brussels014TEST KENYA MBP014Mobile Payment007Nairobi00207003N/A003N/A0020700207003N/A009SAFARICOM014sender_id_type011National ID001P001PM010MONEYTRANS	01400210F21800010A0180000000000004000000091040983294100001633        20200403  100949040309UPESI0005200402000047090009AML-CHECKUSD12254720711386	01400210F21800010A0180000000000004000000091040983294100001633        20200403  100949040309UPESI0005200402000047090009AML-CHECKUSD12254720711386	Pi1_8372ba7b-cc62-c166-4b70-08d7d79e055f	t	t	t	t	t	1	f	t	2020-04-03 10:09:49.70223+03	\N
-1585897789812	0	1585897789812	\N	\N	\N	1618	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	104098366	420000	2023        	200000      	\N	20200403  	\N	9967    	\N	1585897789732  	100949	0403	0403	0403	\N	\N	0403	BEL	\N	KEN	\N	\N	\N	\N	\N	\N	16      	16      	16      	16      	UPESI0005	200402000050	104098366	\N	\N	200402000050	\N	\N	\N	CASH    	1428           	\N	\N	\N	\N	\N	\N	USD	KES	\N	104098366       	104098366         	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	USD	\N	\N	\N	20200323  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	Upesi Money Transfer - Nairobi-CBD (ex Ngao Credit)	Javier test last name send	BEL	Bruxelles	Javier G. last name benf	3rd Floor, TrustForte Building, Moi Avenue, Nairobi	Nairobi	01	N/A	N/A	01	01	N/A	SAFARICOM	sender_id_type	National ID	P	P	C	MONEYTRANS	\N	\N	\N	\N	\N	0210	\N	104098366	420000	2023        	\N	\N	20200403  	\N	\N	\N	\N	100949	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	UPESI0005	\N	\N	\N	\N	200402000050	\N	10	\N	\N	\N	\N	Posted Successfully	\N	\N	\N	COMPLETED	USD	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05980200FABE681FC8C0D8000880000005FFFFE0091040983664200002023        200000      20200403  9967    1585897789732  1009490403040304030403BELKEN16      16      16      16      09UPESI00051220040200005009104098366200402000050CASH    1428           USDKES104098366       104098366         USD20200323  12254720711386051Upesi Money Transfer - Nairobi-CBD (ex Ngao Credit)026Javier test last name send003BEL009Bruxelles024Javier G. last name benf0513rd Floor, TrustForte Building, Moi Avenue, Nairobi007Nairobi00201003N/A003N/A0020100201003N/A009SAFARICOM014sender_id_type011National ID001P001PC010MONEYTRANS	01400210F21800010A0180000000000004000000091040983664200002023        20200403  100949040309UPESI0005200402000050090009AML-CHECKUSD12254720711386	01400210F21800010A0180000000000004000000091040983664200002023        20200403  100949040309UPESI0005200402000050090009AML-CHECKUSD12254720711386	\N	t	t	t	t	t	1	f	t	2020-04-03 10:09:49.785266+03	\N
-1585897756415	0	1585897756415	\N	\N	\N	1593	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	420000	200000      	200000      	\N	20200403  	\N	9100    	\N	1585897756374  	100916	0403	0403	0403	\N	\N	0403	al 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000026	pQDj4sq2xZ	\N	\N	200402000026	\N	\N	\N	CASH    	1404           	\N	\N	\N	\N	\N	\N	SYP	KES	\N	254720711386    	254720711386      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	Charles Tucker III	Heriberto Monahan	7177 Harley Estates, Port Altheaport, WI 79826-5193	Kingstown	Darlena Leuschke	Apt. 341 89809 Schaden Pass, Port Esteban, SC 58552-9944	Nairobi	BRANCH	N/A	N/A	KEXXXXX	BRANCH A	N/A	SAFARICOM	sender_id_type	National ID	P	P	C	LULU	\N	\N	\N	\N	\N	0210	\N	\N	420000	200000      	\N	\N	20200403  	\N	\N	\N	\N	100916	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000026	\N	10	\N	\N	\N	\N	Posted Successfully	\N	\N	\N	COMPLETED	SYP	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05990200BABE681FC8C0D8000880000005FFFFE0420000200000      200000      20200403  9100    1585897756374  1009160403040304030403al KEN2900    2900    2900    2900    08SWLU00041220040200002610pQDj4sq2xZ200402000026CASH    1404           SYPKES254720711386    254720711386      KEN20200403  12254720711386018Charles Tucker III017Heriberto Monahan0517177 Harley Estates, Port Altheaport, WI 79826-5193009Kingstown016Darlena Leuschke056Apt. 341 89809 Schaden Pass, Port Esteban, SC 58552-9944007Nairobi006BRANCH003N/A003N/A007KEXXXXX008BRANCH A003N/A009SAFARICOM014sender_id_type011National ID001P001PC004LULU	01280210B21800010A0180000000000004000000420000200000      20200403  100916040308SWLU0004200402000026090009AML-CHECKSYP12254720711386	01280210B21800010A0180000000000004000000420000200000      20200403  100916040308SWLU0004200402000026090009AML-CHECKSYP12254720711386	\N	t	t	t	t	t	1	f	t	2020-04-03 10:09:16.396914+03	\N
-1585897758524	0	1585897758524	\N	\N	\N	1601	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	400000	300000      	300000      	\N	20200403  	\N	9100    	\N	1585897758448  	100918	0403	0403	0403	\N	\N	0403	ml 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000036	pXYSMRGB13	\N	\N	200402000036	\N	\N	\N	BANK    	1414           	\N	\N	\N	\N	\N	\N	BBD	KES	\N	254720711388    	254720711388      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711388	\N	Phlox	Carmella Corwin	Apt. 932 689 Shanti Meadow, Tyrellshire, IL 67692-7011	Andorra la Vella	Delphia O'Reilly	992 Konopelski Meadows, New Aliaberg, MD 52226-8739	Nairobi	BRANCH	BANK OF INDIA	B0004	KEXXXXX	BRANCH A	000	SAFARICOM	sender_id_type	National ID	P	P	B	LULU	\N	\N	\N	\N	\N	0210	\N	\N	400000	300000      	\N	\N	20200403  	\N	\N	\N	\N	100918	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000036	\N	10	\N	\N	\N	\N	Invalid senderaddr/length	\N	\N	\N	INIT-FAILED	BBD	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711388	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	06010200BABE681FC8C0D8000880000005FFFFE0400000300000      300000      20200403  9100    1585897758448  1009180403040304030403ml KEN2900    2900    2900    2900    08SWLU00041220040200003610pXYSMRGB13200402000036BANK    1414           BBDKES254720711388    254720711388      KEN20200403  12254720711388005Phlox015Carmella Corwin054Apt. 932 689 Shanti Meadow, Tyrellshire, IL 67692-7011016Andorra la Vella016Delphia O'Reilly051992 Konopelski Meadows, New Aliaberg, MD 52226-8739007Nairobi006BRANCH013BANK OF INDIA005B0004007KEXXXXX008BRANCH A003000009SAFARICOM014sender_id_type011National ID001P001PB004LULU	01280210B21800010A0180000000000004000000400000300000      20200403  100918040308SWLU0004200402000036090009AML-CHECKBBD12254720711388	01280210B21800010A0180000000000004000000400000300000      20200403  100918040308SWLU0004200402000036090009AML-CHECKBBD12254720711388	Invalid senderaddr/length	t	t	f	t	t	1	f	f	2020-04-03 10:09:18.500038+03	\N
-1585897759489	0	1585897759489	\N	\N	\N	1607	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	410000	100000      	100000      	\N	20200403  	\N	9100    	\N	1585897759424  	100919	0403	0403	0403	\N	\N	0403	si 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000040	EpKPVcWoYE	\N	\N	200402000040	\N	\N	\N	MPESA   	1418           	\N	\N	\N	\N	\N	\N	INR	KES	\N	254720711386    	254720711386      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	Julian Bashir	Grace Dicki	Suite 458 16962 McGlynn Street, Andersonburgh, TN 88256-3054	Kabul	Toney Koch	813 O'Kon Harbor, Lake Tressachester, MT 75103	Nairobi	BRANCH	N/A	N/A	KEXXXXX	BRANCH A	N/A	SAFARICOM	sender_id_type	National ID	P	P	M	LULU	\N	\N	\N	\N	\N	0210	\N	\N	410000	100000      	\N	\N	20200403  	\N	\N	\N	\N	100919	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000040	\N	00	\N	\N	\N	\N	Posted Successfully	\N	\N	\N	COMPLETED	INR	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05770200BABE681FC8C0D8000880000005FFFFE0410000100000      100000      20200403  9100    1585897759424  1009190403040304030403si KEN2900    2900    2900    2900    08SWLU00041220040200004010EpKPVcWoYE200402000040MPESA   1418           INRKES254720711386    254720711386      KEN20200403  12254720711386013Julian Bashir011Grace Dicki060Suite 458 16962 McGlynn Street, Andersonburgh, TN 88256-3054005Kabul010Toney Koch046813 O'Kon Harbor, Lake Tressachester, MT 75103007Nairobi006BRANCH003N/A003N/A007KEXXXXX008BRANCH A003N/A009SAFARICOM014sender_id_type011National ID001P001PM004LULU	01280210B21800010A0180000000000004000000410000100000      20200403  100919040308SWLU0004200402000040090009AML-CHECKINR12254720711386	01280210B21800010A0180000000000004000000410000100000      20200403  100919040308SWLU0004200402000040090009AML-CHECKINR12254720711386	Pi1_de5fc0ef-883e-c423-b8d1-08d7d79dff32	t	t	t	t	t	1	f	t	2020-04-03 10:09:19.448908+03	\N
-1585897753432	0	1585897753432	\N	\N	\N	1583	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	420000	200000      	200000      	\N	20200403  	\N	9100    	\N	1585897753372  	100913	0403	0403	0403	\N	\N	0403	cz 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000017	NHoDDSvMB3	\N	\N	200402000017	\N	\N	\N	CASH    	1395           	\N	\N	\N	\N	\N	\N	AFN	KES	\N	254720711387    	254720711387      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711387	\N	Beverly Crusher	Dirk Reilly	Suite 806 1491 Upton Mountain, New Maileland, ID 81414	San Juan	Wilfredo Huels	Suite 884 842 Labadie Ford, Bertton, AR 60350-3975	Nairobi	BRANCH	N/A	N/A	KEXXXXX	BRANCH A	N/A	SAFARICOM	sender_id_type	National ID	P	P	C	LULU	\N	\N	\N	\N	\N	0210	\N	\N	420000	200000      	\N	\N	20200403  	\N	\N	\N	\N	100913	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000017	\N	10	\N	\N	\N	\N	Posted Successfully	\N	\N	\N	COMPLETED	AFN	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711387	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05840200BABE681FC8C0D8000880000005FFFFE0420000200000      200000      20200403  9100    1585897753372  1009130403040304030403cz KEN2900    2900    2900    2900    08SWLU00041220040200001710NHoDDSvMB3200402000017CASH    1395           AFNKES254720711387    254720711387      KEN20200403  12254720711387015Beverly Crusher011Dirk Reilly054Suite 806 1491 Upton Mountain, New Maileland, ID 81414008San Juan014Wilfredo Huels050Suite 884 842 Labadie Ford, Bertton, AR 60350-3975007Nairobi006BRANCH003N/A003N/A007KEXXXXX008BRANCH A003N/A009SAFARICOM014sender_id_type011National ID001P001PC004LULU	01280210B21800010A0180000000000004000000420000200000      20200403  100913040308SWLU0004200402000017090009AML-CHECKAFN12254720711387	01280210B21800010A0180000000000004000000420000200000      20200403  100913040308SWLU0004200402000017090009AML-CHECKAFN12254720711387	\N	t	t	t	t	t	1	f	t	2020-04-03 10:09:13.417183+03	\N
-1585897752407	0	1585897752407	\N	\N	\N	1578	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	420000	100000      	100000      	\N	20200403  	\N	9100    	\N	1585897752343  	100912	0403	0403	0403	\N	\N	0403	cd 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000012	0C1mNVIz4i	\N	\N	200402000012	\N	\N	\N	CASH    	1390           	\N	\N	\N	\N	\N	\N	MNT	KES	\N	254720711386    	254720711386      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	Wesley Crusher	Stacey Olson	595 Harber Drives, Chetfort, MN 35754-7741	Islamabad	Oliver Kohler	Apt. 293 07412 Reynolds Neck, East Elliestad, PA 96099-8827	Nairobi	BRANCH	N/A	N/A	KEXXXXX	BRANCH A	N/A	SAFARICOM	sender_id_type	National ID	P	P	C	LULU	\N	\N	\N	\N	\N	0210	\N	\N	420000	100000      	\N	\N	20200403  	\N	\N	\N	\N	100912	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000012	\N	10	\N	\N	\N	\N	Posted Successfully	\N	\N	\N	COMPLETED	MNT	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05810200BABE681FC8C0D8000880000005FFFFE0420000100000      100000      20200403  9100    1585897752343  1009120403040304030403cd KEN2900    2900    2900    2900    08SWLU000412200402000012100C1mNVIz4i200402000012CASH    1390           MNTKES254720711386    254720711386      KEN20200403  12254720711386014Wesley Crusher012Stacey Olson042595 Harber Drives, Chetfort, MN 35754-7741009Islamabad013Oliver Kohler059Apt. 293 07412 Reynolds Neck, East Elliestad, PA 96099-8827007Nairobi006BRANCH003N/A003N/A007KEXXXXX008BRANCH A003N/A009SAFARICOM014sender_id_type011National ID001P001PC004LULU	01280210B21800010A0180000000000004000000420000100000      20200403  100912040308SWLU0004200402000012090009AML-CHECKMNT12254720711386	01280210B21800010A0180000000000004000000420000100000      20200403  100912040308SWLU0004200402000012090009AML-CHECKMNT12254720711386	\N	t	t	t	t	t	1	f	t	2020-04-03 10:09:12.360274+03	\N
-1585897748978	0	1585897748978	\N	\N	\N	1568	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	400000	200000      	200000      	\N	20200403  	\N	9100    	\N	1585897748774  	100908	0403	0403	0403	\N	\N	0403	ye 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000002	KmhHaPxYz1	\N	\N	200402000002	\N	\N	\N	BANK    	1380           	\N	\N	\N	\N	\N	\N	STD	KES	\N	254720711388    	254720711388      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711388	\N	Kes	Vern Bartell	Apt. 610 053 Renner Haven, Jameyburgh, HI 46403-6900	Suva	Amy Kub	3611 Fabiola Crossing, East Abeltown, AK 29059-6622	Nairobi	BRANCH	COMMERCIAL BANK OF AFRICA	B0006	KEXXXXX	BRANCH A	000	SAFARICOM	sender_id_type	National ID	P	P	B	LULU	\N	\N	\N	\N	\N	0210	\N	\N	400000	200000      	\N	\N	20200403  	\N	\N	\N	\N	100908	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000002	\N	10	\N	\N	\N	\N	Invalid senderaddr/length	\N	\N	\N	INIT-FAILED	STD	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711388	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05850200BABE681FC8C0D8000880000005FFFFE0400000200000      200000      20200403  9100    1585897748774  1009080403040304030403ye KEN2900    2900    2900    2900    08SWLU00041220040200000210KmhHaPxYz1200402000002BANK    1380           STDKES254720711388    254720711388      KEN20200403  12254720711388003Kes012Vern Bartell052Apt. 610 053 Renner Haven, Jameyburgh, HI 46403-6900004Suva007Amy Kub0513611 Fabiola Crossing, East Abeltown, AK 29059-6622007Nairobi006BRANCH025COMMERCIAL BANK OF AFRICA005B0006007KEXXXXX008BRANCH A003000009SAFARICOM014sender_id_type011National ID001P001PB004LULU	01280210B21800010A0180000000000004000000400000200000      20200403  100908040308SWLU0004200402000002090009AML-CHECKSTD12254720711388	01280210B21800010A0180000000000004000000400000200000      20200403  100908040308SWLU0004200402000002090009AML-CHECKSTD12254720711388	Invalid senderaddr/length	t	t	f	t	t	1	f	f	2020-04-03 10:09:08.908277+03	\N
-1585897760467	0	1585897760467	\N	\N	\N	1608	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	420000	200000      	200000      	\N	20200403  	\N	9100    	\N	1585897760446  	100920	0403	0403	0403	\N	\N	0403	zw 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000041	CypTxjMFAL	\N	\N	200402000041	\N	\N	\N	CASH    	1419           	\N	\N	\N	\N	\N	\N	ALL	KES	\N	254720711387    	254720711387      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711387	\N	Travis Mayweather	Carmine Kuhlman	7589 Carter Crossing, Lake Herschelbury, IL 69602	Addis Ababa	Hedwig Greenholt I	8596 Genevie Walks, Genesisborough, NM 84165	Nairobi	BRANCH	N/A	N/A	KEXXXXX	BRANCH A	N/A	SAFARICOM	sender_id_type	National ID	P	P	C	LULU	\N	\N	\N	\N	\N	0210	\N	\N	420000	200000      	\N	\N	20200403  	\N	\N	\N	\N	100920	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000041	\N	10	\N	\N	\N	\N	Posted Successfully	\N	\N	\N	COMPLETED	ALL	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711387	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05860200BABE681FC8C0D8000880000005FFFFE0420000200000      200000      20200403  9100    1585897760446  1009200403040304030403zw KEN2900    2900    2900    2900    08SWLU00041220040200004110CypTxjMFAL200402000041CASH    1419           ALLKES254720711387    254720711387      KEN20200403  12254720711387017Travis Mayweather015Carmine Kuhlman0497589 Carter Crossing, Lake Herschelbury, IL 69602011Addis Ababa018Hedwig Greenholt I0448596 Genevie Walks, Genesisborough, NM 84165007Nairobi006BRANCH003N/A003N/A007KEXXXXX008BRANCH A003N/A009SAFARICOM014sender_id_type011National ID001P001PC004LULU	01280210B21800010A0180000000000004000000420000200000      20200403  100920040308SWLU0004200402000041090009AML-CHECKALL12254720711387	01280210B21800010A0180000000000004000000420000200000      20200403  100920040308SWLU0004200402000041090009AML-CHECKALL12254720711387	\N	t	t	t	t	t	1	f	t	2020-04-03 10:09:20.461707+03	\N
-1585897749492	0	1585897749492	\N	\N	\N	1573	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	400000	100000      	100000      	\N	20200403  	\N	9100    	\N	1585897749380  	100909	0403	0403	0403	\N	\N	0403	ml 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000006	GZiaxMC5Y2	\N	\N	200402000006	\N	\N	\N	BANK    	1384           	\N	\N	\N	\N	\N	\N	JOD	KES	\N	254720711388    	254720711388      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711388	\N	Pavel Chekov	Mr. Kyong Rohan	Apt. 261 88225 Major Stravenue, New Cicely, IN 44639	Jamestown	Catalina Feeney DVM	Suite 039 22157 Welch Shoals, Lindgrenside, GA 97227-9506	Nairobi	BRANCH	BARCLAYS BANK OF KENYA LTD.	B0003	KEXXXXX	BRANCH A	001	SAFARICOM	sender_id_type	National ID	P	P	B	LULU	\N	\N	\N	\N	\N	0210	\N	\N	400000	100000      	\N	\N	20200403  	\N	\N	\N	\N	100909	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000006	\N	10	\N	\N	\N	\N	Invalid bankname/length	\N	\N	\N	INIT-FAILED	JOD	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711388	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	06220200BABE681FC8C0D8000880000005FFFFE0400000100000      100000      20200403  9100    1585897749380  1009090403040304030403ml KEN2900    2900    2900    2900    08SWLU00041220040200000610GZiaxMC5Y2200402000006BANK    1384           JODKES254720711388    254720711388      KEN20200403  12254720711388012Pavel Chekov015Mr. Kyong Rohan052Apt. 261 88225 Major Stravenue, New Cicely, IN 44639009Jamestown019Catalina Feeney DVM057Suite 039 22157 Welch Shoals, Lindgrenside, GA 97227-9506007Nairobi006BRANCH027BARCLAYS BANK OF KENYA LTD.005B0003007KEXXXXX008BRANCH A003001009SAFARICOM014sender_id_type011National ID001P001PB004LULU	01280210B21800010A0180000000000004000000400000100000      20200403  100909040308SWLU0004200402000006090009AML-CHECKJOD12254720711388	01280210B21800010A0180000000000004000000400000100000      20200403  100909040308SWLU0004200402000006090009AML-CHECKJOD12254720711388	Invalid bankname/length	t	t	f	t	t	1	f	f	2020-04-03 10:09:09.437152+03	\N
-1585897750413	0	1585897750413	\N	\N	\N	1575	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	410000	300000      	300000      	\N	20200403  	\N	9100    	\N	1585897750351  	100910	0403	0403	0403	\N	\N	0403	hn 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000007	kjRxY6cVkR	\N	\N	200402000007	\N	\N	\N	MPESA   	1385           	\N	\N	\N	\N	\N	\N	LYD	KES	\N	254720711387    	254720711387      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711387	\N	Phlox	Malik Weimann	Apt. 370 97139 Buck Ports, Macejkovicbury, TX 64299-7773	Tegucigalpa	Norberto Nikolaus	Apt. 415 527 Irvin Plaza, South Reynaldoborough, NH 07509-1812	Nairobi	BRANCH	N/A	N/A	KEXXXXX	BRANCH A	N/A	SAFARICOM	sender_id_type	National ID	P	P	M	LULU	\N	\N	\N	\N	\N	0210	\N	\N	410000	300000      	\N	\N	20200403  	\N	\N	\N	\N	100910	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000007	\N	00	\N	\N	\N	\N	Posted Successfully	\N	\N	\N	COMPLETED	LYD	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711387	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05960200BABE681FC8C0D8000880000005FFFFE0410000300000      300000      20200403  9100    1585897750351  1009100403040304030403hn KEN2900    2900    2900    2900    08SWLU00041220040200000710kjRxY6cVkR200402000007MPESA   1385           LYDKES254720711387    254720711387      KEN20200403  12254720711387005Phlox013Malik Weimann056Apt. 370 97139 Buck Ports, Macejkovicbury, TX 64299-7773011Tegucigalpa017Norberto Nikolaus062Apt. 415 527 Irvin Plaza, South Reynaldoborough, NH 07509-1812007Nairobi006BRANCH003N/A003N/A007KEXXXXX008BRANCH A003N/A009SAFARICOM014sender_id_type011National ID001P001PM004LULU	01280210B21800010A0180000000000004000000410000300000      20200403  100910040308SWLU0004200402000007090009AML-CHECKLYD12254720711387	01280210B21800010A0180000000000004000000410000300000      20200403  100910040308SWLU0004200402000007090009AML-CHECKLYD12254720711387	Pi1_7ae5dc95-13fe-cee5-6751-08d7d79dee01	t	t	t	t	t	1	f	t	2020-04-03 10:09:10.396099+03	\N
-1585897749459	0	1585897749459	\N	\N	\N	1571	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	410000	200000      	200000      	\N	20200403  	\N	9100    	\N	1585897749363  	100909	0403	0403	0403	\N	\N	0403	jm 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000005	3egTpwNLlU	\N	\N	200402000005	\N	\N	\N	MPESA   	1383           	\N	\N	\N	\N	\N	\N	BYR	KES	\N	254720711387    	254720711387      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711387	\N	Data	Latarsha Hand	76248 Sean Skyway, West Rosalyn, IL 53350	Tehran	Willie Jakubowski	Suite 854 52393 Reilly Wells, West Eliatown, IA 39099	Nairobi	BRANCH	N/A	N/A	KEXXXXX	BRANCH A	N/A	SAFARICOM	sender_id_type	National ID	P	P	M	LULU	\N	\N	\N	\N	\N	0210	\N	\N	410000	200000      	\N	\N	20200403  	\N	\N	\N	\N	100909	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000005	\N	00	\N	\N	\N	\N	Posted Successfully	\N	\N	\N	COMPLETED	BYR	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711387	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05660200BABE681FC8C0D8000880000005FFFFE0410000200000      200000      20200403  9100    1585897749363  1009090403040304030403jm KEN2900    2900    2900    2900    08SWLU000412200402000005103egTpwNLlU200402000005MPESA   1383           BYRKES254720711387    254720711387      KEN20200403  12254720711387004Data013Latarsha Hand04176248 Sean Skyway, West Rosalyn, IL 53350006Tehran017Willie Jakubowski053Suite 854 52393 Reilly Wells, West Eliatown, IA 39099007Nairobi006BRANCH003N/A003N/A007KEXXXXX008BRANCH A003N/A009SAFARICOM014sender_id_type011National ID001P001PM004LULU	01280210B21800010A0180000000000004000000410000200000      20200403  100909040308SWLU0004200402000005090009AML-CHECKBYR12254720711387	01280210B21800010A0180000000000004000000410000200000      20200403  100909040308SWLU0004200402000005090009AML-CHECKBYR12254720711387	Pi1_4bf1a2fa-2857-ce14-6751-08d7d79dee01	t	t	t	t	t	1	f	t	2020-04-03 10:09:09.41681+03	\N
-1585897752445	0	1585897752445	\N	\N	\N	1580	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	410000	200000      	200000      	\N	20200403  	\N	9100    	\N	1585897752376  	100912	0403	0403	0403	\N	\N	0403	ad 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000014	CM4r52F4Gv	\N	\N	200402000014	\N	\N	\N	MPESA   	1392           	\N	\N	\N	\N	\N	\N	MKD	KES	\N	254720711387    	254720711387      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711387	\N	Benjamin Sisko	Miss Jay Zieme	47761 Thompson Loop, Mayerhaven, OK 00254	Tegucigalpa	Virginia Witting	107 Eric Road, West Mary, UT 19696-3974	Nairobi	BRANCH	N/A	N/A	KEXXXXX	BRANCH A	N/A	SAFARICOM	sender_id_type	National ID	P	P	M	LULU	\N	\N	\N	\N	\N	0210	\N	\N	410000	200000      	\N	\N	20200403  	\N	\N	\N	\N	100912	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000014	\N	00	\N	\N	\N	\N	Posted Successfully	\N	\N	\N	COMPLETED	MKD	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711387	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05670200BABE681FC8C0D8000880000005FFFFE0410000200000      200000      20200403  9100    1585897752376  1009120403040304030403ad KEN2900    2900    2900    2900    08SWLU00041220040200001410CM4r52F4Gv200402000014MPESA   1392           MKDKES254720711387    254720711387      KEN20200403  12254720711387014Benjamin Sisko014Miss Jay Zieme04147761 Thompson Loop, Mayerhaven, OK 00254011Tegucigalpa016Virginia Witting039107 Eric Road, West Mary, UT 19696-3974007Nairobi006BRANCH003N/A003N/A007KEXXXXX008BRANCH A003N/A009SAFARICOM014sender_id_type011National ID001P001PM004LULU	01280210B21800010A0180000000000004000000410000200000      20200403  100912040308SWLU0004200402000014090009AML-CHECKMKD12254720711387	01280210B21800010A0180000000000004000000410000200000      20200403  100912040308SWLU0004200402000014090009AML-CHECKMKD12254720711387	Pi1_d17181c7-3155-cec3-6751-08d7d79dee01	t	t	t	t	t	1	f	t	2020-04-03 10:09:12.427964+03	\N
-1585897749461	0	1585897749461	\N	\N	\N	1572	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	420000	300000      	300000      	\N	20200403  	\N	9100    	\N	1585897749355  	100909	0403	0403	0403	\N	\N	0403	ua 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000004	mbQLwn2Kpd	\N	\N	200402000004	\N	\N	\N	CASH    	1382           	\N	\N	\N	\N	\N	\N	CZK	KES	\N	254720711387    	254720711387      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711387	\N	Wesley Crusher	Monty Dibbert	3629 Vickie Forge, Sungmouth, RI 32327	Muscat	Grace Rohan	Apt. 278 156 Latina Lock, West Lucillafurt, TN 29471	Nairobi	BRANCH	N/A	N/A	KEXXXXX	BRANCH A	N/A	SAFARICOM	sender_id_type	National ID	P	P	C	LULU	\N	\N	\N	\N	\N	0210	\N	\N	420000	300000      	\N	\N	20200403  	\N	\N	\N	\N	100909	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000004	\N	10	\N	\N	\N	\N	Posted Successfully	\N	\N	\N	COMPLETED	CZK	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711387	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05660200BABE681FC8C0D8000880000005FFFFE0420000300000      300000      20200403  9100    1585897749355  1009090403040304030403ua KEN2900    2900    2900    2900    08SWLU00041220040200000410mbQLwn2Kpd200402000004CASH    1382           CZKKES254720711387    254720711387      KEN20200403  12254720711387014Wesley Crusher013Monty Dibbert0383629 Vickie Forge, Sungmouth, RI 32327006Muscat011Grace Rohan052Apt. 278 156 Latina Lock, West Lucillafurt, TN 29471007Nairobi006BRANCH003N/A003N/A007KEXXXXX008BRANCH A003N/A009SAFARICOM014sender_id_type011National ID001P001PC004LULU	01280210B21800010A0180000000000004000000420000300000      20200403  100909040308SWLU0004200402000004090009AML-CHECKCZK12254720711387	01280210B21800010A0180000000000004000000420000300000      20200403  100909040308SWLU0004200402000004090009AML-CHECKCZK12254720711387	\N	t	t	t	t	t	1	f	t	2020-04-03 10:09:09.416818+03	\N
-1585897750389	0	1585897750389	\N	\N	\N	1574	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	410000	200000      	200000      	\N	20200403  	\N	9100    	\N	1585897750344  	100910	0403	0403	0403	\N	\N	0403	mw 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000008	X7OEw5WaDI	\N	\N	200402000008	\N	\N	\N	MPESA   	1386           	\N	\N	\N	\N	\N	\N	BDT	KES	\N	254720711386    	254720711386      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	Phlox	Errol Maggio	5068 Dario Isle, Port Jorgeview, DE 88373	Kinshasa	Milton Abernathy	Suite 732 023 Graham Streets, Lake Lancetown, CA 07745-4512	Nairobi	BRANCH	N/A	N/A	KEXXXXX	BRANCH A	N/A	SAFARICOM	sender_id_type	National ID	P	P	M	LULU	\N	\N	\N	\N	\N	0210	\N	\N	410000	200000      	\N	\N	20200403  	\N	\N	\N	\N	100910	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000008	\N	00	\N	\N	\N	\N	Posted Successfully	\N	\N	\N	COMPLETED	BDT	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05730200BABE681FC8C0D8000880000005FFFFE0410000200000      200000      20200403  9100    1585897750344  1009100403040304030403mw KEN2900    2900    2900    2900    08SWLU00041220040200000810X7OEw5WaDI200402000008MPESA   1386           BDTKES254720711386    254720711386      KEN20200403  12254720711386005Phlox012Errol Maggio0415068 Dario Isle, Port Jorgeview, DE 88373008Kinshasa016Milton Abernathy059Suite 732 023 Graham Streets, Lake Lancetown, CA 07745-4512007Nairobi006BRANCH003N/A003N/A007KEXXXXX008BRANCH A003N/A009SAFARICOM014sender_id_type011National ID001P001PM004LULU	01280210B21800010A0180000000000004000000410000200000      20200403  100910040308SWLU0004200402000008090009AML-CHECKBDT12254720711386	01280210B21800010A0180000000000004000000410000200000      20200403  100910040308SWLU0004200402000008090009AML-CHECKBDT12254720711386	Pi1_b474dd49-50ee-c02e-c8c1-08d7d79dee03	t	t	t	t	t	1	f	t	2020-04-03 10:09:10.378479+03	\N
-1585897748996	0	1585897748996	\N	\N	\N	1569	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	410000	200000      	200000      	\N	20200403  	\N	9100    	\N	1585897748775  	100908	0403	0403	0403	\N	\N	0403	iq 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000003	9jYM8WG81O	\N	\N	200402000003	\N	\N	\N	MPESA   	1381           	\N	\N	\N	\N	\N	\N	GEL	KES	\N	254720711388    	254720711388      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711388	\N	Data	Araceli Fisher Sr.	Apt. 310 44783 Streich Throughway, Hirtheside, AL 13226-0931	Asuncion	Basil Effertz	9771 Hauck Manors, Gusikowskimouth, OR 40662-4038	Nairobi	BRANCH	N/A	N/A	KEXXXXX	BRANCH A	N/A	SAFARICOM	sender_id_type	National ID	P	P	M	LULU	\N	\N	\N	\N	\N	0210	\N	\N	410000	200000      	\N	\N	20200403  	\N	\N	\N	\N	100908	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000003	\N	00	\N	\N	\N	\N	Posted Successfully	\N	\N	\N	COMPLETED	GEL	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711388	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05840200BABE681FC8C0D8000880000005FFFFE0410000200000      200000      20200403  9100    1585897748775  1009080403040304030403iq KEN2900    2900    2900    2900    08SWLU000412200402000003109jYM8WG81O200402000003MPESA   1381           GELKES254720711388    254720711388      KEN20200403  12254720711388004Data018Araceli Fisher Sr.060Apt. 310 44783 Streich Throughway, Hirtheside, AL 13226-0931008Asuncion013Basil Effertz0499771 Hauck Manors, Gusikowskimouth, OR 40662-4038007Nairobi006BRANCH003N/A003N/A007KEXXXXX008BRANCH A003N/A009SAFARICOM014sender_id_type011National ID001P001PM004LULU	01280210B21800010A0180000000000004000000410000200000      20200403  100908040308SWLU0004200402000003090009AML-CHECKGEL12254720711388	01280210B21800010A0180000000000004000000410000200000      20200403  100908040308SWLU0004200402000003090009AML-CHECKGEL12254720711388	Pi1_0f57f646-531d-c3a6-a492-08d7d79dedfc	t	t	t	t	t	1	f	t	2020-04-03 10:09:08.91747+03	\N
-1585897753422	0	1585897753422	\N	\N	\N	1582	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	410000	100000      	100000      	\N	20200403  	\N	9100    	\N	1585897753361  	100913	0403	0403	0403	\N	\N	0403	dz 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000015	1FyWtMNgGe	\N	\N	200402000015	\N	\N	\N	MPESA   	1393           	\N	\N	\N	\N	\N	\N	TTD	KES	\N	254720711388    	254720711388      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711388	\N	The Doctor	Simon Leffler	Apt. 645 924 Klocko Garden, Thielport, VA 84997	Baku	Brent Cremin	1763 Yost Vista, West Liza, PA 86229-9279	Nairobi	BRANCH	N/A	N/A	KEXXXXX	BRANCH A	N/A	SAFARICOM	sender_id_type	National ID	P	P	M	LULU	\N	\N	\N	\N	\N	0210	\N	\N	410000	100000      	\N	\N	20200403  	\N	\N	\N	\N	100913	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000015	\N	00	\N	\N	\N	\N	Posted Successfully	\N	\N	\N	COMPLETED	TTD	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711388	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05590200BABE681FC8C0D8000880000005FFFFE0410000100000      100000      20200403  9100    1585897753361  1009130403040304030403dz KEN2900    2900    2900    2900    08SWLU000412200402000015101FyWtMNgGe200402000015MPESA   1393           TTDKES254720711388    254720711388      KEN20200403  12254720711388010The Doctor013Simon Leffler047Apt. 645 924 Klocko Garden, Thielport, VA 84997004Baku012Brent Cremin0411763 Yost Vista, West Liza, PA 86229-9279007Nairobi006BRANCH003N/A003N/A007KEXXXXX008BRANCH A003N/A009SAFARICOM014sender_id_type011National ID001P001PM004LULU	01280210B21800010A0180000000000004000000410000100000      20200403  100913040308SWLU0004200402000015090009AML-CHECKTTD12254720711388	01280210B21800010A0180000000000004000000410000100000      20200403  100913040308SWLU0004200402000015090009AML-CHECKTTD12254720711388	Pi1_3e67597d-12e2-cea6-648f-08d7d79dee33	t	t	t	t	t	1	f	t	2020-04-03 10:09:13.399177+03	\N
-1585897758565	0	1585897758565	\N	\N	\N	1603	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	400000	300000      	300000      	\N	20200403  	\N	9100    	\N	1585897758439  	100918	0403	0403	0403	\N	\N	0403	mw 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000037	p1ONOhK81D	\N	\N	200402000037	\N	\N	\N	BANK    	1415           	\N	\N	\N	\N	\N	\N	CUP	KES	\N	254720711387    	254720711387      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711387	\N	Travis Mayweather	Dr. Eli Kuhlman	Apt. 702 274 Foster Loop, Raymondbury, CA 27449	Andorra la Vella	Nathaniel Predovic	Suite 522 505 Ludivina Stream, Cherlynmouth, KS 95555	Nairobi	BRANCH	STANDARD CHARTERED BANK	B0002	KEXXXXX	BRANCH A	000	SAFARICOM	sender_id_type	National ID	P	P	B	LULU	\N	\N	\N	\N	\N	0210	\N	\N	400000	300000      	\N	\N	20200403  	\N	\N	\N	\N	100918	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000037	\N	10	\N	\N	\N	\N	Invalid sendercity/length	\N	\N	\N	INIT-FAILED	CUP	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711387	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	06200200BABE681FC8C0D8000880000005FFFFE0400000300000      300000      20200403  9100    1585897758439  1009180403040304030403mw KEN2900    2900    2900    2900    08SWLU00041220040200003710p1ONOhK81D200402000037BANK    1415           CUPKES254720711387    254720711387      KEN20200403  12254720711387017Travis Mayweather015Dr. Eli Kuhlman047Apt. 702 274 Foster Loop, Raymondbury, CA 27449016Andorra la Vella018Nathaniel Predovic053Suite 522 505 Ludivina Stream, Cherlynmouth, KS 95555007Nairobi006BRANCH023STANDARD CHARTERED BANK005B0002007KEXXXXX008BRANCH A003000009SAFARICOM014sender_id_type011National ID001P001PB004LULU	01280210B21800010A0180000000000004000000400000300000      20200403  100918040308SWLU0004200402000037090009AML-CHECKCUP12254720711387	01280210B21800010A0180000000000004000000400000300000      20200403  100918040308SWLU0004200402000037090009AML-CHECKCUP12254720711387	Invalid sendercity/length	t	t	f	t	t	1	f	f	2020-04-03 10:09:18.530745+03	\N
-1585897757518	0	1585897757518	\N	\N	\N	1597	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	400000	200000      	200000      	\N	20200403  	\N	9100    	\N	1585897757423  	100917	0403	0403	0403	\N	\N	0403	ug 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000031	L3JUqxCeJc	\N	\N	200402000031	\N	\N	\N	BANK    	1409           	\N	\N	\N	\N	\N	\N	BDT	KES	\N	254720711386    	254720711386      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	Hikaru Sulu	Annice Hickle	Apt. 503 876 Howe Fall, Londaland, AL 82493	Tirana	Jolynn Hilll Sr.	1825 Minta Crossroad, Doylefurt, MO 26354-3390	Nairobi	BRANCH	KENYA COMMERCIAL BANK	B0001	KEXXXXX	BRANCH A	091	SAFARICOM	sender_id_type	National ID	P	P	B	LULU	\N	\N	\N	\N	\N	0210	\N	\N	400000	200000      	\N	\N	20200403  	\N	\N	\N	\N	100917	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000031	\N	10	\N	\N	\N	\N	Invalid sendermobile/length	\N	\N	\N	INIT-FAILED	BDT	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05870200BABE681FC8C0D8000880000005FFFFE0400000200000      200000      20200403  9100    1585897757423  1009170403040304030403ug KEN2900    2900    2900    2900    08SWLU00041220040200003110L3JUqxCeJc200402000031BANK    1409           BDTKES254720711386    254720711386      KEN20200403  12254720711386011Hikaru Sulu013Annice Hickle043Apt. 503 876 Howe Fall, Londaland, AL 82493006Tirana016Jolynn Hilll Sr.0461825 Minta Crossroad, Doylefurt, MO 26354-3390007Nairobi006BRANCH021KENYA COMMERCIAL BANK005B0001007KEXXXXX008BRANCH A003091009SAFARICOM014sender_id_type011National ID001P001PB004LULU	01280210B21800010A0180000000000004000000400000200000      20200403  100917040308SWLU0004200402000031090009AML-CHECKBDT12254720711386	01280210B21800010A0180000000000004000000400000200000      20200403  100917040308SWLU0004200402000031090009AML-CHECKBDT12254720711386	Invalid sendermobile/length	t	t	f	t	t	1	f	f	2020-04-03 10:09:17.478948+03	\N
-1585897753506	0	1585897753506	\N	\N	\N	1584	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	400000	300000      	300000      	\N	20200403  	\N	9100    	\N	1585897753371  	100913	0403	0403	0403	\N	\N	0403	gd 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000016	I76W3gzB0T	\N	\N	200402000016	\N	\N	\N	BANK    	1394           	\N	\N	\N	\N	\N	\N	BIF	KES	\N	254720711388    	254720711388      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711388	\N	Julian Bashir	Danika Sawayn	8017 Gwenda Turnpike, Haydenbury, CT 94298	Ouagadougou	Ester Boyer	621 Beata Spring, Ebertside, MN 24574-6933	Nairobi	BRANCH	BARCLAYS BANK OF KENYA LTD.	B0003	KEXXXXX	BRANCH A	001	SAFARICOM	sender_id_type	National ID	P	P	B	LULU	\N	\N	\N	\N	\N	0210	\N	\N	400000	300000      	\N	\N	20200403  	\N	\N	\N	\N	100913	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000016	\N	10	\N	\N	\N	\N	Invalid bankname/length	\N	\N	\N	INIT-FAILED	BIF	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711388	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05900200BABE681FC8C0D8000880000005FFFFE0400000300000      300000      20200403  9100    1585897753371  1009130403040304030403gd KEN2900    2900    2900    2900    08SWLU00041220040200001610I76W3gzB0T200402000016BANK    1394           BIFKES254720711388    254720711388      KEN20200403  12254720711388013Julian Bashir013Danika Sawayn0428017 Gwenda Turnpike, Haydenbury, CT 94298011Ouagadougou011Ester Boyer042621 Beata Spring, Ebertside, MN 24574-6933007Nairobi006BRANCH027BARCLAYS BANK OF KENYA LTD.005B0003007KEXXXXX008BRANCH A003001009SAFARICOM014sender_id_type011National ID001P001PB004LULU	01280210B21800010A0180000000000004000000400000300000      20200403  100913040308SWLU0004200402000016090009AML-CHECKBIF12254720711388	01280210B21800010A0180000000000004000000400000300000      20200403  100913040308SWLU0004200402000016090009AML-CHECKBIF12254720711388	Invalid bankname/length	t	t	f	t	t	1	f	f	2020-04-03 10:09:13.419615+03	\N
-1585897755447	0	1585897755447	\N	\N	\N	1590	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	420000	100000      	100000      	\N	20200403  	\N	9100    	\N	1585897755370  	100915	0403	0403	0403	\N	\N	0403	kr 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000022	s3ACOQ09yo	\N	\N	200402000022	\N	\N	\N	CASH    	1400           	\N	\N	\N	\N	\N	\N	HUF	KES	\N	254720711387    	254720711387      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711387	\N	Kes	Ms. Michael Willms	Suite 825 362 Omer Highway, Ozieburgh, AK 15944	Basseterre	Tyler Hand	44266 Alton Hollow, Abshireborough, GA 25179	Nairobi	BRANCH	N/A	N/A	KEXXXXX	BRANCH A	N/A	SAFARICOM	sender_id_type	National ID	P	P	C	LULU	\N	\N	\N	\N	\N	0210	\N	\N	420000	100000      	\N	\N	20200403  	\N	\N	\N	\N	100915	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000022	\N	10	\N	\N	\N	\N	Posted Successfully	\N	\N	\N	COMPLETED	HUF	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711387	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05640200BABE681FC8C0D8000880000005FFFFE0420000100000      100000      20200403  9100    1585897755370  1009150403040304030403kr KEN2900    2900    2900    2900    08SWLU00041220040200002210s3ACOQ09yo200402000022CASH    1400           HUFKES254720711387    254720711387      KEN20200403  12254720711387003Kes018Ms. Michael Willms047Suite 825 362 Omer Highway, Ozieburgh, AK 15944010Basseterre010Tyler Hand04444266 Alton Hollow, Abshireborough, GA 25179007Nairobi006BRANCH003N/A003N/A007KEXXXXX008BRANCH A003N/A009SAFARICOM014sender_id_type011National ID001P001PC004LULU	01280210B21800010A0180000000000004000000420000100000      20200403  100915040308SWLU0004200402000022090009AML-CHECKHUF12254720711387	01280210B21800010A0180000000000004000000420000100000      20200403  100915040308SWLU0004200402000022090009AML-CHECKHUF12254720711387	\N	t	t	t	t	t	1	f	t	2020-04-03 10:09:15.393446+03	\N
-1585897754548	0	1585897754548	\N	\N	\N	1588	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	400000	200000      	200000      	\N	20200403  	\N	9100    	\N	1585897754390  	100914	0403	0403	0403	\N	\N	0403	li 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000020	eBNNeV3b88	\N	\N	200402000020	\N	\N	\N	BANK    	1398           	\N	\N	\N	\N	\N	\N	TJS	KES	\N	254720711388    	254720711388      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711388	\N	The Doctor	Reginald Bergnaum	99615 Brown Stream, East Deshawnfurt, IN 18869-0271	Manila	Parthenia Cassin	824 Hsiu Overpass, South Denver, NH 97258-0632	Nairobi	BRANCH	STANDARD CHARTERED BANK	B0002	KEXXXXX	BRANCH A	000	SAFARICOM	sender_id_type	National ID	P	P	B	LULU	\N	\N	\N	\N	\N	0210	\N	\N	400000	200000      	\N	\N	20200403  	\N	\N	\N	\N	100914	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000020	\N	10	\N	\N	\N	\N	Invalid senderaddr/length	\N	\N	\N	INIT-FAILED	TJS	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711388	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	06000200BABE681FC8C0D8000880000005FFFFE0400000200000      200000      20200403  9100    1585897754390  1009140403040304030403li KEN2900    2900    2900    2900    08SWLU00041220040200002010eBNNeV3b88200402000020BANK    1398           TJSKES254720711388    254720711388      KEN20200403  12254720711388010The Doctor017Reginald Bergnaum05199615 Brown Stream, East Deshawnfurt, IN 18869-0271006Manila016Parthenia Cassin046824 Hsiu Overpass, South Denver, NH 97258-0632007Nairobi006BRANCH023STANDARD CHARTERED BANK005B0002007KEXXXXX008BRANCH A003000009SAFARICOM014sender_id_type011National ID001P001PB004LULU	01280210B21800010A0180000000000004000000400000200000      20200403  100914040308SWLU0004200402000020090009AML-CHECKTJS12254720711388	01280210B21800010A0180000000000004000000400000200000      20200403  100914040308SWLU0004200402000020090009AML-CHECKTJS12254720711388	Invalid senderaddr/length	t	t	f	t	t	1	f	f	2020-04-03 10:09:14.484688+03	\N
-1585897752472	0	1585897752472	\N	\N	\N	1581	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	420000	100000      	100000      	\N	20200403  	\N	9100    	\N	1585897752371  	100912	0403	0403	0403	\N	\N	0403	kn 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000011	QuLjlzzu11	\N	\N	200402000011	\N	\N	\N	CASH    	1389           	\N	\N	\N	\N	\N	\N	ALL	KES	\N	254720711387    	254720711387      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711387	\N	Jean-Luc Picard	Herma Beatty	3229 Bo Court, Hamillmouth, DE 13765	Valletta	Georgina Streich	Apt. 913 1249 Trinidad Neck, Kleinside, SD 54524-4608	Nairobi	BRANCH	N/A	N/A	KEXXXXX	BRANCH A	N/A	SAFARICOM	sender_id_type	National ID	P	P	C	LULU	\N	\N	\N	\N	\N	0210	\N	\N	420000	100000      	\N	\N	20200403  	\N	\N	\N	\N	100912	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000011	\N	10	\N	\N	\N	\N	Posted Successfully	\N	\N	\N	COMPLETED	ALL	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711387	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05720200BABE681FC8C0D8000880000005FFFFE0420000100000      100000      20200403  9100    1585897752371  1009120403040304030403kn KEN2900    2900    2900    2900    08SWLU00041220040200001110QuLjlzzu11200402000011CASH    1389           ALLKES254720711387    254720711387      KEN20200403  12254720711387015Jean-Luc Picard012Herma Beatty0363229 Bo Court, Hamillmouth, DE 13765008Valletta016Georgina Streich053Apt. 913 1249 Trinidad Neck, Kleinside, SD 54524-4608007Nairobi006BRANCH003N/A003N/A007KEXXXXX008BRANCH A003N/A009SAFARICOM014sender_id_type011National ID001P001PC004LULU	01280210B21800010A0180000000000004000000420000100000      20200403  100912040308SWLU0004200402000011090009AML-CHECKALL12254720711387	01280210B21800010A0180000000000004000000420000100000      20200403  100912040308SWLU0004200402000011090009AML-CHECKALL12254720711387	\N	t	t	t	t	t	1	f	t	2020-04-03 10:09:12.442669+03	\N
-1585897755500	0	1585897755501	\N	\N	\N	1592	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	400000	200000      	200000      	\N	20200403  	\N	9100    	\N	1585897755393  	100915	0403	0403	0403	\N	\N	0403	mg 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000025	V0qOOau7fw	\N	\N	200402000025	\N	\N	\N	BANK    	1403           	\N	\N	\N	\N	\N	\N	BDT	KES	\N	254720711388    	254720711388      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711388	\N	Kira Nerys	Kevin Cole DVM	6666 Myles Via, Port Billybury, AK 55986-9344	Washington	Tracey Hessel	Suite 939 201 Bettyann Corners, South Filomena, LA 53585-1460	Nairobi	BRANCH	HABIB BANK LTD	B0007	KEXXXXX	BRANCH A	046	SAFARICOM	sender_id_type	National ID	P	P	B	LULU	\N	\N	\N	\N	\N	0210	\N	\N	400000	200000      	\N	\N	20200403  	\N	\N	\N	\N	100915	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000025	\N	10	\N	\N	\N	\N	Invalid sendermobile/length	\N	\N	\N	INIT-FAILED	BDT	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711388	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05980200BABE681FC8C0D8000880000005FFFFE0400000200000      200000      20200403  9100    1585897755393  1009150403040304030403mg KEN2900    2900    2900    2900    08SWLU00041220040200002510V0qOOau7fw200402000025BANK    1403           BDTKES254720711388    254720711388      KEN20200403  12254720711388010Kira Nerys014Kevin Cole DVM0456666 Myles Via, Port Billybury, AK 55986-9344010Washington013Tracey Hessel061Suite 939 201 Bettyann Corners, South Filomena, LA 53585-1460007Nairobi006BRANCH014HABIB BANK LTD005B0007007KEXXXXX008BRANCH A003046009SAFARICOM014sender_id_type011National ID001P001PB004LULU	01280210B21800010A0180000000000004000000400000200000      20200403  100915040308SWLU0004200402000025090009AML-CHECKBDT12254720711388	01280210B21800010A0180000000000004000000400000200000      20200403  100915040308SWLU0004200402000025090009AML-CHECKBDT12254720711388	Invalid sendermobile/length	t	t	f	t	t	1	f	f	2020-04-03 10:09:15.483231+03	\N
-1585897750461	0	1585897750461	\N	\N	\N	1576	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	400000	200000      	200000      	\N	20200403  	\N	9100    	\N	1585897750358  	100910	0403	0403	0403	\N	\N	0403	bd 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000009	O3NUXf8KSr	\N	\N	200402000009	\N	\N	\N	BANK    	1387           	\N	\N	\N	\N	\N	\N	MRO	KES	\N	254720711386    	254720711386      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	Neelix	Roman Greenfelder	12514 Veda Trail, Jacobsburgh, WY 35920	Melekeok	Jessica Cummings	5295 Erdman Hills, Prosaccoberg, TX 13099	Nairobi	BRANCH	STANDARD CHARTERED BANK	B0002	KEXXXXX	BRANCH A	000	SAFARICOM	sender_id_type	National ID	P	P	B	LULU	\N	\N	\N	\N	\N	0210	\N	\N	400000	200000      	\N	\N	20200403  	\N	\N	\N	\N	100910	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000009	\N	10	\N	\N	\N	\N	Invalid sendermobile/length	\N	\N	\N	INIT-FAILED	MRO	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05810200BABE681FC8C0D8000880000005FFFFE0400000200000      200000      20200403  9100    1585897750358  1009100403040304030403bd KEN2900    2900    2900    2900    08SWLU00041220040200000910O3NUXf8KSr200402000009BANK    1387           MROKES254720711386    254720711386      KEN20200403  12254720711386006Neelix017Roman Greenfelder03912514 Veda Trail, Jacobsburgh, WY 35920008Melekeok016Jessica Cummings0415295 Erdman Hills, Prosaccoberg, TX 13099007Nairobi006BRANCH023STANDARD CHARTERED BANK005B0002007KEXXXXX008BRANCH A003000009SAFARICOM014sender_id_type011National ID001P001PB004LULU	01280210B21800010A0180000000000004000000400000200000      20200403  100910040308SWLU0004200402000009090009AML-CHECKMRO12254720711386	01280210B21800010A0180000000000004000000400000200000      20200403  100910040308SWLU0004200402000009090009AML-CHECKMRO12254720711386	Invalid sendermobile/length	t	t	f	t	t	1	f	f	2020-04-03 10:09:10.434297+03	\N
-1585897757523	0	1585897757523	\N	\N	\N	1598	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	400000	100000      	100000      	\N	20200403  	\N	9100    	\N	1585897757433  	100917	0403	0403	0403	\N	\N	0403	sn 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000030	xrjFpxUBhk	\N	\N	200402000030	\N	\N	\N	BANK    	1408           	\N	\N	\N	\N	\N	\N	PGK	KES	\N	254720711387    	254720711387      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711387	\N	Chakotay	Christiane Lueilwitz	3011 Tyler Estates, West Jeannetta, ND 58924-5063	Muscat	Loreta Nienow	86241 Jackie Route, Stiedemannside, CA 76046-8993	Nairobi	BRANCH	STANDARD CHARTERED BANK	B0002	KEXXXXX	BRANCH A	000	SAFARICOM	sender_id_type	National ID	P	P	B	LULU	\N	\N	\N	\N	\N	0210	\N	\N	400000	100000      	\N	\N	20200403  	\N	\N	\N	\N	100917	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000030	\N	10	\N	\N	\N	\N	Invalid sendermobile/length	\N	\N	\N	INIT-FAILED	PGK	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711387	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05990200BABE681FC8C0D8000880000005FFFFE0400000100000      100000      20200403  9100    1585897757433  1009170403040304030403sn KEN2900    2900    2900    2900    08SWLU00041220040200003010xrjFpxUBhk200402000030BANK    1408           PGKKES254720711387    254720711387      KEN20200403  12254720711387008Chakotay020Christiane Lueilwitz0493011 Tyler Estates, West Jeannetta, ND 58924-5063006Muscat013Loreta Nienow04986241 Jackie Route, Stiedemannside, CA 76046-8993007Nairobi006BRANCH023STANDARD CHARTERED BANK005B0002007KEXXXXX008BRANCH A003000009SAFARICOM014sender_id_type011National ID001P001PB004LULU	01280210B21800010A0180000000000004000000400000100000      20200403  100917040308SWLU0004200402000030090009AML-CHECKPGK12254720711387	01280210B21800010A0180000000000004000000400000100000      20200403  100917040308SWLU0004200402000030090009AML-CHECKPGK12254720711387	Invalid sendermobile/length	t	t	f	t	t	1	f	f	2020-04-03 10:09:17.487712+03	\N
-1585897754547	0	1585897754547	\N	\N	\N	1587	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	420000	100000      	100000      	\N	20200403  	\N	9100    	\N	1585897754385  	100914	0403	0403	0403	\N	\N	0403	fj 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000021	vdjQpZFlFF	\N	\N	200402000021	\N	\N	\N	CASH    	1399           	\N	\N	\N	\N	\N	\N	USD	KES	\N	254720711386    	254720711386      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	Nyota Uhuru	Scotty Goodwin	987 Monroe Summit, Williamshaven, RI 65706-6887	Longyearbyen	Carter Rodriguez	09705 Kiehn Junction, South Joellefort, MD 50637-0459	Nairobi	BRANCH	N/A	N/A	KEXXXXX	BRANCH A	N/A	SAFARICOM	sender_id_type	National ID	P	P	C	LULU	\N	\N	\N	\N	\N	0210	\N	\N	420000	100000      	\N	\N	20200403  	\N	\N	\N	\N	100914	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000021	\N	10	\N	\N	\N	\N	Posted Successfully	\N	\N	\N	COMPLETED	USD	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05850200BABE681FC8C0D8000880000005FFFFE0420000100000      100000      20200403  9100    1585897754385  1009140403040304030403fj KEN2900    2900    2900    2900    08SWLU00041220040200002110vdjQpZFlFF200402000021CASH    1399           USDKES254720711386    254720711386      KEN20200403  12254720711386011Nyota Uhuru014Scotty Goodwin047987 Monroe Summit, Williamshaven, RI 65706-6887012Longyearbyen016Carter Rodriguez05309705 Kiehn Junction, South Joellefort, MD 50637-0459007Nairobi006BRANCH003N/A003N/A007KEXXXXX008BRANCH A003N/A009SAFARICOM014sender_id_type011National ID001P001PC004LULU	01280210B21800010A0180000000000004000000420000100000      20200403  100914040308SWLU0004200402000021090009AML-CHECKUSD12254720711386	01280210B21800010A0180000000000004000000420000100000      20200403  100914040308SWLU0004200402000021090009AML-CHECKUSD12254720711386	\N	t	t	t	t	t	1	f	t	2020-04-03 10:09:14.48082+03	\N
-1585897755461	0	1585897755461	\N	\N	\N	1591	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	400000	300000      	300000      	\N	20200403  	\N	9100    	\N	1585897755392  	100915	0403	0403	0403	\N	\N	0403	de 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000024	RbKyq6tRHE	\N	\N	200402000024	\N	\N	\N	BANK    	1402           	\N	\N	\N	\N	\N	\N	MYR	KES	\N	254720711386    	254720711386      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	Charles Tucker III	Marlen Toy	3844 Torp Key, Elviaport, SD 03551-5510	Mexico City	Dr. Kiesha Spinka	15359 Kuphal Stream, Markuston, MA 38003	Nairobi	BRANCH	BANK OF BARODA	B0005	KEXXXXX	BRANCH A	000	SAFARICOM	sender_id_type	National ID	P	P	B	LULU	\N	\N	\N	\N	\N	0210	\N	\N	400000	300000      	\N	\N	20200403  	\N	\N	\N	\N	100915	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000024	\N	10	\N	\N	\N	\N	Invalid sendermobile/length	\N	\N	\N	INIT-FAILED	MYR	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05800200BABE681FC8C0D8000880000005FFFFE0400000300000      300000      20200403  9100    1585897755392  1009150403040304030403de KEN2900    2900    2900    2900    08SWLU00041220040200002410RbKyq6tRHE200402000024BANK    1402           MYRKES254720711386    254720711386      KEN20200403  12254720711386018Charles Tucker III010Marlen Toy0393844 Torp Key, Elviaport, SD 03551-5510011Mexico City017Dr. Kiesha Spinka04015359 Kuphal Stream, Markuston, MA 38003007Nairobi006BRANCH014BANK OF BARODA005B0005007KEXXXXX008BRANCH A003000009SAFARICOM014sender_id_type011National ID001P001PB004LULU	01280210B21800010A0180000000000004000000400000300000      20200403  100915040308SWLU0004200402000024090009AML-CHECKMYR12254720711386	01280210B21800010A0180000000000004000000400000300000      20200403  100915040308SWLU0004200402000024090009AML-CHECKMYR12254720711386	Invalid sendermobile/length	t	t	f	t	t	1	f	f	2020-04-03 10:09:15.447654+03	\N
-1585897759422	0	1585897759422	\N	\N	\N	1605	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	400000	100000      	100000      	\N	20200403  	\N	9100    	\N	1585897759397  	100919	0403	0403	0403	\N	\N	0403	me 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000038	vya5IOXNJl	\N	\N	200402000038	\N	\N	\N	BANK    	1416           	\N	\N	\N	\N	\N	\N	XAF	KES	\N	254720711386    	254720711386      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	Jean-Luc Picard	Yevette Abernathy	Apt. 028 0741 Rey Inlet, Weldonview, CA 44960	Saint John's	Justin Wunsch Sr.	Apt. 212 99232 Mitchell Summit, East Orvilleborough, WA 66531-4503	Nairobi	BRANCH	KENYA COMMERCIAL BANK	B0001	KEXXXXX	BRANCH A	091	SAFARICOM	sender_id_type	National ID	P	P	B	LULU	\N	\N	\N	\N	\N	0210	\N	\N	400000	100000      	\N	\N	20200403  	\N	\N	\N	\N	100919	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000038	\N	10	\N	\N	\N	\N	Invalid sendermobile/length	\N	\N	\N	INIT-FAILED	XAF	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	06240200BABE681FC8C0D8000880000005FFFFE0400000100000      100000      20200403  9100    1585897759397  1009190403040304030403me KEN2900    2900    2900    2900    08SWLU00041220040200003810vya5IOXNJl200402000038BANK    1416           XAFKES254720711386    254720711386      KEN20200403  12254720711386015Jean-Luc Picard017Yevette Abernathy045Apt. 028 0741 Rey Inlet, Weldonview, CA 44960012Saint John's017Justin Wunsch Sr.066Apt. 212 99232 Mitchell Summit, East Orvilleborough, WA 66531-4503007Nairobi006BRANCH021KENYA COMMERCIAL BANK005B0001007KEXXXXX008BRANCH A003091009SAFARICOM014sender_id_type011National ID001P001PB004LULU	01280210B21800010A0180000000000004000000400000100000      20200403  100919040308SWLU0004200402000038090009AML-CHECKXAF12254720711386	01280210B21800010A0180000000000004000000400000100000      20200403  100919040308SWLU0004200402000038090009AML-CHECKXAF12254720711386	Invalid sendermobile/length	t	t	f	t	t	1	f	f	2020-04-03 10:09:19.410873+03	\N
-1585897758592	0	1585897758592	\N	\N	\N	1602	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	410000	200000      	200000      	\N	20200403  	\N	9100    	\N	1585897758440  	100918	0403	0403	0403	\N	\N	0403	er 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000033	nCnEdliq1i	\N	\N	200402000033	\N	\N	\N	MPESA   	1411           	\N	\N	\N	\N	\N	\N	AUD	KES	\N	254720711388    	254720711388      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711388	\N	Leonard McCoy	Serafina Gottlieb PhD	92647 Rosalind Squares, Huelfort, CT 44658-4203	Pretoria	Alethea Kassulke	69141 Lashaunda Point, South Antwan, MN 36257-3114	Nairobi	BRANCH	N/A	N/A	KEXXXXX	BRANCH A	N/A	SAFARICOM	sender_id_type	National ID	P	P	M	LULU	\N	\N	\N	\N	\N	0210	\N	\N	410000	200000      	\N	\N	20200403  	\N	\N	\N	\N	100918	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000033	\N	00	\N	\N	\N	\N	Posted Successfully	\N	\N	\N	COMPLETED	AUD	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711388	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05870200BABE681FC8C0D8000880000005FFFFE0410000200000      200000      20200403  9100    1585897758440  1009180403040304030403er KEN2900    2900    2900    2900    08SWLU00041220040200003310nCnEdliq1i200402000033MPESA   1411           AUDKES254720711388    254720711388      KEN20200403  12254720711388013Leonard McCoy021Serafina Gottlieb PhD04792647 Rosalind Squares, Huelfort, CT 44658-4203008Pretoria016Alethea Kassulke05069141 Lashaunda Point, South Antwan, MN 36257-3114007Nairobi006BRANCH003N/A003N/A007KEXXXXX008BRANCH A003N/A009SAFARICOM014sender_id_type011National ID001P001PM004LULU	01280210B21800010A0180000000000004000000410000200000      20200403  100918040308SWLU0004200402000033090009AML-CHECKAUD12254720711388	01280210B21800010A0180000000000004000000410000200000      20200403  100918040308SWLU0004200402000033090009AML-CHECKAUD12254720711388	Pi1_ecfe5ae2-3473-cbc7-5546-08d7d79df91e	t	t	t	t	t	1	f	t	2020-04-03 10:09:18.520668+03	\N
-1585897789652	0	1585897789652	\N	\N	\N	1609	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	104098434	410000	2124        	210000      	\N	20200403  	\N	9967    	\N	1585897789621  	100949	0403	0403	0403	\N	\N	0403	BEL	\N	KEN	\N	\N	\N	\N	\N	\N	17      	17      	17      	17      	UPESI0005	200402000042	104098434	\N	\N	200402000042	\N	\N	\N	MPESA   	1420           	\N	\N	\N	\N	\N	\N	USD	KES	\N	104098434       	104098434         	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	USD	\N	\N	\N	20200402  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	Mobile Payment - Safaricom	MARIA JOSE BELGIUM	BEL	Brussels	TEST MOBILE EIGHT	Mobile Payment	Nairobi	07	N/A	N/A	07	07	N/A	SAFARICOM	sender_id_type	National ID	P	P	M	MONEYTRANS	\N	\N	\N	\N	\N	0210	\N	104098434	410000	2124        	\N	\N	20200403  	\N	\N	\N	\N	100949	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	UPESI0005	\N	\N	\N	\N	200402000042	\N	00	\N	\N	\N	\N	Posted Successfully	\N	\N	\N	COMPLETED	USD	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05200200FABE681FC8C0D8000880000005FFFFE0091040984344100002124        210000      20200403  9967    1585897789621  1009490403040304030403BELKEN17      17      17      17      09UPESI00051220040200004209104098434200402000042MPESA   1420           USDKES104098434       104098434         USD20200402  12254720711386026Mobile Payment - Safaricom018MARIA JOSE BELGIUM003BEL008Brussels017TEST MOBILE EIGHT014Mobile Payment007Nairobi00207003N/A003N/A0020700207003N/A009SAFARICOM014sender_id_type011National ID001P001PM010MONEYTRANS	01400210F21800010A0180000000000004000000091040984344100002124        20200403  100949040309UPESI0005200402000042090009AML-CHECKUSD12254720711386	01400210F21800010A0180000000000004000000091040984344100002124        20200403  100949040309UPESI0005200402000042090009AML-CHECKUSD12254720711386	Pi1_b1f08701-f5da-c033-ea00-08d7d79e055c	t	t	t	t	t	1	f	t	2020-04-03 10:09:49.636285+03	\N
-1585897756525	0	1585897756525	\N	\N	\N	1596	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	410000	100000      	100000      	\N	20200403  	\N	9100    	\N	1585897756419  	100916	0403	0403	0403	\N	\N	0403	ge 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000028	YiR692Suk2	\N	\N	200402000028	\N	\N	\N	MPESA   	1406           	\N	\N	\N	\N	\N	\N	MWK	KES	\N	254720711388    	254720711388      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711388	\N	Kathryn Janeway	Rich Jenkins IV	Suite 156 4700 Stehr Cape, Lennaton, NH 03623	Paris	Kristi Grant	7117 Kub Alley, New Eusebio, IN 01093-2956	Nairobi	BRANCH	N/A	N/A	KEXXXXX	BRANCH A	N/A	SAFARICOM	sender_id_type	National ID	P	P	M	LULU	\N	\N	\N	\N	\N	0210	\N	\N	410000	100000      	\N	\N	20200403  	\N	\N	\N	\N	100916	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000028	\N	00	\N	\N	\N	\N	Posted Successfully	\N	\N	\N	COMPLETED	MWK	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711388	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05660200BABE681FC8C0D8000880000005FFFFE0410000100000      100000      20200403  9100    1585897756419  1009160403040304030403ge KEN2900    2900    2900    2900    08SWLU00041220040200002810YiR692Suk2200402000028MPESA   1406           MWKKES254720711388    254720711388      KEN20200403  12254720711388015Kathryn Janeway015Rich Jenkins IV045Suite 156 4700 Stehr Cape, Lennaton, NH 03623005Paris012Kristi Grant0427117 Kub Alley, New Eusebio, IN 01093-2956007Nairobi006BRANCH003N/A003N/A007KEXXXXX008BRANCH A003N/A009SAFARICOM014sender_id_type011National ID001P001PM004LULU	01280210B21800010A0180000000000004000000410000100000      20200403  100916040308SWLU0004200402000028090009AML-CHECKMWK12254720711388	01280210B21800010A0180000000000004000000410000100000      20200403  100916040308SWLU0004200402000028090009AML-CHECKMWK12254720711388	Pi1_cce80031-ddf1-c7ea-5546-08d7d79df91e	t	t	t	t	t	1	f	t	2020-04-03 10:09:16.50579+03	\N
-1585897758451	0	1585897758451	\N	\N	\N	1600	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	400000	300000      	300000      	\N	20200403  	\N	9100    	\N	1585897758413  	100918	0403	0403	0403	\N	\N	0403	sa 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000034	zSv7RaVTCm	\N	\N	200402000034	\N	\N	\N	BANK    	1412           	\N	\N	\N	\N	\N	\N	TWD	KES	\N	254720711388    	254720711388      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711388	\N	Pavel Chekov	Jaimee Kuphal	812 Upton Plaza, Lake Leonland, WV 84188-2933	Port of Spain	Carol Huels II	Apt. 213 2111 Ervin Valley, Kassulkefort, WA 07260-2325	Nairobi	BRANCH	BARCLAYS BANK OF KENYA LTD.	B0003	KEXXXXX	BRANCH A	001	SAFARICOM	sender_id_type	National ID	P	P	B	LULU	\N	\N	\N	\N	\N	0210	\N	\N	400000	300000      	\N	\N	20200403  	\N	\N	\N	\N	100918	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000034	\N	10	\N	\N	\N	\N	Invalid bankname/length	\N	\N	\N	INIT-FAILED	TWD	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711388	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	06100200BABE681FC8C0D8000880000005FFFFE0400000300000      300000      20200403  9100    1585897758413  1009180403040304030403sa KEN2900    2900    2900    2900    08SWLU00041220040200003410zSv7RaVTCm200402000034BANK    1412           TWDKES254720711388    254720711388      KEN20200403  12254720711388012Pavel Chekov013Jaimee Kuphal045812 Upton Plaza, Lake Leonland, WV 84188-2933013Port of Spain014Carol Huels II055Apt. 213 2111 Ervin Valley, Kassulkefort, WA 07260-2325007Nairobi006BRANCH027BARCLAYS BANK OF KENYA LTD.005B0003007KEXXXXX008BRANCH A003001009SAFARICOM014sender_id_type011National ID001P001PB004LULU	01280210B21800010A0180000000000004000000400000300000      20200403  100918040308SWLU0004200402000034090009AML-CHECKTWD12254720711388	01280210B21800010A0180000000000004000000400000300000      20200403  100918040308SWLU0004200402000034090009AML-CHECKTWD12254720711388	Invalid bankname/length	t	t	f	t	t	1	f	f	2020-04-03 10:09:18.43648+03	\N
-1585897755392	0	1585897755392	\N	\N	\N	1589	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	410000	200000      	200000      	\N	20200403  	\N	9100    	\N	1585897755361  	100915	0403	0403	0403	\N	\N	0403	lb 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000023	F3UEZifXwj	\N	\N	200402000023	\N	\N	\N	MPESA   	1401           	\N	\N	\N	\N	\N	\N	HTG	KES	\N	254720711386    	254720711386      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	Jadzia Dax	Merri Bradtke	87566 Wehner Lane, Epifaniaside, TX 23531	Tbilisi	Michale Gleason	636 Little Fields, Funkview, AR 25049-2642	Nairobi	BRANCH	N/A	N/A	KEXXXXX	BRANCH A	N/A	SAFARICOM	sender_id_type	National ID	P	P	M	LULU	\N	\N	\N	\N	\N	0210	\N	\N	410000	200000      	\N	\N	20200403  	\N	\N	\N	\N	100915	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000023	\N	00	\N	\N	\N	\N	Posted Successfully	\N	\N	\N	COMPLETED	HTG	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05600200BABE681FC8C0D8000880000005FFFFE0410000200000      200000      20200403  9100    1585897755361  1009150403040304030403lb KEN2900    2900    2900    2900    08SWLU00041220040200002310F3UEZifXwj200402000023MPESA   1401           HTGKES254720711386    254720711386      KEN20200403  12254720711386010Jadzia Dax013Merri Bradtke04187566 Wehner Lane, Epifaniaside, TX 23531007Tbilisi015Michale Gleason042636 Little Fields, Funkview, AR 25049-2642007Nairobi006BRANCH003N/A003N/A007KEXXXXX008BRANCH A003N/A009SAFARICOM014sender_id_type011National ID001P001PM004LULU	01280210B21800010A0180000000000004000000410000200000      20200403  100915040308SWLU0004200402000023090009AML-CHECKHTG12254720711386	01280210B21800010A0180000000000004000000410000200000      20200403  100915040308SWLU0004200402000023090009AML-CHECKHTG12254720711386	Pi1_08c62218-d4f2-c13f-5546-08d7d79df91e	t	t	t	t	t	1	f	t	2020-04-03 10:09:15.376669+03	\N
-1585897749004	0	1585897749004	\N	\N	\N	1570	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	420000	300000      	300000      	\N	20200403  	\N	9100    	\N	1585897748773  	100908	0403	0403	0403	\N	\N	0403	td 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000001	sQBU5IYImv	\N	\N	200402000001	\N	\N	\N	CASH    	1379           	\N	\N	\N	\N	\N	\N	HNL	KES	\N	254720711388    	254720711388      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711388	\N	Wesley Crusher	Ms. Alesha Corkery	431 Eartha Road, Lake Gene, AR 32918	Manama	Grace Douglas IV	158 Mertz Vista, Manstad, PA 12990	Nairobi	BRANCH	N/A	N/A	KEXXXXX	BRANCH A	N/A	SAFARICOM	sender_id_type	National ID	P	P	C	LULU	\N	\N	\N	\N	\N	0210	\N	\N	420000	300000      	\N	\N	20200403  	\N	\N	\N	\N	100908	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000001	\N	10	\N	\N	\N	\N	Posted Successfully	\N	\N	\N	COMPLETED	HNL	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711388	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05560200BABE681FC8C0D8000880000005FFFFE0420000300000      300000      20200403  9100    1585897748773  1009080403040304030403td KEN2900    2900    2900    2900    08SWLU00041220040200000110sQBU5IYImv200402000001CASH    1379           HNLKES254720711388    254720711388      KEN20200403  12254720711388014Wesley Crusher018Ms. Alesha Corkery036431 Eartha Road, Lake Gene, AR 32918006Manama016Grace Douglas IV034158 Mertz Vista, Manstad, PA 12990007Nairobi006BRANCH003N/A003N/A007KEXXXXX008BRANCH A003N/A009SAFARICOM014sender_id_type011National ID001P001PC004LULU	01280210B21800010A0180000000000004000000420000300000      20200403  100908040308SWLU0004200402000001090009AML-CHECKHNL12254720711388	01280210B21800010A0180000000000004000000420000300000      20200403  100908040308SWLU0004200402000001090009AML-CHECKHNL12254720711388	\N	t	t	t	t	t	1	f	t	2020-04-03 10:09:08.915123+03	\N
-1585897751419	0	1585897751419	\N	\N	\N	1577	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	410000	100000      	100000      	\N	20200403  	\N	9100    	\N	1585897751342  	100911	0403	0403	0403	\N	\N	0403	ga 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000010	lsNvQHoCyw	\N	\N	200402000010	\N	\N	\N	MPESA   	1388           	\N	\N	\N	\N	\N	\N	NIO	KES	\N	254720711388    	254720711388      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711388	\N	Beverly Crusher	Anamaria Kirlin	703 Carl Corners, Ngoctown, ND 68696-5862	Vientiane	Ha Yundt	Apt. 719 87566 Shu Keys, Beahanbury, MN 26442	Nairobi	BRANCH	N/A	N/A	KEXXXXX	BRANCH A	N/A	SAFARICOM	sender_id_type	National ID	P	P	M	LULU	\N	\N	\N	\N	\N	0210	\N	\N	410000	100000      	\N	\N	20200403  	\N	\N	\N	\N	100911	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000010	\N	00	\N	\N	\N	\N	Posted Successfully	\N	\N	\N	COMPLETED	NIO	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711388	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05650200BABE681FC8C0D8000880000005FFFFE0410000100000      100000      20200403  9100    1585897751342  1009110403040304030403ga KEN2900    2900    2900    2900    08SWLU00041220040200001010lsNvQHoCyw200402000010MPESA   1388           NIOKES254720711388    254720711388      KEN20200403  12254720711388015Beverly Crusher015Anamaria Kirlin041703 Carl Corners, Ngoctown, ND 68696-5862009Vientiane008Ha Yundt045Apt. 719 87566 Shu Keys, Beahanbury, MN 26442007Nairobi006BRANCH003N/A003N/A007KEXXXXX008BRANCH A003N/A009SAFARICOM014sender_id_type011National ID001P001PM004LULU	01280210B21800010A0180000000000004000000410000100000      20200403  100911040308SWLU0004200402000010090009AML-CHECKNIO12254720711388	01280210B21800010A0180000000000004000000410000100000      20200403  100911040308SWLU0004200402000010090009AML-CHECKNIO12254720711388	Pi1_c57171c5-fbd8-cf3a-94a4-08d7d79dff2b	t	t	t	t	t	1	f	t	2020-04-03 10:09:11.394269+03	\N
-1585897759495	0	1585897759495	\N	\N	\N	1606	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	410000	100000      	100000      	\N	20200403  	\N	9100    	\N	1585897759421  	100919	0403	0403	0403	\N	\N	0403	by 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000039	iEfJJ7M0h9	\N	\N	200402000039	\N	\N	\N	MPESA   	1417           	\N	\N	\N	\N	\N	\N	DZD	KES	\N	254720711387    	254720711387      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711387	\N	Kes	Emery Connelly	Suite 388 8799 Derick Gateway, Port Javiershire, MA 62542	Brazzaville	Corrine Windler	91524 Dahlia Freeway, New Rocco, WI 41277-3083	Nairobi	BRANCH	N/A	N/A	KEXXXXX	BRANCH A	N/A	SAFARICOM	sender_id_type	National ID	P	P	M	LULU	\N	\N	\N	\N	\N	0210	\N	\N	410000	100000      	\N	\N	20200403  	\N	\N	\N	\N	100919	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000039	\N	00	\N	\N	\N	\N	Posted Successfully	\N	\N	\N	COMPLETED	DZD	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711387	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05780200BABE681FC8C0D8000880000005FFFFE0410000100000      100000      20200403  9100    1585897759421  1009190403040304030403by KEN2900    2900    2900    2900    08SWLU00041220040200003910iEfJJ7M0h9200402000039MPESA   1417           DZDKES254720711387    254720711387      KEN20200403  12254720711387003Kes014Emery Connelly057Suite 388 8799 Derick Gateway, Port Javiershire, MA 62542011Brazzaville015Corrine Windler04691524 Dahlia Freeway, New Rocco, WI 41277-3083007Nairobi006BRANCH003N/A003N/A007KEXXXXX008BRANCH A003N/A009SAFARICOM014sender_id_type011National ID001P001PM004LULU	01280210B21800010A0180000000000004000000410000100000      20200403  100919040308SWLU0004200402000039090009AML-CHECKDZD12254720711387	01280210B21800010A0180000000000004000000410000100000      20200403  100919040308SWLU0004200402000039090009AML-CHECKDZD12254720711387	Pi1_14557039-5c90-cf9d-538a-08d7d79dff2e	t	t	t	t	t	1	f	t	2020-04-03 10:09:19.447834+03	\N
-1585897757553	0	1585897757553	\N	\N	\N	1599	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	420000	200000      	200000      	\N	20200403  	\N	9100    	\N	1585897757421  	100917	0403	0403	0403	\N	\N	0403	do 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000032	SxnvzCUUE6	\N	\N	200402000032	\N	\N	\N	CASH    	1410           	\N	\N	\N	\N	\N	\N	GBP	KES	\N	254720711387    	254720711387      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711387	\N	Deanna Troi	Leo Beer	18456 Hassan Common, North Violetview, NE 45001-6654	Thimphu	Wilson Waters	Apt. 835 2810 Clint Harbors, New Jacinto, MO 57927	Nairobi	BRANCH	N/A	N/A	KEXXXXX	BRANCH A	N/A	SAFARICOM	sender_id_type	National ID	P	P	C	LULU	\N	\N	\N	\N	\N	0210	\N	\N	420000	200000      	\N	\N	20200403  	\N	\N	\N	\N	100917	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000032	\N	10	\N	\N	\N	\N	Posted Successfully	\N	\N	\N	COMPLETED	GBP	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711387	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05730200BABE681FC8C0D8000880000005FFFFE0420000200000      200000      20200403  9100    1585897757421  1009170403040304030403do KEN2900    2900    2900    2900    08SWLU00041220040200003210SxnvzCUUE6200402000032CASH    1410           GBPKES254720711387    254720711387      KEN20200403  12254720711387011Deanna Troi008Leo Beer05218456 Hassan Common, North Violetview, NE 45001-6654007Thimphu013Wilson Waters050Apt. 835 2810 Clint Harbors, New Jacinto, MO 57927007Nairobi006BRANCH003N/A003N/A007KEXXXXX008BRANCH A003N/A009SAFARICOM014sender_id_type011National ID001P001PC004LULU	01280210B21800010A0180000000000004000000420000200000      20200403  100917040308SWLU0004200402000032090009AML-CHECKGBP12254720711387	01280210B21800010A0180000000000004000000420000200000      20200403  100917040308SWLU0004200402000032090009AML-CHECKGBP12254720711387	\N	t	t	t	t	t	1	f	t	2020-04-03 10:09:17.532595+03	\N
-1585897789681	0	1585897789681	\N	\N	\N	1610	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	104098431	410000	1089        	107700      	\N	20200403  	\N	9967    	\N	1585897789629  	100949	0403	0403	0403	\N	\N	0403	BEL	\N	KEN	\N	\N	\N	\N	\N	\N	9       	9       	9       	9       	UPESI0005	200402000045	104098431	\N	\N	200402000045	\N	\N	\N	MPESA   	1423           	\N	\N	\N	\N	\N	\N	USD	KES	\N	104098431       	104098431         	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	USD	\N	\N	\N	20200402  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	Mobile Payment - Safaricom	MARIA JOSE BELGIUM	BEL	Brussels	TEST KENYA MBP	Mobile Payment	Nairobi	07	N/A	N/A	07	07	N/A	SAFARICOM	sender_id_type	National ID	P	P	M	MONEYTRANS	\N	\N	\N	\N	\N	0210	\N	104098431	410000	1089        	\N	\N	20200403  	\N	\N	\N	\N	100949	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	UPESI0005	\N	\N	\N	\N	200402000045	\N	00	\N	\N	\N	\N	Posted Successfully	\N	\N	\N	COMPLETED	USD	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05170200FABE681FC8C0D8000880000005FFFFE0091040984314100001089        107700      20200403  9967    1585897789629  1009490403040304030403BELKEN9       9       9       9       09UPESI00051220040200004509104098431200402000045MPESA   1423           USDKES104098431       104098431         USD20200402  12254720711386026Mobile Payment - Safaricom018MARIA JOSE BELGIUM003BEL008Brussels014TEST KENYA MBP014Mobile Payment007Nairobi00207003N/A003N/A0020700207003N/A009SAFARICOM014sender_id_type011National ID001P001PM010MONEYTRANS	01400210F21800010A0180000000000004000000091040984314100001089        20200403  100949040309UPESI0005200402000045090009AML-CHECKUSD12254720711386	01400210F21800010A0180000000000004000000091040984314100001089        20200403  100949040309UPESI0005200402000045090009AML-CHECKUSD12254720711386	Pi1_f0748785-fdef-c971-4b70-08d7d79e055f	t	t	t	t	t	1	f	t	2020-04-03 10:09:49.651116+03	\N
-1585897789796	0	1585897789796	\N	\N	\N	1612	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	104098432	420000	1010        	100000      	\N	20200403  	\N	9967    	\N	1585897789645  	100949	0403	0403	0403	\N	\N	0403	BEL	\N	KEN	\N	\N	\N	\N	\N	\N	8       	8       	8       	8       	UPESI0005	200402000046	104098432	\N	\N	200402000046	\N	\N	\N	CASH    	1424           	\N	\N	\N	\N	\N	\N	USD	KES	\N	104098432       	104098432         	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	USD	\N	\N	\N	20200402  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	Upesi Money Transfer - Nairobi NHIF (ex Ngao Credit) 	MARIA JOSE BELGIUM	BEL	Brussels	TEST KENYA CASH TWO	2nd Floor, NHIF Building, Ragati Road, Nairobi	Nairobi	02	N/A	N/A	02	02	N/A	SAFARICOM	sender_id_type	National ID	P	P	C	MONEYTRANS	\N	\N	\N	\N	\N	0210	\N	104098432	420000	1010        	\N	\N	20200403  	\N	\N	\N	\N	100949	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	UPESI0005	\N	\N	\N	\N	200402000046	\N	10	\N	\N	\N	\N	Posted Successfully	\N	\N	\N	COMPLETED	USD	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05810200FABE681FC8C0D8000880000005FFFFE0091040984324200001010        100000      20200403  9967    1585897789645  1009490403040304030403BELKEN8       8       8       8       09UPESI00051220040200004609104098432200402000046CASH    1424           USDKES104098432       104098432         USD20200402  12254720711386053Upesi Money Transfer - Nairobi NHIF (ex Ngao Credit) 018MARIA JOSE BELGIUM003BEL008Brussels019TEST KENYA CASH TWO0462nd Floor, NHIF Building, Ragati Road, Nairobi007Nairobi00202003N/A003N/A0020200202003N/A009SAFARICOM014sender_id_type011National ID001P001PC010MONEYTRANS	01400210F21800010A0180000000000004000000091040984324200001010        20200403  100949040309UPESI0005200402000046090009AML-CHECKUSD12254720711386	01400210F21800010A0180000000000004000000091040984324200001010        20200403  100949040309UPESI0005200402000046090009AML-CHECKUSD12254720711386	\N	t	t	t	t	t	1	f	t	2020-04-03 10:09:49.69758+03	\N
-1585897790656	0	1585897790656	\N	\N	\N	1620	\N	\N	\N	f	API	ISO-8583	\N	\N	1	0200	\N	104098327	420000	2723        	269200      	\N	20200403  	\N	9967    	\N	1585897790613  	100950	0403	0403	0403	\N	\N	0403	BEL	\N	KEN	\N	\N	\N	\N	\N	\N	22      	22      	22      	22      	UPESI0005	200402000054	104098327	\N	\N	200402000054	\N	\N	\N	CASH    	1432           	\N	\N	\N	\N	\N	\N	USD	KES	\N	104098327       	104098327         	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	USD	\N	\N	\N	20200309  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	Upesi Money Transfer - Eldoret (ex Ngao Credit)	MARIA JOSE BELGIUM	BEL	Brussels	TEST KENYA	2nd Floor, Saito Centre, Elijah Cheruiyot/Oloo Street Eldoret	Eldoret	04	N/A	N/A	04	04	N/A	SAFARICOM	sender_id_type	National ID	P	P	C	MONEYTRANS	\N	\N	\N	\N	\N	0210	\N	104098327	420000	2723        	\N	\N	20200403  	\N	\N	\N	\N	100950	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	UPESI0005	\N	\N	\N	\N	200402000054	\N	05	\N	\N	\N	\N	Receiver exceeds maximum transactions Limit	\N	\N	\N	FAILED	USD	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05810200FABE681FC8C0D8000880000005FFFFE0091040983274200002723        269200      20200403  9967    1585897790613  1009500403040304030403BELKEN22      22      22      22      09UPESI00051220040200005409104098327200402000054CASH    1432           USDKES104098327       104098327         USD20200309  12254720711386047Upesi Money Transfer - Eldoret (ex Ngao Credit)018MARIA JOSE BELGIUM003BEL008Brussels010TEST KENYA0612nd Floor, Saito Centre, Elijah Cheruiyot/Oloo Street Eldoret007Eldoret00204003N/A003N/A0020400204003N/A009SAFARICOM014sender_id_type011National ID001P001PC010MONEYTRANS	01830210F21800010A1180000000000004000000091040983274200002723        20200403  100950040309UPESI000520040200005405043Receiver exceeds maximum transactions Limit0006FAILEDUSD12254720711386	01830210F21800010A1180000000000004000000091040983274200002723        20200403  100950040309UPESI000520040200005405043Receiver exceeds maximum transactions Limit0006FAILEDUSD12254720711386	\N	\N	\N	f	t	f	0	f	f	2020-04-03 10:09:50.640936+03	\N
-1585897789812	0	1585897789812	\N	\N	\N	1617	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	104098367	410000	2528        	250000      	\N	20200403  	\N	9967    	\N	1585897789693  	100949	0403	0403	0403	\N	\N	0403	BEL	\N	KEN	\N	\N	\N	\N	\N	\N	20      	20      	20      	20      	UPESI0005	200402000051	104098367	\N	\N	200402000051	\N	\N	\N	MPESA   	1429           	\N	\N	\N	\N	\N	\N	USD	KES	\N	104098367       	104098367         	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	USD	\N	\N	\N	20200323  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	Mobile Payment - Safaricom	Javier test last name send	BEL	Bruxelles	Javier G. last name benf	Mobile Payment	Nairobi	07	N/A	N/A	07	07	N/A	SAFARICOM	sender_id_type	National ID	P	P	M	MONEYTRANS	\N	\N	\N	\N	\N	0210	\N	104098367	410000	2528        	\N	\N	20200403  	\N	\N	\N	\N	100949	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	UPESI0005	\N	\N	\N	\N	200402000051	\N	00	\N	\N	\N	\N	Posted Successfully	\N	\N	\N	COMPLETED	USD	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05360200FABE681FC8C0D8000880000005FFFFE0091040983674100002528        250000      20200403  9967    1585897789693  1009490403040304030403BELKEN20      20      20      20      09UPESI00051220040200005109104098367200402000051MPESA   1429           USDKES104098367       104098367         USD20200323  12254720711386026Mobile Payment - Safaricom026Javier test last name send003BEL009Bruxelles024Javier G. last name benf014Mobile Payment007Nairobi00207003N/A003N/A0020700207003N/A009SAFARICOM014sender_id_type011National ID001P001PM010MONEYTRANS	01400210F21800010A0180000000000004000000091040983674100002528        20200403  100949040309UPESI0005200402000051090009AML-CHECKUSD12254720711386	01400210F21800010A0180000000000004000000091040983674100002528        20200403  100949040309UPESI0005200402000051090009AML-CHECKUSD12254720711386	Pi1_4ea3d9f4-324d-c6ee-889e-08d7d79e055a	t	t	t	t	t	1	f	t	2020-04-03 10:09:49.779312+03	\N
-1585897790640	0	1585897790640	\N	\N	\N	1619	\N	\N	\N	f	API	ISO-8583	\N	\N	1	0200	\N	104098326	420000	327         	32300       	\N	20200403  	\N	9967    	\N	1585897790614  	100950	0403	0403	0403	\N	\N	0403	BEL	\N	KEN	\N	\N	\N	\N	\N	\N	3       	3       	3       	3       	UPESI0005	200402000053	104098326	\N	\N	200402000053	\N	\N	\N	CASH    	1431           	\N	\N	\N	\N	\N	\N	USD	KES	\N	104098326       	104098326         	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	USD	\N	\N	\N	20200309  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	Upesi Money Transfer - Eldoret (ex Ngao Credit)	MARIA JOSE BELGIUM	BEL	Brussels	TEST KENYA	2nd Floor, Saito Centre, Elijah Cheruiyot/Oloo Street Eldoret	Eldoret	04	N/A	N/A	04	04	N/A	SAFARICOM	sender_id_type	National ID	P	P	C	MONEYTRANS	\N	\N	\N	\N	\N	0210	\N	104098326	420000	327         	\N	\N	20200403  	\N	\N	\N	\N	100950	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	UPESI0005	\N	\N	\N	\N	200402000053	\N	05	\N	\N	\N	\N	Receiver exceeds maximum transactions Limit	\N	\N	\N	FAILED	USD	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711386	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05810200FABE681FC8C0D8000880000005FFFFE009104098326420000327         32300       20200403  9967    1585897790614  1009500403040304030403BELKEN3       3       3       3       09UPESI00051220040200005309104098326200402000053CASH    1431           USDKES104098326       104098326         USD20200309  12254720711386047Upesi Money Transfer - Eldoret (ex Ngao Credit)018MARIA JOSE BELGIUM003BEL008Brussels010TEST KENYA0612nd Floor, Saito Centre, Elijah Cheruiyot/Oloo Street Eldoret007Eldoret00204003N/A003N/A0020400204003N/A009SAFARICOM014sender_id_type011National ID001P001PC010MONEYTRANS	01830210F21800010A118000000000000400000009104098326420000327         20200403  100950040309UPESI000520040200005305043Receiver exceeds maximum transactions Limit0006FAILEDUSD12254720711386	01830210F21800010A118000000000000400000009104098326420000327         20200403  100950040309UPESI000520040200005305043Receiver exceeds maximum transactions Limit0006FAILEDUSD12254720711386	\N	\N	\N	f	t	f	0	f	f	2020-04-03 10:09:50.634342+03	\N
-1585897754467	0	1585897754467	\N	\N	\N	1586	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	410000	200000      	200000      	\N	20200403  	\N	9100    	\N	1585897754370  	100914	0403	0403	0403	\N	\N	0403	iq 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000019	eNIcwigdV8	\N	\N	200402000019	\N	\N	\N	MPESA   	1397           	\N	\N	\N	\N	\N	\N	PAB	KES	\N	254720711388    	254720711388      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711388	\N	Spock	Verlene Smitham	Apt. 712 132 Labadie Light, Ullrichmouth, NE 19254	Tunis	Linwood Powlowski	Suite 945 224 Jasmin Drive, Houstonport, IN 67035	Nairobi	BRANCH	N/A	N/A	KEXXXXX	BRANCH A	N/A	SAFARICOM	sender_id_type	National ID	P	P	M	LULU	\N	\N	\N	\N	\N	0210	\N	\N	410000	200000      	\N	\N	20200403  	\N	\N	\N	\N	100914	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000019	\N	00	\N	\N	\N	\N	Posted Successfully	\N	\N	\N	COMPLETED	PAB	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711388	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05730200BABE681FC8C0D8000880000005FFFFE0410000200000      200000      20200403  9100    1585897754370  1009140403040304030403iq KEN2900    2900    2900    2900    08SWLU00041220040200001910eNIcwigdV8200402000019MPESA   1397           PABKES254720711388    254720711388      KEN20200403  12254720711388005Spock015Verlene Smitham050Apt. 712 132 Labadie Light, Ullrichmouth, NE 19254005Tunis017Linwood Powlowski049Suite 945 224 Jasmin Drive, Houstonport, IN 67035007Nairobi006BRANCH003N/A003N/A007KEXXXXX008BRANCH A003N/A009SAFARICOM014sender_id_type011National ID001P001PM004LULU	01280210B21800010A0180000000000004000000410000200000      20200403  100914040308SWLU0004200402000019090009AML-CHECKPAB12254720711388	01280210B21800010A0180000000000004000000410000200000      20200403  100914040308SWLU0004200402000019090009AML-CHECKPAB12254720711388	Pi1_4d2dc0e5-f6a2-c24a-538a-08d7d79dff2e	t	t	t	t	t	1	f	t	2020-04-03 10:09:14.450239+03	\N
-1585897758631	0	1585897758631	\N	\N	\N	1604	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	\N	420000	300000      	300000      	\N	20200403  	\N	9100    	\N	1585897758442  	100918	0403	0403	0403	\N	\N	0403	mc 	\N	KEN	\N	\N	\N	\N	\N	\N	2900    	2900    	2900    	2900    	SWLU0004	200402000035	IOV5j0upqN	\N	\N	200402000035	\N	\N	\N	CASH    	1413           	\N	\N	\N	\N	\N	\N	ANG	KES	\N	254720711388    	254720711388      	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200403  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711388	\N	Hikaru Sulu	Dr. Jessica Beahan	Apt. 055 125 Dane Tunnel, Volkmanstad, IL 73849-3709	Avarua	Lara DuBuque Jr.	Suite 454 328 Bins Extension, Laurenbury, AK 54098	Nairobi	BRANCH	N/A	N/A	KEXXXXX	BRANCH A	N/A	SAFARICOM	sender_id_type	National ID	P	P	C	LULU	\N	\N	\N	\N	\N	0210	\N	\N	420000	300000      	\N	\N	20200403  	\N	\N	\N	\N	100918	0403	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200402000035	\N	10	\N	\N	\N	\N	Posted Successfully	\N	\N	\N	COMPLETED	ANG	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254720711388	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	05850200BABE681FC8C0D8000880000005FFFFE0420000300000      300000      20200403  9100    1585897758442  1009180403040304030403mc KEN2900    2900    2900    2900    08SWLU00041220040200003510IOV5j0upqN200402000035CASH    1413           ANGKES254720711388    254720711388      KEN20200403  12254720711388011Hikaru Sulu018Dr. Jessica Beahan052Apt. 055 125 Dane Tunnel, Volkmanstad, IL 73849-3709006Avarua016Lara DuBuque Jr.050Suite 454 328 Bins Extension, Laurenbury, AK 54098007Nairobi006BRANCH003N/A003N/A007KEXXXXX008BRANCH A003N/A009SAFARICOM014sender_id_type011National ID001P001PC004LULU	01280210B21800010A0180000000000004000000420000300000      20200403  100918040308SWLU0004200402000035090009AML-CHECKANG12254720711388	01280210B21800010A0180000000000004000000420000300000      20200403  100918040308SWLU0004200402000035090009AML-CHECKANG12254720711388	\N	t	t	t	t	t	1	f	t	2020-04-03 10:09:18.614708+03	\N
+COPY public.tbl_sys_iso (date_time_added, added_by, date_time_modified, modified_by, source_ip, latest_ip, iso_id, prev_iso_id, company_id, need_sync, synced, iso_source, iso_type, request_type, iso_status, iso_version, req_mti, req_field1, req_field2, req_field3, req_field4, req_field5, req_field6, req_field7, req_field8, req_field9, req_field10, req_field11, req_field12, req_field13, req_field14, req_field15, req_field16, req_field17, req_field18, req_field19, req_field20, req_field21, req_field22, req_field23, req_field24, req_field25, req_field26, req_field27, req_field28, req_field29, req_field30, req_field31, req_field32, req_field33, req_field34, req_field35, req_field36, req_field37, req_field38, req_field39, req_field40, req_field41, req_field42, req_field43, req_field44, req_field45, req_field46, req_field47, req_field48, req_field49, req_field50, req_field51, req_field52, req_field53, req_field54, req_field55, req_field56, req_field57, req_field58, req_field59, req_field60, req_field61, req_field62, req_field63, req_field64, req_field65, req_field66, req_field67, req_field68, req_field69, req_field70, req_field71, req_field72, req_field73, req_field74, req_field75, req_field76, req_field77, req_field78, req_field79, req_field80, req_field81, req_field82, req_field83, req_field84, req_field85, req_field86, req_field87, req_field88, req_field89, req_field90, req_field91, req_field92, req_field93, req_field94, req_field95, req_field96, req_field97, req_field98, req_field99, req_field100, req_field101, req_field102, req_field103, req_field104, req_field105, req_field106, req_field107, req_field108, req_field109, req_field110, req_field111, req_field112, req_field113, req_field114, req_field115, req_field116, req_field117, req_field118, req_field119, req_field120, req_field121, req_field122, req_field123, req_field124, req_field125, req_field126, req_field127, req_field128, res_mti, res_field1, res_field2, res_field3, res_field4, res_field5, res_field6, res_field7, res_field8, res_field9, res_field10, res_field11, res_field12, res_field13, res_field14, res_field15, res_field16, res_field17, res_field18, res_field19, res_field20, res_field21, res_field22, res_field23, res_field24, res_field25, res_field26, res_field27, res_field28, res_field29, res_field30, res_field31, res_field32, res_field33, res_field34, res_field35, res_field36, res_field37, res_field38, res_field39, res_field40, res_field41, res_field42, res_field43, res_field44, res_field45, res_field46, res_field47, res_field48, res_field49, res_field50, res_field51, res_field52, res_field53, res_field54, res_field55, res_field56, res_field57, res_field58, res_field59, res_field60, res_field61, res_field62, res_field63, res_field64, res_field65, res_field66, res_field67, res_field68, res_field69, res_field70, res_field71, res_field72, res_field73, res_field74, res_field75, res_field76, res_field77, res_field78, res_field79, res_field80, res_field81, res_field82, res_field83, res_field84, res_field85, res_field86, res_field87, res_field88, res_field89, res_field90, res_field91, res_field92, res_field93, res_field94, res_field95, res_field96, res_field97, res_field98, res_field99, res_field100, res_field101, res_field102, res_field103, res_field104, res_field105, res_field106, res_field107, res_field108, res_field109, res_field110, res_field111, res_field112, res_field113, res_field114, res_field115, res_field116, res_field117, res_field118, res_field119, res_field120, res_field121, res_field122, res_field123, res_field124, res_field125, res_field126, res_field127, res_field128, request, response, extra_data, sync_message, need_sending, sent, received, aml_check, aml_check_sent, aml_check_retries, aml_listed, posted, created_at, deleted_at, maker_checker_approve_status, maker_checker_reject_status, approved_at, rejected_at) FROM stdin;
+1587812686363	0	1587812686363	\N	\N	\N	1816	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	2547201	410000	200000      	20000       	\N	20200425  	\N	100     	\N	1587812686294  	020446	0425	0425	0425	\N	\N	0425	KEN	\N	KEN	\N	\N	\N	\N	\N	\N	0       	0       	0       	0       	SWLU0004	200425000012	acd4e36d3dd5	\N	\N	200425000012	\N	\N	\N	MPESA   	1677           	\N	\N	\N	\N	\N	\N	USD	KES	\N	88998899        	11223344          	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200325  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254708374149	600193	\N	Lee KAMAU	JOHN DOE'S ADDRESS	NAIROBI	BEN WERU	RECIEVER ADDRESS	NAIROBI	Nairobi	N/A	N/A	EQBLKENA	KANGEMA	N/A	SAFARICOM	sender_id_type	Passport	P	P	M	LULU	{entries=[{partner_id=SWLU0004, transaction_ref=acd4e36d3dd5, transaction_date=20200325, collection_branch=Nairobi, transaction_type=M, sender_type=P, sender_full_name=Lee KAMAU, sender_address=JOHN DOE'S ADDRESS, sender_city=NAIROBI, sender_country_code=KEN, sender_currency_code=USD, sender_mobile=2547201, send_amount=2000, sender_id_type=pass, sender_id_number=88998899, receiver_type=P, receiver_full_name=BEN WERU, receiver_country_code=KEN, receiver_currency_code=KES, receiver_amount=200, receiver_city=NAIROBI, receiver_address=RECIEVER ADDRESS, receiver_mobile=254708374149, mobile_operator=SAFARICOM, receiver_id_type=Passport, receiver_id_number=11223344, receiver_account=09809123456, receiver_bank=EQUITY BANK LIMITED, receiver_bank_code=50, receiver_swiftcode=EQBLKENA, receiver_branch_code=003, receiver_branch=KANGEMA, exchange_rate=1, commission_amount=, remarks=, callbacks=[]}]}	\N	\N	\N	\N	0210	\N	2547201	410000	200000      	\N	\N	20200425  	\N	\N	\N	\N	020446	0425	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200425000012	\N	10	\N	\N	\N	\N	AML Verification Approved	\N	\N	\N	AML-APPROVED	USD	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254708374149	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	14050200FABE681FC8C0D8000880000006FFFFF0072547201410000200000      20000       20200425  100     1587812686294  0204460425042504250425KENKEN0       0       0       0       08SWLU00041220042500001212acd4e36d3dd5200425000012MPESA   1677           USDKES88998899        11223344          KEN20200325  1225470837414906600193009Lee KAMAU018JOHN DOE'S ADDRESS007NAIROBI008BEN WERU016RECIEVER ADDRESS007NAIROBI007Nairobi003N/A003N/A008EQBLKENA007KANGEMA003N/A009SAFARICOM014sender_id_type008Passport001P001PM004LULU898{entries=[{partner_id=SWLU0004, transaction_ref=acd4e36d3dd5, transaction_date=20200325, collection_branch=Nairobi, transaction_type=M, sender_type=P, sender_full_name=Lee KAMAU, sender_address=JOHN DOE'S ADDRESS, sender_city=NAIROBI, sender_country_code=KEN, sender_currency_code=USD, sender_mobile=2547201, send_amount=2000, sender_id_type=pass, sender_id_number=88998899, receiver_type=P, receiver_full_name=BEN WERU, receiver_country_code=KEN, receiver_currency_code=KES, receiver_amount=200, receiver_city=NAIROBI, receiver_address=RECIEVER ADDRESS, receiver_mobile=254708374149, mobile_operator=SAFARICOM, receiver_id_type=Passport, receiver_id_number=11223344, receiver_account=09809123456, receiver_bank=EQUITY BANK LIMITED, receiver_bank_code=50, receiver_swiftcode=EQBLKENA, receiver_branch_code=003, receiver_branch=KANGEMA, exchange_rate=1, commission_amount=, remarks=, callbacks=[]}]}	01370210F21800010A0180000000000004000000072547201410000200000      20200425  020446042508SWLU0004200425000012090009AML-CHECKUSD12254708374149	01370210F21800010A0180000000000004000000072547201410000200000      20200425  020446042508SWLU0004200425000012090009AML-CHECKUSD12254708374149	\N	t	f	f	t	t	1	f	f	2020-04-25 14:04:46.336228+03	\N	0	0	\N	\N
+1587812637512	0	1587981581	\N	\N	\N	1815	\N	\N	t	f	API	ISO-8583	\N	\N	1	0200	\N	2547201	410000	200000      	20000       	\N	20200425  	\N	100     	\N	1587812637427  	020357	0425	0425	0425	\N	\N	0425	KEN	\N	KEN	\N	\N	\N	\N	\N	\N	0       	0       	0       	0       	SWLU0004	200425000013	acd4e336d3dd5	\N	\N	200425000013	\N	\N	\N	MPESA   	1678           	\N	\N	\N	\N	\N	\N	USD	KES	\N	88998899        	11223344          	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	KEN	\N	\N	\N	20200325  	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254708374149	600193	\N	Lee KAMAU	JOHN DOE'S ADDRESS	NAIROBI	BEN WERU	RECIEVER ADDRESS	NAIROBI	Nairobi	N/A	N/A	EQBLKENA	KANGEMA	N/A	SAFARICOM	sender_id_type	Passport	P	P	M	LULU	{entries=[{partner_id=SWLU0004, transaction_ref=acd4e336d3dd5, transaction_date=20200325, collection_branch=Nairobi, transaction_type=M, sender_type=P, sender_full_name=Lee KAMAU, sender_address=JOHN DOE'S ADDRESS, sender_city=NAIROBI, sender_country_code=KEN, sender_currency_code=USD, sender_mobile=2547201, send_amount=2000, sender_id_type=pass, sender_id_number=88998899, receiver_type=P, receiver_full_name=BEN WERU, receiver_country_code=KEN, receiver_currency_code=KES, receiver_amount=200, receiver_city=NAIROBI, receiver_address=RECIEVER ADDRESS, receiver_mobile=254708374149, mobile_operator=SAFARICOM, receiver_id_type=Passport, receiver_id_number=11223344, receiver_account=09809123456, receiver_bank=EQUITY BANK LIMITED, receiver_bank_code=50, receiver_swiftcode=EQBLKENA, receiver_branch_code=003, receiver_branch=KANGEMA, exchange_rate=1, commission_amount=, remarks=, callbacks=[]}]}	\N	\N	\N	\N	0210	\N	2547201	410000	200000      	\N	\N	20200425  	\N	\N	\N	\N	020357	0425	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	SWLU0004	\N	\N	\N	\N	200425000013	\N	10	\N	\N	\N	\N	<p>sfdg xvfgf</p>	\N	\N	\N	FAILED	USD	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	254708374149	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	14070200FABE681FC8C0D8000880000006FFFFF0072547201410000200000      20000       20200425  100     1587812637427  0203570425042504250425KENKEN0       0       0       0       08SWLU00041220042500001313acd4e336d3dd5200425000013MPESA   1678           USDKES88998899        11223344          KEN20200325  1225470837414906600193009Lee KAMAU018JOHN DOE'S ADDRESS007NAIROBI008BEN WERU016RECIEVER ADDRESS007NAIROBI007Nairobi003N/A003N/A008EQBLKENA007KANGEMA003N/A009SAFARICOM014sender_id_type008Passport001P001PM004LULU899{entries=[{partner_id=SWLU0004, transaction_ref=acd4e336d3dd5, transaction_date=20200325, collection_branch=Nairobi, transaction_type=M, sender_type=P, sender_full_name=Lee KAMAU, sender_address=JOHN DOE'S ADDRESS, sender_city=NAIROBI, sender_country_code=KEN, sender_currency_code=USD, sender_mobile=2547201, send_amount=2000, sender_id_type=pass, sender_id_number=88998899, receiver_type=P, receiver_full_name=BEN WERU, receiver_country_code=KEN, receiver_currency_code=KES, receiver_amount=200, receiver_city=NAIROBI, receiver_address=RECIEVER ADDRESS, receiver_mobile=254708374149, mobile_operator=SAFARICOM, receiver_id_type=Passport, receiver_id_number=11223344, receiver_account=09809123456, receiver_bank=EQUITY BANK LIMITED, receiver_bank_code=50, receiver_swiftcode=EQBLKENA, receiver_branch_code=003, receiver_branch=KANGEMA, exchange_rate=1, commission_amount=, remarks=, callbacks=[]}]}	01370210F21800010A0180000000000004000000072547201410000200000      20200425  020357042508SWLU0004200425000013090009AML-CHECKUSD12254708374149	01370210F21800010A0180000000000004000000072547201410000200000      20200425  020357042508SWLU0004200425000013090009AML-CHECKUSD12254708374149	\N	t	f	f	t	t	1	f	f	2020-04-25 14:03:57.485853+03	\N	1	0	1587983635	\N
 \.
 
 
@@ -7990,9 +8503,9 @@ COPY public.tbl_sys_partners (date_time_added, added_by, date_time_modified, mod
 -- Data for Name: tbl_sys_paybills; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.tbl_sys_paybills (date_time_added, added_by, date_time_modified, modified_by, source_ip, latest_ip, paybill_id, setting_profile, paybill_type, api_application_name, api_consumer_key, api_consumer_secret, api_consumer_code, api_endpoint, api_host, shortcode, partnercode, paybill_status, record_version) FROM stdin;
-1585721523	0	1585721523	\N	\N	\N	7	LULU	B2C	LULU	Jpfrk5qEol	I6jTtlbKwcyTEXi	\N	http://switchip:9090/switchlink/payments	http://switchip:9090/switchlink/payments	123456	\N	ACTIVE	0
-1585721625	0	1585721625	\N	\N	\N	8	MONEYTRANS	B2C	UPESI0005	upesiTestPayout	Z1AQS1E5	19900	https://test-networkextensions.moneytrans.eu/v3/PayoutServices.asmx	https://test-networkextensions.moneytrans.eu/v3/PayoutServices.asmx	123456	\N	ACTIVE	0
+COPY public.tbl_sys_paybills (date_time_added, added_by, date_time_modified, modified_by, source_ip, latest_ip, paybill_id, setting_profile, paybill_type, api_application_name, api_consumer_key, api_consumer_secret, api_consumer_code, api_endpoint, api_host, shortcode, partnercode, paybill_status, record_version, accountnumber) FROM stdin;
+1585721523	0	1585721523	\N	\N	\N	7	LULU	B2C	LULU	Jpfrk5qEol	I6jTtlbKwcyTEXi	\N	http://switchip:9090/switchlink/payments	http://switchip:9090/switchlink/payments	600193	\N	ACTIVE	0	098901221412
+1585721625	0	1585721625	\N	\N	\N	8	MONEYTRANS	B2C	UPESI0005	upesiTestPayout	Z1AQS1E5	19900	https://test-networkextensions.moneytrans.eu/v3/PayoutServices.asmx	https://test-networkextensions.moneytrans.eu/v3/PayoutServices.asmx	600193	\N	ACTIVE	0	098901221412
 \.
 
 
@@ -8001,2824 +8514,413 @@ COPY public.tbl_sys_paybills (date_time_added, added_by, date_time_modified, mod
 --
 
 COPY public.tbl_sys_references (date_time_added, added_by, date_time_modified, modified_by, source_ip, latest_ip, reference_id, prefix, suffix, anchor_1, anchor_2, anchor_3, reference, record_version) FROM stdin;
-1584526344	0	1584526344	\N	\N	\N	10	\N	\N	tbl_trn_requests	\N	\N	1	0
-1584526344	0	1584526344	\N	\N	\N	11	\N	\N	tbl_trn_transactions	\N	\N	1	0
-1584526701	0	1584526701	\N	\N	\N	12	\N	\N	tbl_trn_requests	\N	\N	2	0
-1584526701	0	1584526701	\N	\N	\N	13	\N	\N	tbl_trn_transactions	\N	\N	2	0
-1584526962	0	1584526962	\N	\N	\N	14	\N	\N	tbl_trn_requests	\N	\N	3	0
-1584526962	0	1584526962	\N	\N	\N	15	\N	\N	tbl_trn_transactions	\N	\N	3	0
-1584528263	0	1584528263	\N	\N	\N	16	\N	\N	tbl_trn_requests	\N	\N	4	0
-1584528263	0	1584528263	\N	\N	\N	17	\N	\N	tbl_trn_transactions	\N	\N	4	0
-1584602893	0	1584602893	\N	\N	\N	18	\N	\N	tbl_trn_requests	\N	\N	1	0
-1584602893	0	1584602893	\N	\N	\N	19	\N	\N	tbl_trn_transactions	\N	\N	1	0
-1584604189	0	1584604189	\N	\N	\N	20	\N	\N	tbl_trn_requests	\N	\N	2	0
-1584604189	0	1584604189	\N	\N	\N	21	\N	\N	tbl_trn_transactions	\N	\N	2	0
-1584604224	0	1584604224	\N	\N	\N	22	\N	\N	tbl_trn_requests	\N	\N	3	0
-1584604224	0	1584604224	\N	\N	\N	23	\N	\N	tbl_trn_transactions	\N	\N	3	0
-1584604462	0	1584604462	\N	\N	\N	24	\N	\N	tbl_trn_requests	\N	\N	4	0
-1584604462	0	1584604462	\N	\N	\N	25	\N	\N	tbl_trn_transactions	\N	\N	4	0
-1584606333	0	1584606333	\N	\N	\N	26	\N	\N	tbl_trn_requests	\N	\N	5	0
-1584606333	0	1584606333	\N	\N	\N	27	\N	\N	tbl_trn_transactions	\N	\N	5	0
-1584607866	0	1584607866	\N	\N	\N	28	\N	\N	tbl_trn_requests	\N	\N	6	0
-1584607866	0	1584607866	\N	\N	\N	29	\N	\N	tbl_trn_transactions	\N	\N	6	0
-1584608268	0	1584608268	\N	\N	\N	30	\N	\N	tbl_trn_requests	\N	\N	7	0
-1584608268	0	1584608268	\N	\N	\N	31	\N	\N	tbl_trn_transactions	\N	\N	7	0
-1584609139	0	1584609139	\N	\N	\N	32	\N	\N	tbl_trn_requests	\N	\N	8	0
-1584609139	0	1584609139	\N	\N	\N	33	\N	\N	tbl_trn_transactions	\N	\N	8	0
-1584609357	0	1584609357	\N	\N	\N	34	\N	\N	tbl_trn_requests	\N	\N	9	0
-1584609357	0	1584609357	\N	\N	\N	35	\N	\N	tbl_trn_transactions	\N	\N	9	0
-1584609456	0	1584609456	\N	\N	\N	36	\N	\N	tbl_trn_requests	\N	\N	10	0
-1584609456	0	1584609456	\N	\N	\N	37	\N	\N	tbl_trn_transactions	\N	\N	10	0
-1584609497	0	1584609497	\N	\N	\N	38	\N	\N	tbl_trn_requests	\N	\N	11	0
-1584609497	0	1584609497	\N	\N	\N	39	\N	\N	tbl_trn_transactions	\N	\N	11	0
-1584609639	0	1584609639	\N	\N	\N	40	\N	\N	tbl_trn_requests	\N	\N	12	0
-1584609639	0	1584609639	\N	\N	\N	41	\N	\N	tbl_trn_transactions	\N	\N	12	0
-1584609765	0	1584609765	\N	\N	\N	42	\N	\N	tbl_trn_requests	\N	\N	13	0
-1584609765	0	1584609765	\N	\N	\N	43	\N	\N	tbl_trn_transactions	\N	\N	13	0
-1584609814	0	1584609814	\N	\N	\N	44	\N	\N	tbl_trn_requests	\N	\N	14	0
-1584609814	0	1584609814	\N	\N	\N	45	\N	\N	tbl_trn_transactions	\N	\N	14	0
-1584609846	0	1584609846	\N	\N	\N	46	\N	\N	tbl_trn_requests	\N	\N	15	0
-1584609846	0	1584609846	\N	\N	\N	47	\N	\N	tbl_trn_transactions	\N	\N	15	0
-1584610102	0	1584610102	\N	\N	\N	48	\N	\N	tbl_trn_requests	\N	\N	16	0
-1584610103	0	1584610103	\N	\N	\N	49	\N	\N	tbl_trn_transactions	\N	\N	16	0
-1584610287	0	1584610287	\N	\N	\N	50	\N	\N	tbl_trn_requests	\N	\N	17	0
-1584610287	0	1584610287	\N	\N	\N	51	\N	\N	tbl_trn_transactions	\N	\N	17	0
-1584610426	0	1584610426	\N	\N	\N	52	\N	\N	tbl_trn_requests	\N	\N	18	0
-1584610426	0	1584610426	\N	\N	\N	53	\N	\N	tbl_trn_transactions	\N	\N	18	0
-1584616695	0	1584616695	\N	\N	\N	54	\N	\N	tbl_trn_requests	\N	\N	19	0
-1584616696	0	1584616696	\N	\N	\N	55	\N	\N	tbl_trn_transactions	\N	\N	19	0
-1584616736	0	1584616736	\N	\N	\N	56	\N	\N	tbl_trn_requests	\N	\N	20	0
-1584616736	0	1584616736	\N	\N	\N	57	\N	\N	tbl_trn_transactions	\N	\N	20	0
-1584616768	0	1584616768	\N	\N	\N	58	\N	\N	tbl_trn_requests	\N	\N	21	0
-1584616768	0	1584616768	\N	\N	\N	59	\N	\N	tbl_trn_transactions	\N	\N	21	0
-1584617544	0	1584617544	\N	\N	\N	60	\N	\N	tbl_trn_requests	\N	\N	22	0
-1584617544	0	1584617544	\N	\N	\N	61	\N	\N	tbl_trn_transactions	\N	\N	22	0
-1584617591	0	1584617591	\N	\N	\N	62	\N	\N	tbl_trn_requests	\N	\N	23	0
-1584617591	0	1584617591	\N	\N	\N	63	\N	\N	tbl_trn_transactions	\N	\N	23	0
-1584617905	0	1584617905	\N	\N	\N	64	\N	\N	tbl_trn_requests	\N	\N	24	0
-1584617905	0	1584617905	\N	\N	\N	65	\N	\N	tbl_trn_transactions	\N	\N	24	0
-1584618652	0	1584618652	\N	\N	\N	66	\N	\N	tbl_trn_requests	\N	\N	25	0
-1584618652	0	1584618652	\N	\N	\N	67	\N	\N	tbl_trn_transactions	\N	\N	25	0
-1584618695	0	1584618695	\N	\N	\N	68	\N	\N	tbl_trn_requests	\N	\N	26	0
-1584618695	0	1584618695	\N	\N	\N	69	\N	\N	tbl_trn_transactions	\N	\N	26	0
-1584708380	0	1584708380	\N	\N	\N	70	\N	\N	tbl_trn_requests	\N	\N	1	0
-1584708381	0	1584708381	\N	\N	\N	71	\N	\N	tbl_trn_transactions	\N	\N	1	0
-1584708528	0	1584708528	\N	\N	\N	72	\N	\N	tbl_trn_requests	\N	\N	2	0
-1584708528	0	1584708528	\N	\N	\N	73	\N	\N	tbl_trn_transactions	\N	\N	2	0
-1584708863	0	1584708863	\N	\N	\N	74	\N	\N	tbl_trn_requests	\N	\N	3	0
-1584708863	0	1584708863	\N	\N	\N	75	\N	\N	tbl_trn_transactions	\N	\N	3	0
-1584708905	0	1584708905	\N	\N	\N	76	\N	\N	tbl_trn_requests	\N	\N	4	0
-1584708906	0	1584708906	\N	\N	\N	77	\N	\N	tbl_trn_transactions	\N	\N	4	0
-1584709179	0	1584709179	\N	\N	\N	78	\N	\N	tbl_trn_requests	\N	\N	5	0
-1584709179	0	1584709179	\N	\N	\N	79	\N	\N	tbl_trn_transactions	\N	\N	5	0
-1584709700	0	1584709700	\N	\N	\N	80	\N	\N	tbl_trn_requests	\N	\N	6	0
-1584709700	0	1584709700	\N	\N	\N	81	\N	\N	tbl_trn_transactions	\N	\N	6	0
-1584709849	0	1584709849	\N	\N	\N	82	\N	\N	tbl_trn_requests	\N	\N	7	0
-1584709849	0	1584709849	\N	\N	\N	83	\N	\N	tbl_trn_transactions	\N	\N	7	0
-1584710054	0	1584710054	\N	\N	\N	84	\N	\N	tbl_trn_requests	\N	\N	8	0
-1584710054	0	1584710054	\N	\N	\N	85	\N	\N	tbl_trn_transactions	\N	\N	8	0
-1584710126	0	1584710126	\N	\N	\N	86	\N	\N	tbl_trn_requests	\N	\N	9	0
-1584710126	0	1584710126	\N	\N	\N	87	\N	\N	tbl_trn_transactions	\N	\N	9	0
-1584710381	0	1584710381	\N	\N	\N	88	\N	\N	tbl_trn_requests	\N	\N	10	0
-1584710381	0	1584710381	\N	\N	\N	89	\N	\N	tbl_trn_transactions	\N	\N	10	0
-1584710402	0	1584710402	\N	\N	\N	90	\N	\N	tbl_trn_requests	\N	\N	11	0
-1584710402	0	1584710402	\N	\N	\N	91	\N	\N	tbl_trn_transactions	\N	\N	11	0
-1584716566	0	1584716566	\N	\N	\N	92	\N	\N	tbl_trn_requests	\N	\N	12	0
-1584716566	0	1584716566	\N	\N	\N	93	\N	\N	tbl_trn_transactions	\N	\N	12	0
-1584717056	0	1584717056	\N	\N	\N	94	\N	\N	tbl_trn_requests	\N	\N	13	0
-1584717057	0	1584717057	\N	\N	\N	95	\N	\N	tbl_trn_transactions	\N	\N	13	0
-1584720151	0	1584720151	\N	\N	\N	96	\N	\N	tbl_trn_requests	\N	\N	14	0
-1584720151	0	1584720151	\N	\N	\N	97	\N	\N	tbl_trn_transactions	\N	\N	14	0
-1584720155	0	1584720155	\N	\N	\N	98	\N	\N	tbl_trn_requests	\N	\N	15	0
-1584720155	0	1584720155	\N	\N	\N	99	\N	\N	tbl_trn_transactions	\N	\N	15	0
-1584720157	0	1584720157	\N	\N	\N	100	\N	\N	tbl_trn_requests	\N	\N	16	0
-1585821720	0	1585821720	\N	\N	\N	1706	\N	\N	tbl_trn_transactions	\N	\N	510	0
-1584720158	0	1584720158	\N	\N	\N	101	\N	\N	tbl_trn_transactions	\N	\N	16	0
-1584720159	0	1584720159	\N	\N	\N	102	\N	\N	tbl_trn_requests	\N	\N	17	0
-1584720160	0	1584720160	\N	\N	\N	103	\N	\N	tbl_trn_transactions	\N	\N	17	0
-1584720773	0	1584720773	\N	\N	\N	104	\N	\N	tbl_trn_requests	\N	\N	18	0
-1584720773	0	1584720773	\N	\N	\N	105	\N	\N	tbl_trn_transactions	\N	\N	18	0
-1584720800	0	1584720800	\N	\N	\N	106	\N	\N	tbl_trn_requests	\N	\N	19	0
-1584720800	0	1584720800	\N	\N	\N	107	\N	\N	tbl_trn_transactions	\N	\N	19	0
-1584720802	0	1584720802	\N	\N	\N	108	\N	\N	tbl_trn_requests	\N	\N	20	0
-1584720803	0	1584720803	\N	\N	\N	109	\N	\N	tbl_trn_transactions	\N	\N	20	0
-1584720805	0	1584720805	\N	\N	\N	110	\N	\N	tbl_trn_requests	\N	\N	21	0
-1584720805	0	1584720805	\N	\N	\N	111	\N	\N	tbl_trn_transactions	\N	\N	21	0
-1584720807	0	1584720807	\N	\N	\N	112	\N	\N	tbl_trn_requests	\N	\N	22	0
-1584720807	0	1584720807	\N	\N	\N	113	\N	\N	tbl_trn_transactions	\N	\N	22	0
-1584791518	0	1584791518	\N	\N	\N	114	\N	\N	tbl_trn_requests	\N	\N	1	0
-1584791518	0	1584791518	\N	\N	\N	115	\N	\N	tbl_trn_transactions	\N	\N	1	0
-1584791781	0	1584791781	\N	\N	\N	116	\N	\N	tbl_trn_requests	\N	\N	2	0
-1584791781	0	1584791781	\N	\N	\N	117	\N	\N	tbl_trn_transactions	\N	\N	2	0
-1584799413	0	1584799413	\N	\N	\N	118	\N	\N	tbl_trn_requests	\N	\N	3	0
-1584799413	0	1584799413	\N	\N	\N	119	\N	\N	tbl_trn_transactions	\N	\N	3	0
-1584799982	0	1584799982	\N	\N	\N	120	\N	\N	tbl_trn_requests	\N	\N	4	0
-1584799982	0	1584799982	\N	\N	\N	121	\N	\N	tbl_trn_transactions	\N	\N	4	0
-1584800529	0	1584800529	\N	\N	\N	122	\N	\N	tbl_trn_requests	\N	\N	5	0
-1584800529	0	1584800529	\N	\N	\N	123	\N	\N	tbl_trn_transactions	\N	\N	5	0
-1584800752	0	1584800752	\N	\N	\N	124	\N	\N	tbl_trn_requests	\N	\N	6	0
-1584800752	0	1584800752	\N	\N	\N	125	\N	\N	tbl_trn_transactions	\N	\N	6	0
-1584800857	0	1584800857	\N	\N	\N	126	\N	\N	tbl_trn_requests	\N	\N	7	0
-1584800857	0	1584800857	\N	\N	\N	127	\N	\N	tbl_trn_transactions	\N	\N	7	0
-1584801694	0	1584801694	\N	\N	\N	128	\N	\N	tbl_trn_requests	\N	\N	8	0
-1584801694	0	1584801694	\N	\N	\N	129	\N	\N	tbl_trn_transactions	\N	\N	8	0
-1584802329	0	1584802329	\N	\N	\N	130	\N	\N	tbl_trn_requests	\N	\N	9	0
-1584802329	0	1584802329	\N	\N	\N	131	\N	\N	tbl_trn_transactions	\N	\N	9	0
-1584802739	0	1584802739	\N	\N	\N	132	\N	\N	tbl_trn_requests	\N	\N	10	0
-1584802739	0	1584802739	\N	\N	\N	133	\N	\N	tbl_trn_transactions	\N	\N	10	0
-1584809344	0	1584809344	\N	\N	\N	134	\N	\N	tbl_trn_requests	\N	\N	11	0
-1584809344	0	1584809344	\N	\N	\N	135	\N	\N	tbl_trn_transactions	\N	\N	11	0
-1584951433	0	1584951433	\N	\N	\N	136	\N	\N	tbl_trn_requests	\N	\N	1	0
-1584951433	0	1584951433	\N	\N	\N	137	\N	\N	tbl_trn_transactions	\N	\N	1	0
-1584952502	0	1584952502	\N	\N	\N	138	\N	\N	tbl_trn_requests	\N	\N	2	0
-1584952503	0	1584952503	\N	\N	\N	139	\N	\N	tbl_trn_transactions	\N	\N	2	0
-1584954415	0	1584954415	\N	\N	\N	140	\N	\N	tbl_trn_requests	\N	\N	3	0
-1584954415	0	1584954415	\N	\N	\N	141	\N	\N	tbl_trn_transactions	\N	\N	3	0
-1584954606	0	1584954606	\N	\N	\N	142	\N	\N	tbl_trn_requests	\N	\N	4	0
-1584954606	0	1584954606	\N	\N	\N	143	\N	\N	tbl_trn_transactions	\N	\N	4	0
-1584954735	0	1584954735	\N	\N	\N	144	\N	\N	tbl_trn_requests	\N	\N	5	0
-1584954735	0	1584954735	\N	\N	\N	145	\N	\N	tbl_trn_transactions	\N	\N	5	0
-1584956133	0	1584956133	\N	\N	\N	146	\N	\N	tbl_trn_requests	\N	\N	6	0
-1584956133	0	1584956133	\N	\N	\N	147	\N	\N	tbl_trn_transactions	\N	\N	6	0
-1584956430	0	1584956430	\N	\N	\N	148	\N	\N	tbl_trn_requests	\N	\N	7	0
-1584956430	0	1584956430	\N	\N	\N	149	\N	\N	tbl_trn_transactions	\N	\N	7	0
-1584956474	0	1584956475	\N	\N	\N	150	\N	\N	tbl_trn_requests	\N	\N	8	0
-1584956475	0	1584956475	\N	\N	\N	151	\N	\N	tbl_trn_transactions	\N	\N	8	0
-1584956960	0	1584956960	\N	\N	\N	152	\N	\N	tbl_trn_requests	\N	\N	9	0
-1584956961	0	1584956961	\N	\N	\N	153	\N	\N	tbl_trn_transactions	\N	\N	9	0
-1584958274	0	1584958274	\N	\N	\N	154	\N	\N	tbl_trn_requests	\N	\N	10	0
-1584958274	0	1584958274	\N	\N	\N	155	\N	\N	tbl_trn_transactions	\N	\N	10	0
-1584958298	0	1584958298	\N	\N	\N	156	\N	\N	tbl_trn_requests	\N	\N	11	0
-1584958298	0	1584958298	\N	\N	\N	157	\N	\N	tbl_trn_transactions	\N	\N	11	0
-1584965857	0	1584965857	\N	\N	\N	158	\N	\N	tbl_trn_requests	\N	\N	12	0
-1584965858	0	1584965858	\N	\N	\N	159	\N	\N	tbl_trn_transactions	\N	\N	12	0
-1584965999	0	1584965999	\N	\N	\N	160	\N	\N	tbl_trn_requests	\N	\N	13	0
-1584965999	0	1584965999	\N	\N	\N	161	\N	\N	tbl_trn_transactions	\N	\N	13	0
-1584966442	0	1584966442	\N	\N	\N	162	\N	\N	tbl_trn_requests	\N	\N	14	0
-1584966442	0	1584966442	\N	\N	\N	163	\N	\N	tbl_trn_transactions	\N	\N	14	0
-1584966979	0	1584966979	\N	\N	\N	164	\N	\N	tbl_trn_requests	\N	\N	15	0
-1584966979	0	1584966979	\N	\N	\N	165	\N	\N	tbl_trn_transactions	\N	\N	15	0
-1584968156	0	1584968156	\N	\N	\N	166	\N	\N	tbl_trn_requests	\N	\N	16	0
-1584968156	0	1584968156	\N	\N	\N	167	\N	\N	tbl_trn_transactions	\N	\N	16	0
-1584971457	0	1584971457	\N	\N	\N	168	\N	\N	tbl_trn_requests	\N	\N	17	0
-1584971457	0	1584971457	\N	\N	\N	169	\N	\N	tbl_trn_transactions	\N	\N	17	0
-1584982698	0	1584982698	\N	\N	\N	170	\N	\N	tbl_trn_requests	\N	\N	18	0
-1584982698	0	1584982698	\N	\N	\N	171	\N	\N	tbl_trn_transactions	\N	\N	18	0
-1584982833	0	1584982833	\N	\N	\N	172	\N	\N	tbl_trn_requests	\N	\N	19	0
-1584982833	0	1584982833	\N	\N	\N	173	\N	\N	tbl_trn_transactions	\N	\N	19	0
-1584983397	0	1584983397	\N	\N	\N	174	\N	\N	tbl_trn_requests	\N	\N	20	0
-1584983397	0	1584983397	\N	\N	\N	175	\N	\N	tbl_trn_transactions	\N	\N	20	0
-1584983518	0	1584983518	\N	\N	\N	176	\N	\N	tbl_trn_requests	\N	\N	21	0
-1584983518	0	1584983518	\N	\N	\N	177	\N	\N	tbl_trn_transactions	\N	\N	21	0
-1584983547	0	1584983547	\N	\N	\N	178	\N	\N	tbl_trn_requests	\N	\N	22	0
-1584983547	0	1584983547	\N	\N	\N	179	\N	\N	tbl_trn_transactions	\N	\N	22	0
-1584984338	0	1584984338	\N	\N	\N	180	\N	\N	tbl_trn_requests	\N	\N	23	0
-1584984338	0	1584984338	\N	\N	\N	181	\N	\N	tbl_trn_transactions	\N	\N	23	0
-1584986516	0	1584986516	\N	\N	\N	182	\N	\N	tbl_trn_requests	\N	\N	24	0
-1584986516	0	1584986516	\N	\N	\N	183	\N	\N	tbl_trn_transactions	\N	\N	24	0
-1584986568	0	1584986568	\N	\N	\N	184	\N	\N	tbl_trn_requests	\N	\N	25	0
-1584986569	0	1584986569	\N	\N	\N	185	\N	\N	tbl_trn_transactions	\N	\N	25	0
-1584986577	0	1584986577	\N	\N	\N	186	\N	\N	tbl_trn_requests	\N	\N	26	0
-1584986577	0	1584986577	\N	\N	\N	187	\N	\N	tbl_trn_transactions	\N	\N	26	0
-1584986734	0	1584986734	\N	\N	\N	188	\N	\N	tbl_trn_requests	\N	\N	27	0
-1584986734	0	1584986734	\N	\N	\N	189	\N	\N	tbl_trn_transactions	\N	\N	27	0
-1584986745	0	1584986745	\N	\N	\N	190	\N	\N	tbl_trn_requests	\N	\N	28	0
-1584986746	0	1584986746	\N	\N	\N	191	\N	\N	tbl_trn_transactions	\N	\N	28	0
-1585821719	0	1585821719	\N	\N	\N	1689	\N	\N	tbl_trn_requests	\N	\N	502	0
-1584986776	0	1584986776	\N	\N	\N	192	\N	\N	tbl_trn_requests	\N	\N	29	0
-1584986776	0	1584986776	\N	\N	\N	193	\N	\N	tbl_trn_transactions	\N	\N	29	0
-1584991658	0	1584991658	\N	\N	\N	194	\N	\N	tbl_trn_requests	\N	\N	30	0
-1584991658	0	1584991658	\N	\N	\N	195	\N	\N	tbl_trn_transactions	\N	\N	30	0
-1584991792	0	1584991792	\N	\N	\N	196	\N	\N	tbl_trn_requests	\N	\N	31	0
-1584991793	0	1584991793	\N	\N	\N	197	\N	\N	tbl_trn_transactions	\N	\N	31	0
-1584991867	0	1584991867	\N	\N	\N	198	\N	\N	tbl_trn_requests	\N	\N	32	0
-1584991867	0	1584991867	\N	\N	\N	199	\N	\N	tbl_trn_transactions	\N	\N	32	0
-1584991896	0	1584991896	\N	\N	\N	200	\N	\N	tbl_trn_requests	\N	\N	33	0
-1584991896	0	1584991896	\N	\N	\N	201	\N	\N	tbl_trn_transactions	\N	\N	33	0
-1584991975	0	1584991975	\N	\N	\N	202	\N	\N	tbl_trn_requests	\N	\N	34	0
-1584991975	0	1584991975	\N	\N	\N	203	\N	\N	tbl_trn_transactions	\N	\N	34	0
-1584991999	0	1584991999	\N	\N	\N	204	\N	\N	tbl_trn_requests	\N	\N	35	0
-1584991999	0	1584991999	\N	\N	\N	205	\N	\N	tbl_trn_transactions	\N	\N	35	0
-1584992222	0	1584992222	\N	\N	\N	206	\N	\N	tbl_trn_requests	\N	\N	36	0
-1584992223	0	1584992223	\N	\N	\N	207	\N	\N	tbl_trn_transactions	\N	\N	36	0
-1584992342	0	1584992342	\N	\N	\N	208	\N	\N	tbl_trn_requests	\N	\N	37	0
-1584992343	0	1584992343	\N	\N	\N	209	\N	\N	tbl_trn_transactions	\N	\N	37	0
-1584992491	0	1584992491	\N	\N	\N	210	\N	\N	tbl_trn_requests	\N	\N	38	0
-1584992492	0	1584992492	\N	\N	\N	211	\N	\N	tbl_trn_transactions	\N	\N	38	0
-1584993013	0	1584993013	\N	\N	\N	212	\N	\N	tbl_trn_requests	\N	\N	39	0
-1584993013	0	1584993013	\N	\N	\N	213	\N	\N	tbl_trn_transactions	\N	\N	39	0
-1584993669	0	1584993669	\N	\N	\N	214	\N	\N	tbl_trn_requests	\N	\N	40	0
-1584993669	0	1584993669	\N	\N	\N	215	\N	\N	tbl_trn_transactions	\N	\N	40	0
-1584993818	0	1584993818	\N	\N	\N	216	\N	\N	tbl_trn_requests	\N	\N	41	0
-1584993818	0	1584993818	\N	\N	\N	217	\N	\N	tbl_trn_transactions	\N	\N	41	0
-1584994705	0	1584994705	\N	\N	\N	218	\N	\N	tbl_trn_requests	\N	\N	42	0
-1584994705	0	1584994705	\N	\N	\N	219	\N	\N	tbl_trn_transactions	\N	\N	42	0
-1584995515	0	1584995515	\N	\N	\N	220	\N	\N	tbl_trn_requests	\N	\N	43	0
-1584995515	0	1584995515	\N	\N	\N	221	\N	\N	tbl_trn_transactions	\N	\N	43	0
-1584995671	0	1584995671	\N	\N	\N	222	\N	\N	tbl_trn_requests	\N	\N	44	0
-1584995671	0	1584995671	\N	\N	\N	223	\N	\N	tbl_trn_transactions	\N	\N	44	0
-1584996072	0	1584996072	\N	\N	\N	224	\N	\N	tbl_trn_requests	\N	\N	45	0
-1584996072	0	1584996072	\N	\N	\N	225	\N	\N	tbl_trn_transactions	\N	\N	45	0
-1584996250	0	1584996250	\N	\N	\N	226	\N	\N	tbl_trn_requests	\N	\N	46	0
-1584996251	0	1584996251	\N	\N	\N	227	\N	\N	tbl_trn_transactions	\N	\N	46	0
-1584996281	0	1584996281	\N	\N	\N	228	\N	\N	tbl_trn_requests	\N	\N	47	0
-1584996281	0	1584996281	\N	\N	\N	229	\N	\N	tbl_trn_transactions	\N	\N	47	0
-1584996541	0	1584996541	\N	\N	\N	230	\N	\N	tbl_trn_requests	\N	\N	48	0
-1584996541	0	1584996541	\N	\N	\N	231	\N	\N	tbl_trn_transactions	\N	\N	48	0
-1584996707	0	1584996707	\N	\N	\N	232	\N	\N	tbl_trn_requests	\N	\N	49	0
-1584996707	0	1584996707	\N	\N	\N	233	\N	\N	tbl_trn_transactions	\N	\N	49	0
-1584996915	0	1584996915	\N	\N	\N	234	\N	\N	tbl_trn_requests	\N	\N	50	0
-1584996915	0	1584996915	\N	\N	\N	235	\N	\N	tbl_trn_transactions	\N	\N	50	0
-1584997323	0	1584997323	\N	\N	\N	236	\N	\N	tbl_trn_requests	\N	\N	1	0
-1584997323	0	1584997323	\N	\N	\N	237	\N	\N	tbl_trn_transactions	\N	\N	1	0
-1585036535	0	1585036535	\N	\N	\N	238	\N	\N	tbl_trn_requests	\N	\N	2	0
-1585036535	0	1585036535	\N	\N	\N	239	\N	\N	tbl_trn_transactions	\N	\N	2	0
-1585036555	0	1585036555	\N	\N	\N	240	\N	\N	tbl_trn_requests	\N	\N	3	0
-1585036555	0	1585036555	\N	\N	\N	241	\N	\N	tbl_trn_transactions	\N	\N	3	0
-1585037053	0	1585037053	\N	\N	\N	242	\N	\N	tbl_trn_requests	\N	\N	4	0
-1585037053	0	1585037053	\N	\N	\N	243	\N	\N	tbl_trn_transactions	\N	\N	4	0
-1585037145	0	1585037145	\N	\N	\N	244	\N	\N	tbl_trn_requests	\N	\N	5	0
-1585037145	0	1585037145	\N	\N	\N	245	\N	\N	tbl_trn_transactions	\N	\N	5	0
-1585037160	0	1585037160	\N	\N	\N	246	\N	\N	tbl_trn_requests	\N	\N	6	0
-1585037160	0	1585037160	\N	\N	\N	247	\N	\N	tbl_trn_transactions	\N	\N	6	0
-1585037187	0	1585037187	\N	\N	\N	248	\N	\N	tbl_trn_requests	\N	\N	7	0
-1585037187	0	1585037187	\N	\N	\N	249	\N	\N	tbl_trn_transactions	\N	\N	7	0
-1585037203	0	1585037203	\N	\N	\N	250	\N	\N	tbl_trn_requests	\N	\N	8	0
-1585037203	0	1585037203	\N	\N	\N	251	\N	\N	tbl_trn_transactions	\N	\N	8	0
-1585039501	0	1585039501	\N	\N	\N	252	\N	\N	tbl_trn_requests	\N	\N	9	0
-1585039501	0	1585039501	\N	\N	\N	253	\N	\N	tbl_trn_transactions	\N	\N	9	0
-1585048980	0	1585048980	\N	\N	\N	254	\N	\N	tbl_trn_requests	\N	\N	10	0
-1585048980	0	1585048980	\N	\N	\N	255	\N	\N	tbl_trn_transactions	\N	\N	10	0
-1585049008	0	1585049008	\N	\N	\N	256	\N	\N	tbl_trn_requests	\N	\N	11	0
-1585049009	0	1585049009	\N	\N	\N	257	\N	\N	tbl_trn_transactions	\N	\N	11	0
-1585116120	0	1585116120	\N	\N	\N	258	\N	\N	tbl_trn_requests	\N	\N	1	0
-1585116120	0	1585116120	\N	\N	\N	259	\N	\N	tbl_trn_transactions	\N	\N	1	0
-1585136048	0	1585136048	\N	\N	\N	260	\N	\N	tbl_trn_requests	\N	\N	2	0
-1585136048	0	1585136048	\N	\N	\N	261	\N	\N	tbl_trn_transactions	\N	\N	2	0
-1585136458	0	1585136458	\N	\N	\N	262	\N	\N	tbl_trn_requests	\N	\N	3	0
-1585136458	0	1585136458	\N	\N	\N	263	\N	\N	tbl_trn_transactions	\N	\N	3	0
-1585136809	0	1585136809	\N	\N	\N	264	\N	\N	tbl_trn_requests	\N	\N	4	0
-1585136809	0	1585136809	\N	\N	\N	265	\N	\N	tbl_trn_transactions	\N	\N	4	0
-1585137276	0	1585137276	\N	\N	\N	266	\N	\N	tbl_trn_requests	\N	\N	5	0
-1585137276	0	1585137276	\N	\N	\N	267	\N	\N	tbl_trn_transactions	\N	\N	5	0
-1585137543	0	1585137543	\N	\N	\N	268	\N	\N	tbl_trn_requests	\N	\N	6	0
-1585137543	0	1585137543	\N	\N	\N	269	\N	\N	tbl_trn_transactions	\N	\N	6	0
-1585137810	0	1585137810	\N	\N	\N	270	\N	\N	tbl_trn_requests	\N	\N	7	0
-1585137810	0	1585137810	\N	\N	\N	271	\N	\N	tbl_trn_transactions	\N	\N	7	0
-1585137850	0	1585137850	\N	\N	\N	272	\N	\N	tbl_trn_requests	\N	\N	8	0
-1585137850	0	1585137850	\N	\N	\N	273	\N	\N	tbl_trn_transactions	\N	\N	8	0
-1585138622	0	1585138622	\N	\N	\N	274	\N	\N	tbl_trn_requests	\N	\N	9	0
-1585138622	0	1585138622	\N	\N	\N	275	\N	\N	tbl_trn_transactions	\N	\N	9	0
-1585139297	0	1585139297	\N	\N	\N	276	\N	\N	tbl_trn_requests	\N	\N	10	0
-1585139297	0	1585139297	\N	\N	\N	277	\N	\N	tbl_trn_transactions	\N	\N	10	0
-1585139578	0	1585139578	\N	\N	\N	278	\N	\N	tbl_trn_requests	\N	\N	11	0
-1585139578	0	1585139578	\N	\N	\N	279	\N	\N	tbl_trn_transactions	\N	\N	11	0
-1585139711	0	1585139711	\N	\N	\N	280	\N	\N	tbl_trn_requests	\N	\N	12	0
-1585139711	0	1585139711	\N	\N	\N	281	\N	\N	tbl_trn_transactions	\N	\N	12	0
-1585140080	0	1585140080	\N	\N	\N	282	\N	\N	tbl_trn_requests	\N	\N	13	0
-1585821725	0	1585821725	\N	\N	\N	1749	\N	\N	tbl_trn_requests	\N	\N	532	0
-1585140080	0	1585140080	\N	\N	\N	283	\N	\N	tbl_trn_transactions	\N	\N	13	0
-1585140914	0	1585140914	\N	\N	\N	290	\N	\N	tbl_trn_requests	\N	\N	17	0
-1585140914	0	1585140914	\N	\N	\N	291	\N	\N	tbl_trn_transactions	\N	\N	17	0
-1585141098	0	1585141098	\N	\N	\N	292	\N	\N	tbl_trn_requests	\N	\N	18	0
-1585141098	0	1585141098	\N	\N	\N	293	\N	\N	tbl_trn_transactions	\N	\N	18	0
-1585821719	0	1585821719	\N	\N	\N	1690	\N	\N	tbl_trn_transactions	\N	\N	502	0
-1585821719	0	1585821719	\N	\N	\N	1693	\N	\N	tbl_trn_requests	\N	\N	504	0
-1585821720	0	1585821720	\N	\N	\N	1703	\N	\N	tbl_trn_requests	\N	\N	509	0
-1585821720	0	1585821720	\N	\N	\N	1704	\N	\N	tbl_trn_transactions	\N	\N	509	0
-1585821721	0	1585821721	\N	\N	\N	1711	\N	\N	tbl_trn_requests	\N	\N	513	0
-1585821723	0	1585821723	\N	\N	\N	1726	\N	\N	tbl_trn_transactions	\N	\N	520	0
-1585821723	0	1585821723	\N	\N	\N	1728	\N	\N	tbl_trn_transactions	\N	\N	521	0
-1585821723	0	1585821723	\N	\N	\N	1730	\N	\N	tbl_trn_transactions	\N	\N	522	0
-1585821724	0	1585821724	\N	\N	\N	1737	\N	\N	tbl_trn_requests	\N	\N	526	0
-1585821725	0	1585821725	\N	\N	\N	1743	\N	\N	tbl_trn_requests	\N	\N	529	0
-1585821725	0	1585821725	\N	\N	\N	1750	\N	\N	tbl_trn_transactions	\N	\N	532	0
-1585821726	0	1585821726	\N	\N	\N	1765	\N	\N	tbl_trn_requests	\N	\N	540	0
-1585821727	0	1585821727	\N	\N	\N	1772	\N	\N	tbl_trn_transactions	\N	\N	543	0
-1585821728	0	1585821728	\N	\N	\N	1783	\N	\N	tbl_trn_requests	\N	\N	549	0
-1585821730	0	1585821730	\N	\N	\N	1797	\N	\N	tbl_trn_requests	\N	\N	556	0
-1585821733	0	1585821733	\N	\N	\N	1826	\N	\N	tbl_trn_transactions	\N	\N	570	0
-1585821734	0	1585821734	\N	\N	\N	1829	\N	\N	tbl_trn_requests	\N	\N	572	0
-1585821735	0	1585821735	\N	\N	\N	1840	\N	\N	tbl_trn_transactions	\N	\N	577	0
-1585821736	0	1585821736	\N	\N	\N	1848	\N	\N	tbl_trn_transactions	\N	\N	581	0
-1585821737	0	1585821737	\N	\N	\N	1852	\N	\N	tbl_trn_transactions	\N	\N	583	0
-1585821737	0	1585821737	\N	\N	\N	1855	\N	\N	tbl_trn_requests	\N	\N	585	0
-1585821738	0	1585821738	\N	\N	\N	1857	\N	\N	tbl_trn_requests	\N	\N	586	0
-1585821740	0	1585821740	\N	\N	\N	1872	\N	\N	tbl_trn_transactions	\N	\N	593	0
-1585821741	0	1585821741	\N	\N	\N	1885	\N	\N	tbl_trn_requests	\N	\N	600	0
-1585821741	0	1585821741	\N	\N	\N	1887	\N	\N	tbl_trn_requests	\N	\N	601	0
-1585821742	0	1585821742	\N	\N	\N	1892	\N	\N	tbl_trn_transactions	\N	\N	603	0
-1585821744	0	1585821744	\N	\N	\N	1909	\N	\N	tbl_trn_requests	\N	\N	612	0
-1585821746	0	1585821746	\N	\N	\N	1922	\N	\N	tbl_trn_transactions	\N	\N	618	0
-1585821746	0	1585821746	\N	\N	\N	1927	\N	\N	tbl_trn_requests	\N	\N	621	0
-1585821747	0	1585821747	\N	\N	\N	1932	\N	\N	tbl_trn_transactions	\N	\N	623	0
-1585821749	0	1585821749	\N	\N	\N	1945	\N	\N	tbl_trn_requests	\N	\N	630	0
-1585821750	0	1585821750	\N	\N	\N	1954	\N	\N	tbl_trn_transactions	\N	\N	634	0
-1585821751	0	1585821751	\N	\N	\N	1960	\N	\N	tbl_trn_transactions	\N	\N	637	0
-1585821752	0	1585821752	\N	\N	\N	1967	\N	\N	tbl_trn_requests	\N	\N	641	0
-1585821752	0	1585821752	\N	\N	\N	1969	\N	\N	tbl_trn_requests	\N	\N	642	0
-1585821757	0	1585821757	\N	\N	\N	2011	\N	\N	tbl_trn_requests	\N	\N	663	0
-1585821759	0	1585821759	\N	\N	\N	2025	\N	\N	tbl_trn_requests	\N	\N	670	0
-1585821760	0	1585821760	\N	\N	\N	2031	\N	\N	tbl_trn_requests	\N	\N	673	0
-1585821760	0	1585821760	\N	\N	\N	2036	\N	\N	tbl_trn_transactions	\N	\N	675	0
-1585821760	0	1585821760	\N	\N	\N	2037	\N	\N	tbl_trn_requests	\N	\N	676	0
-1585821761	0	1585821761	\N	\N	\N	2044	\N	\N	tbl_trn_transactions	\N	\N	679	0
-1585821762	0	1585821762	\N	\N	\N	2054	\N	\N	tbl_trn_transactions	\N	\N	684	0
-1585821765	0	1585821765	\N	\N	\N	2078	\N	\N	tbl_trn_transactions	\N	\N	696	0
-1585821766	0	1585821766	\N	\N	\N	2089	\N	\N	tbl_trn_requests	\N	\N	702	0
-1585821767	0	1585821767	\N	\N	\N	2096	\N	\N	tbl_trn_transactions	\N	\N	705	0
-1585821768	0	1585821768	\N	\N	\N	2104	\N	\N	tbl_trn_transactions	\N	\N	709	0
-1585821770	0	1585821770	\N	\N	\N	2121	\N	\N	tbl_trn_requests	\N	\N	718	0
-1585821771	0	1585821771	\N	\N	\N	2123	\N	\N	tbl_trn_requests	\N	\N	719	0
-1585821771	0	1585821771	\N	\N	\N	2130	\N	\N	tbl_trn_transactions	\N	\N	722	0
-1585821772	0	1585821772	\N	\N	\N	2142	\N	\N	tbl_trn_transactions	\N	\N	728	0
-1585821774	0	1585821774	\N	\N	\N	2151	\N	\N	tbl_trn_requests	\N	\N	733	0
-1585821776	0	1585821776	\N	\N	\N	2161	\N	\N	tbl_trn_requests	\N	\N	738	0
-1585821776	0	1585821776	\N	\N	\N	2167	\N	\N	tbl_trn_requests	\N	\N	741	0
-1585821777	0	1585821777	\N	\N	\N	2174	\N	\N	tbl_trn_transactions	\N	\N	744	0
-1585821777	0	1585821777	\N	\N	\N	2177	\N	\N	tbl_trn_requests	\N	\N	746	0
-1585821778	0	1585821778	\N	\N	\N	2180	\N	\N	tbl_trn_transactions	\N	\N	747	0
-1585821779	0	1585821779	\N	\N	\N	2189	\N	\N	tbl_trn_requests	\N	\N	752	0
-1585821841	0	1585821841	\N	\N	\N	2725	\N	\N	tbl_trn_requests	\N	\N	1020	0
-1585821842	0	1585821842	\N	\N	\N	2735	\N	\N	tbl_trn_requests	\N	\N	1025	0
-1585821843	0	1585821843	\N	\N	\N	2738	\N	\N	tbl_trn_transactions	\N	\N	1026	0
-1585821844	0	1585821844	\N	\N	\N	2749	\N	\N	tbl_trn_requests	\N	\N	1032	0
-1585140237	0	1585140237	\N	\N	\N	284	\N	\N	tbl_trn_requests	\N	\N	14	0
-1585140844	0	1585140844	\N	\N	\N	288	\N	\N	tbl_trn_requests	\N	\N	16	0
-1585140844	0	1585140844	\N	\N	\N	289	\N	\N	tbl_trn_transactions	\N	\N	16	0
-1585821719	0	1585821719	\N	\N	\N	1691	\N	\N	tbl_trn_requests	\N	\N	503	0
-1585821719	0	1585821719	\N	\N	\N	1694	\N	\N	tbl_trn_transactions	\N	\N	504	0
-1585821720	0	1585821720	\N	\N	\N	1695	\N	\N	tbl_trn_requests	\N	\N	505	0
-1585821720	0	1585821720	\N	\N	\N	1697	\N	\N	tbl_trn_requests	\N	\N	506	0
-1585821720	0	1585821720	\N	\N	\N	1699	\N	\N	tbl_trn_requests	\N	\N	507	0
-1585821720	0	1585821720	\N	\N	\N	1701	\N	\N	tbl_trn_requests	\N	\N	508	0
-1585821720	0	1585821720	\N	\N	\N	1705	\N	\N	tbl_trn_requests	\N	\N	510	0
-1585821721	0	1585821721	\N	\N	\N	1713	\N	\N	tbl_trn_requests	\N	\N	514	0
-1585821722	0	1585821722	\N	\N	\N	1715	\N	\N	tbl_trn_requests	\N	\N	515	0
-1585821722	0	1585821722	\N	\N	\N	1718	\N	\N	tbl_trn_transactions	\N	\N	516	0
-1585821722	0	1585821722	\N	\N	\N	1720	\N	\N	tbl_trn_transactions	\N	\N	517	0
-1585821723	0	1585821723	\N	\N	\N	1727	\N	\N	tbl_trn_requests	\N	\N	521	0
-1585821724	0	1585821724	\N	\N	\N	1732	\N	\N	tbl_trn_transactions	\N	\N	523	0
-1585821724	0	1585821724	\N	\N	\N	1740	\N	\N	tbl_trn_transactions	\N	\N	527	0
-1585821726	0	1585821726	\N	\N	\N	1756	\N	\N	tbl_trn_transactions	\N	\N	535	0
-1585821726	0	1585821726	\N	\N	\N	1763	\N	\N	tbl_trn_requests	\N	\N	539	0
-1585821727	0	1585821727	\N	\N	\N	1768	\N	\N	tbl_trn_transactions	\N	\N	541	0
-1585821727	0	1585821727	\N	\N	\N	1770	\N	\N	tbl_trn_transactions	\N	\N	542	0
-1585821727	0	1585821727	\N	\N	\N	1774	\N	\N	tbl_trn_transactions	\N	\N	544	0
-1585821728	0	1585821728	\N	\N	\N	1785	\N	\N	tbl_trn_requests	\N	\N	550	0
-1585821729	0	1585821729	\N	\N	\N	1787	\N	\N	tbl_trn_requests	\N	\N	551	0
-1585821729	0	1585821729	\N	\N	\N	1792	\N	\N	tbl_trn_transactions	\N	\N	553	0
-1585821729	0	1585821729	\N	\N	\N	1795	\N	\N	tbl_trn_requests	\N	\N	555	0
-1585821730	0	1585821730	\N	\N	\N	1802	\N	\N	tbl_trn_transactions	\N	\N	558	0
-1585821730	0	1585821730	\N	\N	\N	1803	\N	\N	tbl_trn_requests	\N	\N	559	0
-1585821733	0	1585821733	\N	\N	\N	1825	\N	\N	tbl_trn_requests	\N	\N	570	0
-1585821734	0	1585821734	\N	\N	\N	1832	\N	\N	tbl_trn_transactions	\N	\N	573	0
-1585821735	0	1585821735	\N	\N	\N	1838	\N	\N	tbl_trn_transactions	\N	\N	576	0
-1585821737	0	1585821737	\N	\N	\N	1851	\N	\N	tbl_trn_requests	\N	\N	583	0
-1585821737	0	1585821737	\N	\N	\N	1853	\N	\N	tbl_trn_requests	\N	\N	584	0
-1585821737	0	1585821737	\N	\N	\N	1856	\N	\N	tbl_trn_transactions	\N	\N	585	0
-1585821738	0	1585821738	\N	\N	\N	1858	\N	\N	tbl_trn_transactions	\N	\N	586	0
-1585821740	0	1585821740	\N	\N	\N	1876	\N	\N	tbl_trn_transactions	\N	\N	595	0
-1585821740	0	1585821740	\N	\N	\N	1877	\N	\N	tbl_trn_requests	\N	\N	596	0
-1585821741	0	1585821741	\N	\N	\N	1881	\N	\N	tbl_trn_requests	\N	\N	598	0
-1585821741	0	1585821741	\N	\N	\N	1886	\N	\N	tbl_trn_transactions	\N	\N	600	0
-1585821742	0	1585821742	\N	\N	\N	1893	\N	\N	tbl_trn_requests	\N	\N	604	0
-1585821742	0	1585821742	\N	\N	\N	1898	\N	\N	tbl_trn_transactions	\N	\N	606	0
-1585821744	0	1585821744	\N	\N	\N	1912	\N	\N	tbl_trn_transactions	\N	\N	613	0
-1585821746	0	1585821746	\N	\N	\N	1920	\N	\N	tbl_trn_transactions	\N	\N	617	0
-1585821746	0	1585821746	\N	\N	\N	1925	\N	\N	tbl_trn_requests	\N	\N	620	0
-1585821747	0	1585821747	\N	\N	\N	1935	\N	\N	tbl_trn_requests	\N	\N	625	0
-1585821750	0	1585821750	\N	\N	\N	1950	\N	\N	tbl_trn_transactions	\N	\N	632	0
-1585821750	0	1585821750	\N	\N	\N	1952	\N	\N	tbl_trn_transactions	\N	\N	633	0
-1585821751	0	1585821751	\N	\N	\N	1961	\N	\N	tbl_trn_requests	\N	\N	638	0
-1585821751	0	1585821751	\N	\N	\N	1966	\N	\N	tbl_trn_transactions	\N	\N	640	0
-1585821754	0	1585821754	\N	\N	\N	1983	\N	\N	tbl_trn_requests	\N	\N	649	0
-1585821754	0	1585821754	\N	\N	\N	1988	\N	\N	tbl_trn_transactions	\N	\N	651	0
-1585821754	0	1585821754	\N	\N	\N	1989	\N	\N	tbl_trn_requests	\N	\N	652	0
-1585821755	0	1585821755	\N	\N	\N	1994	\N	\N	tbl_trn_transactions	\N	\N	654	0
-1585821756	0	1585821756	\N	\N	\N	2000	\N	\N	tbl_trn_transactions	\N	\N	657	0
-1585821757	0	1585821757	\N	\N	\N	2008	\N	\N	tbl_trn_transactions	\N	\N	661	0
-1585821757	0	1585821757	\N	\N	\N	2009	\N	\N	tbl_trn_requests	\N	\N	662	0
-1585821758	0	1585821758	\N	\N	\N	2014	\N	\N	tbl_trn_transactions	\N	\N	664	0
-1585821758	0	1585821758	\N	\N	\N	2019	\N	\N	tbl_trn_requests	\N	\N	667	0
-1585821759	0	1585821759	\N	\N	\N	2026	\N	\N	tbl_trn_transactions	\N	\N	670	0
-1585821759	0	1585821759	\N	\N	\N	2027	\N	\N	tbl_trn_requests	\N	\N	671	0
-1585821760	0	1585821760	\N	\N	\N	2038	\N	\N	tbl_trn_transactions	\N	\N	676	0
-1585821761	0	1585821761	\N	\N	\N	2045	\N	\N	tbl_trn_requests	\N	\N	680	0
-1585821762	0	1585821762	\N	\N	\N	2049	\N	\N	tbl_trn_requests	\N	\N	682	0
-1585821763	0	1585821763	\N	\N	\N	2060	\N	\N	tbl_trn_transactions	\N	\N	687	0
-1585821764	0	1585821764	\N	\N	\N	2072	\N	\N	tbl_trn_transactions	\N	\N	693	0
-1585821766	0	1585821766	\N	\N	\N	2084	\N	\N	tbl_trn_transactions	\N	\N	699	0
-1585821768	0	1585821768	\N	\N	\N	2101	\N	\N	tbl_trn_requests	\N	\N	708	0
-1585821769	0	1585821769	\N	\N	\N	2112	\N	\N	tbl_trn_transactions	\N	\N	713	0
-1585821770	0	1585821770	\N	\N	\N	2114	\N	\N	tbl_trn_transactions	\N	\N	714	0
-1585821771	0	1585821771	\N	\N	\N	2126	\N	\N	tbl_trn_transactions	\N	\N	720	0
-1585821771	0	1585821771	\N	\N	\N	2134	\N	\N	tbl_trn_transactions	\N	\N	724	0
-1585821772	0	1585821772	\N	\N	\N	2135	\N	\N	tbl_trn_requests	\N	\N	725	0
-1585821773	0	1585821773	\N	\N	\N	2143	\N	\N	tbl_trn_requests	\N	\N	729	0
-1585821774	0	1585821774	\N	\N	\N	2154	\N	\N	tbl_trn_transactions	\N	\N	734	0
-1585821774	0	1585821774	\N	\N	\N	2156	\N	\N	tbl_trn_transactions	\N	\N	735	0
-1585821776	0	1585821776	\N	\N	\N	2165	\N	\N	tbl_trn_requests	\N	\N	740	0
-1585821778	0	1585821778	\N	\N	\N	2184	\N	\N	tbl_trn_transactions	\N	\N	749	0
-1585821779	0	1585821779	\N	\N	\N	2187	\N	\N	tbl_trn_requests	\N	\N	751	0
-1585821841	0	1585821841	\N	\N	\N	2726	\N	\N	tbl_trn_transactions	\N	\N	1020	0
-1585821842	0	1585821842	\N	\N	\N	2729	\N	\N	tbl_trn_requests	\N	\N	1022	0
-1585821844	0	1585821844	\N	\N	\N	2750	\N	\N	tbl_trn_transactions	\N	\N	1032	0
-1585140237	0	1585140237	\N	\N	\N	285	\N	\N	tbl_trn_transactions	\N	\N	14	0
-1585140293	0	1585140293	\N	\N	\N	286	\N	\N	tbl_trn_requests	\N	\N	15	0
-1585140294	0	1585140294	\N	\N	\N	287	\N	\N	tbl_trn_transactions	\N	\N	15	0
-1585143001	0	1585143001	\N	\N	\N	325	\N	\N	tbl_trn_requests	\N	\N	19	0
-1585143001	0	1585143001	\N	\N	\N	326	\N	\N	tbl_trn_transactions	\N	\N	19	0
-1585144336	0	1585144336	\N	\N	\N	327	\N	\N	tbl_trn_requests	\N	\N	20	0
-1585144336	0	1585144336	\N	\N	\N	328	\N	\N	tbl_trn_transactions	\N	\N	20	0
-1585144589	0	1585144589	\N	\N	\N	329	\N	\N	tbl_trn_requests	\N	\N	21	0
-1585144589	0	1585144589	\N	\N	\N	330	\N	\N	tbl_trn_transactions	\N	\N	21	0
-1585144735	0	1585144735	\N	\N	\N	331	\N	\N	tbl_trn_requests	\N	\N	22	0
-1585144735	0	1585144735	\N	\N	\N	332	\N	\N	tbl_trn_transactions	\N	\N	22	0
-1585145992	0	1585145992	\N	\N	\N	333	\N	\N	tbl_trn_requests	\N	\N	23	0
-1585145992	0	1585145992	\N	\N	\N	334	\N	\N	tbl_trn_transactions	\N	\N	23	0
-1585152868	0	1585152868	\N	\N	\N	335	\N	\N	tbl_trn_requests	\N	\N	24	0
-1585152868	0	1585152868	\N	\N	\N	336	\N	\N	tbl_trn_transactions	\N	\N	24	0
-1585152956	0	1585152956	\N	\N	\N	337	\N	\N	tbl_trn_requests	\N	\N	25	0
-1585152956	0	1585152956	\N	\N	\N	338	\N	\N	tbl_trn_transactions	\N	\N	25	0
-1585153183	0	1585153183	\N	\N	\N	339	\N	\N	tbl_trn_requests	\N	\N	26	0
-1585153183	0	1585153183	\N	\N	\N	340	\N	\N	tbl_trn_transactions	\N	\N	26	0
-1585153346	0	1585153346	\N	\N	\N	341	\N	\N	tbl_trn_requests	\N	\N	27	0
-1585153346	0	1585153346	\N	\N	\N	342	\N	\N	tbl_trn_transactions	\N	\N	27	0
-1585153497	0	1585153497	\N	\N	\N	343	\N	\N	tbl_trn_requests	\N	\N	28	0
-1585153497	0	1585153497	\N	\N	\N	344	\N	\N	tbl_trn_transactions	\N	\N	28	0
-1585153715	0	1585153715	\N	\N	\N	345	\N	\N	tbl_trn_requests	\N	\N	29	0
-1585153715	0	1585153715	\N	\N	\N	346	\N	\N	tbl_trn_transactions	\N	\N	29	0
-1585153728	0	1585153728	\N	\N	\N	347	\N	\N	tbl_trn_requests	\N	\N	30	0
-1585153728	0	1585153728	\N	\N	\N	348	\N	\N	tbl_trn_transactions	\N	\N	30	0
-1585153976	0	1585153976	\N	\N	\N	349	\N	\N	tbl_trn_requests	\N	\N	31	0
-1585153976	0	1585153976	\N	\N	\N	350	\N	\N	tbl_trn_transactions	\N	\N	31	0
-1585154176	0	1585154176	\N	\N	\N	351	\N	\N	tbl_trn_requests	\N	\N	32	0
-1585154176	0	1585154176	\N	\N	\N	352	\N	\N	tbl_trn_transactions	\N	\N	32	0
-1585154279	0	1585154279	\N	\N	\N	353	\N	\N	tbl_trn_requests	\N	\N	33	0
-1585154279	0	1585154279	\N	\N	\N	354	\N	\N	tbl_trn_transactions	\N	\N	33	0
-1585156251	0	1585156251	\N	\N	\N	355	\N	\N	tbl_trn_requests	\N	\N	34	0
-1585156251	0	1585156251	\N	\N	\N	356	\N	\N	tbl_trn_transactions	\N	\N	34	0
-1585156477	0	1585156477	\N	\N	\N	357	\N	\N	tbl_trn_requests	\N	\N	35	0
-1585156477	0	1585156477	\N	\N	\N	358	\N	\N	tbl_trn_transactions	\N	\N	35	0
-1585156809	0	1585156809	\N	\N	\N	359	\N	\N	tbl_trn_requests	\N	\N	36	0
-1585156810	0	1585156810	\N	\N	\N	360	\N	\N	tbl_trn_transactions	\N	\N	36	0
-1585157078	0	1585157078	\N	\N	\N	361	\N	\N	tbl_trn_requests	\N	\N	37	0
-1585157078	0	1585157078	\N	\N	\N	362	\N	\N	tbl_trn_transactions	\N	\N	37	0
-1585157600	0	1585157600	\N	\N	\N	363	\N	\N	tbl_trn_requests	\N	\N	38	0
-1585157600	0	1585157600	\N	\N	\N	364	\N	\N	tbl_trn_transactions	\N	\N	38	0
-1585208404	0	1585208404	\N	\N	\N	365	\N	\N	tbl_trn_requests	\N	\N	1	0
-1585208404	0	1585208404	\N	\N	\N	366	\N	\N	tbl_trn_transactions	\N	\N	1	0
-1585208575	0	1585208575	\N	\N	\N	367	\N	\N	tbl_trn_requests	\N	\N	2	0
-1585208575	0	1585208575	\N	\N	\N	368	\N	\N	tbl_trn_transactions	\N	\N	2	0
-1585208724	0	1585208724	\N	\N	\N	369	\N	\N	tbl_trn_requests	\N	\N	3	0
-1585208724	0	1585208724	\N	\N	\N	370	\N	\N	tbl_trn_transactions	\N	\N	3	0
-1585208744	0	1585208744	\N	\N	\N	371	\N	\N	tbl_trn_requests	\N	\N	4	0
-1585208745	0	1585208745	\N	\N	\N	372	\N	\N	tbl_trn_transactions	\N	\N	4	0
-1585209061	0	1585209061	\N	\N	\N	373	\N	\N	tbl_trn_requests	\N	\N	5	0
-1585209061	0	1585209061	\N	\N	\N	374	\N	\N	tbl_trn_transactions	\N	\N	5	0
-1585209127	0	1585209127	\N	\N	\N	375	\N	\N	tbl_trn_requests	\N	\N	6	0
-1585209127	0	1585209127	\N	\N	\N	376	\N	\N	tbl_trn_transactions	\N	\N	6	0
-1585209403	0	1585209403	\N	\N	\N	377	\N	\N	tbl_trn_requests	\N	\N	7	0
-1585209403	0	1585209403	\N	\N	\N	378	\N	\N	tbl_trn_transactions	\N	\N	7	0
-1585211362	0	1585211362	\N	\N	\N	379	\N	\N	tbl_trn_requests	\N	\N	8	0
-1585211362	0	1585211362	\N	\N	\N	380	\N	\N	tbl_trn_transactions	\N	\N	8	0
-1585211518	0	1585211518	\N	\N	\N	381	\N	\N	tbl_trn_requests	\N	\N	9	0
-1585211519	0	1585211519	\N	\N	\N	382	\N	\N	tbl_trn_transactions	\N	\N	9	0
-1585211535	0	1585211535	\N	\N	\N	383	\N	\N	tbl_trn_requests	\N	\N	10	0
-1585211536	0	1585211536	\N	\N	\N	384	\N	\N	tbl_trn_transactions	\N	\N	10	0
-1585212391	0	1585212391	\N	\N	\N	385	\N	\N	tbl_trn_requests	\N	\N	11	0
-1585212391	0	1585212391	\N	\N	\N	386	\N	\N	tbl_trn_transactions	\N	\N	11	0
-1585223760	0	1585223760	\N	\N	\N	387	\N	\N	tbl_trn_requests	\N	\N	12	0
-1585223760	0	1585223760	\N	\N	\N	388	\N	\N	tbl_trn_transactions	\N	\N	12	0
-1585224340	0	1585224340	\N	\N	\N	389	\N	\N	tbl_trn_requests	\N	\N	13	0
-1585224340	0	1585224340	\N	\N	\N	390	\N	\N	tbl_trn_transactions	\N	\N	13	0
-1585224366	0	1585224366	\N	\N	\N	391	\N	\N	tbl_trn_requests	\N	\N	14	0
-1585224366	0	1585224366	\N	\N	\N	392	\N	\N	tbl_trn_transactions	\N	\N	14	0
-1585224610	0	1585224610	\N	\N	\N	393	\N	\N	tbl_trn_requests	\N	\N	15	0
-1585224610	0	1585224610	\N	\N	\N	394	\N	\N	tbl_trn_transactions	\N	\N	15	0
-1585226038	0	1585226038	\N	\N	\N	395	\N	\N	tbl_trn_requests	\N	\N	16	0
-1585226038	0	1585226038	\N	\N	\N	396	\N	\N	tbl_trn_transactions	\N	\N	16	0
-1585226298	0	1585226298	\N	\N	\N	397	\N	\N	tbl_trn_requests	\N	\N	17	0
-1585226298	0	1585226298	\N	\N	\N	398	\N	\N	tbl_trn_transactions	\N	\N	17	0
-1585226412	0	1585226412	\N	\N	\N	399	\N	\N	tbl_trn_requests	\N	\N	18	0
-1585226412	0	1585226412	\N	\N	\N	400	\N	\N	tbl_trn_transactions	\N	\N	18	0
-1585228784	0	1585228784	\N	\N	\N	401	\N	\N	tbl_trn_requests	\N	\N	19	0
-1585228784	0	1585228784	\N	\N	\N	402	\N	\N	tbl_trn_transactions	\N	\N	19	0
-1585229171	0	1585229171	\N	\N	\N	403	\N	\N	tbl_trn_requests	\N	\N	20	0
-1585229171	0	1585229171	\N	\N	\N	404	\N	\N	tbl_trn_transactions	\N	\N	20	0
-1585229453	0	1585229453	\N	\N	\N	405	\N	\N	tbl_trn_requests	\N	\N	21	0
-1585229453	0	1585229453	\N	\N	\N	406	\N	\N	tbl_trn_transactions	\N	\N	21	0
-1585229698	0	1585229698	\N	\N	\N	407	\N	\N	tbl_trn_requests	\N	\N	22	0
-1585229698	0	1585229698	\N	\N	\N	408	\N	\N	tbl_trn_transactions	\N	\N	22	0
-1585229737	0	1585229737	\N	\N	\N	409	\N	\N	tbl_trn_requests	\N	\N	23	0
-1585229737	0	1585229737	\N	\N	\N	410	\N	\N	tbl_trn_transactions	\N	\N	23	0
-1585229924	0	1585229924	\N	\N	\N	411	\N	\N	tbl_trn_requests	\N	\N	24	0
-1585229924	0	1585229924	\N	\N	\N	412	\N	\N	tbl_trn_transactions	\N	\N	24	0
-1585821719	0	1585821719	\N	\N	\N	1692	\N	\N	tbl_trn_transactions	\N	\N	503	0
-1585230170	0	1585230170	\N	\N	\N	413	\N	\N	tbl_trn_requests	\N	\N	25	0
-1585230170	0	1585230170	\N	\N	\N	414	\N	\N	tbl_trn_transactions	\N	\N	25	0
-1585230566	0	1585230566	\N	\N	\N	416	\N	\N	tbl_trn_transactions	\N	\N	26	0
-1585241302	0	1585241302	\N	\N	\N	417	\N	\N	tbl_trn_requests	\N	\N	27	0
-1585245082	0	1585245082	\N	\N	\N	420	\N	\N	tbl_trn_transactions	\N	\N	28	0
-1585821720	0	1585821720	\N	\N	\N	1696	\N	\N	tbl_trn_transactions	\N	\N	505	0
-1585821720	0	1585821720	\N	\N	\N	1698	\N	\N	tbl_trn_transactions	\N	\N	506	0
-1585821720	0	1585821720	\N	\N	\N	1700	\N	\N	tbl_trn_transactions	\N	\N	507	0
-1585821720	0	1585821720	\N	\N	\N	1702	\N	\N	tbl_trn_transactions	\N	\N	508	0
-1585821721	0	1585821721	\N	\N	\N	1707	\N	\N	tbl_trn_requests	\N	\N	511	0
-1585821721	0	1585821721	\N	\N	\N	1709	\N	\N	tbl_trn_requests	\N	\N	512	0
-1585821722	0	1585821722	\N	\N	\N	1723	\N	\N	tbl_trn_requests	\N	\N	519	0
-1585821723	0	1585821723	\N	\N	\N	1729	\N	\N	tbl_trn_requests	\N	\N	522	0
-1585821724	0	1585821724	\N	\N	\N	1735	\N	\N	tbl_trn_requests	\N	\N	525	0
-1585821725	0	1585821725	\N	\N	\N	1748	\N	\N	tbl_trn_transactions	\N	\N	531	0
-1585821726	0	1585821726	\N	\N	\N	1758	\N	\N	tbl_trn_transactions	\N	\N	536	0
-1585821727	0	1585821727	\N	\N	\N	1771	\N	\N	tbl_trn_requests	\N	\N	543	0
-1585821729	0	1585821729	\N	\N	\N	1788	\N	\N	tbl_trn_transactions	\N	\N	551	0
-1585821730	0	1585821730	\N	\N	\N	1801	\N	\N	tbl_trn_requests	\N	\N	558	0
-1585821732	0	1585821732	\N	\N	\N	1811	\N	\N	tbl_trn_requests	\N	\N	563	0
-1585821732	0	1585821732	\N	\N	\N	1816	\N	\N	tbl_trn_transactions	\N	\N	565	0
-1585821734	0	1585821734	\N	\N	\N	1827	\N	\N	tbl_trn_requests	\N	\N	571	0
-1585821734	0	1585821734	\N	\N	\N	1830	\N	\N	tbl_trn_transactions	\N	\N	572	0
-1585821734	0	1585821734	\N	\N	\N	1831	\N	\N	tbl_trn_requests	\N	\N	573	0
-1585821736	0	1585821736	\N	\N	\N	1846	\N	\N	tbl_trn_transactions	\N	\N	580	0
-1585821739	0	1585821739	\N	\N	\N	1865	\N	\N	tbl_trn_requests	\N	\N	590	0
-1585821741	0	1585821741	\N	\N	\N	1883	\N	\N	tbl_trn_requests	\N	\N	599	0
-1585821741	0	1585821741	\N	\N	\N	1888	\N	\N	tbl_trn_transactions	\N	\N	601	0
-1585821742	0	1585821742	\N	\N	\N	1895	\N	\N	tbl_trn_requests	\N	\N	605	0
-1585821742	0	1585821742	\N	\N	\N	1897	\N	\N	tbl_trn_requests	\N	\N	606	0
-1585821743	0	1585821743	\N	\N	\N	1903	\N	\N	tbl_trn_requests	\N	\N	609	0
-1585821744	0	1585821744	\N	\N	\N	1905	\N	\N	tbl_trn_requests	\N	\N	610	0
-1585821744	0	1585821744	\N	\N	\N	1911	\N	\N	tbl_trn_requests	\N	\N	613	0
-1585821745	0	1585821745	\N	\N	\N	1917	\N	\N	tbl_trn_requests	\N	\N	616	0
-1585821746	0	1585821746	\N	\N	\N	1928	\N	\N	tbl_trn_transactions	\N	\N	621	0
-1585821749	0	1585821749	\N	\N	\N	1944	\N	\N	tbl_trn_transactions	\N	\N	629	0
-1585821752	0	1585821752	\N	\N	\N	1974	\N	\N	tbl_trn_transactions	\N	\N	644	0
-1585821753	0	1585821753	\N	\N	\N	1979	\N	\N	tbl_trn_requests	\N	\N	647	0
-1585821753	0	1585821753	\N	\N	\N	1981	\N	\N	tbl_trn_requests	\N	\N	648	0
-1585821756	0	1585821756	\N	\N	\N	1998	\N	\N	tbl_trn_transactions	\N	\N	656	0
-1585821756	0	1585821756	\N	\N	\N	2005	\N	\N	tbl_trn_requests	\N	\N	660	0
-1585821759	0	1585821759	\N	\N	\N	2023	\N	\N	tbl_trn_requests	\N	\N	669	0
-1585821759	0	1585821759	\N	\N	\N	2030	\N	\N	tbl_trn_transactions	\N	\N	672	0
-1585821760	0	1585821760	\N	\N	\N	2034	\N	\N	tbl_trn_transactions	\N	\N	674	0
-1585821761	0	1585821761	\N	\N	\N	2043	\N	\N	tbl_trn_requests	\N	\N	679	0
-1585821762	0	1585821762	\N	\N	\N	2051	\N	\N	tbl_trn_requests	\N	\N	683	0
-1585821762	0	1585821762	\N	\N	\N	2056	\N	\N	tbl_trn_transactions	\N	\N	685	0
-1585821763	0	1585821763	\N	\N	\N	2061	\N	\N	tbl_trn_requests	\N	\N	688	0
-1585821763	0	1585821763	\N	\N	\N	2066	\N	\N	tbl_trn_transactions	\N	\N	690	0
-1585821764	0	1585821764	\N	\N	\N	2068	\N	\N	tbl_trn_transactions	\N	\N	691	0
-1585821765	0	1585821765	\N	\N	\N	2077	\N	\N	tbl_trn_requests	\N	\N	696	0
-1585821766	0	1585821766	\N	\N	\N	2091	\N	\N	tbl_trn_requests	\N	\N	703	0
-1585821767	0	1585821767	\N	\N	\N	2093	\N	\N	tbl_trn_requests	\N	\N	704	0
-1585821769	0	1585821769	\N	\N	\N	2109	\N	\N	tbl_trn_requests	\N	\N	712	0
-1585821770	0	1585821770	\N	\N	\N	2119	\N	\N	tbl_trn_requests	\N	\N	717	0
-1585821771	0	1585821771	\N	\N	\N	2129	\N	\N	tbl_trn_requests	\N	\N	722	0
-1585821772	0	1585821772	\N	\N	\N	2136	\N	\N	tbl_trn_transactions	\N	\N	725	0
-1585821773	0	1585821773	\N	\N	\N	2146	\N	\N	tbl_trn_transactions	\N	\N	730	0
-1585821774	0	1585821774	\N	\N	\N	2149	\N	\N	tbl_trn_requests	\N	\N	732	0
-1585821775	0	1585821775	\N	\N	\N	2160	\N	\N	tbl_trn_transactions	\N	\N	737	0
-1585821777	0	1585821777	\N	\N	\N	2173	\N	\N	tbl_trn_requests	\N	\N	744	0
-1585821777	0	1585821777	\N	\N	\N	2176	\N	\N	tbl_trn_transactions	\N	\N	745	0
-1585821778	0	1585821778	\N	\N	\N	2182	\N	\N	tbl_trn_transactions	\N	\N	748	0
-1585821842	0	1585821842	\N	\N	\N	2731	\N	\N	tbl_trn_requests	\N	\N	1023	0
-1585821843	0	1585821843	\N	\N	\N	2740	\N	\N	tbl_trn_transactions	\N	\N	1027	0
-1585821843	0	1585821843	\N	\N	\N	2743	\N	\N	tbl_trn_requests	\N	\N	1029	0
-1585230566	0	1585230566	\N	\N	\N	415	\N	\N	tbl_trn_requests	\N	\N	26	0
-1585241303	0	1585241303	\N	\N	\N	418	\N	\N	tbl_trn_transactions	\N	\N	27	0
-1585245082	0	1585245082	\N	\N	\N	419	\N	\N	tbl_trn_requests	\N	\N	28	0
-1585288839	0	1585288839	\N	\N	\N	421	\N	\N	tbl_trn_requests	\N	\N	1	0
-1585288840	0	1585288840	\N	\N	\N	422	\N	\N	tbl_trn_transactions	\N	\N	1	0
-1585288842	0	1585288842	\N	\N	\N	423	\N	\N	tbl_trn_requests	\N	\N	2	0
-1585288842	0	1585288842	\N	\N	\N	424	\N	\N	tbl_trn_transactions	\N	\N	2	0
-1585288845	0	1585288845	\N	\N	\N	425	\N	\N	tbl_trn_requests	\N	\N	3	0
-1585288845	0	1585288845	\N	\N	\N	426	\N	\N	tbl_trn_transactions	\N	\N	3	0
-1585288863	0	1585288863	\N	\N	\N	427	\N	\N	tbl_trn_requests	\N	\N	4	0
-1585288863	0	1585288863	\N	\N	\N	428	\N	\N	tbl_trn_transactions	\N	\N	4	0
-1585288921	0	1585288921	\N	\N	\N	429	\N	\N	tbl_trn_requests	\N	\N	5	0
-1585288921	0	1585288921	\N	\N	\N	430	\N	\N	tbl_trn_transactions	\N	\N	5	0
-1585288939	0	1585288939	\N	\N	\N	431	\N	\N	tbl_trn_requests	\N	\N	6	0
-1585288939	0	1585288939	\N	\N	\N	432	\N	\N	tbl_trn_transactions	\N	\N	6	0
-1585288946	0	1585288946	\N	\N	\N	433	\N	\N	tbl_trn_requests	\N	\N	7	0
-1585288946	0	1585288946	\N	\N	\N	434	\N	\N	tbl_trn_transactions	\N	\N	7	0
-1585288965	0	1585288965	\N	\N	\N	435	\N	\N	tbl_trn_requests	\N	\N	8	0
-1585288965	0	1585288965	\N	\N	\N	436	\N	\N	tbl_trn_transactions	\N	\N	8	0
-1585288972	0	1585288972	\N	\N	\N	437	\N	\N	tbl_trn_requests	\N	\N	9	0
-1585288973	0	1585288973	\N	\N	\N	438	\N	\N	tbl_trn_transactions	\N	\N	9	0
-1585288988	0	1585288988	\N	\N	\N	439	\N	\N	tbl_trn_requests	\N	\N	10	0
-1585288988	0	1585288988	\N	\N	\N	440	\N	\N	tbl_trn_transactions	\N	\N	10	0
-1585288996	0	1585288996	\N	\N	\N	441	\N	\N	tbl_trn_requests	\N	\N	11	0
-1585288996	0	1585288996	\N	\N	\N	442	\N	\N	tbl_trn_transactions	\N	\N	11	0
-1585289003	0	1585289003	\N	\N	\N	443	\N	\N	tbl_trn_requests	\N	\N	12	0
-1585289003	0	1585289003	\N	\N	\N	444	\N	\N	tbl_trn_transactions	\N	\N	12	0
-1585289041	0	1585289041	\N	\N	\N	445	\N	\N	tbl_trn_requests	\N	\N	13	0
-1585289041	0	1585289041	\N	\N	\N	446	\N	\N	tbl_trn_transactions	\N	\N	13	0
-1585289047	0	1585289047	\N	\N	\N	447	\N	\N	tbl_trn_requests	\N	\N	14	0
-1585289047	0	1585289047	\N	\N	\N	448	\N	\N	tbl_trn_transactions	\N	\N	14	0
-1585289064	0	1585289064	\N	\N	\N	449	\N	\N	tbl_trn_requests	\N	\N	15	0
-1585289065	0	1585289065	\N	\N	\N	450	\N	\N	tbl_trn_transactions	\N	\N	15	0
-1585289070	0	1585289070	\N	\N	\N	451	\N	\N	tbl_trn_requests	\N	\N	16	0
-1585289071	0	1585289071	\N	\N	\N	452	\N	\N	tbl_trn_transactions	\N	\N	16	0
-1585289626	0	1585289626	\N	\N	\N	453	\N	\N	tbl_trn_requests	\N	\N	17	0
-1585289626	0	1585289626	\N	\N	\N	454	\N	\N	tbl_trn_transactions	\N	\N	17	0
-1585289906	0	1585289906	\N	\N	\N	455	\N	\N	tbl_trn_requests	\N	\N	18	0
-1585289906	0	1585289906	\N	\N	\N	456	\N	\N	tbl_trn_transactions	\N	\N	18	0
-1585289922	0	1585289922	\N	\N	\N	457	\N	\N	tbl_trn_requests	\N	\N	19	0
-1585289923	0	1585289923	\N	\N	\N	458	\N	\N	tbl_trn_transactions	\N	\N	19	0
-1585289925	0	1585289925	\N	\N	\N	459	\N	\N	tbl_trn_requests	\N	\N	20	0
-1585289925	0	1585289925	\N	\N	\N	460	\N	\N	tbl_trn_transactions	\N	\N	20	0
-1585289927	0	1585289927	\N	\N	\N	461	\N	\N	tbl_trn_requests	\N	\N	21	0
-1585289928	0	1585289928	\N	\N	\N	462	\N	\N	tbl_trn_transactions	\N	\N	21	0
-1585289930	0	1585289930	\N	\N	\N	463	\N	\N	tbl_trn_requests	\N	\N	22	0
-1585289931	0	1585289931	\N	\N	\N	464	\N	\N	tbl_trn_transactions	\N	\N	22	0
-1585289933	0	1585289933	\N	\N	\N	465	\N	\N	tbl_trn_requests	\N	\N	23	0
-1585289933	0	1585289933	\N	\N	\N	466	\N	\N	tbl_trn_transactions	\N	\N	23	0
-1585289960	0	1585289960	\N	\N	\N	467	\N	\N	tbl_trn_requests	\N	\N	24	0
-1585289960	0	1585289960	\N	\N	\N	468	\N	\N	tbl_trn_transactions	\N	\N	24	0
-1585290043	0	1585290043	\N	\N	\N	469	\N	\N	tbl_trn_requests	\N	\N	25	0
-1585290043	0	1585290043	\N	\N	\N	470	\N	\N	tbl_trn_transactions	\N	\N	25	0
-1585290262	0	1585290262	\N	\N	\N	471	\N	\N	tbl_trn_requests	\N	\N	26	0
-1585290262	0	1585290262	\N	\N	\N	472	\N	\N	tbl_trn_transactions	\N	\N	26	0
-1585290292	0	1585290292	\N	\N	\N	473	\N	\N	tbl_trn_requests	\N	\N	27	0
-1585290293	0	1585290293	\N	\N	\N	474	\N	\N	tbl_trn_transactions	\N	\N	27	0
-1585290320	0	1585290320	\N	\N	\N	475	\N	\N	tbl_trn_requests	\N	\N	28	0
-1585290320	0	1585290320	\N	\N	\N	476	\N	\N	tbl_trn_transactions	\N	\N	28	0
-1585290340	0	1585290340	\N	\N	\N	477	\N	\N	tbl_trn_requests	\N	\N	29	0
-1585290340	0	1585290340	\N	\N	\N	478	\N	\N	tbl_trn_transactions	\N	\N	29	0
-1585290342	0	1585290342	\N	\N	\N	479	\N	\N	tbl_trn_requests	\N	\N	30	0
-1585290342	0	1585290342	\N	\N	\N	480	\N	\N	tbl_trn_transactions	\N	\N	30	0
-1585290345	0	1585290345	\N	\N	\N	481	\N	\N	tbl_trn_requests	\N	\N	31	0
-1585290345	0	1585290345	\N	\N	\N	482	\N	\N	tbl_trn_transactions	\N	\N	31	0
-1585290357	0	1585290357	\N	\N	\N	483	\N	\N	tbl_trn_requests	\N	\N	32	0
-1585290357	0	1585290357	\N	\N	\N	484	\N	\N	tbl_trn_transactions	\N	\N	32	0
-1585290359	0	1585290359	\N	\N	\N	485	\N	\N	tbl_trn_requests	\N	\N	33	0
-1585290359	0	1585290359	\N	\N	\N	486	\N	\N	tbl_trn_transactions	\N	\N	33	0
-1585290362	0	1585290362	\N	\N	\N	487	\N	\N	tbl_trn_requests	\N	\N	34	0
-1585290362	0	1585290362	\N	\N	\N	488	\N	\N	tbl_trn_transactions	\N	\N	34	0
-1585290392	0	1585290392	\N	\N	\N	489	\N	\N	tbl_trn_requests	\N	\N	35	0
-1585290392	0	1585290392	\N	\N	\N	490	\N	\N	tbl_trn_transactions	\N	\N	35	0
-1585290396	0	1585290396	\N	\N	\N	491	\N	\N	tbl_trn_requests	\N	\N	36	0
-1585290397	0	1585290397	\N	\N	\N	492	\N	\N	tbl_trn_transactions	\N	\N	36	0
-1585290443	0	1585290443	\N	\N	\N	493	\N	\N	tbl_trn_requests	\N	\N	37	0
-1585290443	0	1585290443	\N	\N	\N	494	\N	\N	tbl_trn_transactions	\N	\N	37	0
-1585302366	0	1585302366	\N	\N	\N	495	\N	\N	tbl_trn_requests	\N	\N	38	0
-1585302367	0	1585302367	\N	\N	\N	496	\N	\N	tbl_trn_transactions	\N	\N	38	0
-1585303144	0	1585303144	\N	\N	\N	497	\N	\N	tbl_trn_requests	\N	\N	39	0
-1585303144	0	1585303144	\N	\N	\N	498	\N	\N	tbl_trn_transactions	\N	\N	39	0
-1585303471	0	1585303471	\N	\N	\N	499	\N	\N	tbl_trn_requests	\N	\N	40	0
-1585303471	0	1585303471	\N	\N	\N	500	\N	\N	tbl_trn_transactions	\N	\N	40	0
-1585303665	0	1585303665	\N	\N	\N	501	\N	\N	tbl_trn_requests	\N	\N	41	0
-1585303665	0	1585303665	\N	\N	\N	502	\N	\N	tbl_trn_transactions	\N	\N	41	0
-1585303711	0	1585303711	\N	\N	\N	503	\N	\N	tbl_trn_requests	\N	\N	42	0
-1585303711	0	1585303711	\N	\N	\N	504	\N	\N	tbl_trn_transactions	\N	\N	42	0
-1585383488	0	1585383488	\N	\N	\N	505	\N	\N	tbl_trn_requests	\N	\N	1	0
-1585383489	0	1585383489	\N	\N	\N	506	\N	\N	tbl_trn_transactions	\N	\N	1	0
-1585383913	0	1585383913	\N	\N	\N	507	\N	\N	tbl_trn_requests	\N	\N	2	0
-1585383913	0	1585383913	\N	\N	\N	508	\N	\N	tbl_trn_transactions	\N	\N	2	0
-1585821726	0	1585821726	\N	\N	\N	1762	\N	\N	tbl_trn_transactions	\N	\N	538	0
-1585383974	0	1585383974	\N	\N	\N	509	\N	\N	tbl_trn_requests	\N	\N	3	0
-1585383974	0	1585383974	\N	\N	\N	510	\N	\N	tbl_trn_transactions	\N	\N	3	0
-1585383994	0	1585383994	\N	\N	\N	511	\N	\N	tbl_trn_requests	\N	\N	4	0
-1585384925	0	1585384925	\N	\N	\N	515	\N	\N	tbl_trn_requests	\N	\N	6	0
-1585384925	0	1585384925	\N	\N	\N	516	\N	\N	tbl_trn_transactions	\N	\N	6	0
-1585386179	0	1585386179	\N	\N	\N	517	\N	\N	tbl_trn_requests	\N	\N	7	0
-1585386179	0	1585386179	\N	\N	\N	518	\N	\N	tbl_trn_transactions	\N	\N	7	0
-1585388012	0	1585388012	\N	\N	\N	521	\N	\N	tbl_trn_requests	\N	\N	9	0
-1585388012	0	1585388012	\N	\N	\N	522	\N	\N	tbl_trn_transactions	\N	\N	9	0
-1585821721	0	1585821721	\N	\N	\N	1708	\N	\N	tbl_trn_transactions	\N	\N	511	0
-1585821721	0	1585821721	\N	\N	\N	1710	\N	\N	tbl_trn_transactions	\N	\N	512	0
-1585821722	0	1585821722	\N	\N	\N	1716	\N	\N	tbl_trn_transactions	\N	\N	515	0
-1585821722	0	1585821722	\N	\N	\N	1724	\N	\N	tbl_trn_transactions	\N	\N	519	0
-1585821724	0	1585821724	\N	\N	\N	1731	\N	\N	tbl_trn_requests	\N	\N	523	0
-1585821724	0	1585821724	\N	\N	\N	1738	\N	\N	tbl_trn_transactions	\N	\N	526	0
-1585821724	0	1585821724	\N	\N	\N	1742	\N	\N	tbl_trn_transactions	\N	\N	528	0
-1585821725	0	1585821725	\N	\N	\N	1744	\N	\N	tbl_trn_transactions	\N	\N	529	0
-1585821725	0	1585821725	\N	\N	\N	1745	\N	\N	tbl_trn_requests	\N	\N	530	0
-1585821726	0	1585821726	\N	\N	\N	1755	\N	\N	tbl_trn_requests	\N	\N	535	0
-1585821728	0	1585821728	\N	\N	\N	1779	\N	\N	tbl_trn_requests	\N	\N	547	0
-1585821729	0	1585821729	\N	\N	\N	1791	\N	\N	tbl_trn_requests	\N	\N	553	0
-1585821730	0	1585821730	\N	\N	\N	1799	\N	\N	tbl_trn_requests	\N	\N	557	0
-1585821730	0	1585821730	\N	\N	\N	1805	\N	\N	tbl_trn_requests	\N	\N	560	0
-1585821731	0	1585821731	\N	\N	\N	1807	\N	\N	tbl_trn_requests	\N	\N	561	0
-1585821731	0	1585821731	\N	\N	\N	1810	\N	\N	tbl_trn_transactions	\N	\N	562	0
-1585821732	0	1585821732	\N	\N	\N	1812	\N	\N	tbl_trn_transactions	\N	\N	563	0
-1585821732	0	1585821732	\N	\N	\N	1818	\N	\N	tbl_trn_transactions	\N	\N	566	0
-1585821733	0	1585821733	\N	\N	\N	1823	\N	\N	tbl_trn_requests	\N	\N	569	0
-1585821735	0	1585821735	\N	\N	\N	1836	\N	\N	tbl_trn_transactions	\N	\N	575	0
-1585821735	0	1585821735	\N	\N	\N	1841	\N	\N	tbl_trn_requests	\N	\N	578	0
-1585821736	0	1585821736	\N	\N	\N	1847	\N	\N	tbl_trn_requests	\N	\N	581	0
-1585821738	0	1585821738	\N	\N	\N	1859	\N	\N	tbl_trn_requests	\N	\N	587	0
-1585821739	0	1585821739	\N	\N	\N	1861	\N	\N	tbl_trn_requests	\N	\N	588	0
-1585821739	0	1585821739	\N	\N	\N	1868	\N	\N	tbl_trn_transactions	\N	\N	591	0
-1585821740	0	1585821740	\N	\N	\N	1875	\N	\N	tbl_trn_requests	\N	\N	595	0
-1585821740	0	1585821740	\N	\N	\N	1880	\N	\N	tbl_trn_transactions	\N	\N	597	0
-1585821742	0	1585821742	\N	\N	\N	1891	\N	\N	tbl_trn_requests	\N	\N	603	0
-1585821742	0	1585821742	\N	\N	\N	1896	\N	\N	tbl_trn_transactions	\N	\N	605	0
-1585821746	0	1585821746	\N	\N	\N	1921	\N	\N	tbl_trn_requests	\N	\N	618	0
-1585821747	0	1585821747	\N	\N	\N	1936	\N	\N	tbl_trn_transactions	\N	\N	625	0
-1585821749	0	1585821749	\N	\N	\N	1947	\N	\N	tbl_trn_requests	\N	\N	631	0
-1585821751	0	1585821751	\N	\N	\N	1965	\N	\N	tbl_trn_requests	\N	\N	640	0
-1585821752	0	1585821752	\N	\N	\N	1972	\N	\N	tbl_trn_transactions	\N	\N	643	0
-1585821752	0	1585821752	\N	\N	\N	1976	\N	\N	tbl_trn_transactions	\N	\N	645	0
-1585821753	0	1585821753	\N	\N	\N	1978	\N	\N	tbl_trn_transactions	\N	\N	646	0
-1585821754	0	1585821754	\N	\N	\N	1987	\N	\N	tbl_trn_requests	\N	\N	651	0
-1585821755	0	1585821755	\N	\N	\N	1992	\N	\N	tbl_trn_transactions	\N	\N	653	0
-1585821756	0	1585821756	\N	\N	\N	2003	\N	\N	tbl_trn_requests	\N	\N	659	0
-1585821757	0	1585821757	\N	\N	\N	2012	\N	\N	tbl_trn_transactions	\N	\N	663	0
-1585821760	0	1585821760	\N	\N	\N	2032	\N	\N	tbl_trn_transactions	\N	\N	673	0
-1585821761	0	1585821761	\N	\N	\N	2042	\N	\N	tbl_trn_transactions	\N	\N	678	0
-1585821762	0	1585821762	\N	\N	\N	2048	\N	\N	tbl_trn_transactions	\N	\N	681	0
-1585821763	0	1585821763	\N	\N	\N	2063	\N	\N	tbl_trn_requests	\N	\N	689	0
-1585821765	0	1585821765	\N	\N	\N	2081	\N	\N	tbl_trn_requests	\N	\N	698	0
-1585821766	0	1585821766	\N	\N	\N	2083	\N	\N	tbl_trn_requests	\N	\N	699	0
-1585821766	0	1585821766	\N	\N	\N	2087	\N	\N	tbl_trn_requests	\N	\N	701	0
-1585821769	0	1585821769	\N	\N	\N	2111	\N	\N	tbl_trn_requests	\N	\N	713	0
-1585821770	0	1585821770	\N	\N	\N	2113	\N	\N	tbl_trn_requests	\N	\N	714	0
-1585821770	0	1585821770	\N	\N	\N	2118	\N	\N	tbl_trn_transactions	\N	\N	716	0
-1585821772	0	1585821772	\N	\N	\N	2138	\N	\N	tbl_trn_transactions	\N	\N	726	0
-1585821772	0	1585821772	\N	\N	\N	2141	\N	\N	tbl_trn_requests	\N	\N	728	0
-1585821773	0	1585821773	\N	\N	\N	2144	\N	\N	tbl_trn_transactions	\N	\N	729	0
-1585821773	0	1585821773	\N	\N	\N	2147	\N	\N	tbl_trn_requests	\N	\N	731	0
-1585821774	0	1585821774	\N	\N	\N	2150	\N	\N	tbl_trn_transactions	\N	\N	732	0
-1585821775	0	1585821775	\N	\N	\N	2159	\N	\N	tbl_trn_requests	\N	\N	737	0
-1585821777	0	1585821777	\N	\N	\N	2169	\N	\N	tbl_trn_requests	\N	\N	742	0
-1585821777	0	1585821777	\N	\N	\N	2172	\N	\N	tbl_trn_transactions	\N	\N	743	0
-1585821777	0	1585821777	\N	\N	\N	2175	\N	\N	tbl_trn_requests	\N	\N	745	0
-1585821778	0	1585821778	\N	\N	\N	2181	\N	\N	tbl_trn_requests	\N	\N	748	0
-1585821842	0	1585821842	\N	\N	\N	2733	\N	\N	tbl_trn_requests	\N	\N	1024	0
-1585821843	0	1585821843	\N	\N	\N	2742	\N	\N	tbl_trn_transactions	\N	\N	1028	0
-1585383994	0	1585383994	\N	\N	\N	512	\N	\N	tbl_trn_transactions	\N	\N	4	0
-1585384754	0	1585384754	\N	\N	\N	513	\N	\N	tbl_trn_requests	\N	\N	5	0
-1585384754	0	1585384754	\N	\N	\N	514	\N	\N	tbl_trn_transactions	\N	\N	5	0
-1585387566	0	1585387566	\N	\N	\N	519	\N	\N	tbl_trn_requests	\N	\N	8	0
-1585387566	0	1585387566	\N	\N	\N	520	\N	\N	tbl_trn_transactions	\N	\N	8	0
-1585388116	0	1585388116	\N	\N	\N	523	\N	\N	tbl_trn_requests	\N	\N	10	0
-1585388116	0	1585388116	\N	\N	\N	524	\N	\N	tbl_trn_transactions	\N	\N	10	0
-1585388623	0	1585388623	\N	\N	\N	525	\N	\N	tbl_trn_requests	\N	\N	11	0
-1585388623	0	1585388623	\N	\N	\N	526	\N	\N	tbl_trn_transactions	\N	\N	11	0
-1585390538	0	1585390538	\N	\N	\N	527	\N	\N	tbl_trn_requests	\N	\N	12	0
-1585390538	0	1585390538	\N	\N	\N	528	\N	\N	tbl_trn_transactions	\N	\N	12	0
-1585390803	0	1585390803	\N	\N	\N	529	\N	\N	tbl_trn_requests	\N	\N	13	0
-1585390804	0	1585390804	\N	\N	\N	530	\N	\N	tbl_trn_transactions	\N	\N	13	0
-1585390880	0	1585390880	\N	\N	\N	531	\N	\N	tbl_trn_requests	\N	\N	14	0
-1585390881	0	1585390881	\N	\N	\N	532	\N	\N	tbl_trn_transactions	\N	\N	14	0
-1585392367	0	1585392367	\N	\N	\N	533	\N	\N	tbl_trn_requests	\N	\N	15	0
-1585392367	0	1585392367	\N	\N	\N	534	\N	\N	tbl_trn_transactions	\N	\N	15	0
-1585392414	0	1585392414	\N	\N	\N	535	\N	\N	tbl_trn_requests	\N	\N	16	0
-1585392414	0	1585392414	\N	\N	\N	536	\N	\N	tbl_trn_transactions	\N	\N	16	0
-1585401612	0	1585401612	\N	\N	\N	537	\N	\N	tbl_trn_requests	\N	\N	17	0
-1585401612	0	1585401612	\N	\N	\N	538	\N	\N	tbl_trn_transactions	\N	\N	17	0
-1585402677	0	1585402677	\N	\N	\N	539	\N	\N	tbl_trn_requests	\N	\N	18	0
-1585402677	0	1585402677	\N	\N	\N	540	\N	\N	tbl_trn_transactions	\N	\N	18	0
-1585402982	0	1585402982	\N	\N	\N	541	\N	\N	tbl_trn_requests	\N	\N	19	0
-1585402982	0	1585402982	\N	\N	\N	542	\N	\N	tbl_trn_transactions	\N	\N	19	0
-1585409974	0	1585409974	\N	\N	\N	543	\N	\N	tbl_trn_requests	\N	\N	20	0
-1585409974	0	1585409974	\N	\N	\N	544	\N	\N	tbl_trn_transactions	\N	\N	20	0
-1585410645	0	1585410645	\N	\N	\N	545	\N	\N	tbl_trn_requests	\N	\N	21	0
-1585410646	0	1585410646	\N	\N	\N	546	\N	\N	tbl_trn_transactions	\N	\N	21	0
-1585410669	0	1585410669	\N	\N	\N	547	\N	\N	tbl_trn_requests	\N	\N	22	0
-1585410669	0	1585410669	\N	\N	\N	548	\N	\N	tbl_trn_transactions	\N	\N	22	0
-1585475061	0	1585475061	\N	\N	\N	549	\N	\N	tbl_trn_requests	\N	\N	1	0
-1585475061	0	1585475061	\N	\N	\N	550	\N	\N	tbl_trn_transactions	\N	\N	1	0
-1585475110	0	1585475110	\N	\N	\N	551	\N	\N	tbl_trn_requests	\N	\N	2	0
-1585475110	0	1585475110	\N	\N	\N	552	\N	\N	tbl_trn_transactions	\N	\N	2	0
-1585475616	0	1585475616	\N	\N	\N	553	\N	\N	tbl_trn_requests	\N	\N	3	0
-1585475616	0	1585475616	\N	\N	\N	554	\N	\N	tbl_trn_transactions	\N	\N	3	0
-1585475789	0	1585475789	\N	\N	\N	555	\N	\N	tbl_trn_requests	\N	\N	4	0
-1585475789	0	1585475789	\N	\N	\N	556	\N	\N	tbl_trn_transactions	\N	\N	4	0
-1585555578	0	1585555578	\N	\N	\N	557	\N	\N	tbl_trn_requests	\N	\N	1	0
-1585555578	0	1585555578	\N	\N	\N	558	\N	\N	tbl_trn_transactions	\N	\N	1	0
-1585639069	0	1585639069	\N	\N	\N	559	\N	\N	tbl_trn_requests	\N	\N	1	0
-1585639070	0	1585639070	\N	\N	\N	560	\N	\N	tbl_trn_transactions	\N	\N	1	0
-1585640819	0	1585640819	\N	\N	\N	561	\N	\N	tbl_trn_requests	\N	\N	2	0
-1585640819	0	1585640819	\N	\N	\N	562	\N	\N	tbl_trn_transactions	\N	\N	2	0
-1585645702	0	1585645702	\N	\N	\N	563	\N	\N	tbl_trn_requests	\N	\N	3	0
-1585645702	0	1585645702	\N	\N	\N	564	\N	\N	tbl_trn_transactions	\N	\N	3	0
-1585732141	0	1585732141	\N	\N	\N	565	\N	\N	tbl_trn_requests	\N	\N	1	0
-1585732142	0	1585732142	\N	\N	\N	566	\N	\N	tbl_trn_transactions	\N	\N	1	0
-1585732156	0	1585732156	\N	\N	\N	567	\N	\N	tbl_trn_requests	\N	\N	2	0
-1585732156	0	1585732156	\N	\N	\N	568	\N	\N	tbl_trn_transactions	\N	\N	2	0
-1585739107	0	1585739107	\N	\N	\N	569	\N	\N	tbl_trn_requests	\N	\N	3	0
-1585739107	0	1585739107	\N	\N	\N	570	\N	\N	tbl_trn_transactions	\N	\N	3	0
-1585739107	0	1585739107	\N	\N	\N	571	\N	\N	tbl_trn_requests	\N	\N	4	0
-1585739107	0	1585739107	\N	\N	\N	572	\N	\N	tbl_trn_transactions	\N	\N	4	0
-1585739107	0	1585739107	\N	\N	\N	573	\N	\N	tbl_trn_requests	\N	\N	5	0
-1585739108	0	1585739108	\N	\N	\N	574	\N	\N	tbl_trn_transactions	\N	\N	5	0
-1585739108	0	1585739108	\N	\N	\N	575	\N	\N	tbl_trn_requests	\N	\N	6	0
-1585739108	0	1585739108	\N	\N	\N	576	\N	\N	tbl_trn_transactions	\N	\N	6	0
-1585739108	0	1585739108	\N	\N	\N	577	\N	\N	tbl_trn_requests	\N	\N	7	0
-1585739108	0	1585739108	\N	\N	\N	578	\N	\N	tbl_trn_transactions	\N	\N	7	0
-1585739108	0	1585739108	\N	\N	\N	579	\N	\N	tbl_trn_requests	\N	\N	8	0
-1585739108	0	1585739108	\N	\N	\N	580	\N	\N	tbl_trn_transactions	\N	\N	8	0
-1585739108	0	1585739108	\N	\N	\N	581	\N	\N	tbl_trn_requests	\N	\N	9	0
-1585739108	0	1585739108	\N	\N	\N	582	\N	\N	tbl_trn_transactions	\N	\N	9	0
-1585739283	0	1585739283	\N	\N	\N	583	\N	\N	tbl_trn_requests	\N	\N	10	0
-1585739283	0	1585739283	\N	\N	\N	584	\N	\N	tbl_trn_transactions	\N	\N	10	0
-1585739283	0	1585739283	\N	\N	\N	585	\N	\N	tbl_trn_requests	\N	\N	11	0
-1585739283	0	1585739283	\N	\N	\N	586	\N	\N	tbl_trn_transactions	\N	\N	11	0
-1585739283	0	1585739283	\N	\N	\N	587	\N	\N	tbl_trn_requests	\N	\N	12	0
-1585739283	0	1585739283	\N	\N	\N	588	\N	\N	tbl_trn_transactions	\N	\N	12	0
-1585739283	0	1585739283	\N	\N	\N	589	\N	\N	tbl_trn_requests	\N	\N	13	0
-1585739283	0	1585739283	\N	\N	\N	590	\N	\N	tbl_trn_transactions	\N	\N	13	0
-1585739283	0	1585739283	\N	\N	\N	591	\N	\N	tbl_trn_requests	\N	\N	14	0
-1585739283	0	1585739283	\N	\N	\N	592	\N	\N	tbl_trn_transactions	\N	\N	14	0
-1585739283	0	1585739283	\N	\N	\N	593	\N	\N	tbl_trn_requests	\N	\N	15	0
-1585739283	0	1585739283	\N	\N	\N	594	\N	\N	tbl_trn_transactions	\N	\N	15	0
-1585739283	0	1585739283	\N	\N	\N	595	\N	\N	tbl_trn_requests	\N	\N	16	0
-1585739283	0	1585739283	\N	\N	\N	596	\N	\N	tbl_trn_transactions	\N	\N	16	0
-1585747103	0	1585747103	\N	\N	\N	597	\N	\N	tbl_trn_requests	\N	\N	17	0
-1585747103	0	1585747103	\N	\N	\N	598	\N	\N	tbl_trn_transactions	\N	\N	17	0
-1585747107	0	1585747107	\N	\N	\N	599	\N	\N	tbl_trn_requests	\N	\N	18	0
-1585747107	0	1585747107	\N	\N	\N	600	\N	\N	tbl_trn_transactions	\N	\N	18	0
-1585747110	0	1585747110	\N	\N	\N	601	\N	\N	tbl_trn_requests	\N	\N	19	0
-1585747110	0	1585747110	\N	\N	\N	602	\N	\N	tbl_trn_transactions	\N	\N	19	0
-1585751776	0	1585751776	\N	\N	\N	603	\N	\N	tbl_trn_requests	\N	\N	20	0
-1585751776	0	1585751776	\N	\N	\N	604	\N	\N	tbl_trn_transactions	\N	\N	20	0
-1585751776	0	1585751776	\N	\N	\N	605	\N	\N	tbl_trn_requests	\N	\N	21	0
-1585751776	0	1585751776	\N	\N	\N	606	\N	\N	tbl_trn_transactions	\N	\N	21	0
-1585751776	0	1585751776	\N	\N	\N	607	\N	\N	tbl_trn_requests	\N	\N	22	0
-1585751776	0	1585751776	\N	\N	\N	608	\N	\N	tbl_trn_transactions	\N	\N	22	0
-1585751776	0	1585751776	\N	\N	\N	609	\N	\N	tbl_trn_requests	\N	\N	23	0
-1585751776	0	1585751776	\N	\N	\N	616	\N	\N	tbl_trn_transactions	\N	\N	26	0
-1585821721	0	1585821721	\N	\N	\N	1712	\N	\N	tbl_trn_transactions	\N	\N	513	0
-1585821722	0	1585821722	\N	\N	\N	1717	\N	\N	tbl_trn_requests	\N	\N	516	0
-1585821722	0	1585821722	\N	\N	\N	1719	\N	\N	tbl_trn_requests	\N	\N	517	0
-1585821722	0	1585821722	\N	\N	\N	1722	\N	\N	tbl_trn_transactions	\N	\N	518	0
-1585821723	0	1585821723	\N	\N	\N	1725	\N	\N	tbl_trn_requests	\N	\N	520	0
-1585821724	0	1585821724	\N	\N	\N	1733	\N	\N	tbl_trn_requests	\N	\N	524	0
-1585821725	0	1585821725	\N	\N	\N	1746	\N	\N	tbl_trn_transactions	\N	\N	530	0
-1585821725	0	1585821725	\N	\N	\N	1751	\N	\N	tbl_trn_requests	\N	\N	533	0
-1585821725	0	1585821725	\N	\N	\N	1753	\N	\N	tbl_trn_requests	\N	\N	534	0
-1585821726	0	1585821726	\N	\N	\N	1757	\N	\N	tbl_trn_requests	\N	\N	536	0
-1585821726	0	1585821726	\N	\N	\N	1760	\N	\N	tbl_trn_transactions	\N	\N	537	0
-1585821727	0	1585821727	\N	\N	\N	1767	\N	\N	tbl_trn_requests	\N	\N	541	0
-1585821727	0	1585821727	\N	\N	\N	1769	\N	\N	tbl_trn_requests	\N	\N	542	0
-1585821727	0	1585821727	\N	\N	\N	1773	\N	\N	tbl_trn_requests	\N	\N	544	0
-1585821728	0	1585821728	\N	\N	\N	1780	\N	\N	tbl_trn_transactions	\N	\N	547	0
-1585821729	0	1585821729	\N	\N	\N	1789	\N	\N	tbl_trn_requests	\N	\N	552	0
-1585821729	0	1585821729	\N	\N	\N	1796	\N	\N	tbl_trn_transactions	\N	\N	555	0
-1585821730	0	1585821730	\N	\N	\N	1804	\N	\N	tbl_trn_transactions	\N	\N	559	0
-1585821731	0	1585821731	\N	\N	\N	1809	\N	\N	tbl_trn_requests	\N	\N	562	0
-1585821732	0	1585821732	\N	\N	\N	1814	\N	\N	tbl_trn_transactions	\N	\N	564	0
-1585821732	0	1585821732	\N	\N	\N	1817	\N	\N	tbl_trn_requests	\N	\N	566	0
-1585821732	0	1585821732	\N	\N	\N	1819	\N	\N	tbl_trn_requests	\N	\N	567	0
-1585821733	0	1585821733	\N	\N	\N	1824	\N	\N	tbl_trn_transactions	\N	\N	569	0
-1585821734	0	1585821734	\N	\N	\N	1834	\N	\N	tbl_trn_transactions	\N	\N	574	0
-1585821736	0	1585821736	\N	\N	\N	1849	\N	\N	tbl_trn_requests	\N	\N	582	0
-1585821740	0	1585821740	\N	\N	\N	1874	\N	\N	tbl_trn_transactions	\N	\N	594	0
-1585821740	0	1585821740	\N	\N	\N	1878	\N	\N	tbl_trn_transactions	\N	\N	596	0
-1585821741	0	1585821741	\N	\N	\N	1884	\N	\N	tbl_trn_transactions	\N	\N	599	0
-1585821741	0	1585821741	\N	\N	\N	1889	\N	\N	tbl_trn_requests	\N	\N	602	0
-1585821743	0	1585821743	\N	\N	\N	1901	\N	\N	tbl_trn_requests	\N	\N	608	0
-1585821743	0	1585821743	\N	\N	\N	1902	\N	\N	tbl_trn_transactions	\N	\N	608	0
-1585821745	0	1585821745	\N	\N	\N	1914	\N	\N	tbl_trn_transactions	\N	\N	614	0
-1585821746	0	1585821746	\N	\N	\N	1930	\N	\N	tbl_trn_transactions	\N	\N	622	0
-1585821749	0	1585821749	\N	\N	\N	1948	\N	\N	tbl_trn_transactions	\N	\N	631	0
-1585821750	0	1585821750	\N	\N	\N	1955	\N	\N	tbl_trn_requests	\N	\N	635	0
-1585821751	0	1585821751	\N	\N	\N	1962	\N	\N	tbl_trn_transactions	\N	\N	638	0
-1585821752	0	1585821752	\N	\N	\N	1971	\N	\N	tbl_trn_requests	\N	\N	643	0
-1585821753	0	1585821753	\N	\N	\N	1980	\N	\N	tbl_trn_transactions	\N	\N	647	0
-1585821756	0	1585821756	\N	\N	\N	1997	\N	\N	tbl_trn_requests	\N	\N	656	0
-1585821757	0	1585821757	\N	\N	\N	2010	\N	\N	tbl_trn_transactions	\N	\N	662	0
-1585821758	0	1585821758	\N	\N	\N	2017	\N	\N	tbl_trn_requests	\N	\N	666	0
-1585821759	0	1585821759	\N	\N	\N	2028	\N	\N	tbl_trn_transactions	\N	\N	671	0
-1585821759	0	1585821759	\N	\N	\N	2029	\N	\N	tbl_trn_requests	\N	\N	672	0
-1585821760	0	1585821760	\N	\N	\N	2033	\N	\N	tbl_trn_requests	\N	\N	674	0
-1585821761	0	1585821761	\N	\N	\N	2040	\N	\N	tbl_trn_transactions	\N	\N	677	0
-1585821764	0	1585821764	\N	\N	\N	2070	\N	\N	tbl_trn_transactions	\N	\N	692	0
-1585821764	0	1585821764	\N	\N	\N	2071	\N	\N	tbl_trn_requests	\N	\N	693	0
-1585821765	0	1585821765	\N	\N	\N	2073	\N	\N	tbl_trn_requests	\N	\N	694	0
-1585821765	0	1585821765	\N	\N	\N	2075	\N	\N	tbl_trn_requests	\N	\N	695	0
-1585821765	0	1585821765	\N	\N	\N	2082	\N	\N	tbl_trn_transactions	\N	\N	698	0
-1585821766	0	1585821766	\N	\N	\N	2088	\N	\N	tbl_trn_transactions	\N	\N	701	0
-1585821767	0	1585821767	\N	\N	\N	2097	\N	\N	tbl_trn_requests	\N	\N	706	0
-1585821768	0	1585821768	\N	\N	\N	2099	\N	\N	tbl_trn_requests	\N	\N	707	0
-1585821768	0	1585821768	\N	\N	\N	2106	\N	\N	tbl_trn_transactions	\N	\N	710	0
-1585821769	0	1585821769	\N	\N	\N	2108	\N	\N	tbl_trn_transactions	\N	\N	711	0
-1585821770	0	1585821770	\N	\N	\N	2116	\N	\N	tbl_trn_transactions	\N	\N	715	0
-1585821771	0	1585821771	\N	\N	\N	2128	\N	\N	tbl_trn_transactions	\N	\N	721	0
-1585821773	0	1585821773	\N	\N	\N	2145	\N	\N	tbl_trn_requests	\N	\N	730	0
-1585821775	0	1585821775	\N	\N	\N	2158	\N	\N	tbl_trn_transactions	\N	\N	736	0
-1585821776	0	1585821776	\N	\N	\N	2163	\N	\N	tbl_trn_requests	\N	\N	739	0
-1585821777	0	1585821777	\N	\N	\N	2170	\N	\N	tbl_trn_transactions	\N	\N	742	0
-1585821778	0	1585821778	\N	\N	\N	2186	\N	\N	tbl_trn_transactions	\N	\N	750	0
-1585821842	0	1585821842	\N	\N	\N	2734	\N	\N	tbl_trn_transactions	\N	\N	1024	0
-1585821843	0	1585821843	\N	\N	\N	2737	\N	\N	tbl_trn_requests	\N	\N	1026	0
-1585821843	0	1585821843	\N	\N	\N	2741	\N	\N	tbl_trn_requests	\N	\N	1028	0
-1585821844	0	1585821844	\N	\N	\N	2745	\N	\N	tbl_trn_requests	\N	\N	1030	0
-1585821844	0	1585821844	\N	\N	\N	2748	\N	\N	tbl_trn_transactions	\N	\N	1031	0
-1585751776	0	1585751776	\N	\N	\N	610	\N	\N	tbl_trn_transactions	\N	\N	23	0
-1585821721	0	1585821721	\N	\N	\N	1714	\N	\N	tbl_trn_transactions	\N	\N	514	0
-1585821722	0	1585821722	\N	\N	\N	1721	\N	\N	tbl_trn_requests	\N	\N	518	0
-1585821724	0	1585821724	\N	\N	\N	1734	\N	\N	tbl_trn_transactions	\N	\N	524	0
-1585821724	0	1585821724	\N	\N	\N	1736	\N	\N	tbl_trn_transactions	\N	\N	525	0
-1585821724	0	1585821724	\N	\N	\N	1739	\N	\N	tbl_trn_requests	\N	\N	527	0
-1585821724	0	1585821724	\N	\N	\N	1741	\N	\N	tbl_trn_requests	\N	\N	528	0
-1585821725	0	1585821725	\N	\N	\N	1747	\N	\N	tbl_trn_requests	\N	\N	531	0
-1585821726	0	1585821726	\N	\N	\N	1759	\N	\N	tbl_trn_requests	\N	\N	537	0
-1585821726	0	1585821726	\N	\N	\N	1764	\N	\N	tbl_trn_transactions	\N	\N	539	0
-1585821727	0	1585821727	\N	\N	\N	1776	\N	\N	tbl_trn_transactions	\N	\N	545	0
-1585821728	0	1585821728	\N	\N	\N	1778	\N	\N	tbl_trn_transactions	\N	\N	546	0
-1585821729	0	1585821729	\N	\N	\N	1790	\N	\N	tbl_trn_transactions	\N	\N	552	0
-1585821731	0	1585821731	\N	\N	\N	1808	\N	\N	tbl_trn_transactions	\N	\N	561	0
-1585821733	0	1585821733	\N	\N	\N	1820	\N	\N	tbl_trn_transactions	\N	\N	567	0
-1585821734	0	1585821734	\N	\N	\N	1833	\N	\N	tbl_trn_requests	\N	\N	574	0
-1585821735	0	1585821735	\N	\N	\N	1835	\N	\N	tbl_trn_requests	\N	\N	575	0
-1585821736	0	1585821736	\N	\N	\N	1843	\N	\N	tbl_trn_requests	\N	\N	579	0
-1585821736	0	1585821736	\N	\N	\N	1844	\N	\N	tbl_trn_transactions	\N	\N	579	0
-1585821737	0	1585821737	\N	\N	\N	1854	\N	\N	tbl_trn_transactions	\N	\N	584	0
-1585821740	0	1585821740	\N	\N	\N	1873	\N	\N	tbl_trn_requests	\N	\N	594	0
-1585821741	0	1585821741	\N	\N	\N	1890	\N	\N	tbl_trn_transactions	\N	\N	602	0
-1585821743	0	1585821743	\N	\N	\N	1899	\N	\N	tbl_trn_requests	\N	\N	607	0
-1585821745	0	1585821745	\N	\N	\N	1915	\N	\N	tbl_trn_requests	\N	\N	615	0
-1585821745	0	1585821745	\N	\N	\N	1919	\N	\N	tbl_trn_requests	\N	\N	617	0
-1585821746	0	1585821746	\N	\N	\N	1924	\N	\N	tbl_trn_transactions	\N	\N	619	0
-1585821746	0	1585821746	\N	\N	\N	1929	\N	\N	tbl_trn_requests	\N	\N	622	0
-1585821747	0	1585821747	\N	\N	\N	1934	\N	\N	tbl_trn_transactions	\N	\N	624	0
-1585821748	0	1585821748	\N	\N	\N	1938	\N	\N	tbl_trn_transactions	\N	\N	626	0
-1585821748	0	1585821748	\N	\N	\N	1939	\N	\N	tbl_trn_requests	\N	\N	627	0
-1585821749	0	1585821749	\N	\N	\N	1941	\N	\N	tbl_trn_requests	\N	\N	628	0
-1585821749	0	1585821749	\N	\N	\N	1943	\N	\N	tbl_trn_requests	\N	\N	629	0
-1585821750	0	1585821750	\N	\N	\N	1958	\N	\N	tbl_trn_transactions	\N	\N	636	0
-1585821752	0	1585821752	\N	\N	\N	1973	\N	\N	tbl_trn_requests	\N	\N	644	0
-1585821753	0	1585821753	\N	\N	\N	1977	\N	\N	tbl_trn_requests	\N	\N	646	0
-1585821753	0	1585821753	\N	\N	\N	1982	\N	\N	tbl_trn_transactions	\N	\N	648	0
-1585821754	0	1585821754	\N	\N	\N	1984	\N	\N	tbl_trn_transactions	\N	\N	649	0
-1585821754	0	1585821754	\N	\N	\N	1990	\N	\N	tbl_trn_transactions	\N	\N	652	0
-1585821755	0	1585821755	\N	\N	\N	1993	\N	\N	tbl_trn_requests	\N	\N	654	0
-1585821756	0	1585821756	\N	\N	\N	2002	\N	\N	tbl_trn_transactions	\N	\N	658	0
-1585821758	0	1585821758	\N	\N	\N	2022	\N	\N	tbl_trn_transactions	\N	\N	668	0
-1585821760	0	1585821760	\N	\N	\N	2035	\N	\N	tbl_trn_requests	\N	\N	675	0
-1585821762	0	1585821762	\N	\N	\N	2050	\N	\N	tbl_trn_transactions	\N	\N	682	0
-1585821762	0	1585821762	\N	\N	\N	2055	\N	\N	tbl_trn_requests	\N	\N	685	0
-1585821765	0	1585821765	\N	\N	\N	2074	\N	\N	tbl_trn_transactions	\N	\N	694	0
-1585821766	0	1585821766	\N	\N	\N	2085	\N	\N	tbl_trn_requests	\N	\N	700	0
-1585821767	0	1585821767	\N	\N	\N	2095	\N	\N	tbl_trn_requests	\N	\N	705	0
-1585821768	0	1585821768	\N	\N	\N	2105	\N	\N	tbl_trn_requests	\N	\N	710	0
-1585821769	0	1585821769	\N	\N	\N	2107	\N	\N	tbl_trn_requests	\N	\N	711	0
-1585821770	0	1585821770	\N	\N	\N	2115	\N	\N	tbl_trn_requests	\N	\N	715	0
-1585821770	0	1585821770	\N	\N	\N	2120	\N	\N	tbl_trn_transactions	\N	\N	717	0
-1585821771	0	1585821771	\N	\N	\N	2131	\N	\N	tbl_trn_requests	\N	\N	723	0
-1585821772	0	1585821772	\N	\N	\N	2137	\N	\N	tbl_trn_requests	\N	\N	726	0
-1585821772	0	1585821772	\N	\N	\N	2140	\N	\N	tbl_trn_transactions	\N	\N	727	0
-1585821776	0	1585821776	\N	\N	\N	2166	\N	\N	tbl_trn_transactions	\N	\N	740	0
-1585821844	0	1585821844	\N	\N	\N	2746	\N	\N	tbl_trn_transactions	\N	\N	1030	0
-1585751776	0	1585751776	\N	\N	\N	611	\N	\N	tbl_trn_requests	\N	\N	24	0
-1585821725	0	1585821725	\N	\N	\N	1752	\N	\N	tbl_trn_transactions	\N	\N	533	0
-1585821725	0	1585821725	\N	\N	\N	1754	\N	\N	tbl_trn_transactions	\N	\N	534	0
-1585821726	0	1585821726	\N	\N	\N	1761	\N	\N	tbl_trn_requests	\N	\N	538	0
-1585821726	0	1585821726	\N	\N	\N	1766	\N	\N	tbl_trn_transactions	\N	\N	540	0
-1585821727	0	1585821727	\N	\N	\N	1775	\N	\N	tbl_trn_requests	\N	\N	545	0
-1585821728	0	1585821728	\N	\N	\N	1777	\N	\N	tbl_trn_requests	\N	\N	546	0
-1585821728	0	1585821728	\N	\N	\N	1782	\N	\N	tbl_trn_transactions	\N	\N	548	0
-1585821729	0	1585821729	\N	\N	\N	1793	\N	\N	tbl_trn_requests	\N	\N	554	0
-1585821730	0	1585821730	\N	\N	\N	1798	\N	\N	tbl_trn_transactions	\N	\N	556	0
-1585821730	0	1585821730	\N	\N	\N	1800	\N	\N	tbl_trn_transactions	\N	\N	557	0
-1585821731	0	1585821731	\N	\N	\N	1806	\N	\N	tbl_trn_transactions	\N	\N	560	0
-1585821732	0	1585821732	\N	\N	\N	1813	\N	\N	tbl_trn_requests	\N	\N	564	0
-1585821733	0	1585821733	\N	\N	\N	1821	\N	\N	tbl_trn_requests	\N	\N	568	0
-1585821735	0	1585821735	\N	\N	\N	1839	\N	\N	tbl_trn_requests	\N	\N	577	0
-1585821739	0	1585821739	\N	\N	\N	1863	\N	\N	tbl_trn_requests	\N	\N	589	0
-1585821739	0	1585821739	\N	\N	\N	1870	\N	\N	tbl_trn_transactions	\N	\N	592	0
-1585821741	0	1585821741	\N	\N	\N	1882	\N	\N	tbl_trn_transactions	\N	\N	598	0
-1585821743	0	1585821743	\N	\N	\N	1900	\N	\N	tbl_trn_transactions	\N	\N	607	0
-1585821744	0	1585821744	\N	\N	\N	1908	\N	\N	tbl_trn_transactions	\N	\N	611	0
-1585821744	0	1585821744	\N	\N	\N	1910	\N	\N	tbl_trn_transactions	\N	\N	612	0
-1585821745	0	1585821745	\N	\N	\N	1918	\N	\N	tbl_trn_transactions	\N	\N	616	0
-1585821746	0	1585821746	\N	\N	\N	1926	\N	\N	tbl_trn_transactions	\N	\N	620	0
-1585821750	0	1585821750	\N	\N	\N	1956	\N	\N	tbl_trn_transactions	\N	\N	635	0
-1585821754	0	1585821754	\N	\N	\N	1985	\N	\N	tbl_trn_requests	\N	\N	650	0
-1585821755	0	1585821755	\N	\N	\N	1995	\N	\N	tbl_trn_requests	\N	\N	655	0
-1585821756	0	1585821756	\N	\N	\N	2001	\N	\N	tbl_trn_requests	\N	\N	658	0
-1585821757	0	1585821757	\N	\N	\N	2006	\N	\N	tbl_trn_transactions	\N	\N	660	0
-1585821757	0	1585821757	\N	\N	\N	2007	\N	\N	tbl_trn_requests	\N	\N	661	0
-1585821758	0	1585821758	\N	\N	\N	2015	\N	\N	tbl_trn_requests	\N	\N	665	0
-1585821758	0	1585821758	\N	\N	\N	2020	\N	\N	tbl_trn_transactions	\N	\N	667	0
-1585821761	0	1585821761	\N	\N	\N	2041	\N	\N	tbl_trn_requests	\N	\N	678	0
-1585821762	0	1585821762	\N	\N	\N	2047	\N	\N	tbl_trn_requests	\N	\N	681	0
-1585821762	0	1585821762	\N	\N	\N	2052	\N	\N	tbl_trn_transactions	\N	\N	683	0
-1585821763	0	1585821763	\N	\N	\N	2058	\N	\N	tbl_trn_transactions	\N	\N	686	0
-1585821763	0	1585821763	\N	\N	\N	2065	\N	\N	tbl_trn_requests	\N	\N	690	0
-1585821765	0	1585821765	\N	\N	\N	2076	\N	\N	tbl_trn_transactions	\N	\N	695	0
-1585821766	0	1585821766	\N	\N	\N	2090	\N	\N	tbl_trn_transactions	\N	\N	702	0
-1585821767	0	1585821767	\N	\N	\N	2092	\N	\N	tbl_trn_transactions	\N	\N	703	0
-1585821767	0	1585821767	\N	\N	\N	2094	\N	\N	tbl_trn_transactions	\N	\N	704	0
-1585821767	0	1585821767	\N	\N	\N	2098	\N	\N	tbl_trn_transactions	\N	\N	706	0
-1585821768	0	1585821768	\N	\N	\N	2100	\N	\N	tbl_trn_transactions	\N	\N	707	0
-1585821770	0	1585821770	\N	\N	\N	2122	\N	\N	tbl_trn_transactions	\N	\N	718	0
-1585821771	0	1585821771	\N	\N	\N	2124	\N	\N	tbl_trn_transactions	\N	\N	719	0
-1585821774	0	1585821774	\N	\N	\N	2152	\N	\N	tbl_trn_transactions	\N	\N	733	0
-1585821774	0	1585821774	\N	\N	\N	2153	\N	\N	tbl_trn_requests	\N	\N	734	0
-1585821774	0	1585821774	\N	\N	\N	2155	\N	\N	tbl_trn_requests	\N	\N	735	0
-1585821776	0	1585821776	\N	\N	\N	2162	\N	\N	tbl_trn_transactions	\N	\N	738	0
-1585821776	0	1585821776	\N	\N	\N	2168	\N	\N	tbl_trn_transactions	\N	\N	741	0
-1585821778	0	1585821778	\N	\N	\N	2183	\N	\N	tbl_trn_requests	\N	\N	749	0
-1585897746	0	1585897746	\N	\N	\N	2751	\N	\N	tbl_trn_requests	\N	\N	1	0
-1585897747	0	1585897747	\N	\N	\N	2752	\N	\N	tbl_trn_transactions	\N	\N	1	0
-1585897748	0	1585897748	\N	\N	\N	2758	\N	\N	tbl_trn_transactions	\N	\N	4	0
-1585897749	0	1585897749	\N	\N	\N	2761	\N	\N	tbl_trn_requests	\N	\N	6	0
-1585897749	0	1585897749	\N	\N	\N	2762	\N	\N	tbl_trn_transactions	\N	\N	6	0
-1585897751	0	1585897751	\N	\N	\N	2770	\N	\N	tbl_trn_transactions	\N	\N	10	0
-1585897751	0	1585897751	\N	\N	\N	2772	\N	\N	tbl_trn_transactions	\N	\N	11	0
-1585897751	0	1585897751	\N	\N	\N	2773	\N	\N	tbl_trn_requests	\N	\N	12	0
-1585897751	0	1585897751	\N	\N	\N	2774	\N	\N	tbl_trn_transactions	\N	\N	12	0
-1585897752	0	1585897752	\N	\N	\N	2776	\N	\N	tbl_trn_transactions	\N	\N	13	0
-1585897752	0	1585897752	\N	\N	\N	2778	\N	\N	tbl_trn_transactions	\N	\N	14	0
-1585897753	0	1585897753	\N	\N	\N	2781	\N	\N	tbl_trn_requests	\N	\N	16	0
-1585897753	0	1585897753	\N	\N	\N	2783	\N	\N	tbl_trn_requests	\N	\N	17	0
-1585897753	0	1585897753	\N	\N	\N	2785	\N	\N	tbl_trn_requests	\N	\N	18	0
-1585897753	0	1585897753	\N	\N	\N	2787	\N	\N	tbl_trn_requests	\N	\N	19	0
-1585897754	0	1585897754	\N	\N	\N	2790	\N	\N	tbl_trn_transactions	\N	\N	20	0
-1585897754	0	1585897754	\N	\N	\N	2792	\N	\N	tbl_trn_transactions	\N	\N	21	0
-1585897754	0	1585897754	\N	\N	\N	2793	\N	\N	tbl_trn_requests	\N	\N	22	0
-1585897755	0	1585897755	\N	\N	\N	2797	\N	\N	tbl_trn_requests	\N	\N	24	0
-1585897755	0	1585897755	\N	\N	\N	2800	\N	\N	tbl_trn_transactions	\N	\N	25	0
-1585897756	0	1585897756	\N	\N	\N	2807	\N	\N	tbl_trn_requests	\N	\N	29	0
-1585897757	0	1585897757	\N	\N	\N	2814	\N	\N	tbl_trn_transactions	\N	\N	32	0
-1585897757	0	1585897757	\N	\N	\N	2817	\N	\N	tbl_trn_requests	\N	\N	34	0
-1585897758	0	1585897758	\N	\N	\N	2823	\N	\N	tbl_trn_requests	\N	\N	37	0
-1585897758	0	1585897758	\N	\N	\N	2828	\N	\N	tbl_trn_transactions	\N	\N	39	0
-1585897759	0	1585897759	\N	\N	\N	2831	\N	\N	tbl_trn_requests	\N	\N	41	0
-1585897789	0	1585897789	\N	\N	\N	2846	\N	\N	tbl_trn_transactions	\N	\N	48	0
-1585897789	0	1585897789	\N	\N	\N	2847	\N	\N	tbl_trn_requests	\N	\N	49	0
-1585897789	0	1585897789	\N	\N	\N	2852	\N	\N	tbl_trn_transactions	\N	\N	51	0
-1585897789	0	1585897789	\N	\N	\N	2856	\N	\N	tbl_trn_transactions	\N	\N	53	0
-1585751776	0	1585751776	\N	\N	\N	612	\N	\N	tbl_trn_transactions	\N	\N	24	0
-1585821728	0	1585821728	\N	\N	\N	1781	\N	\N	tbl_trn_requests	\N	\N	548	0
-1585821728	0	1585821728	\N	\N	\N	1784	\N	\N	tbl_trn_transactions	\N	\N	549	0
-1585821728	0	1585821728	\N	\N	\N	1786	\N	\N	tbl_trn_transactions	\N	\N	550	0
-1585821729	0	1585821729	\N	\N	\N	1794	\N	\N	tbl_trn_transactions	\N	\N	554	0
-1585821732	0	1585821732	\N	\N	\N	1815	\N	\N	tbl_trn_requests	\N	\N	565	0
-1585821733	0	1585821733	\N	\N	\N	1822	\N	\N	tbl_trn_transactions	\N	\N	568	0
-1585821734	0	1585821734	\N	\N	\N	1828	\N	\N	tbl_trn_transactions	\N	\N	571	0
-1585821735	0	1585821735	\N	\N	\N	1837	\N	\N	tbl_trn_requests	\N	\N	576	0
-1585821735	0	1585821735	\N	\N	\N	1842	\N	\N	tbl_trn_transactions	\N	\N	578	0
-1585821736	0	1585821736	\N	\N	\N	1845	\N	\N	tbl_trn_requests	\N	\N	580	0
-1585821736	0	1585821736	\N	\N	\N	1850	\N	\N	tbl_trn_transactions	\N	\N	582	0
-1585821738	0	1585821738	\N	\N	\N	1860	\N	\N	tbl_trn_transactions	\N	\N	587	0
-1585821739	0	1585821739	\N	\N	\N	1862	\N	\N	tbl_trn_transactions	\N	\N	588	0
-1585821739	0	1585821739	\N	\N	\N	1869	\N	\N	tbl_trn_requests	\N	\N	592	0
-1585821740	0	1585821740	\N	\N	\N	1871	\N	\N	tbl_trn_requests	\N	\N	593	0
-1585821740	0	1585821740	\N	\N	\N	1879	\N	\N	tbl_trn_requests	\N	\N	597	0
-1585821742	0	1585821742	\N	\N	\N	1894	\N	\N	tbl_trn_transactions	\N	\N	604	0
-1585821744	0	1585821744	\N	\N	\N	1904	\N	\N	tbl_trn_transactions	\N	\N	609	0
-1585821744	0	1585821744	\N	\N	\N	1906	\N	\N	tbl_trn_transactions	\N	\N	610	0
-1585821745	0	1585821745	\N	\N	\N	1913	\N	\N	tbl_trn_requests	\N	\N	614	0
-1585821747	0	1585821747	\N	\N	\N	1933	\N	\N	tbl_trn_requests	\N	\N	624	0
-1585821748	0	1585821748	\N	\N	\N	1937	\N	\N	tbl_trn_requests	\N	\N	626	0
-1585821750	0	1585821750	\N	\N	\N	1953	\N	\N	tbl_trn_requests	\N	\N	634	0
-1585821750	0	1585821750	\N	\N	\N	1957	\N	\N	tbl_trn_requests	\N	\N	636	0
-1585821751	0	1585821751	\N	\N	\N	1964	\N	\N	tbl_trn_transactions	\N	\N	639	0
-1585821752	0	1585821752	\N	\N	\N	1968	\N	\N	tbl_trn_transactions	\N	\N	641	0
-1585821752	0	1585821752	\N	\N	\N	1970	\N	\N	tbl_trn_transactions	\N	\N	642	0
-1585821752	0	1585821752	\N	\N	\N	1975	\N	\N	tbl_trn_requests	\N	\N	645	0
-1585821756	0	1585821756	\N	\N	\N	1999	\N	\N	tbl_trn_requests	\N	\N	657	0
-1585821758	0	1585821758	\N	\N	\N	2016	\N	\N	tbl_trn_transactions	\N	\N	665	0
-1585821758	0	1585821758	\N	\N	\N	2018	\N	\N	tbl_trn_transactions	\N	\N	666	0
-1585821758	0	1585821758	\N	\N	\N	2021	\N	\N	tbl_trn_requests	\N	\N	668	0
-1585821761	0	1585821761	\N	\N	\N	2039	\N	\N	tbl_trn_requests	\N	\N	677	0
-1585821761	0	1585821761	\N	\N	\N	2046	\N	\N	tbl_trn_transactions	\N	\N	680	0
-1585821763	0	1585821763	\N	\N	\N	2059	\N	\N	tbl_trn_requests	\N	\N	687	0
-1585821763	0	1585821763	\N	\N	\N	2064	\N	\N	tbl_trn_transactions	\N	\N	689	0
-1585821764	0	1585821764	\N	\N	\N	2069	\N	\N	tbl_trn_requests	\N	\N	692	0
-1585821765	0	1585821765	\N	\N	\N	2079	\N	\N	tbl_trn_requests	\N	\N	697	0
-1585821766	0	1585821766	\N	\N	\N	2086	\N	\N	tbl_trn_transactions	\N	\N	700	0
-1585821768	0	1585821768	\N	\N	\N	2102	\N	\N	tbl_trn_transactions	\N	\N	708	0
-1585821768	0	1585821768	\N	\N	\N	2103	\N	\N	tbl_trn_requests	\N	\N	709	0
-1585821771	0	1585821771	\N	\N	\N	2125	\N	\N	tbl_trn_requests	\N	\N	720	0
-1585821771	0	1585821771	\N	\N	\N	2132	\N	\N	tbl_trn_transactions	\N	\N	723	0
-1585821773	0	1585821773	\N	\N	\N	2148	\N	\N	tbl_trn_transactions	\N	\N	731	0
-1585821775	0	1585821775	\N	\N	\N	2157	\N	\N	tbl_trn_requests	\N	\N	736	0
-1585821777	0	1585821777	\N	\N	\N	2171	\N	\N	tbl_trn_requests	\N	\N	743	0
-1585821778	0	1585821778	\N	\N	\N	2178	\N	\N	tbl_trn_transactions	\N	\N	746	0
-1585821778	0	1585821778	\N	\N	\N	2179	\N	\N	tbl_trn_requests	\N	\N	747	0
-1585897747	0	1585897747	\N	\N	\N	2753	\N	\N	tbl_trn_requests	\N	\N	2	0
-1585897747	0	1585897747	\N	\N	\N	2754	\N	\N	tbl_trn_transactions	\N	\N	2	0
-1585897748	0	1585897748	\N	\N	\N	2757	\N	\N	tbl_trn_requests	\N	\N	4	0
-1585897749	0	1585897749	\N	\N	\N	2763	\N	\N	tbl_trn_requests	\N	\N	7	0
-1585897749	0	1585897749	\N	\N	\N	2764	\N	\N	tbl_trn_transactions	\N	\N	7	0
-1585897749	0	1585897749	\N	\N	\N	2765	\N	\N	tbl_trn_requests	\N	\N	8	0
-1585897749	0	1585897749	\N	\N	\N	2766	\N	\N	tbl_trn_transactions	\N	\N	8	0
-1585897750	0	1585897750	\N	\N	\N	2768	\N	\N	tbl_trn_transactions	\N	\N	9	0
-1585897752	0	1585897752	\N	\N	\N	2780	\N	\N	tbl_trn_transactions	\N	\N	15	0
-1585897753	0	1585897753	\N	\N	\N	2789	\N	\N	tbl_trn_requests	\N	\N	20	0
-1585897754	0	1585897754	\N	\N	\N	2791	\N	\N	tbl_trn_requests	\N	\N	21	0
-1585897754	0	1585897754	\N	\N	\N	2794	\N	\N	tbl_trn_transactions	\N	\N	22	0
-1585897755	0	1585897755	\N	\N	\N	2799	\N	\N	tbl_trn_requests	\N	\N	25	0
-1585897755	0	1585897755	\N	\N	\N	2801	\N	\N	tbl_trn_requests	\N	\N	26	0
-1585897756	0	1585897756	\N	\N	\N	2809	\N	\N	tbl_trn_requests	\N	\N	30	0
-1585897757	0	1585897757	\N	\N	\N	2813	\N	\N	tbl_trn_requests	\N	\N	32	0
-1585897757	0	1585897757	\N	\N	\N	2818	\N	\N	tbl_trn_transactions	\N	\N	34	0
-1585897758	0	1585897758	\N	\N	\N	2821	\N	\N	tbl_trn_requests	\N	\N	36	0
-1585897758	0	1585897758	\N	\N	\N	2824	\N	\N	tbl_trn_transactions	\N	\N	37	0
-1585897758	0	1585897758	\N	\N	\N	2826	\N	\N	tbl_trn_transactions	\N	\N	38	0
-1585897788	0	1585897788	\N	\N	\N	2833	\N	\N	tbl_trn_requests	\N	\N	42	0
-1585897788	0	1585897788	\N	\N	\N	2838	\N	\N	tbl_trn_transactions	\N	\N	44	0
-1585897788	0	1585897788	\N	\N	\N	2840	\N	\N	tbl_trn_transactions	\N	\N	45	0
-1585897788	0	1585897788	\N	\N	\N	2841	\N	\N	tbl_trn_requests	\N	\N	46	0
-1585897789	0	1585897789	\N	\N	\N	2843	\N	\N	tbl_trn_requests	\N	\N	47	0
-1585897789	0	1585897789	\N	\N	\N	2849	\N	\N	tbl_trn_requests	\N	\N	50	0
-1585897789	0	1585897789	\N	\N	\N	2854	\N	\N	tbl_trn_transactions	\N	\N	52	0
-1585751776	0	1585751776	\N	\N	\N	613	\N	\N	tbl_trn_requests	\N	\N	25	0
-1585751776	0	1585751776	\N	\N	\N	615	\N	\N	tbl_trn_requests	\N	\N	26	0
-1585821739	0	1585821739	\N	\N	\N	1864	\N	\N	tbl_trn_transactions	\N	\N	589	0
-1585821739	0	1585821739	\N	\N	\N	1866	\N	\N	tbl_trn_transactions	\N	\N	590	0
-1585821739	0	1585821739	\N	\N	\N	1867	\N	\N	tbl_trn_requests	\N	\N	591	0
-1585821744	0	1585821744	\N	\N	\N	1907	\N	\N	tbl_trn_requests	\N	\N	611	0
-1585821745	0	1585821745	\N	\N	\N	1916	\N	\N	tbl_trn_transactions	\N	\N	615	0
-1585821746	0	1585821746	\N	\N	\N	1923	\N	\N	tbl_trn_requests	\N	\N	619	0
-1585821747	0	1585821747	\N	\N	\N	1931	\N	\N	tbl_trn_requests	\N	\N	623	0
-1585821748	0	1585821748	\N	\N	\N	1940	\N	\N	tbl_trn_transactions	\N	\N	627	0
-1585821749	0	1585821749	\N	\N	\N	1942	\N	\N	tbl_trn_transactions	\N	\N	628	0
-1585821749	0	1585821749	\N	\N	\N	1946	\N	\N	tbl_trn_transactions	\N	\N	630	0
-1585821749	0	1585821749	\N	\N	\N	1949	\N	\N	tbl_trn_requests	\N	\N	632	0
-1585821750	0	1585821750	\N	\N	\N	1951	\N	\N	tbl_trn_requests	\N	\N	633	0
-1585821751	0	1585821751	\N	\N	\N	1959	\N	\N	tbl_trn_requests	\N	\N	637	0
-1585821751	0	1585821751	\N	\N	\N	1963	\N	\N	tbl_trn_requests	\N	\N	639	0
-1585821754	0	1585821754	\N	\N	\N	1986	\N	\N	tbl_trn_transactions	\N	\N	650	0
-1585821754	0	1585821754	\N	\N	\N	1991	\N	\N	tbl_trn_requests	\N	\N	653	0
-1585821755	0	1585821755	\N	\N	\N	1996	\N	\N	tbl_trn_transactions	\N	\N	655	0
-1585821756	0	1585821756	\N	\N	\N	2004	\N	\N	tbl_trn_transactions	\N	\N	659	0
-1585821757	0	1585821757	\N	\N	\N	2013	\N	\N	tbl_trn_requests	\N	\N	664	0
-1585821759	0	1585821759	\N	\N	\N	2024	\N	\N	tbl_trn_transactions	\N	\N	669	0
-1585821762	0	1585821762	\N	\N	\N	2053	\N	\N	tbl_trn_requests	\N	\N	684	0
-1585821763	0	1585821763	\N	\N	\N	2057	\N	\N	tbl_trn_requests	\N	\N	686	0
-1585821763	0	1585821763	\N	\N	\N	2062	\N	\N	tbl_trn_transactions	\N	\N	688	0
-1585821764	0	1585821764	\N	\N	\N	2067	\N	\N	tbl_trn_requests	\N	\N	691	0
-1585821765	0	1585821765	\N	\N	\N	2080	\N	\N	tbl_trn_transactions	\N	\N	697	0
-1585821769	0	1585821769	\N	\N	\N	2110	\N	\N	tbl_trn_transactions	\N	\N	712	0
-1585821770	0	1585821770	\N	\N	\N	2117	\N	\N	tbl_trn_requests	\N	\N	716	0
-1585821771	0	1585821771	\N	\N	\N	2127	\N	\N	tbl_trn_requests	\N	\N	721	0
-1585821771	0	1585821771	\N	\N	\N	2133	\N	\N	tbl_trn_requests	\N	\N	724	0
-1585821772	0	1585821772	\N	\N	\N	2139	\N	\N	tbl_trn_requests	\N	\N	727	0
-1585821776	0	1585821776	\N	\N	\N	2164	\N	\N	tbl_trn_transactions	\N	\N	739	0
-1585821778	0	1585821778	\N	\N	\N	2185	\N	\N	tbl_trn_requests	\N	\N	750	0
-1585821779	0	1585821779	\N	\N	\N	2188	\N	\N	tbl_trn_transactions	\N	\N	751	0
-1585897748	0	1585897748	\N	\N	\N	2755	\N	\N	tbl_trn_requests	\N	\N	3	0
-1585897748	0	1585897748	\N	\N	\N	2756	\N	\N	tbl_trn_transactions	\N	\N	3	0
-1585897748	0	1585897748	\N	\N	\N	2759	\N	\N	tbl_trn_requests	\N	\N	5	0
-1585897748	0	1585897748	\N	\N	\N	2760	\N	\N	tbl_trn_transactions	\N	\N	5	0
-1585897750	0	1585897750	\N	\N	\N	2767	\N	\N	tbl_trn_requests	\N	\N	9	0
-1585897751	0	1585897751	\N	\N	\N	2769	\N	\N	tbl_trn_requests	\N	\N	10	0
-1585897751	0	1585897751	\N	\N	\N	2771	\N	\N	tbl_trn_requests	\N	\N	11	0
-1585897751	0	1585897751	\N	\N	\N	2775	\N	\N	tbl_trn_requests	\N	\N	13	0
-1585897752	0	1585897752	\N	\N	\N	2777	\N	\N	tbl_trn_requests	\N	\N	14	0
-1585897752	0	1585897752	\N	\N	\N	2779	\N	\N	tbl_trn_requests	\N	\N	15	0
-1585897753	0	1585897753	\N	\N	\N	2782	\N	\N	tbl_trn_transactions	\N	\N	16	0
-1585897753	0	1585897753	\N	\N	\N	2784	\N	\N	tbl_trn_transactions	\N	\N	17	0
-1585897753	0	1585897753	\N	\N	\N	2786	\N	\N	tbl_trn_transactions	\N	\N	18	0
-1585897753	0	1585897753	\N	\N	\N	2788	\N	\N	tbl_trn_transactions	\N	\N	19	0
-1585897754	0	1585897754	\N	\N	\N	2796	\N	\N	tbl_trn_transactions	\N	\N	23	0
-1585897755	0	1585897755	\N	\N	\N	2803	\N	\N	tbl_trn_requests	\N	\N	27	0
-1585897755	0	1585897755	\N	\N	\N	2805	\N	\N	tbl_trn_requests	\N	\N	28	0
-1585897756	0	1585897756	\N	\N	\N	2808	\N	\N	tbl_trn_transactions	\N	\N	29	0
-1585897757	0	1585897757	\N	\N	\N	2815	\N	\N	tbl_trn_requests	\N	\N	33	0
-1585897758	0	1585897758	\N	\N	\N	2827	\N	\N	tbl_trn_requests	\N	\N	39	0
-1585897788	0	1585897788	\N	\N	\N	2834	\N	\N	tbl_trn_transactions	\N	\N	42	0
-1585897789	0	1585897789	\N	\N	\N	2842	\N	\N	tbl_trn_transactions	\N	\N	46	0
-1585897789	0	1585897789	\N	\N	\N	2844	\N	\N	tbl_trn_transactions	\N	\N	47	0
-1585897789	0	1585897789	\N	\N	\N	2845	\N	\N	tbl_trn_requests	\N	\N	48	0
-1585897789	0	1585897789	\N	\N	\N	2850	\N	\N	tbl_trn_transactions	\N	\N	50	0
-1585897789	0	1585897789	\N	\N	\N	2851	\N	\N	tbl_trn_requests	\N	\N	51	0
-1585897789	0	1585897789	\N	\N	\N	2858	\N	\N	tbl_trn_transactions	\N	\N	54	0
-1585751776	0	1585751776	\N	\N	\N	614	\N	\N	tbl_trn_transactions	\N	\N	25	0
-1585752333	0	1585752333	\N	\N	\N	617	\N	\N	tbl_trn_requests	\N	\N	27	0
-1585752333	0	1585752333	\N	\N	\N	618	\N	\N	tbl_trn_transactions	\N	\N	27	0
-1585752333	0	1585752333	\N	\N	\N	619	\N	\N	tbl_trn_requests	\N	\N	28	0
-1585752333	0	1585752333	\N	\N	\N	620	\N	\N	tbl_trn_transactions	\N	\N	28	0
-1585752333	0	1585752333	\N	\N	\N	621	\N	\N	tbl_trn_requests	\N	\N	29	0
-1585752333	0	1585752333	\N	\N	\N	622	\N	\N	tbl_trn_transactions	\N	\N	29	0
-1585752333	0	1585752333	\N	\N	\N	623	\N	\N	tbl_trn_requests	\N	\N	30	0
-1585752333	0	1585752333	\N	\N	\N	624	\N	\N	tbl_trn_transactions	\N	\N	30	0
-1585752333	0	1585752333	\N	\N	\N	625	\N	\N	tbl_trn_requests	\N	\N	31	0
-1585752333	0	1585752333	\N	\N	\N	626	\N	\N	tbl_trn_transactions	\N	\N	31	0
-1585752333	0	1585752333	\N	\N	\N	627	\N	\N	tbl_trn_requests	\N	\N	32	0
-1585752333	0	1585752333	\N	\N	\N	628	\N	\N	tbl_trn_transactions	\N	\N	32	0
-1585752333	0	1585752333	\N	\N	\N	629	\N	\N	tbl_trn_requests	\N	\N	33	0
-1585752333	0	1585752333	\N	\N	\N	630	\N	\N	tbl_trn_transactions	\N	\N	33	0
-1585753043	0	1585753043	\N	\N	\N	631	\N	\N	tbl_trn_requests	\N	\N	34	0
-1585753043	0	1585753043	\N	\N	\N	632	\N	\N	tbl_trn_transactions	\N	\N	34	0
-1585753341	0	1585753341	\N	\N	\N	633	\N	\N	tbl_trn_requests	\N	\N	35	0
-1585753341	0	1585753341	\N	\N	\N	634	\N	\N	tbl_trn_transactions	\N	\N	35	0
-1585753524	0	1585753524	\N	\N	\N	635	\N	\N	tbl_trn_requests	\N	\N	36	0
-1585753524	0	1585753524	\N	\N	\N	636	\N	\N	tbl_trn_transactions	\N	\N	36	0
-1585753525	0	1585753525	\N	\N	\N	637	\N	\N	tbl_trn_requests	\N	\N	37	0
-1585753525	0	1585753525	\N	\N	\N	638	\N	\N	tbl_trn_transactions	\N	\N	37	0
-1585753525	0	1585753525	\N	\N	\N	639	\N	\N	tbl_trn_requests	\N	\N	38	0
-1585753525	0	1585753525	\N	\N	\N	640	\N	\N	tbl_trn_transactions	\N	\N	38	0
-1585753525	0	1585753525	\N	\N	\N	641	\N	\N	tbl_trn_requests	\N	\N	39	0
-1585753525	0	1585753525	\N	\N	\N	642	\N	\N	tbl_trn_transactions	\N	\N	39	0
-1585753525	0	1585753525	\N	\N	\N	643	\N	\N	tbl_trn_requests	\N	\N	40	0
-1585753525	0	1585753525	\N	\N	\N	644	\N	\N	tbl_trn_transactions	\N	\N	40	0
-1585753525	0	1585753525	\N	\N	\N	645	\N	\N	tbl_trn_requests	\N	\N	41	0
-1585753525	0	1585753525	\N	\N	\N	646	\N	\N	tbl_trn_transactions	\N	\N	41	0
-1585753525	0	1585753525	\N	\N	\N	647	\N	\N	tbl_trn_requests	\N	\N	42	0
-1585753525	0	1585753525	\N	\N	\N	648	\N	\N	tbl_trn_transactions	\N	\N	42	0
-1585753525	0	1585753525	\N	\N	\N	649	\N	\N	tbl_trn_requests	\N	\N	43	0
-1585753525	0	1585753525	\N	\N	\N	650	\N	\N	tbl_trn_transactions	\N	\N	43	0
-1585754269	0	1585754269	\N	\N	\N	651	\N	\N	tbl_trn_requests	\N	\N	44	0
-1585754269	0	1585754269	\N	\N	\N	652	\N	\N	tbl_trn_transactions	\N	\N	44	0
-1585754269	0	1585754269	\N	\N	\N	653	\N	\N	tbl_trn_requests	\N	\N	45	0
-1585754269	0	1585754269	\N	\N	\N	654	\N	\N	tbl_trn_transactions	\N	\N	45	0
-1585754269	0	1585754269	\N	\N	\N	655	\N	\N	tbl_trn_requests	\N	\N	46	0
-1585754269	0	1585754269	\N	\N	\N	656	\N	\N	tbl_trn_transactions	\N	\N	46	0
-1585754269	0	1585754269	\N	\N	\N	657	\N	\N	tbl_trn_requests	\N	\N	47	0
-1585754269	0	1585754269	\N	\N	\N	658	\N	\N	tbl_trn_transactions	\N	\N	47	0
-1585754269	0	1585754269	\N	\N	\N	659	\N	\N	tbl_trn_requests	\N	\N	48	0
-1585754270	0	1585754270	\N	\N	\N	660	\N	\N	tbl_trn_transactions	\N	\N	48	0
-1585754270	0	1585754270	\N	\N	\N	661	\N	\N	tbl_trn_requests	\N	\N	49	0
-1585754270	0	1585754270	\N	\N	\N	662	\N	\N	tbl_trn_transactions	\N	\N	49	0
-1585754270	0	1585754270	\N	\N	\N	663	\N	\N	tbl_trn_requests	\N	\N	50	0
-1585754270	0	1585754270	\N	\N	\N	664	\N	\N	tbl_trn_transactions	\N	\N	50	0
-1585754270	0	1585754270	\N	\N	\N	665	\N	\N	tbl_trn_requests	\N	\N	51	0
-1585754270	0	1585754270	\N	\N	\N	666	\N	\N	tbl_trn_transactions	\N	\N	51	0
-1585754613	0	1585754613	\N	\N	\N	667	\N	\N	tbl_trn_requests	\N	\N	52	0
-1585754613	0	1585754613	\N	\N	\N	668	\N	\N	tbl_trn_transactions	\N	\N	52	0
-1585754613	0	1585754613	\N	\N	\N	669	\N	\N	tbl_trn_requests	\N	\N	53	0
-1585754613	0	1585754613	\N	\N	\N	670	\N	\N	tbl_trn_transactions	\N	\N	53	0
-1585754613	0	1585754613	\N	\N	\N	671	\N	\N	tbl_trn_requests	\N	\N	54	0
-1585754613	0	1585754613	\N	\N	\N	672	\N	\N	tbl_trn_transactions	\N	\N	54	0
-1585754613	0	1585754613	\N	\N	\N	673	\N	\N	tbl_trn_requests	\N	\N	55	0
-1585754613	0	1585754613	\N	\N	\N	674	\N	\N	tbl_trn_transactions	\N	\N	55	0
-1585754613	0	1585754613	\N	\N	\N	675	\N	\N	tbl_trn_requests	\N	\N	56	0
-1585754613	0	1585754613	\N	\N	\N	676	\N	\N	tbl_trn_transactions	\N	\N	56	0
-1585754614	0	1585754614	\N	\N	\N	677	\N	\N	tbl_trn_requests	\N	\N	57	0
-1585754614	0	1585754614	\N	\N	\N	678	\N	\N	tbl_trn_transactions	\N	\N	57	0
-1585754614	0	1585754614	\N	\N	\N	679	\N	\N	tbl_trn_requests	\N	\N	58	0
-1585754614	0	1585754614	\N	\N	\N	680	\N	\N	tbl_trn_transactions	\N	\N	58	0
-1585754614	0	1585754614	\N	\N	\N	681	\N	\N	tbl_trn_requests	\N	\N	59	0
-1585754614	0	1585754614	\N	\N	\N	682	\N	\N	tbl_trn_transactions	\N	\N	59	0
-1585754616	0	1585754616	\N	\N	\N	683	\N	\N	tbl_trn_requests	\N	\N	60	0
-1585754616	0	1585754616	\N	\N	\N	684	\N	\N	tbl_trn_transactions	\N	\N	60	0
-1585754626	0	1585754626	\N	\N	\N	685	\N	\N	tbl_trn_requests	\N	\N	61	0
-1585754626	0	1585754626	\N	\N	\N	686	\N	\N	tbl_trn_transactions	\N	\N	61	0
-1585814615	0	1585814615	\N	\N	\N	687	\N	\N	tbl_trn_requests	\N	\N	1	0
-1585814616	0	1585814616	\N	\N	\N	688	\N	\N	tbl_trn_transactions	\N	\N	1	0
-1585814727	0	1585814727	\N	\N	\N	689	\N	\N	tbl_trn_requests	\N	\N	2	0
-1585814727	0	1585814727	\N	\N	\N	690	\N	\N	tbl_trn_transactions	\N	\N	2	0
-1585814728	0	1585814728	\N	\N	\N	691	\N	\N	tbl_trn_requests	\N	\N	3	0
-1585814728	0	1585814728	\N	\N	\N	692	\N	\N	tbl_trn_transactions	\N	\N	3	0
-1585814728	0	1585814728	\N	\N	\N	693	\N	\N	tbl_trn_requests	\N	\N	4	0
-1585814728	0	1585814728	\N	\N	\N	694	\N	\N	tbl_trn_transactions	\N	\N	4	0
-1585814728	0	1585814728	\N	\N	\N	695	\N	\N	tbl_trn_requests	\N	\N	5	0
-1585814728	0	1585814728	\N	\N	\N	696	\N	\N	tbl_trn_transactions	\N	\N	5	0
-1585814728	0	1585814728	\N	\N	\N	697	\N	\N	tbl_trn_requests	\N	\N	6	0
-1585814728	0	1585814728	\N	\N	\N	698	\N	\N	tbl_trn_transactions	\N	\N	6	0
-1585814728	0	1585814728	\N	\N	\N	699	\N	\N	tbl_trn_requests	\N	\N	7	0
-1585814728	0	1585814728	\N	\N	\N	700	\N	\N	tbl_trn_transactions	\N	\N	7	0
-1585814728	0	1585814728	\N	\N	\N	701	\N	\N	tbl_trn_requests	\N	\N	8	0
-1585814728	0	1585814728	\N	\N	\N	702	\N	\N	tbl_trn_transactions	\N	\N	8	0
-1585814728	0	1585814728	\N	\N	\N	703	\N	\N	tbl_trn_requests	\N	\N	9	0
-1585814728	0	1585814728	\N	\N	\N	704	\N	\N	tbl_trn_transactions	\N	\N	9	0
-1585814743	0	1585814743	\N	\N	\N	705	\N	\N	tbl_trn_requests	\N	\N	10	0
-1585814743	0	1585814743	\N	\N	\N	706	\N	\N	tbl_trn_transactions	\N	\N	10	0
-1585814746	0	1585814746	\N	\N	\N	707	\N	\N	tbl_trn_requests	\N	\N	11	0
-1585814746	0	1585814746	\N	\N	\N	708	\N	\N	tbl_trn_transactions	\N	\N	11	0
-1585814747	0	1585814747	\N	\N	\N	709	\N	\N	tbl_trn_requests	\N	\N	12	0
-1585814747	0	1585814747	\N	\N	\N	710	\N	\N	tbl_trn_transactions	\N	\N	12	0
-1585814776	0	1585814776	\N	\N	\N	711	\N	\N	tbl_trn_requests	\N	\N	13	0
-1585814777	0	1585814777	\N	\N	\N	712	\N	\N	tbl_trn_transactions	\N	\N	13	0
-1585814916	0	1585814916	\N	\N	\N	713	\N	\N	tbl_trn_requests	\N	\N	14	0
-1585814916	0	1585814916	\N	\N	\N	714	\N	\N	tbl_trn_transactions	\N	\N	14	0
-1585815083	0	1585815083	\N	\N	\N	715	\N	\N	tbl_trn_requests	\N	\N	15	0
-1585815084	0	1585815084	\N	\N	\N	716	\N	\N	tbl_trn_transactions	\N	\N	15	0
-1585815153	0	1585815153	\N	\N	\N	717	\N	\N	tbl_trn_requests	\N	\N	16	0
-1585815153	0	1585815153	\N	\N	\N	718	\N	\N	tbl_trn_transactions	\N	\N	16	0
-1585815167	0	1585815167	\N	\N	\N	719	\N	\N	tbl_trn_requests	\N	\N	17	0
-1585815167	0	1585815167	\N	\N	\N	720	\N	\N	tbl_trn_transactions	\N	\N	17	0
-1585815169	0	1585815169	\N	\N	\N	721	\N	\N	tbl_trn_requests	\N	\N	18	0
-1585815169	0	1585815169	\N	\N	\N	722	\N	\N	tbl_trn_transactions	\N	\N	18	0
-1585816067	0	1585816067	\N	\N	\N	723	\N	\N	tbl_trn_requests	\N	\N	19	0
-1585816067	0	1585816067	\N	\N	\N	724	\N	\N	tbl_trn_transactions	\N	\N	19	0
-1585816220	0	1585816220	\N	\N	\N	725	\N	\N	tbl_trn_requests	\N	\N	20	0
-1585816220	0	1585816220	\N	\N	\N	726	\N	\N	tbl_trn_transactions	\N	\N	20	0
-1585816224	0	1585816224	\N	\N	\N	727	\N	\N	tbl_trn_requests	\N	\N	21	0
-1585816224	0	1585816224	\N	\N	\N	728	\N	\N	tbl_trn_transactions	\N	\N	21	0
-1585816226	0	1585816226	\N	\N	\N	729	\N	\N	tbl_trn_requests	\N	\N	22	0
-1585816226	0	1585816226	\N	\N	\N	730	\N	\N	tbl_trn_transactions	\N	\N	22	0
-1585816439	0	1585816439	\N	\N	\N	731	\N	\N	tbl_trn_requests	\N	\N	23	0
-1585816439	0	1585816439	\N	\N	\N	732	\N	\N	tbl_trn_transactions	\N	\N	23	0
-1585816442	0	1585816442	\N	\N	\N	733	\N	\N	tbl_trn_requests	\N	\N	24	0
-1585816442	0	1585816442	\N	\N	\N	734	\N	\N	tbl_trn_transactions	\N	\N	24	0
-1585816444	0	1585816444	\N	\N	\N	735	\N	\N	tbl_trn_requests	\N	\N	25	0
-1585816444	0	1585816444	\N	\N	\N	736	\N	\N	tbl_trn_transactions	\N	\N	25	0
-1585816444	0	1585816444	\N	\N	\N	737	\N	\N	tbl_trn_requests	\N	\N	26	0
-1585816444	0	1585816444	\N	\N	\N	738	\N	\N	tbl_trn_transactions	\N	\N	26	0
-1585818245	0	1585818245	\N	\N	\N	739	\N	\N	tbl_trn_requests	\N	\N	27	0
-1585818245	0	1585818245	\N	\N	\N	740	\N	\N	tbl_trn_transactions	\N	\N	27	0
-1585818628	0	1585818628	\N	\N	\N	741	\N	\N	tbl_trn_requests	\N	\N	28	0
-1585818628	0	1585818628	\N	\N	\N	742	\N	\N	tbl_trn_transactions	\N	\N	28	0
-1585818629	0	1585818629	\N	\N	\N	743	\N	\N	tbl_trn_requests	\N	\N	29	0
-1585818629	0	1585818629	\N	\N	\N	744	\N	\N	tbl_trn_transactions	\N	\N	29	0
-1585818630	0	1585818630	\N	\N	\N	745	\N	\N	tbl_trn_requests	\N	\N	30	0
-1585818630	0	1585818630	\N	\N	\N	746	\N	\N	tbl_trn_transactions	\N	\N	30	0
-1585818631	0	1585818631	\N	\N	\N	747	\N	\N	tbl_trn_requests	\N	\N	31	0
-1585818631	0	1585818631	\N	\N	\N	748	\N	\N	tbl_trn_transactions	\N	\N	31	0
-1585818631	0	1585818631	\N	\N	\N	749	\N	\N	tbl_trn_requests	\N	\N	32	0
-1585818631	0	1585818631	\N	\N	\N	750	\N	\N	tbl_trn_transactions	\N	\N	32	0
-1585818632	0	1585818632	\N	\N	\N	751	\N	\N	tbl_trn_requests	\N	\N	33	0
-1585818632	0	1585818632	\N	\N	\N	752	\N	\N	tbl_trn_transactions	\N	\N	33	0
-1585818632	0	1585818632	\N	\N	\N	753	\N	\N	tbl_trn_requests	\N	\N	34	0
-1585818632	0	1585818632	\N	\N	\N	754	\N	\N	tbl_trn_transactions	\N	\N	34	0
-1585818633	0	1585818633	\N	\N	\N	755	\N	\N	tbl_trn_requests	\N	\N	35	0
-1585818633	0	1585818633	\N	\N	\N	756	\N	\N	tbl_trn_transactions	\N	\N	35	0
-1585818769	0	1585818769	\N	\N	\N	757	\N	\N	tbl_trn_requests	\N	\N	36	0
-1585818769	0	1585818769	\N	\N	\N	758	\N	\N	tbl_trn_transactions	\N	\N	36	0
-1585818770	0	1585818770	\N	\N	\N	759	\N	\N	tbl_trn_requests	\N	\N	37	0
-1585818770	0	1585818770	\N	\N	\N	760	\N	\N	tbl_trn_transactions	\N	\N	37	0
-1585818771	0	1585818771	\N	\N	\N	761	\N	\N	tbl_trn_requests	\N	\N	38	0
-1585818771	0	1585818771	\N	\N	\N	762	\N	\N	tbl_trn_transactions	\N	\N	38	0
-1585818771	0	1585818771	\N	\N	\N	763	\N	\N	tbl_trn_requests	\N	\N	39	0
-1585818772	0	1585818772	\N	\N	\N	764	\N	\N	tbl_trn_transactions	\N	\N	39	0
-1585818772	0	1585818772	\N	\N	\N	765	\N	\N	tbl_trn_requests	\N	\N	40	0
-1585818772	0	1585818772	\N	\N	\N	766	\N	\N	tbl_trn_transactions	\N	\N	40	0
-1585818773	0	1585818773	\N	\N	\N	767	\N	\N	tbl_trn_requests	\N	\N	41	0
-1585818773	0	1585818773	\N	\N	\N	768	\N	\N	tbl_trn_transactions	\N	\N	41	0
-1585819098	0	1585819098	\N	\N	\N	769	\N	\N	tbl_trn_requests	\N	\N	42	0
-1585819098	0	1585819098	\N	\N	\N	770	\N	\N	tbl_trn_transactions	\N	\N	42	0
-1585819098	0	1585819098	\N	\N	\N	771	\N	\N	tbl_trn_requests	\N	\N	43	0
-1585819098	0	1585819098	\N	\N	\N	772	\N	\N	tbl_trn_transactions	\N	\N	43	0
-1585819098	0	1585819098	\N	\N	\N	773	\N	\N	tbl_trn_requests	\N	\N	44	0
-1585819098	0	1585819098	\N	\N	\N	774	\N	\N	tbl_trn_transactions	\N	\N	44	0
-1585819098	0	1585819098	\N	\N	\N	775	\N	\N	tbl_trn_requests	\N	\N	45	0
-1585819098	0	1585819098	\N	\N	\N	776	\N	\N	tbl_trn_transactions	\N	\N	45	0
-1585819099	0	1585819099	\N	\N	\N	777	\N	\N	tbl_trn_requests	\N	\N	46	0
-1585819099	0	1585819099	\N	\N	\N	778	\N	\N	tbl_trn_transactions	\N	\N	46	0
-1585819099	0	1585819099	\N	\N	\N	779	\N	\N	tbl_trn_requests	\N	\N	47	0
-1585819099	0	1585819099	\N	\N	\N	780	\N	\N	tbl_trn_transactions	\N	\N	47	0
-1585819099	0	1585819099	\N	\N	\N	781	\N	\N	tbl_trn_requests	\N	\N	48	0
-1585819099	0	1585819099	\N	\N	\N	782	\N	\N	tbl_trn_transactions	\N	\N	48	0
-1585819099	0	1585819099	\N	\N	\N	783	\N	\N	tbl_trn_requests	\N	\N	49	0
-1585819099	0	1585819099	\N	\N	\N	784	\N	\N	tbl_trn_transactions	\N	\N	49	0
-1585819407	0	1585819407	\N	\N	\N	785	\N	\N	tbl_trn_requests	\N	\N	50	0
-1585819407	0	1585819407	\N	\N	\N	786	\N	\N	tbl_trn_transactions	\N	\N	50	0
-1585819544	0	1585819544	\N	\N	\N	787	\N	\N	tbl_trn_requests	\N	\N	51	0
-1585819544	0	1585819544	\N	\N	\N	788	\N	\N	tbl_trn_transactions	\N	\N	51	0
-1585819544	0	1585819544	\N	\N	\N	789	\N	\N	tbl_trn_requests	\N	\N	52	0
-1585819544	0	1585819544	\N	\N	\N	790	\N	\N	tbl_trn_transactions	\N	\N	52	0
-1585819544	0	1585819544	\N	\N	\N	791	\N	\N	tbl_trn_requests	\N	\N	53	0
-1585819544	0	1585819544	\N	\N	\N	792	\N	\N	tbl_trn_transactions	\N	\N	53	0
-1585819544	0	1585819544	\N	\N	\N	793	\N	\N	tbl_trn_requests	\N	\N	54	0
-1585819544	0	1585819544	\N	\N	\N	794	\N	\N	tbl_trn_transactions	\N	\N	54	0
-1585819544	0	1585819544	\N	\N	\N	795	\N	\N	tbl_trn_requests	\N	\N	55	0
-1585819544	0	1585819544	\N	\N	\N	796	\N	\N	tbl_trn_transactions	\N	\N	55	0
-1585819545	0	1585819545	\N	\N	\N	797	\N	\N	tbl_trn_requests	\N	\N	56	0
-1585819545	0	1585819545	\N	\N	\N	798	\N	\N	tbl_trn_transactions	\N	\N	56	0
-1585819545	0	1585819545	\N	\N	\N	799	\N	\N	tbl_trn_requests	\N	\N	57	0
-1585819545	0	1585819545	\N	\N	\N	800	\N	\N	tbl_trn_transactions	\N	\N	57	0
-1585819546	0	1585819546	\N	\N	\N	812	\N	\N	tbl_trn_transactions	\N	\N	63	0
-1585819546	0	1585819546	\N	\N	\N	814	\N	\N	tbl_trn_transactions	\N	\N	64	0
-1585819547	0	1585819547	\N	\N	\N	815	\N	\N	tbl_trn_requests	\N	\N	65	0
-1585819547	0	1585819547	\N	\N	\N	817	\N	\N	tbl_trn_requests	\N	\N	66	0
-1585819547	0	1585819547	\N	\N	\N	821	\N	\N	tbl_trn_requests	\N	\N	68	0
-1585819547	0	1585819547	\N	\N	\N	823	\N	\N	tbl_trn_requests	\N	\N	69	0
-1585819548	0	1585819548	\N	\N	\N	830	\N	\N	tbl_trn_transactions	\N	\N	72	0
-1585819548	0	1585819548	\N	\N	\N	832	\N	\N	tbl_trn_transactions	\N	\N	73	0
-1585819548	0	1585819548	\N	\N	\N	833	\N	\N	tbl_trn_requests	\N	\N	74	0
-1585819548	0	1585819548	\N	\N	\N	836	\N	\N	tbl_trn_transactions	\N	\N	75	0
-1585819549	0	1585819549	\N	\N	\N	838	\N	\N	tbl_trn_transactions	\N	\N	76	0
-1585819549	0	1585819549	\N	\N	\N	839	\N	\N	tbl_trn_requests	\N	\N	77	0
-1585819549	0	1585819549	\N	\N	\N	843	\N	\N	tbl_trn_requests	\N	\N	79	0
-1585819550	0	1585819550	\N	\N	\N	847	\N	\N	tbl_trn_requests	\N	\N	81	0
-1585819550	0	1585819550	\N	\N	\N	849	\N	\N	tbl_trn_requests	\N	\N	82	0
-1585819551	0	1585819551	\N	\N	\N	863	\N	\N	tbl_trn_requests	\N	\N	89	0
-1585819552	0	1585819552	\N	\N	\N	869	\N	\N	tbl_trn_requests	\N	\N	92	0
-1585819552	0	1585819552	\N	\N	\N	870	\N	\N	tbl_trn_transactions	\N	\N	92	0
-1585819552	0	1585819552	\N	\N	\N	874	\N	\N	tbl_trn_transactions	\N	\N	94	0
-1585819552	0	1585819552	\N	\N	\N	875	\N	\N	tbl_trn_requests	\N	\N	95	0
-1585819552	0	1585819552	\N	\N	\N	876	\N	\N	tbl_trn_transactions	\N	\N	95	0
-1585819554	0	1585819554	\N	\N	\N	884	\N	\N	tbl_trn_transactions	\N	\N	99	0
-1585819554	0	1585819554	\N	\N	\N	887	\N	\N	tbl_trn_requests	\N	\N	101	0
-1585819555	0	1585819555	\N	\N	\N	892	\N	\N	tbl_trn_transactions	\N	\N	103	0
-1585819555	0	1585819555	\N	\N	\N	893	\N	\N	tbl_trn_requests	\N	\N	104	0
-1585819555	0	1585819555	\N	\N	\N	895	\N	\N	tbl_trn_requests	\N	\N	105	0
-1585819555	0	1585819555	\N	\N	\N	897	\N	\N	tbl_trn_requests	\N	\N	106	0
-1585819556	0	1585819556	\N	\N	\N	900	\N	\N	tbl_trn_transactions	\N	\N	107	0
-1585819556	0	1585819556	\N	\N	\N	903	\N	\N	tbl_trn_requests	\N	\N	109	0
-1585819557	0	1585819557	\N	\N	\N	911	\N	\N	tbl_trn_requests	\N	\N	113	0
-1585819557	0	1585819557	\N	\N	\N	913	\N	\N	tbl_trn_requests	\N	\N	114	0
-1585819557	0	1585819557	\N	\N	\N	915	\N	\N	tbl_trn_requests	\N	\N	115	0
-1585821779	0	1585821779	\N	\N	\N	2190	\N	\N	tbl_trn_transactions	\N	\N	752	0
-1585821780	0	1585821780	\N	\N	\N	2198	\N	\N	tbl_trn_transactions	\N	\N	756	0
-1585821781	0	1585821781	\N	\N	\N	2203	\N	\N	tbl_trn_requests	\N	\N	759	0
-1585821781	0	1585821781	\N	\N	\N	2207	\N	\N	tbl_trn_requests	\N	\N	761	0
-1585821782	0	1585821782	\N	\N	\N	2210	\N	\N	tbl_trn_transactions	\N	\N	762	0
-1585821782	0	1585821782	\N	\N	\N	2213	\N	\N	tbl_trn_requests	\N	\N	764	0
-1585821782	0	1585821782	\N	\N	\N	2216	\N	\N	tbl_trn_transactions	\N	\N	765	0
-1585821784	0	1585821784	\N	\N	\N	2230	\N	\N	tbl_trn_transactions	\N	\N	772	0
-1585821787	0	1585821787	\N	\N	\N	2246	\N	\N	tbl_trn_transactions	\N	\N	780	0
-1585821787	0	1585821787	\N	\N	\N	2249	\N	\N	tbl_trn_requests	\N	\N	782	0
-1585821789	0	1585821789	\N	\N	\N	2269	\N	\N	tbl_trn_requests	\N	\N	792	0
-1585821790	0	1585821790	\N	\N	\N	2272	\N	\N	tbl_trn_transactions	\N	\N	793	0
-1585821790	0	1585821790	\N	\N	\N	2279	\N	\N	tbl_trn_requests	\N	\N	797	0
-1585821792	0	1585821792	\N	\N	\N	2296	\N	\N	tbl_trn_transactions	\N	\N	805	0
-1585821792	0	1585821792	\N	\N	\N	2299	\N	\N	tbl_trn_requests	\N	\N	807	0
-1585821794	0	1585821794	\N	\N	\N	2313	\N	\N	tbl_trn_requests	\N	\N	814	0
-1585821795	0	1585821795	\N	\N	\N	2319	\N	\N	tbl_trn_requests	\N	\N	817	0
-1585821795	0	1585821795	\N	\N	\N	2322	\N	\N	tbl_trn_transactions	\N	\N	818	0
-1585821795	0	1585821795	\N	\N	\N	2324	\N	\N	tbl_trn_transactions	\N	\N	819	0
-1585821796	0	1585821796	\N	\N	\N	2330	\N	\N	tbl_trn_transactions	\N	\N	822	0
-1585821797	0	1585821797	\N	\N	\N	2335	\N	\N	tbl_trn_requests	\N	\N	825	0
-1585821797	0	1585821797	\N	\N	\N	2338	\N	\N	tbl_trn_transactions	\N	\N	826	0
-1585821797	0	1585821797	\N	\N	\N	2341	\N	\N	tbl_trn_requests	\N	\N	828	0
-1585821798	0	1585821798	\N	\N	\N	2352	\N	\N	tbl_trn_transactions	\N	\N	833	0
-1585821799	0	1585821799	\N	\N	\N	2359	\N	\N	tbl_trn_requests	\N	\N	837	0
-1585821800	0	1585821800	\N	\N	\N	2362	\N	\N	tbl_trn_transactions	\N	\N	838	0
-1585821800	0	1585821800	\N	\N	\N	2370	\N	\N	tbl_trn_transactions	\N	\N	842	0
-1585821801	0	1585821801	\N	\N	\N	2376	\N	\N	tbl_trn_transactions	\N	\N	845	0
-1585821801	0	1585821801	\N	\N	\N	2379	\N	\N	tbl_trn_requests	\N	\N	847	0
-1585821803	0	1585821803	\N	\N	\N	2393	\N	\N	tbl_trn_requests	\N	\N	854	0
-1585821805	0	1585821805	\N	\N	\N	2416	\N	\N	tbl_trn_transactions	\N	\N	865	0
-1585821806	0	1585821806	\N	\N	\N	2419	\N	\N	tbl_trn_requests	\N	\N	867	0
-1585821808	0	1585821808	\N	\N	\N	2436	\N	\N	tbl_trn_transactions	\N	\N	875	0
-1585821809	0	1585821809	\N	\N	\N	2446	\N	\N	tbl_trn_transactions	\N	\N	880	0
-1585821810	0	1585821810	\N	\N	\N	2454	\N	\N	tbl_trn_transactions	\N	\N	884	0
-1585821810	0	1585821810	\N	\N	\N	2456	\N	\N	tbl_trn_transactions	\N	\N	885	0
-1585821811	0	1585821811	\N	\N	\N	2462	\N	\N	tbl_trn_transactions	\N	\N	888	0
-1585821812	0	1585821812	\N	\N	\N	2471	\N	\N	tbl_trn_requests	\N	\N	893	0
-1585821813	0	1585821813	\N	\N	\N	2478	\N	\N	tbl_trn_transactions	\N	\N	896	0
-1585821813	0	1585821813	\N	\N	\N	2481	\N	\N	tbl_trn_requests	\N	\N	898	0
-1585821813	0	1585821813	\N	\N	\N	2484	\N	\N	tbl_trn_transactions	\N	\N	899	0
-1585821814	0	1585821814	\N	\N	\N	2487	\N	\N	tbl_trn_requests	\N	\N	901	0
-1585821814	0	1585821814	\N	\N	\N	2489	\N	\N	tbl_trn_requests	\N	\N	902	0
-1585821814	0	1585821814	\N	\N	\N	2490	\N	\N	tbl_trn_transactions	\N	\N	902	0
-1585821816	0	1585821816	\N	\N	\N	2508	\N	\N	tbl_trn_transactions	\N	\N	911	0
-1585821816	0	1585821816	\N	\N	\N	2511	\N	\N	tbl_trn_requests	\N	\N	913	0
-1585821817	0	1585821817	\N	\N	\N	2517	\N	\N	tbl_trn_requests	\N	\N	916	0
-1585821817	0	1585821817	\N	\N	\N	2520	\N	\N	tbl_trn_transactions	\N	\N	917	0
-1585821820	0	1585821820	\N	\N	\N	2546	\N	\N	tbl_trn_transactions	\N	\N	930	0
-1585821822	0	1585821822	\N	\N	\N	2562	\N	\N	tbl_trn_transactions	\N	\N	938	0
-1585821823	0	1585821823	\N	\N	\N	2569	\N	\N	tbl_trn_requests	\N	\N	942	0
-1585821823	0	1585821823	\N	\N	\N	2578	\N	\N	tbl_trn_transactions	\N	\N	946	0
-1585821826	0	1585821826	\N	\N	\N	2606	\N	\N	tbl_trn_transactions	\N	\N	960	0
-1585821827	0	1585821827	\N	\N	\N	2613	\N	\N	tbl_trn_requests	\N	\N	964	0
-1585821829	0	1585821829	\N	\N	\N	2627	\N	\N	tbl_trn_requests	\N	\N	971	0
-1585821829	0	1585821829	\N	\N	\N	2630	\N	\N	tbl_trn_transactions	\N	\N	972	0
-1585821830	0	1585821830	\N	\N	\N	2636	\N	\N	tbl_trn_transactions	\N	\N	975	0
-1585819545	0	1585819545	\N	\N	\N	801	\N	\N	tbl_trn_requests	\N	\N	58	0
-1585819545	0	1585819545	\N	\N	\N	802	\N	\N	tbl_trn_transactions	\N	\N	58	0
-1585819545	0	1585819545	\N	\N	\N	803	\N	\N	tbl_trn_requests	\N	\N	59	0
-1585819546	0	1585819546	\N	\N	\N	805	\N	\N	tbl_trn_requests	\N	\N	60	0
-1585819546	0	1585819546	\N	\N	\N	806	\N	\N	tbl_trn_transactions	\N	\N	60	0
-1585819546	0	1585819546	\N	\N	\N	807	\N	\N	tbl_trn_requests	\N	\N	61	0
-1585819546	0	1585819546	\N	\N	\N	808	\N	\N	tbl_trn_transactions	\N	\N	61	0
-1585819546	0	1585819546	\N	\N	\N	809	\N	\N	tbl_trn_requests	\N	\N	62	0
-1585819546	0	1585819546	\N	\N	\N	811	\N	\N	tbl_trn_requests	\N	\N	63	0
-1585819547	0	1585819547	\N	\N	\N	816	\N	\N	tbl_trn_transactions	\N	\N	65	0
-1585819547	0	1585819547	\N	\N	\N	820	\N	\N	tbl_trn_transactions	\N	\N	67	0
-1585819547	0	1585819547	\N	\N	\N	822	\N	\N	tbl_trn_transactions	\N	\N	68	0
-1585819548	0	1585819548	\N	\N	\N	826	\N	\N	tbl_trn_transactions	\N	\N	70	0
-1585819548	0	1585819548	\N	\N	\N	827	\N	\N	tbl_trn_requests	\N	\N	71	0
-1585819548	0	1585819548	\N	\N	\N	828	\N	\N	tbl_trn_transactions	\N	\N	71	0
-1585819548	0	1585819548	\N	\N	\N	829	\N	\N	tbl_trn_requests	\N	\N	72	0
-1585819548	0	1585819548	\N	\N	\N	831	\N	\N	tbl_trn_requests	\N	\N	73	0
-1585819548	0	1585819548	\N	\N	\N	834	\N	\N	tbl_trn_transactions	\N	\N	74	0
-1585819549	0	1585819549	\N	\N	\N	837	\N	\N	tbl_trn_requests	\N	\N	76	0
-1585819549	0	1585819549	\N	\N	\N	840	\N	\N	tbl_trn_transactions	\N	\N	77	0
-1585819549	0	1585819549	\N	\N	\N	841	\N	\N	tbl_trn_requests	\N	\N	78	0
-1585819550	0	1585819550	\N	\N	\N	845	\N	\N	tbl_trn_requests	\N	\N	80	0
-1585819550	0	1585819550	\N	\N	\N	846	\N	\N	tbl_trn_transactions	\N	\N	80	0
-1585819550	0	1585819550	\N	\N	\N	848	\N	\N	tbl_trn_transactions	\N	\N	81	0
-1585819550	0	1585819550	\N	\N	\N	850	\N	\N	tbl_trn_transactions	\N	\N	82	0
-1585819550	0	1585819550	\N	\N	\N	852	\N	\N	tbl_trn_transactions	\N	\N	83	0
-1585819550	0	1585819550	\N	\N	\N	853	\N	\N	tbl_trn_requests	\N	\N	84	0
-1585819551	0	1585819551	\N	\N	\N	856	\N	\N	tbl_trn_transactions	\N	\N	85	0
-1585819551	0	1585819551	\N	\N	\N	857	\N	\N	tbl_trn_requests	\N	\N	86	0
-1585819551	0	1585819551	\N	\N	\N	860	\N	\N	tbl_trn_transactions	\N	\N	87	0
-1585819551	0	1585819551	\N	\N	\N	861	\N	\N	tbl_trn_requests	\N	\N	88	0
-1585819551	0	1585819551	\N	\N	\N	864	\N	\N	tbl_trn_transactions	\N	\N	89	0
-1585819552	0	1585819552	\N	\N	\N	866	\N	\N	tbl_trn_transactions	\N	\N	90	0
-1585819552	0	1585819552	\N	\N	\N	867	\N	\N	tbl_trn_requests	\N	\N	91	0
-1585819552	0	1585819552	\N	\N	\N	871	\N	\N	tbl_trn_requests	\N	\N	93	0
-1585819552	0	1585819552	\N	\N	\N	872	\N	\N	tbl_trn_transactions	\N	\N	93	0
-1585819553	0	1585819553	\N	\N	\N	877	\N	\N	tbl_trn_requests	\N	\N	96	0
-1585819553	0	1585819553	\N	\N	\N	878	\N	\N	tbl_trn_transactions	\N	\N	96	0
-1585819553	0	1585819553	\N	\N	\N	880	\N	\N	tbl_trn_transactions	\N	\N	97	0
-1585819554	0	1585819554	\N	\N	\N	881	\N	\N	tbl_trn_requests	\N	\N	98	0
-1585819554	0	1585819554	\N	\N	\N	882	\N	\N	tbl_trn_transactions	\N	\N	98	0
-1585819554	0	1585819554	\N	\N	\N	883	\N	\N	tbl_trn_requests	\N	\N	99	0
-1585819554	0	1585819554	\N	\N	\N	885	\N	\N	tbl_trn_requests	\N	\N	100	0
-1585819554	0	1585819554	\N	\N	\N	886	\N	\N	tbl_trn_transactions	\N	\N	100	0
-1585819554	0	1585819554	\N	\N	\N	889	\N	\N	tbl_trn_requests	\N	\N	102	0
-1585819555	0	1585819555	\N	\N	\N	896	\N	\N	tbl_trn_transactions	\N	\N	105	0
-1585819555	0	1585819555	\N	\N	\N	898	\N	\N	tbl_trn_transactions	\N	\N	106	0
-1585819556	0	1585819556	\N	\N	\N	902	\N	\N	tbl_trn_transactions	\N	\N	108	0
-1585819556	0	1585819556	\N	\N	\N	904	\N	\N	tbl_trn_transactions	\N	\N	109	0
-1585819556	0	1585819556	\N	\N	\N	905	\N	\N	tbl_trn_requests	\N	\N	110	0
-1585819556	0	1585819556	\N	\N	\N	906	\N	\N	tbl_trn_transactions	\N	\N	110	0
-1585819556	0	1585819556	\N	\N	\N	908	\N	\N	tbl_trn_transactions	\N	\N	111	0
-1585819556	0	1585819556	\N	\N	\N	910	\N	\N	tbl_trn_transactions	\N	\N	112	0
-1585819557	0	1585819557	\N	\N	\N	914	\N	\N	tbl_trn_transactions	\N	\N	114	0
-1585819557	0	1585819557	\N	\N	\N	916	\N	\N	tbl_trn_transactions	\N	\N	115	0
-1585819557	0	1585819557	\N	\N	\N	918	\N	\N	tbl_trn_transactions	\N	\N	116	0
-1585819558	0	1585819558	\N	\N	\N	919	\N	\N	tbl_trn_requests	\N	\N	117	0
-1585821779	0	1585821779	\N	\N	\N	2191	\N	\N	tbl_trn_requests	\N	\N	753	0
-1585821779	0	1585821779	\N	\N	\N	2193	\N	\N	tbl_trn_requests	\N	\N	754	0
-1585821783	0	1585821783	\N	\N	\N	2226	\N	\N	tbl_trn_transactions	\N	\N	770	0
-1585821784	0	1585821784	\N	\N	\N	2229	\N	\N	tbl_trn_requests	\N	\N	772	0
-1585821790	0	1585821790	\N	\N	\N	2277	\N	\N	tbl_trn_requests	\N	\N	796	0
-1585821791	0	1585821791	\N	\N	\N	2282	\N	\N	tbl_trn_transactions	\N	\N	798	0
-1585821791	0	1585821791	\N	\N	\N	2285	\N	\N	tbl_trn_requests	\N	\N	800	0
-1585821791	0	1585821791	\N	\N	\N	2291	\N	\N	tbl_trn_requests	\N	\N	803	0
-1585821792	0	1585821792	\N	\N	\N	2294	\N	\N	tbl_trn_transactions	\N	\N	804	0
-1585821794	0	1585821794	\N	\N	\N	2315	\N	\N	tbl_trn_requests	\N	\N	815	0
-1585821794	0	1585821794	\N	\N	\N	2317	\N	\N	tbl_trn_requests	\N	\N	816	0
-1585821795	0	1585821795	\N	\N	\N	2320	\N	\N	tbl_trn_transactions	\N	\N	817	0
-1585821795	0	1585821795	\N	\N	\N	2323	\N	\N	tbl_trn_requests	\N	\N	819	0
-1585821796	0	1585821796	\N	\N	\N	2329	\N	\N	tbl_trn_requests	\N	\N	822	0
-1585821797	0	1585821797	\N	\N	\N	2344	\N	\N	tbl_trn_transactions	\N	\N	829	0
-1585821799	0	1585821799	\N	\N	\N	2354	\N	\N	tbl_trn_transactions	\N	\N	834	0
-1585821802	0	1585821802	\N	\N	\N	2384	\N	\N	tbl_trn_transactions	\N	\N	849	0
-1585821803	0	1585821803	\N	\N	\N	2391	\N	\N	tbl_trn_requests	\N	\N	853	0
-1585821804	0	1585821804	\N	\N	\N	2408	\N	\N	tbl_trn_transactions	\N	\N	861	0
-1585821805	0	1585821805	\N	\N	\N	2418	\N	\N	tbl_trn_transactions	\N	\N	866	0
-1585821808	0	1585821808	\N	\N	\N	2437	\N	\N	tbl_trn_requests	\N	\N	876	0
-1585821810	0	1585821810	\N	\N	\N	2453	\N	\N	tbl_trn_requests	\N	\N	884	0
-1585821811	0	1585821811	\N	\N	\N	2461	\N	\N	tbl_trn_requests	\N	\N	888	0
-1585821815	0	1585821815	\N	\N	\N	2501	\N	\N	tbl_trn_requests	\N	\N	908	0
-1585821816	0	1585821816	\N	\N	\N	2512	\N	\N	tbl_trn_transactions	\N	\N	913	0
-1585821817	0	1585821817	\N	\N	\N	2518	\N	\N	tbl_trn_transactions	\N	\N	916	0
-1585821818	0	1585821818	\N	\N	\N	2532	\N	\N	tbl_trn_transactions	\N	\N	923	0
-1585821820	0	1585821820	\N	\N	\N	2541	\N	\N	tbl_trn_requests	\N	\N	928	0
-1585821820	0	1585821820	\N	\N	\N	2543	\N	\N	tbl_trn_requests	\N	\N	929	0
-1585821820	0	1585821820	\N	\N	\N	2550	\N	\N	tbl_trn_transactions	\N	\N	932	0
-1585821822	0	1585821822	\N	\N	\N	2564	\N	\N	tbl_trn_transactions	\N	\N	939	0
-1585821822	0	1585821822	\N	\N	\N	2568	\N	\N	tbl_trn_transactions	\N	\N	941	0
-1585821823	0	1585821823	\N	\N	\N	2577	\N	\N	tbl_trn_requests	\N	\N	946	0
-1585821826	0	1585821826	\N	\N	\N	2601	\N	\N	tbl_trn_requests	\N	\N	958	0
-1585821827	0	1585821827	\N	\N	\N	2612	\N	\N	tbl_trn_transactions	\N	\N	963	0
-1585819545	0	1585819545	\N	\N	\N	804	\N	\N	tbl_trn_transactions	\N	\N	59	0
-1585819546	0	1585819546	\N	\N	\N	810	\N	\N	tbl_trn_transactions	\N	\N	62	0
-1585819546	0	1585819546	\N	\N	\N	813	\N	\N	tbl_trn_requests	\N	\N	64	0
-1585819548	0	1585819548	\N	\N	\N	825	\N	\N	tbl_trn_requests	\N	\N	70	0
-1585819548	0	1585819548	\N	\N	\N	835	\N	\N	tbl_trn_requests	\N	\N	75	0
-1585819549	0	1585819549	\N	\N	\N	842	\N	\N	tbl_trn_transactions	\N	\N	78	0
-1585819550	0	1585819550	\N	\N	\N	851	\N	\N	tbl_trn_requests	\N	\N	83	0
-1585819550	0	1585819550	\N	\N	\N	854	\N	\N	tbl_trn_transactions	\N	\N	84	0
-1585819551	0	1585819551	\N	\N	\N	855	\N	\N	tbl_trn_requests	\N	\N	85	0
-1585819551	0	1585819551	\N	\N	\N	858	\N	\N	tbl_trn_transactions	\N	\N	86	0
-1585819552	0	1585819552	\N	\N	\N	865	\N	\N	tbl_trn_requests	\N	\N	90	0
-1585819554	0	1585819554	\N	\N	\N	888	\N	\N	tbl_trn_transactions	\N	\N	101	0
-1585819555	0	1585819555	\N	\N	\N	894	\N	\N	tbl_trn_transactions	\N	\N	104	0
-1585819556	0	1585819556	\N	\N	\N	901	\N	\N	tbl_trn_requests	\N	\N	108	0
-1585819556	0	1585819556	\N	\N	\N	909	\N	\N	tbl_trn_requests	\N	\N	112	0
-1585819557	0	1585819557	\N	\N	\N	917	\N	\N	tbl_trn_requests	\N	\N	116	0
-1585819558	0	1585819558	\N	\N	\N	920	\N	\N	tbl_trn_transactions	\N	\N	117	0
-1585821779	0	1585821779	\N	\N	\N	2192	\N	\N	tbl_trn_transactions	\N	\N	753	0
-1585821779	0	1585821779	\N	\N	\N	2194	\N	\N	tbl_trn_transactions	\N	\N	754	0
-1585821780	0	1585821780	\N	\N	\N	2199	\N	\N	tbl_trn_requests	\N	\N	757	0
-1585821783	0	1585821783	\N	\N	\N	2219	\N	\N	tbl_trn_requests	\N	\N	767	0
-1585821788	0	1585821788	\N	\N	\N	2253	\N	\N	tbl_trn_requests	\N	\N	784	0
-1585821788	0	1585821788	\N	\N	\N	2256	\N	\N	tbl_trn_transactions	\N	\N	785	0
-1585821789	0	1585821789	\N	\N	\N	2263	\N	\N	tbl_trn_requests	\N	\N	789	0
-1585821789	0	1585821789	\N	\N	\N	2268	\N	\N	tbl_trn_transactions	\N	\N	791	0
-1585821790	0	1585821790	\N	\N	\N	2271	\N	\N	tbl_trn_requests	\N	\N	793	0
-1585821790	0	1585821790	\N	\N	\N	2274	\N	\N	tbl_trn_transactions	\N	\N	794	0
-1585821790	0	1585821790	\N	\N	\N	2280	\N	\N	tbl_trn_transactions	\N	\N	797	0
-1585821791	0	1585821791	\N	\N	\N	2288	\N	\N	tbl_trn_transactions	\N	\N	801	0
-1585821791	0	1585821791	\N	\N	\N	2289	\N	\N	tbl_trn_requests	\N	\N	802	0
-1585821792	0	1585821792	\N	\N	\N	2297	\N	\N	tbl_trn_requests	\N	\N	806	0
-1585821792	0	1585821792	\N	\N	\N	2300	\N	\N	tbl_trn_transactions	\N	\N	807	0
-1585821793	0	1585821793	\N	\N	\N	2303	\N	\N	tbl_trn_requests	\N	\N	809	0
-1585821795	0	1585821795	\N	\N	\N	2325	\N	\N	tbl_trn_requests	\N	\N	820	0
-1585821795	0	1585821795	\N	\N	\N	2328	\N	\N	tbl_trn_transactions	\N	\N	821	0
-1585821796	0	1585821796	\N	\N	\N	2333	\N	\N	tbl_trn_requests	\N	\N	824	0
-1585821797	0	1585821797	\N	\N	\N	2336	\N	\N	tbl_trn_transactions	\N	\N	825	0
-1585821797	0	1585821797	\N	\N	\N	2339	\N	\N	tbl_trn_requests	\N	\N	827	0
-1585821799	0	1585821799	\N	\N	\N	2355	\N	\N	tbl_trn_requests	\N	\N	835	0
-1585821803	0	1585821803	\N	\N	\N	2394	\N	\N	tbl_trn_transactions	\N	\N	854	0
-1585821805	0	1585821805	\N	\N	\N	2415	\N	\N	tbl_trn_requests	\N	\N	865	0
-1585821806	0	1585821806	\N	\N	\N	2425	\N	\N	tbl_trn_requests	\N	\N	870	0
-1585821808	0	1585821808	\N	\N	\N	2434	\N	\N	tbl_trn_transactions	\N	\N	874	0
-1585821809	0	1585821809	\N	\N	\N	2441	\N	\N	tbl_trn_requests	\N	\N	878	0
-1585821809	0	1585821809	\N	\N	\N	2448	\N	\N	tbl_trn_transactions	\N	\N	881	0
-1585821810	0	1585821810	\N	\N	\N	2455	\N	\N	tbl_trn_requests	\N	\N	885	0
-1585821811	0	1585821811	\N	\N	\N	2458	\N	\N	tbl_trn_transactions	\N	\N	886	0
-1585821811	0	1585821811	\N	\N	\N	2464	\N	\N	tbl_trn_transactions	\N	\N	889	0
-1585821813	0	1585821813	\N	\N	\N	2479	\N	\N	tbl_trn_requests	\N	\N	897	0
-1585821814	0	1585821814	\N	\N	\N	2491	\N	\N	tbl_trn_requests	\N	\N	903	0
-1585821814	0	1585821814	\N	\N	\N	2496	\N	\N	tbl_trn_transactions	\N	\N	905	0
-1585821815	0	1585821815	\N	\N	\N	2499	\N	\N	tbl_trn_requests	\N	\N	907	0
-1585821817	0	1585821817	\N	\N	\N	2523	\N	\N	tbl_trn_requests	\N	\N	919	0
-1585821817	0	1585821817	\N	\N	\N	2526	\N	\N	tbl_trn_transactions	\N	\N	920	0
-1585821818	0	1585821818	\N	\N	\N	2529	\N	\N	tbl_trn_requests	\N	\N	922	0
-1585821820	0	1585821820	\N	\N	\N	2542	\N	\N	tbl_trn_transactions	\N	\N	928	0
-1585821821	0	1585821821	\N	\N	\N	2555	\N	\N	tbl_trn_requests	\N	\N	935	0
-1585821822	0	1585821822	\N	\N	\N	2566	\N	\N	tbl_trn_transactions	\N	\N	940	0
-1585821822	0	1585821822	\N	\N	\N	2567	\N	\N	tbl_trn_requests	\N	\N	941	0
-1585821823	0	1585821823	\N	\N	\N	2573	\N	\N	tbl_trn_requests	\N	\N	944	0
-1585821827	0	1585821827	\N	\N	\N	2616	\N	\N	tbl_trn_transactions	\N	\N	965	0
-1585821828	0	1585821828	\N	\N	\N	2619	\N	\N	tbl_trn_requests	\N	\N	967	0
-1585821830	0	1585821830	\N	\N	\N	2640	\N	\N	tbl_trn_transactions	\N	\N	977	0
-1585821831	0	1585821831	\N	\N	\N	2647	\N	\N	tbl_trn_requests	\N	\N	981	0
-1585821832	0	1585821832	\N	\N	\N	2653	\N	\N	tbl_trn_requests	\N	\N	984	0
-1585821833	0	1585821833	\N	\N	\N	2661	\N	\N	tbl_trn_requests	\N	\N	988	0
-1585821833	0	1585821833	\N	\N	\N	2664	\N	\N	tbl_trn_transactions	\N	\N	989	0
-1585821833	0	1585821833	\N	\N	\N	2665	\N	\N	tbl_trn_requests	\N	\N	990	0
-1585821834	0	1585821834	\N	\N	\N	2676	\N	\N	tbl_trn_transactions	\N	\N	995	0
-1585821834	0	1585821834	\N	\N	\N	2677	\N	\N	tbl_trn_requests	\N	\N	996	0
-1585821835	0	1585821835	\N	\N	\N	2679	\N	\N	tbl_trn_requests	\N	\N	997	0
-1585821835	0	1585821835	\N	\N	\N	2682	\N	\N	tbl_trn_transactions	\N	\N	998	0
-1585821838	0	1585821838	\N	\N	\N	2713	\N	\N	tbl_trn_requests	\N	\N	1014	0
-1585897754	0	1585897754	\N	\N	\N	2795	\N	\N	tbl_trn_requests	\N	\N	23	0
-1585897755	0	1585897755	\N	\N	\N	2798	\N	\N	tbl_trn_transactions	\N	\N	24	0
-1585897755	0	1585897755	\N	\N	\N	2802	\N	\N	tbl_trn_transactions	\N	\N	26	0
-1585897755	0	1585897755	\N	\N	\N	2804	\N	\N	tbl_trn_transactions	\N	\N	27	0
-1585897755	0	1585897755	\N	\N	\N	2806	\N	\N	tbl_trn_transactions	\N	\N	28	0
-1585897756	0	1585897756	\N	\N	\N	2810	\N	\N	tbl_trn_transactions	\N	\N	30	0
-1585897756	0	1585897756	\N	\N	\N	2812	\N	\N	tbl_trn_transactions	\N	\N	31	0
-1585897757	0	1585897757	\N	\N	\N	2820	\N	\N	tbl_trn_transactions	\N	\N	35	0
-1585897758	0	1585897758	\N	\N	\N	2825	\N	\N	tbl_trn_requests	\N	\N	38	0
-1585897759	0	1585897759	\N	\N	\N	2830	\N	\N	tbl_trn_transactions	\N	\N	40	0
-1585897788	0	1585897788	\N	\N	\N	2836	\N	\N	tbl_trn_transactions	\N	\N	43	0
-1585897788	0	1585897788	\N	\N	\N	2837	\N	\N	tbl_trn_requests	\N	\N	44	0
-1585897788	0	1585897788	\N	\N	\N	2839	\N	\N	tbl_trn_requests	\N	\N	45	0
-1585897789	0	1585897789	\N	\N	\N	2853	\N	\N	tbl_trn_requests	\N	\N	52	0
-1585819547	0	1585819547	\N	\N	\N	818	\N	\N	tbl_trn_transactions	\N	\N	66	0
-1585819547	0	1585819547	\N	\N	\N	819	\N	\N	tbl_trn_requests	\N	\N	67	0
-1585819547	0	1585819547	\N	\N	\N	824	\N	\N	tbl_trn_transactions	\N	\N	69	0
-1585819549	0	1585819549	\N	\N	\N	844	\N	\N	tbl_trn_transactions	\N	\N	79	0
-1585819551	0	1585819551	\N	\N	\N	859	\N	\N	tbl_trn_requests	\N	\N	87	0
-1585819551	0	1585819551	\N	\N	\N	862	\N	\N	tbl_trn_transactions	\N	\N	88	0
-1585819552	0	1585819552	\N	\N	\N	868	\N	\N	tbl_trn_transactions	\N	\N	91	0
-1585819552	0	1585819552	\N	\N	\N	873	\N	\N	tbl_trn_requests	\N	\N	94	0
-1585819553	0	1585819553	\N	\N	\N	879	\N	\N	tbl_trn_requests	\N	\N	97	0
-1585819555	0	1585819555	\N	\N	\N	890	\N	\N	tbl_trn_transactions	\N	\N	102	0
-1585819555	0	1585819555	\N	\N	\N	891	\N	\N	tbl_trn_requests	\N	\N	103	0
-1585819556	0	1585819556	\N	\N	\N	899	\N	\N	tbl_trn_requests	\N	\N	107	0
-1585819556	0	1585819556	\N	\N	\N	907	\N	\N	tbl_trn_requests	\N	\N	111	0
-1585819557	0	1585819557	\N	\N	\N	912	\N	\N	tbl_trn_transactions	\N	\N	113	0
-1585819558	0	1585819558	\N	\N	\N	921	\N	\N	tbl_trn_requests	\N	\N	118	0
-1585819558	0	1585819558	\N	\N	\N	922	\N	\N	tbl_trn_transactions	\N	\N	118	0
-1585819558	0	1585819558	\N	\N	\N	923	\N	\N	tbl_trn_requests	\N	\N	119	0
-1585819558	0	1585819558	\N	\N	\N	924	\N	\N	tbl_trn_transactions	\N	\N	119	0
-1585819558	0	1585819558	\N	\N	\N	925	\N	\N	tbl_trn_requests	\N	\N	120	0
-1585819558	0	1585819558	\N	\N	\N	926	\N	\N	tbl_trn_transactions	\N	\N	120	0
-1585819559	0	1585819559	\N	\N	\N	927	\N	\N	tbl_trn_requests	\N	\N	121	0
-1585819559	0	1585819559	\N	\N	\N	928	\N	\N	tbl_trn_transactions	\N	\N	121	0
-1585819559	0	1585819559	\N	\N	\N	929	\N	\N	tbl_trn_requests	\N	\N	122	0
-1585819559	0	1585819559	\N	\N	\N	930	\N	\N	tbl_trn_transactions	\N	\N	122	0
-1585819559	0	1585819559	\N	\N	\N	931	\N	\N	tbl_trn_requests	\N	\N	123	0
-1585819559	0	1585819559	\N	\N	\N	932	\N	\N	tbl_trn_transactions	\N	\N	123	0
-1585819560	0	1585819560	\N	\N	\N	933	\N	\N	tbl_trn_requests	\N	\N	124	0
-1585819560	0	1585819560	\N	\N	\N	934	\N	\N	tbl_trn_transactions	\N	\N	124	0
-1585819824	0	1585819824	\N	\N	\N	935	\N	\N	tbl_trn_requests	\N	\N	125	0
-1585819824	0	1585819824	\N	\N	\N	936	\N	\N	tbl_trn_transactions	\N	\N	125	0
-1585819824	0	1585819824	\N	\N	\N	937	\N	\N	tbl_trn_requests	\N	\N	126	0
-1585819824	0	1585819824	\N	\N	\N	938	\N	\N	tbl_trn_transactions	\N	\N	126	0
-1585819824	0	1585819824	\N	\N	\N	939	\N	\N	tbl_trn_requests	\N	\N	127	0
-1585819825	0	1585819825	\N	\N	\N	940	\N	\N	tbl_trn_transactions	\N	\N	127	0
-1585819825	0	1585819825	\N	\N	\N	941	\N	\N	tbl_trn_requests	\N	\N	128	0
-1585819825	0	1585819825	\N	\N	\N	942	\N	\N	tbl_trn_transactions	\N	\N	128	0
-1585819825	0	1585819825	\N	\N	\N	943	\N	\N	tbl_trn_requests	\N	\N	129	0
-1585819825	0	1585819825	\N	\N	\N	944	\N	\N	tbl_trn_transactions	\N	\N	129	0
-1585819825	0	1585819825	\N	\N	\N	945	\N	\N	tbl_trn_requests	\N	\N	130	0
-1585819825	0	1585819825	\N	\N	\N	946	\N	\N	tbl_trn_transactions	\N	\N	130	0
-1585819825	0	1585819825	\N	\N	\N	947	\N	\N	tbl_trn_requests	\N	\N	131	0
-1585819825	0	1585819825	\N	\N	\N	948	\N	\N	tbl_trn_transactions	\N	\N	131	0
-1585819825	0	1585819825	\N	\N	\N	949	\N	\N	tbl_trn_requests	\N	\N	132	0
-1585819825	0	1585819825	\N	\N	\N	950	\N	\N	tbl_trn_transactions	\N	\N	132	0
-1585819826	0	1585819826	\N	\N	\N	951	\N	\N	tbl_trn_requests	\N	\N	133	0
-1585819826	0	1585819826	\N	\N	\N	952	\N	\N	tbl_trn_transactions	\N	\N	133	0
-1585819826	0	1585819826	\N	\N	\N	953	\N	\N	tbl_trn_requests	\N	\N	134	0
-1585819826	0	1585819826	\N	\N	\N	954	\N	\N	tbl_trn_transactions	\N	\N	134	0
-1585819826	0	1585819826	\N	\N	\N	955	\N	\N	tbl_trn_requests	\N	\N	135	0
-1585819826	0	1585819826	\N	\N	\N	956	\N	\N	tbl_trn_transactions	\N	\N	135	0
-1585819826	0	1585819826	\N	\N	\N	957	\N	\N	tbl_trn_requests	\N	\N	136	0
-1585819826	0	1585819826	\N	\N	\N	958	\N	\N	tbl_trn_transactions	\N	\N	136	0
-1585819827	0	1585819827	\N	\N	\N	959	\N	\N	tbl_trn_requests	\N	\N	137	0
-1585819827	0	1585819827	\N	\N	\N	960	\N	\N	tbl_trn_transactions	\N	\N	137	0
-1585819827	0	1585819827	\N	\N	\N	961	\N	\N	tbl_trn_requests	\N	\N	138	0
-1585819827	0	1585819827	\N	\N	\N	962	\N	\N	tbl_trn_transactions	\N	\N	138	0
-1585819827	0	1585819827	\N	\N	\N	963	\N	\N	tbl_trn_requests	\N	\N	139	0
-1585819827	0	1585819827	\N	\N	\N	964	\N	\N	tbl_trn_transactions	\N	\N	139	0
-1585819828	0	1585819828	\N	\N	\N	965	\N	\N	tbl_trn_requests	\N	\N	140	0
-1585819828	0	1585819828	\N	\N	\N	966	\N	\N	tbl_trn_transactions	\N	\N	140	0
-1585819828	0	1585819828	\N	\N	\N	967	\N	\N	tbl_trn_requests	\N	\N	141	0
-1585819828	0	1585819828	\N	\N	\N	968	\N	\N	tbl_trn_transactions	\N	\N	141	0
-1585819828	0	1585819828	\N	\N	\N	969	\N	\N	tbl_trn_requests	\N	\N	142	0
-1585819828	0	1585819828	\N	\N	\N	970	\N	\N	tbl_trn_transactions	\N	\N	142	0
-1585819828	0	1585819828	\N	\N	\N	971	\N	\N	tbl_trn_requests	\N	\N	143	0
-1585819828	0	1585819828	\N	\N	\N	972	\N	\N	tbl_trn_transactions	\N	\N	143	0
-1585819828	0	1585819828	\N	\N	\N	973	\N	\N	tbl_trn_requests	\N	\N	144	0
-1585819828	0	1585819828	\N	\N	\N	974	\N	\N	tbl_trn_transactions	\N	\N	144	0
-1585819829	0	1585819829	\N	\N	\N	975	\N	\N	tbl_trn_requests	\N	\N	145	0
-1585819829	0	1585819829	\N	\N	\N	976	\N	\N	tbl_trn_transactions	\N	\N	145	0
-1585819829	0	1585819829	\N	\N	\N	977	\N	\N	tbl_trn_requests	\N	\N	146	0
-1585819829	0	1585819829	\N	\N	\N	978	\N	\N	tbl_trn_transactions	\N	\N	146	0
-1585819829	0	1585819829	\N	\N	\N	979	\N	\N	tbl_trn_requests	\N	\N	147	0
-1585819829	0	1585819829	\N	\N	\N	980	\N	\N	tbl_trn_transactions	\N	\N	147	0
-1585819829	0	1585819829	\N	\N	\N	981	\N	\N	tbl_trn_requests	\N	\N	148	0
-1585819830	0	1585819830	\N	\N	\N	982	\N	\N	tbl_trn_transactions	\N	\N	148	0
-1585819830	0	1585819830	\N	\N	\N	983	\N	\N	tbl_trn_requests	\N	\N	149	0
-1585819830	0	1585819830	\N	\N	\N	984	\N	\N	tbl_trn_transactions	\N	\N	149	0
-1585819830	0	1585819830	\N	\N	\N	985	\N	\N	tbl_trn_requests	\N	\N	150	0
-1585819830	0	1585819830	\N	\N	\N	986	\N	\N	tbl_trn_transactions	\N	\N	150	0
-1585819830	0	1585819830	\N	\N	\N	987	\N	\N	tbl_trn_requests	\N	\N	151	0
-1585819830	0	1585819830	\N	\N	\N	988	\N	\N	tbl_trn_transactions	\N	\N	151	0
-1585819830	0	1585819830	\N	\N	\N	989	\N	\N	tbl_trn_requests	\N	\N	152	0
-1585819831	0	1585819831	\N	\N	\N	990	\N	\N	tbl_trn_transactions	\N	\N	152	0
-1585819831	0	1585819831	\N	\N	\N	991	\N	\N	tbl_trn_requests	\N	\N	153	0
-1585819831	0	1585819831	\N	\N	\N	992	\N	\N	tbl_trn_transactions	\N	\N	153	0
-1585819831	0	1585819831	\N	\N	\N	993	\N	\N	tbl_trn_requests	\N	\N	154	0
-1585819831	0	1585819831	\N	\N	\N	994	\N	\N	tbl_trn_transactions	\N	\N	154	0
-1585819831	0	1585819831	\N	\N	\N	995	\N	\N	tbl_trn_requests	\N	\N	155	0
-1585819831	0	1585819831	\N	\N	\N	996	\N	\N	tbl_trn_transactions	\N	\N	155	0
-1585819832	0	1585819832	\N	\N	\N	997	\N	\N	tbl_trn_requests	\N	\N	156	0
-1585819832	0	1585819832	\N	\N	\N	998	\N	\N	tbl_trn_transactions	\N	\N	156	0
-1585819832	0	1585819832	\N	\N	\N	999	\N	\N	tbl_trn_requests	\N	\N	157	0
-1585819832	0	1585819832	\N	\N	\N	1003	\N	\N	tbl_trn_requests	\N	\N	159	0
-1585819833	0	1585819833	\N	\N	\N	1009	\N	\N	tbl_trn_requests	\N	\N	162	0
-1585819833	0	1585819833	\N	\N	\N	1016	\N	\N	tbl_trn_transactions	\N	\N	165	0
-1585819834	0	1585819834	\N	\N	\N	1025	\N	\N	tbl_trn_requests	\N	\N	170	0
-1585819836	0	1585819836	\N	\N	\N	1037	\N	\N	tbl_trn_requests	\N	\N	176	0
-1585819837	0	1585819837	\N	\N	\N	1047	\N	\N	tbl_trn_requests	\N	\N	181	0
-1585819837	0	1585819837	\N	\N	\N	1054	\N	\N	tbl_trn_transactions	\N	\N	184	0
-1585819838	0	1585819838	\N	\N	\N	1055	\N	\N	tbl_trn_requests	\N	\N	185	0
-1585819839	0	1585819839	\N	\N	\N	1064	\N	\N	tbl_trn_transactions	\N	\N	189	0
-1585819839	0	1585819839	\N	\N	\N	1074	\N	\N	tbl_trn_transactions	\N	\N	194	0
-1585819840	0	1585819840	\N	\N	\N	1081	\N	\N	tbl_trn_requests	\N	\N	198	0
-1585819841	0	1585819841	\N	\N	\N	1086	\N	\N	tbl_trn_transactions	\N	\N	200	0
-1585819841	0	1585819841	\N	\N	\N	1087	\N	\N	tbl_trn_requests	\N	\N	201	0
-1585821780	0	1585821780	\N	\N	\N	2195	\N	\N	tbl_trn_requests	\N	\N	755	0
-1585821780	0	1585821780	\N	\N	\N	2200	\N	\N	tbl_trn_transactions	\N	\N	757	0
-1585821782	0	1585821782	\N	\N	\N	2214	\N	\N	tbl_trn_transactions	\N	\N	764	0
-1585821783	0	1585821783	\N	\N	\N	2222	\N	\N	tbl_trn_transactions	\N	\N	768	0
-1585821785	0	1585821785	\N	\N	\N	2237	\N	\N	tbl_trn_requests	\N	\N	776	0
-1585821786	0	1585821786	\N	\N	\N	2243	\N	\N	tbl_trn_requests	\N	\N	779	0
-1585821787	0	1585821787	\N	\N	\N	2245	\N	\N	tbl_trn_requests	\N	\N	780	0
-1585821787	0	1585821787	\N	\N	\N	2248	\N	\N	tbl_trn_transactions	\N	\N	781	0
-1585821788	0	1585821788	\N	\N	\N	2251	\N	\N	tbl_trn_requests	\N	\N	783	0
-1585821788	0	1585821788	\N	\N	\N	2252	\N	\N	tbl_trn_transactions	\N	\N	783	0
-1585821788	0	1585821788	\N	\N	\N	2259	\N	\N	tbl_trn_requests	\N	\N	787	0
-1585821789	0	1585821789	\N	\N	\N	2267	\N	\N	tbl_trn_requests	\N	\N	791	0
-1585821790	0	1585821790	\N	\N	\N	2273	\N	\N	tbl_trn_requests	\N	\N	794	0
-1585821790	0	1585821790	\N	\N	\N	2276	\N	\N	tbl_trn_transactions	\N	\N	795	0
-1585821791	0	1585821791	\N	\N	\N	2283	\N	\N	tbl_trn_requests	\N	\N	799	0
-1585821791	0	1585821791	\N	\N	\N	2286	\N	\N	tbl_trn_transactions	\N	\N	800	0
-1585821792	0	1585821792	\N	\N	\N	2298	\N	\N	tbl_trn_transactions	\N	\N	806	0
-1585821792	0	1585821792	\N	\N	\N	2301	\N	\N	tbl_trn_requests	\N	\N	808	0
-1585821794	0	1585821794	\N	\N	\N	2318	\N	\N	tbl_trn_transactions	\N	\N	816	0
-1585821798	0	1585821798	\N	\N	\N	2345	\N	\N	tbl_trn_requests	\N	\N	830	0
-1585821800	0	1585821800	\N	\N	\N	2364	\N	\N	tbl_trn_transactions	\N	\N	839	0
-1585821800	0	1585821800	\N	\N	\N	2366	\N	\N	tbl_trn_transactions	\N	\N	840	0
-1585821802	0	1585821802	\N	\N	\N	2386	\N	\N	tbl_trn_transactions	\N	\N	850	0
-1585821803	0	1585821803	\N	\N	\N	2390	\N	\N	tbl_trn_transactions	\N	\N	852	0
-1585821803	0	1585821803	\N	\N	\N	2396	\N	\N	tbl_trn_transactions	\N	\N	855	0
-1585821803	0	1585821803	\N	\N	\N	2399	\N	\N	tbl_trn_requests	\N	\N	857	0
-1585821804	0	1585821804	\N	\N	\N	2403	\N	\N	tbl_trn_requests	\N	\N	859	0
-1585821804	0	1585821804	\N	\N	\N	2406	\N	\N	tbl_trn_transactions	\N	\N	860	0
-1585821805	0	1585821805	\N	\N	\N	2412	\N	\N	tbl_trn_transactions	\N	\N	863	0
-1585821806	0	1585821806	\N	\N	\N	2421	\N	\N	tbl_trn_requests	\N	\N	868	0
-1585821806	0	1585821806	\N	\N	\N	2427	\N	\N	tbl_trn_requests	\N	\N	871	0
-1585821807	0	1585821807	\N	\N	\N	2430	\N	\N	tbl_trn_transactions	\N	\N	872	0
-1585821808	0	1585821808	\N	\N	\N	2432	\N	\N	tbl_trn_transactions	\N	\N	873	0
-1585821809	0	1585821809	\N	\N	\N	2442	\N	\N	tbl_trn_transactions	\N	\N	878	0
-1585821810	0	1585821810	\N	\N	\N	2452	\N	\N	tbl_trn_transactions	\N	\N	883	0
-1585821812	0	1585821812	\N	\N	\N	2470	\N	\N	tbl_trn_transactions	\N	\N	892	0
-1585821814	0	1585821814	\N	\N	\N	2493	\N	\N	tbl_trn_requests	\N	\N	904	0
-1585821815	0	1585821815	\N	\N	\N	2504	\N	\N	tbl_trn_transactions	\N	\N	909	0
-1585821816	0	1585821816	\N	\N	\N	2507	\N	\N	tbl_trn_requests	\N	\N	911	0
-1585821816	0	1585821816	\N	\N	\N	2510	\N	\N	tbl_trn_transactions	\N	\N	912	0
-1585821817	0	1585821817	\N	\N	\N	2519	\N	\N	tbl_trn_requests	\N	\N	917	0
-1585821819	0	1585821819	\N	\N	\N	2533	\N	\N	tbl_trn_requests	\N	\N	924	0
-1585821819	0	1585821819	\N	\N	\N	2536	\N	\N	tbl_trn_transactions	\N	\N	925	0
-1585821820	0	1585821820	\N	\N	\N	2549	\N	\N	tbl_trn_requests	\N	\N	932	0
-1585821821	0	1585821821	\N	\N	\N	2552	\N	\N	tbl_trn_transactions	\N	\N	933	0
-1585821824	0	1585821824	\N	\N	\N	2580	\N	\N	tbl_trn_transactions	\N	\N	947	0
-1585821824	0	1585821824	\N	\N	\N	2583	\N	\N	tbl_trn_requests	\N	\N	949	0
-1585821824	0	1585821824	\N	\N	\N	2586	\N	\N	tbl_trn_transactions	\N	\N	950	0
-1585821825	0	1585821825	\N	\N	\N	2598	\N	\N	tbl_trn_transactions	\N	\N	956	0
-1585821826	0	1585821826	\N	\N	\N	2603	\N	\N	tbl_trn_requests	\N	\N	959	0
-1585821827	0	1585821827	\N	\N	\N	2609	\N	\N	tbl_trn_requests	\N	\N	962	0
-1585821828	0	1585821828	\N	\N	\N	2621	\N	\N	tbl_trn_requests	\N	\N	968	0
-1585821829	0	1585821829	\N	\N	\N	2632	\N	\N	tbl_trn_transactions	\N	\N	973	0
-1585821830	0	1585821830	\N	\N	\N	2637	\N	\N	tbl_trn_requests	\N	\N	976	0
-1585821831	0	1585821831	\N	\N	\N	2644	\N	\N	tbl_trn_transactions	\N	\N	979	0
-1585821832	0	1585821832	\N	\N	\N	2656	\N	\N	tbl_trn_transactions	\N	\N	985	0
-1585821833	0	1585821833	\N	\N	\N	2659	\N	\N	tbl_trn_requests	\N	\N	987	0
-1585821834	0	1585821834	\N	\N	\N	2671	\N	\N	tbl_trn_requests	\N	\N	993	0
-1585821835	0	1585821835	\N	\N	\N	2688	\N	\N	tbl_trn_transactions	\N	\N	1001	0
-1585897756	0	1585897756	\N	\N	\N	2811	\N	\N	tbl_trn_requests	\N	\N	31	0
-1585897757	0	1585897757	\N	\N	\N	2816	\N	\N	tbl_trn_transactions	\N	\N	33	0
-1585897757	0	1585897757	\N	\N	\N	2819	\N	\N	tbl_trn_requests	\N	\N	35	0
-1585897758	0	1585897758	\N	\N	\N	2822	\N	\N	tbl_trn_transactions	\N	\N	36	0
-1585897759	0	1585897759	\N	\N	\N	2829	\N	\N	tbl_trn_requests	\N	\N	40	0
-1585897759	0	1585897759	\N	\N	\N	2832	\N	\N	tbl_trn_transactions	\N	\N	41	0
-1585897788	0	1585897788	\N	\N	\N	2835	\N	\N	tbl_trn_requests	\N	\N	43	0
-1585897789	0	1585897789	\N	\N	\N	2848	\N	\N	tbl_trn_transactions	\N	\N	49	0
-1585819832	0	1585819832	\N	\N	\N	1000	\N	\N	tbl_trn_transactions	\N	\N	157	0
-1585819832	0	1585819832	\N	\N	\N	1004	\N	\N	tbl_trn_transactions	\N	\N	159	0
-1585819834	0	1585819834	\N	\N	\N	1021	\N	\N	tbl_trn_requests	\N	\N	168	0
-1585819835	0	1585819835	\N	\N	\N	1027	\N	\N	tbl_trn_requests	\N	\N	171	0
-1585819835	0	1585819835	\N	\N	\N	1035	\N	\N	tbl_trn_requests	\N	\N	175	0
-1585819837	0	1585819837	\N	\N	\N	1051	\N	\N	tbl_trn_requests	\N	\N	183	0
-1585819837	0	1585819837	\N	\N	\N	1052	\N	\N	tbl_trn_transactions	\N	\N	183	0
-1585819838	0	1585819838	\N	\N	\N	1062	\N	\N	tbl_trn_transactions	\N	\N	188	0
-1585819839	0	1585819839	\N	\N	\N	1066	\N	\N	tbl_trn_transactions	\N	\N	190	0
-1585819839	0	1585819839	\N	\N	\N	1067	\N	\N	tbl_trn_requests	\N	\N	191	0
-1585819839	0	1585819839	\N	\N	\N	1072	\N	\N	tbl_trn_transactions	\N	\N	193	0
-1585819840	0	1585819840	\N	\N	\N	1075	\N	\N	tbl_trn_requests	\N	\N	195	0
-1585819841	0	1585819841	\N	\N	\N	1094	\N	\N	tbl_trn_transactions	\N	\N	204	0
-1585821780	0	1585821780	\N	\N	\N	2196	\N	\N	tbl_trn_transactions	\N	\N	755	0
-1585821781	0	1585821781	\N	\N	\N	2206	\N	\N	tbl_trn_transactions	\N	\N	760	0
-1585821783	0	1585821783	\N	\N	\N	2220	\N	\N	tbl_trn_transactions	\N	\N	767	0
-1585821783	0	1585821783	\N	\N	\N	2223	\N	\N	tbl_trn_requests	\N	\N	769	0
-1585821784	0	1585821784	\N	\N	\N	2228	\N	\N	tbl_trn_transactions	\N	\N	771	0
-1585821784	0	1585821784	\N	\N	\N	2232	\N	\N	tbl_trn_transactions	\N	\N	773	0
-1585821784	0	1585821784	\N	\N	\N	2234	\N	\N	tbl_trn_transactions	\N	\N	774	0
-1585821785	0	1585821785	\N	\N	\N	2239	\N	\N	tbl_trn_requests	\N	\N	777	0
-1585821788	0	1585821788	\N	\N	\N	2254	\N	\N	tbl_trn_transactions	\N	\N	784	0
-1585821788	0	1585821788	\N	\N	\N	2257	\N	\N	tbl_trn_requests	\N	\N	786	0
-1585821788	0	1585821788	\N	\N	\N	2260	\N	\N	tbl_trn_transactions	\N	\N	787	0
-1585821791	0	1585821791	\N	\N	\N	2287	\N	\N	tbl_trn_requests	\N	\N	801	0
-1585821792	0	1585821792	\N	\N	\N	2293	\N	\N	tbl_trn_requests	\N	\N	804	0
-1585821793	0	1585821793	\N	\N	\N	2302	\N	\N	tbl_trn_transactions	\N	\N	808	0
-1585821793	0	1585821793	\N	\N	\N	2305	\N	\N	tbl_trn_requests	\N	\N	810	0
-1585821793	0	1585821793	\N	\N	\N	2308	\N	\N	tbl_trn_transactions	\N	\N	811	0
-1585821795	0	1585821795	\N	\N	\N	2327	\N	\N	tbl_trn_requests	\N	\N	821	0
-1585821798	0	1585821798	\N	\N	\N	2348	\N	\N	tbl_trn_transactions	\N	\N	831	0
-1585821798	0	1585821798	\N	\N	\N	2351	\N	\N	tbl_trn_requests	\N	\N	833	0
-1585821800	0	1585821800	\N	\N	\N	2365	\N	\N	tbl_trn_requests	\N	\N	840	0
-1585821801	0	1585821801	\N	\N	\N	2378	\N	\N	tbl_trn_transactions	\N	\N	846	0
-1585821802	0	1585821802	\N	\N	\N	2381	\N	\N	tbl_trn_requests	\N	\N	848	0
-1585821802	0	1585821802	\N	\N	\N	2387	\N	\N	tbl_trn_requests	\N	\N	851	0
-1585821803	0	1585821803	\N	\N	\N	2397	\N	\N	tbl_trn_requests	\N	\N	856	0
-1585821803	0	1585821803	\N	\N	\N	2400	\N	\N	tbl_trn_transactions	\N	\N	857	0
-1585821805	0	1585821805	\N	\N	\N	2413	\N	\N	tbl_trn_requests	\N	\N	864	0
-1585821807	0	1585821807	\N	\N	\N	2431	\N	\N	tbl_trn_requests	\N	\N	873	0
-1585821809	0	1585821809	\N	\N	\N	2445	\N	\N	tbl_trn_requests	\N	\N	880	0
-1585821813	0	1585821813	\N	\N	\N	2480	\N	\N	tbl_trn_transactions	\N	\N	897	0
-1585821813	0	1585821813	\N	\N	\N	2483	\N	\N	tbl_trn_requests	\N	\N	899	0
-1585821817	0	1585821817	\N	\N	\N	2521	\N	\N	tbl_trn_requests	\N	\N	918	0
-1585821820	0	1585821820	\N	\N	\N	2544	\N	\N	tbl_trn_transactions	\N	\N	929	0
-1585821821	0	1585821821	\N	\N	\N	2557	\N	\N	tbl_trn_requests	\N	\N	936	0
-1585821821	0	1585821821	\N	\N	\N	2560	\N	\N	tbl_trn_transactions	\N	\N	937	0
-1585821822	0	1585821822	\N	\N	\N	2563	\N	\N	tbl_trn_requests	\N	\N	939	0
-1585821824	0	1585821824	\N	\N	\N	2584	\N	\N	tbl_trn_transactions	\N	\N	949	0
-1585821832	0	1585821832	\N	\N	\N	2650	\N	\N	tbl_trn_transactions	\N	\N	982	0
-1585821834	0	1585821834	\N	\N	\N	2675	\N	\N	tbl_trn_requests	\N	\N	995	0
-1585821835	0	1585821835	\N	\N	\N	2678	\N	\N	tbl_trn_transactions	\N	\N	996	0
-1585821836	0	1585821836	\N	\N	\N	2689	\N	\N	tbl_trn_requests	\N	\N	1002	0
-1585821837	0	1585821837	\N	\N	\N	2701	\N	\N	tbl_trn_requests	\N	\N	1008	0
-1585821837	0	1585821837	\N	\N	\N	2703	\N	\N	tbl_trn_requests	\N	\N	1009	0
-1585821838	0	1585821838	\N	\N	\N	2712	\N	\N	tbl_trn_transactions	\N	\N	1013	0
-1585821839	0	1585821839	\N	\N	\N	2716	\N	\N	tbl_trn_transactions	\N	\N	1015	0
-1585897789	0	1585897789	\N	\N	\N	2855	\N	\N	tbl_trn_requests	\N	\N	53	0
-1585897789	0	1585897789	\N	\N	\N	2857	\N	\N	tbl_trn_requests	\N	\N	54	0
-1585819832	0	1585819832	\N	\N	\N	1001	\N	\N	tbl_trn_requests	\N	\N	158	0
-1585819832	0	1585819832	\N	\N	\N	1005	\N	\N	tbl_trn_requests	\N	\N	160	0
-1585819833	0	1585819833	\N	\N	\N	1010	\N	\N	tbl_trn_transactions	\N	\N	162	0
-1585819833	0	1585819833	\N	\N	\N	1011	\N	\N	tbl_trn_requests	\N	\N	163	0
-1585819833	0	1585819833	\N	\N	\N	1015	\N	\N	tbl_trn_requests	\N	\N	165	0
-1585819834	0	1585819834	\N	\N	\N	1018	\N	\N	tbl_trn_transactions	\N	\N	166	0
-1585819834	0	1585819834	\N	\N	\N	1023	\N	\N	tbl_trn_requests	\N	\N	169	0
-1585819834	0	1585819834	\N	\N	\N	1026	\N	\N	tbl_trn_transactions	\N	\N	170	0
-1585819835	0	1585819835	\N	\N	\N	1032	\N	\N	tbl_trn_transactions	\N	\N	173	0
-1585819835	0	1585819835	\N	\N	\N	1033	\N	\N	tbl_trn_requests	\N	\N	174	0
-1585819835	0	1585819835	\N	\N	\N	1036	\N	\N	tbl_trn_transactions	\N	\N	175	0
-1585819836	0	1585819836	\N	\N	\N	1042	\N	\N	tbl_trn_transactions	\N	\N	178	0
-1585819836	0	1585819836	\N	\N	\N	1044	\N	\N	tbl_trn_transactions	\N	\N	179	0
-1585819837	0	1585819837	\N	\N	\N	1045	\N	\N	tbl_trn_requests	\N	\N	180	0
-1585819837	0	1585819837	\N	\N	\N	1050	\N	\N	tbl_trn_transactions	\N	\N	182	0
-1585819837	0	1585819837	\N	\N	\N	1053	\N	\N	tbl_trn_requests	\N	\N	184	0
-1585819838	0	1585819838	\N	\N	\N	1058	\N	\N	tbl_trn_transactions	\N	\N	186	0
-1585819838	0	1585819838	\N	\N	\N	1060	\N	\N	tbl_trn_transactions	\N	\N	187	0
-1585819839	0	1585819839	\N	\N	\N	1063	\N	\N	tbl_trn_requests	\N	\N	189	0
-1585819839	0	1585819839	\N	\N	\N	1068	\N	\N	tbl_trn_transactions	\N	\N	191	0
-1585819840	0	1585819840	\N	\N	\N	1076	\N	\N	tbl_trn_transactions	\N	\N	195	0
-1585819840	0	1585819840	\N	\N	\N	1082	\N	\N	tbl_trn_transactions	\N	\N	198	0
-1585819841	0	1585819841	\N	\N	\N	1088	\N	\N	tbl_trn_transactions	\N	\N	201	0
-1585821780	0	1585821780	\N	\N	\N	2197	\N	\N	tbl_trn_requests	\N	\N	756	0
-1585821782	0	1585821782	\N	\N	\N	2211	\N	\N	tbl_trn_requests	\N	\N	763	0
-1585821782	0	1585821782	\N	\N	\N	2217	\N	\N	tbl_trn_requests	\N	\N	766	0
-1585821783	0	1585821783	\N	\N	\N	2225	\N	\N	tbl_trn_requests	\N	\N	770	0
-1585821784	0	1585821784	\N	\N	\N	2231	\N	\N	tbl_trn_requests	\N	\N	773	0
-1585821784	0	1585821784	\N	\N	\N	2233	\N	\N	tbl_trn_requests	\N	\N	774	0
-1585821785	0	1585821785	\N	\N	\N	2240	\N	\N	tbl_trn_transactions	\N	\N	777	0
-1585821787	0	1585821787	\N	\N	\N	2247	\N	\N	tbl_trn_requests	\N	\N	781	0
-1585821788	0	1585821788	\N	\N	\N	2255	\N	\N	tbl_trn_requests	\N	\N	785	0
-1585821789	0	1585821789	\N	\N	\N	2265	\N	\N	tbl_trn_requests	\N	\N	790	0
-1585821790	0	1585821790	\N	\N	\N	2275	\N	\N	tbl_trn_requests	\N	\N	795	0
-1585821791	0	1585821791	\N	\N	\N	2281	\N	\N	tbl_trn_requests	\N	\N	798	0
-1585821791	0	1585821791	\N	\N	\N	2284	\N	\N	tbl_trn_transactions	\N	\N	799	0
-1585821792	0	1585821792	\N	\N	\N	2295	\N	\N	tbl_trn_requests	\N	\N	805	0
-1585821794	0	1585821794	\N	\N	\N	2311	\N	\N	tbl_trn_requests	\N	\N	813	0
-1585821794	0	1585821794	\N	\N	\N	2316	\N	\N	tbl_trn_transactions	\N	\N	815	0
-1585821795	0	1585821795	\N	\N	\N	2321	\N	\N	tbl_trn_requests	\N	\N	818	0
-1585821797	0	1585821797	\N	\N	\N	2342	\N	\N	tbl_trn_transactions	\N	\N	828	0
-1585821799	0	1585821799	\N	\N	\N	2356	\N	\N	tbl_trn_transactions	\N	\N	835	0
-1585821800	0	1585821800	\N	\N	\N	2367	\N	\N	tbl_trn_requests	\N	\N	841	0
-1585821801	0	1585821801	\N	\N	\N	2373	\N	\N	tbl_trn_requests	\N	\N	844	0
-1585821803	0	1585821803	\N	\N	\N	2389	\N	\N	tbl_trn_requests	\N	\N	852	0
-1585821803	0	1585821803	\N	\N	\N	2395	\N	\N	tbl_trn_requests	\N	\N	855	0
-1585821805	0	1585821805	\N	\N	\N	2411	\N	\N	tbl_trn_requests	\N	\N	863	0
-1585821805	0	1585821805	\N	\N	\N	2417	\N	\N	tbl_trn_requests	\N	\N	866	0
-1585821806	0	1585821806	\N	\N	\N	2420	\N	\N	tbl_trn_transactions	\N	\N	867	0
-1585821807	0	1585821807	\N	\N	\N	2428	\N	\N	tbl_trn_transactions	\N	\N	871	0
-1585821811	0	1585821811	\N	\N	\N	2459	\N	\N	tbl_trn_requests	\N	\N	887	0
-1585821812	0	1585821812	\N	\N	\N	2466	\N	\N	tbl_trn_transactions	\N	\N	890	0
-1585821812	0	1585821812	\N	\N	\N	2469	\N	\N	tbl_trn_requests	\N	\N	892	0
-1585821813	0	1585821813	\N	\N	\N	2477	\N	\N	tbl_trn_requests	\N	\N	896	0
-1585821813	0	1585821813	\N	\N	\N	2482	\N	\N	tbl_trn_transactions	\N	\N	898	0
-1585821813	0	1585821813	\N	\N	\N	2485	\N	\N	tbl_trn_requests	\N	\N	900	0
-1585821814	0	1585821814	\N	\N	\N	2492	\N	\N	tbl_trn_transactions	\N	\N	903	0
-1585821814	0	1585821814	\N	\N	\N	2494	\N	\N	tbl_trn_transactions	\N	\N	904	0
-1585821816	0	1585821816	\N	\N	\N	2505	\N	\N	tbl_trn_requests	\N	\N	910	0
-1585821816	0	1585821816	\N	\N	\N	2515	\N	\N	tbl_trn_requests	\N	\N	915	0
-1585821819	0	1585821819	\N	\N	\N	2538	\N	\N	tbl_trn_transactions	\N	\N	926	0
-1585821819	0	1585821819	\N	\N	\N	2540	\N	\N	tbl_trn_transactions	\N	\N	927	0
-1585821820	0	1585821820	\N	\N	\N	2548	\N	\N	tbl_trn_transactions	\N	\N	931	0
-1585821821	0	1585821821	\N	\N	\N	2551	\N	\N	tbl_trn_requests	\N	\N	933	0
-1585821821	0	1585821821	\N	\N	\N	2554	\N	\N	tbl_trn_transactions	\N	\N	934	0
-1585821821	0	1585821821	\N	\N	\N	2558	\N	\N	tbl_trn_transactions	\N	\N	936	0
-1585821822	0	1585821822	\N	\N	\N	2561	\N	\N	tbl_trn_requests	\N	\N	938	0
-1585821823	0	1585821823	\N	\N	\N	2570	\N	\N	tbl_trn_transactions	\N	\N	942	0
-1585821824	0	1585821824	\N	\N	\N	2579	\N	\N	tbl_trn_requests	\N	\N	947	0
-1585821824	0	1585821824	\N	\N	\N	2582	\N	\N	tbl_trn_transactions	\N	\N	948	0
-1585821824	0	1585821824	\N	\N	\N	2585	\N	\N	tbl_trn_requests	\N	\N	950	0
-1585821824	0	1585821824	\N	\N	\N	2588	\N	\N	tbl_trn_transactions	\N	\N	951	0
-1585821824	0	1585821824	\N	\N	\N	2590	\N	\N	tbl_trn_transactions	\N	\N	952	0
-1585821825	0	1585821825	\N	\N	\N	2593	\N	\N	tbl_trn_requests	\N	\N	954	0
-1585821825	0	1585821825	\N	\N	\N	2596	\N	\N	tbl_trn_transactions	\N	\N	955	0
-1585821826	0	1585821826	\N	\N	\N	2599	\N	\N	tbl_trn_requests	\N	\N	957	0
-1585821827	0	1585821827	\N	\N	\N	2614	\N	\N	tbl_trn_transactions	\N	\N	964	0
-1585821828	0	1585821828	\N	\N	\N	2617	\N	\N	tbl_trn_requests	\N	\N	966	0
-1585821829	0	1585821829	\N	\N	\N	2626	\N	\N	tbl_trn_transactions	\N	\N	970	0
-1585821833	0	1585821833	\N	\N	\N	2662	\N	\N	tbl_trn_transactions	\N	\N	988	0
-1585821835	0	1585821835	\N	\N	\N	2680	\N	\N	tbl_trn_transactions	\N	\N	997	0
-1585821835	0	1585821835	\N	\N	\N	2683	\N	\N	tbl_trn_requests	\N	\N	999	0
-1585821835	0	1585821835	\N	\N	\N	2686	\N	\N	tbl_trn_transactions	\N	\N	1000	0
-1585821836	0	1585821836	\N	\N	\N	2694	\N	\N	tbl_trn_transactions	\N	\N	1004	0
-1585821837	0	1585821837	\N	\N	\N	2697	\N	\N	tbl_trn_requests	\N	\N	1006	0
-1585821837	0	1585821837	\N	\N	\N	2700	\N	\N	tbl_trn_transactions	\N	\N	1007	0
-1585821839	0	1585821839	\N	\N	\N	2717	\N	\N	tbl_trn_requests	\N	\N	1016	0
-1585819832	0	1585819832	\N	\N	\N	1002	\N	\N	tbl_trn_transactions	\N	\N	158	0
-1585819833	0	1585819833	\N	\N	\N	1006	\N	\N	tbl_trn_transactions	\N	\N	160	0
-1585819833	0	1585819833	\N	\N	\N	1007	\N	\N	tbl_trn_requests	\N	\N	161	0
-1585819833	0	1585819833	\N	\N	\N	1014	\N	\N	tbl_trn_transactions	\N	\N	164	0
-1585819834	0	1585819834	\N	\N	\N	1020	\N	\N	tbl_trn_transactions	\N	\N	167	0
-1585819836	0	1585819836	\N	\N	\N	1040	\N	\N	tbl_trn_transactions	\N	\N	177	0
-1585819837	0	1585819837	\N	\N	\N	1046	\N	\N	tbl_trn_transactions	\N	\N	180	0
-1585819839	0	1585819839	\N	\N	\N	1069	\N	\N	tbl_trn_requests	\N	\N	192	0
-1585819840	0	1585819840	\N	\N	\N	1078	\N	\N	tbl_trn_transactions	\N	\N	196	0
-1585819840	0	1585819840	\N	\N	\N	1079	\N	\N	tbl_trn_requests	\N	\N	197	0
-1585819840	0	1585819840	\N	\N	\N	1083	\N	\N	tbl_trn_requests	\N	\N	199	0
-1585819841	0	1585819841	\N	\N	\N	1089	\N	\N	tbl_trn_requests	\N	\N	202	0
-1585821780	0	1585821780	\N	\N	\N	2201	\N	\N	tbl_trn_requests	\N	\N	758	0
-1585821781	0	1585821781	\N	\N	\N	2204	\N	\N	tbl_trn_transactions	\N	\N	759	0
-1585821782	0	1585821782	\N	\N	\N	2209	\N	\N	tbl_trn_requests	\N	\N	762	0
-1585821782	0	1585821782	\N	\N	\N	2212	\N	\N	tbl_trn_transactions	\N	\N	763	0
-1585821782	0	1585821782	\N	\N	\N	2215	\N	\N	tbl_trn_requests	\N	\N	765	0
-1585821782	0	1585821782	\N	\N	\N	2218	\N	\N	tbl_trn_transactions	\N	\N	766	0
-1585821785	0	1585821785	\N	\N	\N	2235	\N	\N	tbl_trn_requests	\N	\N	775	0
-1585821785	0	1585821785	\N	\N	\N	2238	\N	\N	tbl_trn_transactions	\N	\N	776	0
-1585821785	0	1585821785	\N	\N	\N	2241	\N	\N	tbl_trn_requests	\N	\N	778	0
-1585821786	0	1585821786	\N	\N	\N	2244	\N	\N	tbl_trn_transactions	\N	\N	779	0
-1585821787	0	1585821787	\N	\N	\N	2250	\N	\N	tbl_trn_transactions	\N	\N	782	0
-1585821789	0	1585821789	\N	\N	\N	2270	\N	\N	tbl_trn_transactions	\N	\N	792	0
-1585821791	0	1585821791	\N	\N	\N	2290	\N	\N	tbl_trn_transactions	\N	\N	802	0
-1585821793	0	1585821793	\N	\N	\N	2307	\N	\N	tbl_trn_requests	\N	\N	811	0
-1585821794	0	1585821794	\N	\N	\N	2314	\N	\N	tbl_trn_transactions	\N	\N	814	0
-1585821795	0	1585821795	\N	\N	\N	2326	\N	\N	tbl_trn_transactions	\N	\N	820	0
-1585821796	0	1585821796	\N	\N	\N	2331	\N	\N	tbl_trn_requests	\N	\N	823	0
-1585821796	0	1585821796	\N	\N	\N	2334	\N	\N	tbl_trn_transactions	\N	\N	824	0
-1585821797	0	1585821797	\N	\N	\N	2337	\N	\N	tbl_trn_requests	\N	\N	826	0
-1585821797	0	1585821797	\N	\N	\N	2340	\N	\N	tbl_trn_transactions	\N	\N	827	0
-1585821799	0	1585821799	\N	\N	\N	2353	\N	\N	tbl_trn_requests	\N	\N	834	0
-1585821800	0	1585821800	\N	\N	\N	2363	\N	\N	tbl_trn_requests	\N	\N	839	0
-1585821803	0	1585821803	\N	\N	\N	2392	\N	\N	tbl_trn_transactions	\N	\N	853	0
-1585821805	0	1585821805	\N	\N	\N	2409	\N	\N	tbl_trn_requests	\N	\N	862	0
-1585821805	0	1585821805	\N	\N	\N	2414	\N	\N	tbl_trn_transactions	\N	\N	864	0
-1585821806	0	1585821806	\N	\N	\N	2422	\N	\N	tbl_trn_transactions	\N	\N	868	0
-1585821808	0	1585821808	\N	\N	\N	2433	\N	\N	tbl_trn_requests	\N	\N	874	0
-1585821808	0	1585821808	\N	\N	\N	2440	\N	\N	tbl_trn_transactions	\N	\N	877	0
-1585821809	0	1585821809	\N	\N	\N	2444	\N	\N	tbl_trn_transactions	\N	\N	879	0
-1585821809	0	1585821809	\N	\N	\N	2447	\N	\N	tbl_trn_requests	\N	\N	881	0
-1585821812	0	1585821812	\N	\N	\N	2472	\N	\N	tbl_trn_transactions	\N	\N	893	0
-1585821812	0	1585821812	\N	\N	\N	2475	\N	\N	tbl_trn_requests	\N	\N	895	0
-1585821815	0	1585821815	\N	\N	\N	2497	\N	\N	tbl_trn_requests	\N	\N	906	0
-1585821815	0	1585821815	\N	\N	\N	2500	\N	\N	tbl_trn_transactions	\N	\N	907	0
-1585821816	0	1585821816	\N	\N	\N	2513	\N	\N	tbl_trn_requests	\N	\N	914	0
-1585821817	0	1585821817	\N	\N	\N	2522	\N	\N	tbl_trn_transactions	\N	\N	918	0
-1585821817	0	1585821817	\N	\N	\N	2525	\N	\N	tbl_trn_requests	\N	\N	920	0
-1585821818	0	1585821818	\N	\N	\N	2528	\N	\N	tbl_trn_transactions	\N	\N	921	0
-1585821818	0	1585821818	\N	\N	\N	2531	\N	\N	tbl_trn_requests	\N	\N	923	0
-1585821819	0	1585821819	\N	\N	\N	2535	\N	\N	tbl_trn_requests	\N	\N	925	0
-1585821822	0	1585821822	\N	\N	\N	2565	\N	\N	tbl_trn_requests	\N	\N	940	0
-1585821825	0	1585821825	\N	\N	\N	2592	\N	\N	tbl_trn_transactions	\N	\N	953	0
-1585821825	0	1585821825	\N	\N	\N	2595	\N	\N	tbl_trn_requests	\N	\N	955	0
-1585821826	0	1585821826	\N	\N	\N	2604	\N	\N	tbl_trn_transactions	\N	\N	959	0
-1585821828	0	1585821828	\N	\N	\N	2622	\N	\N	tbl_trn_transactions	\N	\N	968	0
-1585821829	0	1585821829	\N	\N	\N	2625	\N	\N	tbl_trn_requests	\N	\N	970	0
-1585821829	0	1585821829	\N	\N	\N	2628	\N	\N	tbl_trn_transactions	\N	\N	971	0
-1585821829	0	1585821829	\N	\N	\N	2631	\N	\N	tbl_trn_requests	\N	\N	973	0
-1585821832	0	1585821832	\N	\N	\N	2655	\N	\N	tbl_trn_requests	\N	\N	985	0
-1585821832	0	1585821832	\N	\N	\N	2658	\N	\N	tbl_trn_transactions	\N	\N	986	0
-1585821835	0	1585821835	\N	\N	\N	2685	\N	\N	tbl_trn_requests	\N	\N	1000	0
-1585821836	0	1585821836	\N	\N	\N	2693	\N	\N	tbl_trn_requests	\N	\N	1004	0
-1585821837	0	1585821837	\N	\N	\N	2699	\N	\N	tbl_trn_requests	\N	\N	1007	0
-1585821837	0	1585821837	\N	\N	\N	2702	\N	\N	tbl_trn_transactions	\N	\N	1008	0
-1585821837	0	1585821837	\N	\N	\N	2705	\N	\N	tbl_trn_requests	\N	\N	1010	0
-1585821839	0	1585821839	\N	\N	\N	2714	\N	\N	tbl_trn_transactions	\N	\N	1014	0
-1585819833	0	1585819833	\N	\N	\N	1008	\N	\N	tbl_trn_transactions	\N	\N	161	0
-1585819834	0	1585819834	\N	\N	\N	1017	\N	\N	tbl_trn_requests	\N	\N	166	0
-1585819834	0	1585819834	\N	\N	\N	1022	\N	\N	tbl_trn_transactions	\N	\N	168	0
-1585819835	0	1585819835	\N	\N	\N	1028	\N	\N	tbl_trn_transactions	\N	\N	171	0
-1585819835	0	1585819835	\N	\N	\N	1029	\N	\N	tbl_trn_requests	\N	\N	172	0
-1585819836	0	1585819836	\N	\N	\N	1041	\N	\N	tbl_trn_requests	\N	\N	178	0
-1585819837	0	1585819837	\N	\N	\N	1048	\N	\N	tbl_trn_transactions	\N	\N	181	0
-1585819837	0	1585819837	\N	\N	\N	1049	\N	\N	tbl_trn_requests	\N	\N	182	0
-1585819838	0	1585819838	\N	\N	\N	1057	\N	\N	tbl_trn_requests	\N	\N	186	0
-1585819838	0	1585819838	\N	\N	\N	1059	\N	\N	tbl_trn_requests	\N	\N	187	0
-1585819838	0	1585819838	\N	\N	\N	1061	\N	\N	tbl_trn_requests	\N	\N	188	0
-1585819839	0	1585819839	\N	\N	\N	1065	\N	\N	tbl_trn_requests	\N	\N	190	0
-1585819839	0	1585819839	\N	\N	\N	1070	\N	\N	tbl_trn_transactions	\N	\N	192	0
-1585819839	0	1585819839	\N	\N	\N	1071	\N	\N	tbl_trn_requests	\N	\N	193	0
-1585819840	0	1585819840	\N	\N	\N	1080	\N	\N	tbl_trn_transactions	\N	\N	197	0
-1585819841	0	1585819841	\N	\N	\N	1085	\N	\N	tbl_trn_requests	\N	\N	200	0
-1585819841	0	1585819841	\N	\N	\N	1093	\N	\N	tbl_trn_requests	\N	\N	204	0
-1585821780	0	1585821780	\N	\N	\N	2202	\N	\N	tbl_trn_transactions	\N	\N	758	0
-1585821782	0	1585821782	\N	\N	\N	2208	\N	\N	tbl_trn_transactions	\N	\N	761	0
-1585821783	0	1585821783	\N	\N	\N	2221	\N	\N	tbl_trn_requests	\N	\N	768	0
-1585821784	0	1585821784	\N	\N	\N	2227	\N	\N	tbl_trn_requests	\N	\N	771	0
-1585821785	0	1585821785	\N	\N	\N	2236	\N	\N	tbl_trn_transactions	\N	\N	775	0
-1585821788	0	1585821788	\N	\N	\N	2258	\N	\N	tbl_trn_transactions	\N	\N	786	0
-1585821789	0	1585821789	\N	\N	\N	2261	\N	\N	tbl_trn_requests	\N	\N	788	0
-1585821789	0	1585821789	\N	\N	\N	2262	\N	\N	tbl_trn_transactions	\N	\N	788	0
-1585821789	0	1585821789	\N	\N	\N	2266	\N	\N	tbl_trn_transactions	\N	\N	790	0
-1585821790	0	1585821790	\N	\N	\N	2278	\N	\N	tbl_trn_transactions	\N	\N	796	0
-1585821793	0	1585821793	\N	\N	\N	2304	\N	\N	tbl_trn_transactions	\N	\N	809	0
-1585821793	0	1585821793	\N	\N	\N	2310	\N	\N	tbl_trn_transactions	\N	\N	812	0
-1585821796	0	1585821796	\N	\N	\N	2332	\N	\N	tbl_trn_transactions	\N	\N	823	0
-1585821797	0	1585821797	\N	\N	\N	2343	\N	\N	tbl_trn_requests	\N	\N	829	0
-1585821798	0	1585821798	\N	\N	\N	2346	\N	\N	tbl_trn_transactions	\N	\N	830	0
-1585821799	0	1585821799	\N	\N	\N	2358	\N	\N	tbl_trn_transactions	\N	\N	836	0
-1585821799	0	1585821799	\N	\N	\N	2360	\N	\N	tbl_trn_transactions	\N	\N	837	0
-1585821800	0	1585821800	\N	\N	\N	2368	\N	\N	tbl_trn_transactions	\N	\N	841	0
-1585821801	0	1585821801	\N	\N	\N	2371	\N	\N	tbl_trn_requests	\N	\N	843	0
-1585821801	0	1585821801	\N	\N	\N	2374	\N	\N	tbl_trn_transactions	\N	\N	844	0
-1585821802	0	1585821802	\N	\N	\N	2383	\N	\N	tbl_trn_requests	\N	\N	849	0
-1585821802	0	1585821802	\N	\N	\N	2388	\N	\N	tbl_trn_transactions	\N	\N	851	0
-1585821803	0	1585821803	\N	\N	\N	2398	\N	\N	tbl_trn_transactions	\N	\N	856	0
-1585821806	0	1585821806	\N	\N	\N	2423	\N	\N	tbl_trn_requests	\N	\N	869	0
-1585821806	0	1585821806	\N	\N	\N	2426	\N	\N	tbl_trn_transactions	\N	\N	870	0
-1585821808	0	1585821808	\N	\N	\N	2439	\N	\N	tbl_trn_requests	\N	\N	877	0
-1585821810	0	1585821810	\N	\N	\N	2451	\N	\N	tbl_trn_requests	\N	\N	883	0
-1585821811	0	1585821811	\N	\N	\N	2457	\N	\N	tbl_trn_requests	\N	\N	886	0
-1585821811	0	1585821811	\N	\N	\N	2463	\N	\N	tbl_trn_requests	\N	\N	889	0
-1585821812	0	1585821812	\N	\N	\N	2467	\N	\N	tbl_trn_requests	\N	\N	891	0
-1585821812	0	1585821812	\N	\N	\N	2474	\N	\N	tbl_trn_transactions	\N	\N	894	0
-1585821814	0	1585821814	\N	\N	\N	2486	\N	\N	tbl_trn_transactions	\N	\N	900	0
-1585821816	0	1585821816	\N	\N	\N	2514	\N	\N	tbl_trn_transactions	\N	\N	914	0
-1585821818	0	1585821818	\N	\N	\N	2527	\N	\N	tbl_trn_requests	\N	\N	921	0
-1585821818	0	1585821818	\N	\N	\N	2530	\N	\N	tbl_trn_transactions	\N	\N	922	0
-1585821820	0	1585821820	\N	\N	\N	2547	\N	\N	tbl_trn_requests	\N	\N	931	0
-1585821821	0	1585821821	\N	\N	\N	2553	\N	\N	tbl_trn_requests	\N	\N	934	0
-1585821821	0	1585821821	\N	\N	\N	2559	\N	\N	tbl_trn_requests	\N	\N	937	0
-1585821823	0	1585821823	\N	\N	\N	2576	\N	\N	tbl_trn_transactions	\N	\N	945	0
-1585821827	0	1585821827	\N	\N	\N	2607	\N	\N	tbl_trn_requests	\N	\N	961	0
-1585821827	0	1585821827	\N	\N	\N	2610	\N	\N	tbl_trn_transactions	\N	\N	962	0
-1585821828	0	1585821828	\N	\N	\N	2620	\N	\N	tbl_trn_transactions	\N	\N	967	0
-1585821828	0	1585821828	\N	\N	\N	2624	\N	\N	tbl_trn_transactions	\N	\N	969	0
-1585821830	0	1585821830	\N	\N	\N	2638	\N	\N	tbl_trn_transactions	\N	\N	976	0
-1585821831	0	1585821831	\N	\N	\N	2642	\N	\N	tbl_trn_transactions	\N	\N	978	0
-1585821831	0	1585821831	\N	\N	\N	2643	\N	\N	tbl_trn_requests	\N	\N	979	0
-1585821832	0	1585821832	\N	\N	\N	2654	\N	\N	tbl_trn_transactions	\N	\N	984	0
-1585821832	0	1585821832	\N	\N	\N	2657	\N	\N	tbl_trn_requests	\N	\N	986	0
-1585821833	0	1585821833	\N	\N	\N	2660	\N	\N	tbl_trn_transactions	\N	\N	987	0
-1585821834	0	1585821834	\N	\N	\N	2668	\N	\N	tbl_trn_transactions	\N	\N	991	0
-1585821834	0	1585821834	\N	\N	\N	2674	\N	\N	tbl_trn_transactions	\N	\N	994	0
-1585821835	0	1585821835	\N	\N	\N	2684	\N	\N	tbl_trn_transactions	\N	\N	999	0
-1585821835	0	1585821835	\N	\N	\N	2687	\N	\N	tbl_trn_requests	\N	\N	1001	0
-1585821836	0	1585821836	\N	\N	\N	2690	\N	\N	tbl_trn_transactions	\N	\N	1002	0
-1585821836	0	1585821836	\N	\N	\N	2692	\N	\N	tbl_trn_transactions	\N	\N	1003	0
-1585819833	0	1585819833	\N	\N	\N	1012	\N	\N	tbl_trn_transactions	\N	\N	163	0
-1585819833	0	1585819833	\N	\N	\N	1013	\N	\N	tbl_trn_requests	\N	\N	164	0
-1585819834	0	1585819834	\N	\N	\N	1019	\N	\N	tbl_trn_requests	\N	\N	167	0
-1585819834	0	1585819834	\N	\N	\N	1024	\N	\N	tbl_trn_transactions	\N	\N	169	0
-1585819835	0	1585819835	\N	\N	\N	1030	\N	\N	tbl_trn_transactions	\N	\N	172	0
-1585819835	0	1585819835	\N	\N	\N	1031	\N	\N	tbl_trn_requests	\N	\N	173	0
-1585819835	0	1585819835	\N	\N	\N	1034	\N	\N	tbl_trn_transactions	\N	\N	174	0
-1585819836	0	1585819836	\N	\N	\N	1038	\N	\N	tbl_trn_transactions	\N	\N	176	0
-1585819836	0	1585819836	\N	\N	\N	1039	\N	\N	tbl_trn_requests	\N	\N	177	0
-1585819836	0	1585819836	\N	\N	\N	1043	\N	\N	tbl_trn_requests	\N	\N	179	0
-1585819838	0	1585819838	\N	\N	\N	1056	\N	\N	tbl_trn_transactions	\N	\N	185	0
-1585819839	0	1585819839	\N	\N	\N	1073	\N	\N	tbl_trn_requests	\N	\N	194	0
-1585819840	0	1585819840	\N	\N	\N	1084	\N	\N	tbl_trn_transactions	\N	\N	199	0
-1585819841	0	1585819841	\N	\N	\N	1090	\N	\N	tbl_trn_transactions	\N	\N	202	0
-1585819841	0	1585819841	\N	\N	\N	1091	\N	\N	tbl_trn_requests	\N	\N	203	0
-1585821781	0	1585821781	\N	\N	\N	2205	\N	\N	tbl_trn_requests	\N	\N	760	0
-1585821783	0	1585821783	\N	\N	\N	2224	\N	\N	tbl_trn_transactions	\N	\N	769	0
-1585821785	0	1585821785	\N	\N	\N	2242	\N	\N	tbl_trn_transactions	\N	\N	778	0
-1585821789	0	1585821789	\N	\N	\N	2264	\N	\N	tbl_trn_transactions	\N	\N	789	0
-1585821792	0	1585821792	\N	\N	\N	2292	\N	\N	tbl_trn_transactions	\N	\N	803	0
-1585821793	0	1585821793	\N	\N	\N	2306	\N	\N	tbl_trn_transactions	\N	\N	810	0
-1585821793	0	1585821793	\N	\N	\N	2309	\N	\N	tbl_trn_requests	\N	\N	812	0
-1585821794	0	1585821794	\N	\N	\N	2312	\N	\N	tbl_trn_transactions	\N	\N	813	0
-1585821798	0	1585821798	\N	\N	\N	2347	\N	\N	tbl_trn_requests	\N	\N	831	0
-1585821798	0	1585821798	\N	\N	\N	2350	\N	\N	tbl_trn_transactions	\N	\N	832	0
-1585821800	0	1585821800	\N	\N	\N	2361	\N	\N	tbl_trn_requests	\N	\N	838	0
-1585821801	0	1585821801	\N	\N	\N	2377	\N	\N	tbl_trn_requests	\N	\N	846	0
-1585821802	0	1585821802	\N	\N	\N	2382	\N	\N	tbl_trn_transactions	\N	\N	848	0
-1585821802	0	1585821802	\N	\N	\N	2385	\N	\N	tbl_trn_requests	\N	\N	850	0
-1585821804	0	1585821804	\N	\N	\N	2402	\N	\N	tbl_trn_transactions	\N	\N	858	0
-1585821804	0	1585821804	\N	\N	\N	2405	\N	\N	tbl_trn_requests	\N	\N	860	0
-1585821806	0	1585821806	\N	\N	\N	2424	\N	\N	tbl_trn_transactions	\N	\N	869	0
-1585821808	0	1585821808	\N	\N	\N	2438	\N	\N	tbl_trn_transactions	\N	\N	876	0
-1585821809	0	1585821809	\N	\N	\N	2443	\N	\N	tbl_trn_requests	\N	\N	879	0
-1585821809	0	1585821809	\N	\N	\N	2450	\N	\N	tbl_trn_transactions	\N	\N	882	0
-1585821811	0	1585821811	\N	\N	\N	2460	\N	\N	tbl_trn_transactions	\N	\N	887	0
-1585821812	0	1585821812	\N	\N	\N	2473	\N	\N	tbl_trn_requests	\N	\N	894	0
-1585821812	0	1585821812	\N	\N	\N	2476	\N	\N	tbl_trn_transactions	\N	\N	895	0
-1585821814	0	1585821814	\N	\N	\N	2488	\N	\N	tbl_trn_transactions	\N	\N	901	0
-1585821815	0	1585821815	\N	\N	\N	2503	\N	\N	tbl_trn_requests	\N	\N	909	0
-1585821816	0	1585821816	\N	\N	\N	2506	\N	\N	tbl_trn_transactions	\N	\N	910	0
-1585821816	0	1585821816	\N	\N	\N	2509	\N	\N	tbl_trn_requests	\N	\N	912	0
-1585821817	0	1585821817	\N	\N	\N	2524	\N	\N	tbl_trn_transactions	\N	\N	919	0
-1585821820	0	1585821820	\N	\N	\N	2545	\N	\N	tbl_trn_requests	\N	\N	930	0
-1585821823	0	1585821823	\N	\N	\N	2572	\N	\N	tbl_trn_transactions	\N	\N	943	0
-1585821823	0	1585821823	\N	\N	\N	2575	\N	\N	tbl_trn_requests	\N	\N	945	0
-1585821824	0	1585821824	\N	\N	\N	2581	\N	\N	tbl_trn_requests	\N	\N	948	0
-1585821824	0	1585821824	\N	\N	\N	2587	\N	\N	tbl_trn_requests	\N	\N	951	0
-1585821824	0	1585821824	\N	\N	\N	2589	\N	\N	tbl_trn_requests	\N	\N	952	0
-1585821825	0	1585821825	\N	\N	\N	2594	\N	\N	tbl_trn_transactions	\N	\N	954	0
-1585821825	0	1585821825	\N	\N	\N	2597	\N	\N	tbl_trn_requests	\N	\N	956	0
-1585821826	0	1585821826	\N	\N	\N	2600	\N	\N	tbl_trn_transactions	\N	\N	957	0
-1585821826	0	1585821826	\N	\N	\N	2602	\N	\N	tbl_trn_transactions	\N	\N	958	0
-1585821827	0	1585821827	\N	\N	\N	2611	\N	\N	tbl_trn_requests	\N	\N	963	0
-1585821828	0	1585821828	\N	\N	\N	2618	\N	\N	tbl_trn_transactions	\N	\N	966	0
-1585821829	0	1585821829	\N	\N	\N	2629	\N	\N	tbl_trn_requests	\N	\N	972	0
-1585821830	0	1585821830	\N	\N	\N	2639	\N	\N	tbl_trn_requests	\N	\N	977	0
-1585821831	0	1585821831	\N	\N	\N	2645	\N	\N	tbl_trn_requests	\N	\N	980	0
-1585821831	0	1585821831	\N	\N	\N	2648	\N	\N	tbl_trn_transactions	\N	\N	981	0
-1585821832	0	1585821832	\N	\N	\N	2651	\N	\N	tbl_trn_requests	\N	\N	983	0
-1585821833	0	1585821833	\N	\N	\N	2663	\N	\N	tbl_trn_requests	\N	\N	989	0
-1585821833	0	1585821833	\N	\N	\N	2666	\N	\N	tbl_trn_transactions	\N	\N	990	0
-1585821834	0	1585821834	\N	\N	\N	2667	\N	\N	tbl_trn_requests	\N	\N	991	0
-1585821834	0	1585821834	\N	\N	\N	2670	\N	\N	tbl_trn_transactions	\N	\N	992	0
-1585821834	0	1585821834	\N	\N	\N	2673	\N	\N	tbl_trn_requests	\N	\N	994	0
-1585821836	0	1585821836	\N	\N	\N	2696	\N	\N	tbl_trn_transactions	\N	\N	1005	0
-1585821838	0	1585821838	\N	\N	\N	2708	\N	\N	tbl_trn_transactions	\N	\N	1011	0
-1585821838	0	1585821838	\N	\N	\N	2711	\N	\N	tbl_trn_requests	\N	\N	1013	0
-1585819840	0	1585819840	\N	\N	\N	1077	\N	\N	tbl_trn_requests	\N	\N	196	0
-1585819841	0	1585819841	\N	\N	\N	1092	\N	\N	tbl_trn_transactions	\N	\N	203	0
-1585821032	0	1585821032	\N	\N	\N	1095	\N	\N	tbl_trn_requests	\N	\N	205	0
-1585821032	0	1585821032	\N	\N	\N	1096	\N	\N	tbl_trn_transactions	\N	\N	205	0
-1585821032	0	1585821032	\N	\N	\N	1097	\N	\N	tbl_trn_requests	\N	\N	206	0
-1585821032	0	1585821032	\N	\N	\N	1098	\N	\N	tbl_trn_transactions	\N	\N	206	0
-1585821032	0	1585821032	\N	\N	\N	1099	\N	\N	tbl_trn_requests	\N	\N	207	0
-1585821032	0	1585821032	\N	\N	\N	1100	\N	\N	tbl_trn_transactions	\N	\N	207	0
-1585821032	0	1585821032	\N	\N	\N	1101	\N	\N	tbl_trn_requests	\N	\N	208	0
-1585821032	0	1585821032	\N	\N	\N	1102	\N	\N	tbl_trn_transactions	\N	\N	208	0
-1585821032	0	1585821032	\N	\N	\N	1103	\N	\N	tbl_trn_requests	\N	\N	209	0
-1585821032	0	1585821032	\N	\N	\N	1104	\N	\N	tbl_trn_transactions	\N	\N	209	0
-1585821032	0	1585821032	\N	\N	\N	1105	\N	\N	tbl_trn_requests	\N	\N	210	0
-1585821032	0	1585821032	\N	\N	\N	1106	\N	\N	tbl_trn_transactions	\N	\N	210	0
-1585821032	0	1585821032	\N	\N	\N	1107	\N	\N	tbl_trn_requests	\N	\N	211	0
-1585821032	0	1585821032	\N	\N	\N	1108	\N	\N	tbl_trn_transactions	\N	\N	211	0
-1585821032	0	1585821032	\N	\N	\N	1109	\N	\N	tbl_trn_requests	\N	\N	212	0
-1585821032	0	1585821032	\N	\N	\N	1110	\N	\N	tbl_trn_transactions	\N	\N	212	0
-1585821645	0	1585821645	\N	\N	\N	1111	\N	\N	tbl_trn_requests	\N	\N	213	0
-1585821645	0	1585821645	\N	\N	\N	1112	\N	\N	tbl_trn_transactions	\N	\N	213	0
-1585821645	0	1585821645	\N	\N	\N	1113	\N	\N	tbl_trn_requests	\N	\N	214	0
-1585821645	0	1585821645	\N	\N	\N	1114	\N	\N	tbl_trn_transactions	\N	\N	214	0
-1585821646	0	1585821646	\N	\N	\N	1115	\N	\N	tbl_trn_requests	\N	\N	215	0
-1585821646	0	1585821646	\N	\N	\N	1116	\N	\N	tbl_trn_transactions	\N	\N	215	0
-1585821646	0	1585821646	\N	\N	\N	1117	\N	\N	tbl_trn_requests	\N	\N	216	0
-1585821646	0	1585821646	\N	\N	\N	1118	\N	\N	tbl_trn_transactions	\N	\N	216	0
-1585821646	0	1585821646	\N	\N	\N	1119	\N	\N	tbl_trn_requests	\N	\N	217	0
-1585821646	0	1585821646	\N	\N	\N	1120	\N	\N	tbl_trn_transactions	\N	\N	217	0
-1585821647	0	1585821647	\N	\N	\N	1121	\N	\N	tbl_trn_requests	\N	\N	218	0
-1585821647	0	1585821647	\N	\N	\N	1122	\N	\N	tbl_trn_transactions	\N	\N	218	0
-1585821647	0	1585821647	\N	\N	\N	1123	\N	\N	tbl_trn_requests	\N	\N	219	0
-1585821647	0	1585821647	\N	\N	\N	1124	\N	\N	tbl_trn_transactions	\N	\N	219	0
-1585821656	0	1585821656	\N	\N	\N	1125	\N	\N	tbl_trn_requests	\N	\N	220	0
-1585821656	0	1585821656	\N	\N	\N	1126	\N	\N	tbl_trn_transactions	\N	\N	220	0
-1585821656	0	1585821656	\N	\N	\N	1127	\N	\N	tbl_trn_requests	\N	\N	221	0
-1585821656	0	1585821656	\N	\N	\N	1128	\N	\N	tbl_trn_transactions	\N	\N	221	0
-1585821657	0	1585821657	\N	\N	\N	1129	\N	\N	tbl_trn_requests	\N	\N	222	0
-1585821657	0	1585821657	\N	\N	\N	1130	\N	\N	tbl_trn_transactions	\N	\N	222	0
-1585821657	0	1585821657	\N	\N	\N	1131	\N	\N	tbl_trn_requests	\N	\N	223	0
-1585821657	0	1585821657	\N	\N	\N	1132	\N	\N	tbl_trn_transactions	\N	\N	223	0
-1585821657	0	1585821657	\N	\N	\N	1133	\N	\N	tbl_trn_requests	\N	\N	224	0
-1585821657	0	1585821657	\N	\N	\N	1134	\N	\N	tbl_trn_transactions	\N	\N	224	0
-1585821657	0	1585821657	\N	\N	\N	1135	\N	\N	tbl_trn_requests	\N	\N	225	0
-1585821657	0	1585821657	\N	\N	\N	1136	\N	\N	tbl_trn_transactions	\N	\N	225	0
-1585821658	0	1585821658	\N	\N	\N	1137	\N	\N	tbl_trn_requests	\N	\N	226	0
-1585821658	0	1585821658	\N	\N	\N	1138	\N	\N	tbl_trn_transactions	\N	\N	226	0
-1585821658	0	1585821658	\N	\N	\N	1139	\N	\N	tbl_trn_requests	\N	\N	227	0
-1585821658	0	1585821658	\N	\N	\N	1140	\N	\N	tbl_trn_transactions	\N	\N	227	0
-1585821658	0	1585821658	\N	\N	\N	1141	\N	\N	tbl_trn_requests	\N	\N	228	0
-1585821658	0	1585821658	\N	\N	\N	1142	\N	\N	tbl_trn_transactions	\N	\N	228	0
-1585821658	0	1585821658	\N	\N	\N	1143	\N	\N	tbl_trn_requests	\N	\N	229	0
-1585821658	0	1585821658	\N	\N	\N	1144	\N	\N	tbl_trn_transactions	\N	\N	229	0
-1585821658	0	1585821658	\N	\N	\N	1145	\N	\N	tbl_trn_requests	\N	\N	230	0
-1585821658	0	1585821658	\N	\N	\N	1146	\N	\N	tbl_trn_transactions	\N	\N	230	0
-1585821659	0	1585821659	\N	\N	\N	1147	\N	\N	tbl_trn_requests	\N	\N	231	0
-1585821659	0	1585821659	\N	\N	\N	1148	\N	\N	tbl_trn_transactions	\N	\N	231	0
-1585821659	0	1585821659	\N	\N	\N	1149	\N	\N	tbl_trn_requests	\N	\N	232	0
-1585821659	0	1585821659	\N	\N	\N	1150	\N	\N	tbl_trn_transactions	\N	\N	232	0
-1585821659	0	1585821659	\N	\N	\N	1151	\N	\N	tbl_trn_requests	\N	\N	233	0
-1585821659	0	1585821659	\N	\N	\N	1152	\N	\N	tbl_trn_transactions	\N	\N	233	0
-1585821659	0	1585821659	\N	\N	\N	1153	\N	\N	tbl_trn_requests	\N	\N	234	0
-1585821660	0	1585821660	\N	\N	\N	1154	\N	\N	tbl_trn_transactions	\N	\N	234	0
-1585821660	0	1585821660	\N	\N	\N	1155	\N	\N	tbl_trn_requests	\N	\N	235	0
-1585821660	0	1585821660	\N	\N	\N	1156	\N	\N	tbl_trn_transactions	\N	\N	235	0
-1585821660	0	1585821660	\N	\N	\N	1157	\N	\N	tbl_trn_requests	\N	\N	236	0
-1585821660	0	1585821660	\N	\N	\N	1158	\N	\N	tbl_trn_transactions	\N	\N	236	0
-1585821660	0	1585821660	\N	\N	\N	1159	\N	\N	tbl_trn_requests	\N	\N	237	0
-1585821660	0	1585821660	\N	\N	\N	1160	\N	\N	tbl_trn_transactions	\N	\N	237	0
-1585821661	0	1585821661	\N	\N	\N	1161	\N	\N	tbl_trn_requests	\N	\N	238	0
-1585821661	0	1585821661	\N	\N	\N	1162	\N	\N	tbl_trn_transactions	\N	\N	238	0
-1585821661	0	1585821661	\N	\N	\N	1163	\N	\N	tbl_trn_requests	\N	\N	239	0
-1585821661	0	1585821661	\N	\N	\N	1164	\N	\N	tbl_trn_transactions	\N	\N	239	0
-1585821661	0	1585821661	\N	\N	\N	1165	\N	\N	tbl_trn_requests	\N	\N	240	0
-1585821661	0	1585821661	\N	\N	\N	1166	\N	\N	tbl_trn_transactions	\N	\N	240	0
-1585821661	0	1585821661	\N	\N	\N	1167	\N	\N	tbl_trn_requests	\N	\N	241	0
-1585821661	0	1585821661	\N	\N	\N	1168	\N	\N	tbl_trn_transactions	\N	\N	241	0
-1585821662	0	1585821662	\N	\N	\N	1169	\N	\N	tbl_trn_requests	\N	\N	242	0
-1585821662	0	1585821662	\N	\N	\N	1170	\N	\N	tbl_trn_transactions	\N	\N	242	0
-1585821662	0	1585821662	\N	\N	\N	1171	\N	\N	tbl_trn_requests	\N	\N	243	0
-1585821662	0	1585821662	\N	\N	\N	1172	\N	\N	tbl_trn_transactions	\N	\N	243	0
-1585821662	0	1585821662	\N	\N	\N	1173	\N	\N	tbl_trn_requests	\N	\N	244	0
-1585821662	0	1585821662	\N	\N	\N	1174	\N	\N	tbl_trn_transactions	\N	\N	244	0
-1585821662	0	1585821662	\N	\N	\N	1175	\N	\N	tbl_trn_requests	\N	\N	245	0
-1585821662	0	1585821662	\N	\N	\N	1176	\N	\N	tbl_trn_transactions	\N	\N	245	0
-1585821662	0	1585821662	\N	\N	\N	1177	\N	\N	tbl_trn_requests	\N	\N	246	0
-1585821662	0	1585821662	\N	\N	\N	1178	\N	\N	tbl_trn_transactions	\N	\N	246	0
-1585821662	0	1585821662	\N	\N	\N	1179	\N	\N	tbl_trn_requests	\N	\N	247	0
-1585821662	0	1585821662	\N	\N	\N	1180	\N	\N	tbl_trn_transactions	\N	\N	247	0
-1585821663	0	1585821663	\N	\N	\N	1181	\N	\N	tbl_trn_requests	\N	\N	248	0
-1585821663	0	1585821663	\N	\N	\N	1182	\N	\N	tbl_trn_transactions	\N	\N	248	0
-1585821663	0	1585821663	\N	\N	\N	1183	\N	\N	tbl_trn_requests	\N	\N	249	0
-1585821663	0	1585821663	\N	\N	\N	1184	\N	\N	tbl_trn_transactions	\N	\N	249	0
-1585821664	0	1585821664	\N	\N	\N	1195	\N	\N	tbl_trn_requests	\N	\N	255	0
-1585821666	0	1585821666	\N	\N	\N	1213	\N	\N	tbl_trn_requests	\N	\N	264	0
-1585821667	0	1585821667	\N	\N	\N	1215	\N	\N	tbl_trn_requests	\N	\N	265	0
-1585821667	0	1585821667	\N	\N	\N	1217	\N	\N	tbl_trn_requests	\N	\N	266	0
-1585821668	0	1585821668	\N	\N	\N	1226	\N	\N	tbl_trn_transactions	\N	\N	270	0
-1585821668	0	1585821668	\N	\N	\N	1228	\N	\N	tbl_trn_transactions	\N	\N	271	0
-1585821668	0	1585821668	\N	\N	\N	1230	\N	\N	tbl_trn_transactions	\N	\N	272	0
-1585821669	0	1585821669	\N	\N	\N	1238	\N	\N	tbl_trn_transactions	\N	\N	276	0
-1585821669	0	1585821669	\N	\N	\N	1242	\N	\N	tbl_trn_transactions	\N	\N	278	0
-1585821671	0	1585821671	\N	\N	\N	1252	\N	\N	tbl_trn_transactions	\N	\N	283	0
-1585821671	0	1585821671	\N	\N	\N	1254	\N	\N	tbl_trn_transactions	\N	\N	284	0
-1585821671	0	1585821671	\N	\N	\N	1255	\N	\N	tbl_trn_requests	\N	\N	285	0
-1585821672	0	1585821672	\N	\N	\N	1262	\N	\N	tbl_trn_transactions	\N	\N	288	0
-1585821672	0	1585821672	\N	\N	\N	1264	\N	\N	tbl_trn_transactions	\N	\N	289	0
-1585821674	0	1585821674	\N	\N	\N	1280	\N	\N	tbl_trn_transactions	\N	\N	297	0
-1585821674	0	1585821674	\N	\N	\N	1282	\N	\N	tbl_trn_transactions	\N	\N	298	0
-1585821674	0	1585821674	\N	\N	\N	1284	\N	\N	tbl_trn_transactions	\N	\N	299	0
-1585821674	0	1585821674	\N	\N	\N	1286	\N	\N	tbl_trn_transactions	\N	\N	300	0
-1585821675	0	1585821675	\N	\N	\N	1290	\N	\N	tbl_trn_transactions	\N	\N	302	0
-1585821675	0	1585821675	\N	\N	\N	1292	\N	\N	tbl_trn_transactions	\N	\N	303	0
-1585821676	0	1585821676	\N	\N	\N	1299	\N	\N	tbl_trn_requests	\N	\N	307	0
-1585821677	0	1585821677	\N	\N	\N	1313	\N	\N	tbl_trn_requests	\N	\N	314	0
-1585821678	0	1585821678	\N	\N	\N	1316	\N	\N	tbl_trn_transactions	\N	\N	315	0
-1585821684	0	1585821684	\N	\N	\N	1364	\N	\N	tbl_trn_transactions	\N	\N	339	0
-1585821684	0	1585821684	\N	\N	\N	1366	\N	\N	tbl_trn_transactions	\N	\N	340	0
-1585821684	0	1585821684	\N	\N	\N	1368	\N	\N	tbl_trn_transactions	\N	\N	341	0
-1585821685	0	1585821685	\N	\N	\N	1375	\N	\N	tbl_trn_requests	\N	\N	345	0
-1585821685	0	1585821685	\N	\N	\N	1382	\N	\N	tbl_trn_transactions	\N	\N	348	0
-1585821686	0	1585821686	\N	\N	\N	1390	\N	\N	tbl_trn_transactions	\N	\N	352	0
-1585821688	0	1585821688	\N	\N	\N	1407	\N	\N	tbl_trn_requests	\N	\N	361	0
-1585821689	0	1585821689	\N	\N	\N	1409	\N	\N	tbl_trn_requests	\N	\N	362	0
-1585821689	0	1585821689	\N	\N	\N	1411	\N	\N	tbl_trn_requests	\N	\N	363	0
-1585821690	0	1585821690	\N	\N	\N	1419	\N	\N	tbl_trn_requests	\N	\N	367	0
-1585821692	0	1585821692	\N	\N	\N	1438	\N	\N	tbl_trn_transactions	\N	\N	376	0
-1585821694	0	1585821694	\N	\N	\N	1454	\N	\N	tbl_trn_transactions	\N	\N	384	0
-1585821694	0	1585821694	\N	\N	\N	1456	\N	\N	tbl_trn_transactions	\N	\N	385	0
-1585821701	0	1585821701	\N	\N	\N	1518	\N	\N	tbl_trn_transactions	\N	\N	416	0
-1585821701	0	1585821701	\N	\N	\N	1520	\N	\N	tbl_trn_transactions	\N	\N	417	0
-1585821702	0	1585821702	\N	\N	\N	1527	\N	\N	tbl_trn_requests	\N	\N	421	0
-1585821704	0	1585821704	\N	\N	\N	1540	\N	\N	tbl_trn_transactions	\N	\N	427	0
-1585821704	0	1585821704	\N	\N	\N	1541	\N	\N	tbl_trn_requests	\N	\N	428	0
-1585821706	0	1585821706	\N	\N	\N	1566	\N	\N	tbl_trn_transactions	\N	\N	440	0
-1585821706	0	1585821706	\N	\N	\N	1568	\N	\N	tbl_trn_transactions	\N	\N	441	0
-1585821707	0	1585821707	\N	\N	\N	1571	\N	\N	tbl_trn_requests	\N	\N	443	0
-1585821707	0	1585821707	\N	\N	\N	1576	\N	\N	tbl_trn_transactions	\N	\N	445	0
-1585821708	0	1585821708	\N	\N	\N	1581	\N	\N	tbl_trn_requests	\N	\N	448	0
-1585821708	0	1585821708	\N	\N	\N	1583	\N	\N	tbl_trn_requests	\N	\N	449	0
-1585821709	0	1585821709	\N	\N	\N	1589	\N	\N	tbl_trn_requests	\N	\N	452	0
-1585821709	0	1585821709	\N	\N	\N	1594	\N	\N	tbl_trn_transactions	\N	\N	454	0
-1585821710	0	1585821710	\N	\N	\N	1606	\N	\N	tbl_trn_transactions	\N	\N	460	0
-1585821712	0	1585821712	\N	\N	\N	1621	\N	\N	tbl_trn_requests	\N	\N	468	0
-1585821714	0	1585821714	\N	\N	\N	1636	\N	\N	tbl_trn_transactions	\N	\N	475	0
-1585821715	0	1585821715	\N	\N	\N	1645	\N	\N	tbl_trn_requests	\N	\N	480	0
-1585821715	0	1585821715	\N	\N	\N	1647	\N	\N	tbl_trn_requests	\N	\N	481	0
-1585821715	0	1585821715	\N	\N	\N	1650	\N	\N	tbl_trn_transactions	\N	\N	482	0
-1585821715	0	1585821715	\N	\N	\N	1652	\N	\N	tbl_trn_transactions	\N	\N	483	0
-1585821715	0	1585821715	\N	\N	\N	1654	\N	\N	tbl_trn_transactions	\N	\N	484	0
-1585821717	0	1585821717	\N	\N	\N	1671	\N	\N	tbl_trn_requests	\N	\N	493	0
-1585821719	0	1585821719	\N	\N	\N	1686	\N	\N	tbl_trn_transactions	\N	\N	500	0
-1585821798	0	1585821798	\N	\N	\N	2349	\N	\N	tbl_trn_requests	\N	\N	832	0
-1585821799	0	1585821799	\N	\N	\N	2357	\N	\N	tbl_trn_requests	\N	\N	836	0
-1585821800	0	1585821800	\N	\N	\N	2369	\N	\N	tbl_trn_requests	\N	\N	842	0
-1585821801	0	1585821801	\N	\N	\N	2372	\N	\N	tbl_trn_transactions	\N	\N	843	0
-1585821801	0	1585821801	\N	\N	\N	2375	\N	\N	tbl_trn_requests	\N	\N	845	0
-1585821801	0	1585821801	\N	\N	\N	2380	\N	\N	tbl_trn_transactions	\N	\N	847	0
-1585821804	0	1585821804	\N	\N	\N	2401	\N	\N	tbl_trn_requests	\N	\N	858	0
-1585821804	0	1585821804	\N	\N	\N	2404	\N	\N	tbl_trn_transactions	\N	\N	859	0
-1585821804	0	1585821804	\N	\N	\N	2407	\N	\N	tbl_trn_requests	\N	\N	861	0
-1585821805	0	1585821805	\N	\N	\N	2410	\N	\N	tbl_trn_transactions	\N	\N	862	0
-1585821807	0	1585821807	\N	\N	\N	2429	\N	\N	tbl_trn_requests	\N	\N	872	0
-1585821808	0	1585821808	\N	\N	\N	2435	\N	\N	tbl_trn_requests	\N	\N	875	0
-1585821809	0	1585821809	\N	\N	\N	2449	\N	\N	tbl_trn_requests	\N	\N	882	0
-1585821811	0	1585821811	\N	\N	\N	2465	\N	\N	tbl_trn_requests	\N	\N	890	0
-1585821812	0	1585821812	\N	\N	\N	2468	\N	\N	tbl_trn_transactions	\N	\N	891	0
-1585821814	0	1585821814	\N	\N	\N	2495	\N	\N	tbl_trn_requests	\N	\N	905	0
-1585821815	0	1585821815	\N	\N	\N	2498	\N	\N	tbl_trn_transactions	\N	\N	906	0
-1585821815	0	1585821815	\N	\N	\N	2502	\N	\N	tbl_trn_transactions	\N	\N	908	0
-1585821817	0	1585821817	\N	\N	\N	2516	\N	\N	tbl_trn_transactions	\N	\N	915	0
-1585821819	0	1585821819	\N	\N	\N	2534	\N	\N	tbl_trn_transactions	\N	\N	924	0
-1585821819	0	1585821819	\N	\N	\N	2537	\N	\N	tbl_trn_requests	\N	\N	926	0
-1585821819	0	1585821819	\N	\N	\N	2539	\N	\N	tbl_trn_requests	\N	\N	927	0
-1585821821	0	1585821821	\N	\N	\N	2556	\N	\N	tbl_trn_transactions	\N	\N	935	0
-1585821823	0	1585821823	\N	\N	\N	2571	\N	\N	tbl_trn_requests	\N	\N	943	0
-1585821823	0	1585821823	\N	\N	\N	2574	\N	\N	tbl_trn_transactions	\N	\N	944	0
-1585821825	0	1585821825	\N	\N	\N	2591	\N	\N	tbl_trn_requests	\N	\N	953	0
-1585821826	0	1585821826	\N	\N	\N	2605	\N	\N	tbl_trn_requests	\N	\N	960	0
-1585821827	0	1585821827	\N	\N	\N	2608	\N	\N	tbl_trn_transactions	\N	\N	961	0
-1585821827	0	1585821827	\N	\N	\N	2615	\N	\N	tbl_trn_requests	\N	\N	965	0
-1585821828	0	1585821828	\N	\N	\N	2623	\N	\N	tbl_trn_requests	\N	\N	969	0
-1585821829	0	1585821829	\N	\N	\N	2633	\N	\N	tbl_trn_requests	\N	\N	974	0
-1585821830	0	1585821830	\N	\N	\N	2634	\N	\N	tbl_trn_transactions	\N	\N	974	0
-1585821663	0	1585821663	\N	\N	\N	1185	\N	\N	tbl_trn_requests	\N	\N	250	0
-1585821665	0	1585821665	\N	\N	\N	1198	\N	\N	tbl_trn_transactions	\N	\N	256	0
-1585821665	0	1585821665	\N	\N	\N	1200	\N	\N	tbl_trn_transactions	\N	\N	257	0
-1585821666	0	1585821666	\N	\N	\N	1207	\N	\N	tbl_trn_requests	\N	\N	261	0
-1585821666	0	1585821666	\N	\N	\N	1209	\N	\N	tbl_trn_requests	\N	\N	262	0
-1585821666	0	1585821666	\N	\N	\N	1214	\N	\N	tbl_trn_transactions	\N	\N	264	0
-1585821667	0	1585821667	\N	\N	\N	1219	\N	\N	tbl_trn_requests	\N	\N	267	0
-1585821668	0	1585821668	\N	\N	\N	1233	\N	\N	tbl_trn_requests	\N	\N	274	0
-1585821669	0	1585821669	\N	\N	\N	1239	\N	\N	tbl_trn_requests	\N	\N	277	0
-1585821671	0	1585821671	\N	\N	\N	1258	\N	\N	tbl_trn_transactions	\N	\N	286	0
-1585821671	0	1585821671	\N	\N	\N	1259	\N	\N	tbl_trn_requests	\N	\N	287	0
-1585821672	0	1585821672	\N	\N	\N	1261	\N	\N	tbl_trn_requests	\N	\N	288	0
-1585821672	0	1585821672	\N	\N	\N	1263	\N	\N	tbl_trn_requests	\N	\N	289	0
-1585821672	0	1585821672	\N	\N	\N	1268	\N	\N	tbl_trn_transactions	\N	\N	291	0
-1585821673	0	1585821673	\N	\N	\N	1271	\N	\N	tbl_trn_requests	\N	\N	293	0
-1585821673	0	1585821673	\N	\N	\N	1273	\N	\N	tbl_trn_requests	\N	\N	294	0
-1585821674	0	1585821674	\N	\N	\N	1279	\N	\N	tbl_trn_requests	\N	\N	297	0
-1585821674	0	1585821674	\N	\N	\N	1281	\N	\N	tbl_trn_requests	\N	\N	298	0
-1585821674	0	1585821674	\N	\N	\N	1283	\N	\N	tbl_trn_requests	\N	\N	299	0
-1585821676	0	1585821676	\N	\N	\N	1295	\N	\N	tbl_trn_requests	\N	\N	305	0
-1585821677	0	1585821677	\N	\N	\N	1306	\N	\N	tbl_trn_transactions	\N	\N	310	0
-1585821677	0	1585821677	\N	\N	\N	1308	\N	\N	tbl_trn_transactions	\N	\N	311	0
-1585821677	0	1585821677	\N	\N	\N	1310	\N	\N	tbl_trn_transactions	\N	\N	312	0
-1585821677	0	1585821677	\N	\N	\N	1312	\N	\N	tbl_trn_transactions	\N	\N	313	0
-1585821678	0	1585821678	\N	\N	\N	1318	\N	\N	tbl_trn_transactions	\N	\N	316	0
-1585821678	0	1585821678	\N	\N	\N	1320	\N	\N	tbl_trn_transactions	\N	\N	317	0
-1585821679	0	1585821679	\N	\N	\N	1326	\N	\N	tbl_trn_transactions	\N	\N	320	0
-1585821679	0	1585821679	\N	\N	\N	1328	\N	\N	tbl_trn_transactions	\N	\N	321	0
-1585821680	0	1585821680	\N	\N	\N	1333	\N	\N	tbl_trn_requests	\N	\N	324	0
-1585821682	0	1585821682	\N	\N	\N	1343	\N	\N	tbl_trn_requests	\N	\N	329	0
-1585821682	0	1585821682	\N	\N	\N	1345	\N	\N	tbl_trn_requests	\N	\N	330	0
-1585821682	0	1585821682	\N	\N	\N	1347	\N	\N	tbl_trn_requests	\N	\N	331	0
-1585821682	0	1585821682	\N	\N	\N	1349	\N	\N	tbl_trn_requests	\N	\N	332	0
-1585821682	0	1585821682	\N	\N	\N	1351	\N	\N	tbl_trn_requests	\N	\N	333	0
-1585821683	0	1585821683	\N	\N	\N	1354	\N	\N	tbl_trn_transactions	\N	\N	334	0
-1585821683	0	1585821683	\N	\N	\N	1356	\N	\N	tbl_trn_transactions	\N	\N	335	0
-1585821683	0	1585821683	\N	\N	\N	1358	\N	\N	tbl_trn_transactions	\N	\N	336	0
-1585821683	0	1585821683	\N	\N	\N	1360	\N	\N	tbl_trn_transactions	\N	\N	337	0
-1585821685	0	1585821685	\N	\N	\N	1381	\N	\N	tbl_trn_requests	\N	\N	348	0
-1585821686	0	1585821686	\N	\N	\N	1383	\N	\N	tbl_trn_requests	\N	\N	349	0
-1585821686	0	1585821686	\N	\N	\N	1385	\N	\N	tbl_trn_requests	\N	\N	350	0
-1585821686	0	1585821686	\N	\N	\N	1387	\N	\N	tbl_trn_requests	\N	\N	351	0
-1585821688	0	1585821688	\N	\N	\N	1402	\N	\N	tbl_trn_transactions	\N	\N	358	0
-1585821688	0	1585821688	\N	\N	\N	1404	\N	\N	tbl_trn_transactions	\N	\N	359	0
-1585821688	0	1585821688	\N	\N	\N	1406	\N	\N	tbl_trn_transactions	\N	\N	360	0
-1585821688	0	1585821688	\N	\N	\N	1408	\N	\N	tbl_trn_transactions	\N	\N	361	0
-1585821689	0	1585821689	\N	\N	\N	1416	\N	\N	tbl_trn_transactions	\N	\N	365	0
-1585821690	0	1585821690	\N	\N	\N	1422	\N	\N	tbl_trn_transactions	\N	\N	368	0
-1585821690	0	1585821690	\N	\N	\N	1425	\N	\N	tbl_trn_requests	\N	\N	370	0
-1585821691	0	1585821691	\N	\N	\N	1433	\N	\N	tbl_trn_requests	\N	\N	374	0
-1585821692	0	1585821692	\N	\N	\N	1441	\N	\N	tbl_trn_requests	\N	\N	378	0
-1585821693	0	1585821693	\N	\N	\N	1445	\N	\N	tbl_trn_requests	\N	\N	380	0
-1585821693	0	1585821693	\N	\N	\N	1447	\N	\N	tbl_trn_requests	\N	\N	381	0
-1585821693	0	1585821693	\N	\N	\N	1449	\N	\N	tbl_trn_requests	\N	\N	382	0
-1585821694	0	1585821694	\N	\N	\N	1459	\N	\N	tbl_trn_requests	\N	\N	387	0
-1585821695	0	1585821695	\N	\N	\N	1462	\N	\N	tbl_trn_transactions	\N	\N	388	0
-1585821696	0	1585821696	\N	\N	\N	1472	\N	\N	tbl_trn_transactions	\N	\N	393	0
-1585821698	0	1585821698	\N	\N	\N	1496	\N	\N	tbl_trn_transactions	\N	\N	405	0
-1585821700	0	1585821700	\N	\N	\N	1514	\N	\N	tbl_trn_transactions	\N	\N	414	0
-1585821700	0	1585821700	\N	\N	\N	1516	\N	\N	tbl_trn_transactions	\N	\N	415	0
-1585821702	0	1585821702	\N	\N	\N	1526	\N	\N	tbl_trn_transactions	\N	\N	420	0
-1585821704	0	1585821704	\N	\N	\N	1542	\N	\N	tbl_trn_transactions	\N	\N	428	0
-1585821705	0	1585821705	\N	\N	\N	1551	\N	\N	tbl_trn_requests	\N	\N	433	0
-1585821705	0	1585821705	\N	\N	\N	1553	\N	\N	tbl_trn_requests	\N	\N	434	0
-1585821705	0	1585821705	\N	\N	\N	1555	\N	\N	tbl_trn_requests	\N	\N	435	0
-1585821705	0	1585821705	\N	\N	\N	1557	\N	\N	tbl_trn_requests	\N	\N	436	0
-1585821705	0	1585821705	\N	\N	\N	1559	\N	\N	tbl_trn_requests	\N	\N	437	0
-1585821706	0	1585821706	\N	\N	\N	1561	\N	\N	tbl_trn_requests	\N	\N	438	0
-1585821706	0	1585821706	\N	\N	\N	1570	\N	\N	tbl_trn_transactions	\N	\N	442	0
-1585821707	0	1585821707	\N	\N	\N	1575	\N	\N	tbl_trn_requests	\N	\N	445	0
-1585821708	0	1585821708	\N	\N	\N	1585	\N	\N	tbl_trn_requests	\N	\N	450	0
-1585821709	0	1585821709	\N	\N	\N	1590	\N	\N	tbl_trn_transactions	\N	\N	452	0
-1585821709	0	1585821709	\N	\N	\N	1595	\N	\N	tbl_trn_requests	\N	\N	455	0
-1585821710	0	1585821710	\N	\N	\N	1603	\N	\N	tbl_trn_requests	\N	\N	459	0
-1585821711	0	1585821711	\N	\N	\N	1614	\N	\N	tbl_trn_transactions	\N	\N	464	0
-1585821712	0	1585821712	\N	\N	\N	1615	\N	\N	tbl_trn_requests	\N	\N	465	0
-1585821712	0	1585821712	\N	\N	\N	1617	\N	\N	tbl_trn_requests	\N	\N	466	0
-1585821713	0	1585821713	\N	\N	\N	1623	\N	\N	tbl_trn_requests	\N	\N	469	0
-1585821713	0	1585821713	\N	\N	\N	1633	\N	\N	tbl_trn_requests	\N	\N	474	0
-1585821714	0	1585821714	\N	\N	\N	1638	\N	\N	tbl_trn_transactions	\N	\N	476	0
-1585821715	0	1585821715	\N	\N	\N	1644	\N	\N	tbl_trn_transactions	\N	\N	479	0
-1585821715	0	1585821715	\N	\N	\N	1648	\N	\N	tbl_trn_transactions	\N	\N	481	0
-1585821716	0	1585821716	\N	\N	\N	1660	\N	\N	tbl_trn_transactions	\N	\N	487	0
-1585821716	0	1585821716	\N	\N	\N	1662	\N	\N	tbl_trn_transactions	\N	\N	488	0
-1585821716	0	1585821716	\N	\N	\N	1664	\N	\N	tbl_trn_transactions	\N	\N	489	0
-1585821717	0	1585821717	\N	\N	\N	1669	\N	\N	tbl_trn_requests	\N	\N	492	0
-1585821718	0	1585821718	\N	\N	\N	1676	\N	\N	tbl_trn_transactions	\N	\N	495	0
-1585821718	0	1585821718	\N	\N	\N	1678	\N	\N	tbl_trn_transactions	\N	\N	496	0
-1585821830	0	1585821830	\N	\N	\N	2635	\N	\N	tbl_trn_requests	\N	\N	975	0
-1585821831	0	1585821831	\N	\N	\N	2646	\N	\N	tbl_trn_transactions	\N	\N	980	0
-1585821832	0	1585821832	\N	\N	\N	2649	\N	\N	tbl_trn_requests	\N	\N	982	0
-1585821832	0	1585821832	\N	\N	\N	2652	\N	\N	tbl_trn_transactions	\N	\N	983	0
-1585821663	0	1585821663	\N	\N	\N	1186	\N	\N	tbl_trn_transactions	\N	\N	250	0
-1585821663	0	1585821663	\N	\N	\N	1187	\N	\N	tbl_trn_requests	\N	\N	251	0
-1585821664	0	1585821664	\N	\N	\N	1193	\N	\N	tbl_trn_requests	\N	\N	254	0
-1585821665	0	1585821665	\N	\N	\N	1202	\N	\N	tbl_trn_transactions	\N	\N	258	0
-1585821665	0	1585821665	\N	\N	\N	1205	\N	\N	tbl_trn_requests	\N	\N	260	0
-1585821669	0	1585821669	\N	\N	\N	1237	\N	\N	tbl_trn_requests	\N	\N	276	0
-1585821672	0	1585821672	\N	\N	\N	1267	\N	\N	tbl_trn_requests	\N	\N	291	0
-1585821674	0	1585821674	\N	\N	\N	1287	\N	\N	tbl_trn_requests	\N	\N	301	0
-1585821676	0	1585821676	\N	\N	\N	1297	\N	\N	tbl_trn_requests	\N	\N	306	0
-1585821677	0	1585821677	\N	\N	\N	1309	\N	\N	tbl_trn_requests	\N	\N	312	0
-1585821677	0	1585821677	\N	\N	\N	1311	\N	\N	tbl_trn_requests	\N	\N	313	0
-1585821678	0	1585821678	\N	\N	\N	1322	\N	\N	tbl_trn_transactions	\N	\N	318	0
-1585821679	0	1585821679	\N	\N	\N	1324	\N	\N	tbl_trn_transactions	\N	\N	319	0
-1585821682	0	1585821682	\N	\N	\N	1344	\N	\N	tbl_trn_transactions	\N	\N	329	0
-1585821682	0	1585821682	\N	\N	\N	1346	\N	\N	tbl_trn_transactions	\N	\N	330	0
-1585821682	0	1585821682	\N	\N	\N	1348	\N	\N	tbl_trn_transactions	\N	\N	331	0
-1585821682	0	1585821682	\N	\N	\N	1350	\N	\N	tbl_trn_transactions	\N	\N	332	0
-1585821685	0	1585821685	\N	\N	\N	1376	\N	\N	tbl_trn_transactions	\N	\N	345	0
-1585821685	0	1585821685	\N	\N	\N	1377	\N	\N	tbl_trn_requests	\N	\N	346	0
-1585821689	0	1585821689	\N	\N	\N	1413	\N	\N	tbl_trn_requests	\N	\N	364	0
-1585821689	0	1585821689	\N	\N	\N	1415	\N	\N	tbl_trn_requests	\N	\N	365	0
-1585821690	0	1585821690	\N	\N	\N	1421	\N	\N	tbl_trn_requests	\N	\N	368	0
-1585821691	0	1585821691	\N	\N	\N	1432	\N	\N	tbl_trn_transactions	\N	\N	373	0
-1585821692	0	1585821692	\N	\N	\N	1439	\N	\N	tbl_trn_requests	\N	\N	377	0
-1585821694	0	1585821694	\N	\N	\N	1451	\N	\N	tbl_trn_requests	\N	\N	383	0
-1585821694	0	1585821694	\N	\N	\N	1457	\N	\N	tbl_trn_requests	\N	\N	386	0
-1585821695	0	1585821695	\N	\N	\N	1463	\N	\N	tbl_trn_requests	\N	\N	389	0
-1585821695	0	1585821695	\N	\N	\N	1465	\N	\N	tbl_trn_requests	\N	\N	390	0
-1585821695	0	1585821695	\N	\N	\N	1467	\N	\N	tbl_trn_requests	\N	\N	391	0
-1585821695	0	1585821695	\N	\N	\N	1469	\N	\N	tbl_trn_requests	\N	\N	392	0
-1585821696	0	1585821696	\N	\N	\N	1474	\N	\N	tbl_trn_transactions	\N	\N	394	0
-1585821697	0	1585821697	\N	\N	\N	1480	\N	\N	tbl_trn_transactions	\N	\N	397	0
-1585821697	0	1585821697	\N	\N	\N	1482	\N	\N	tbl_trn_transactions	\N	\N	398	0
-1585821699	0	1585821699	\N	\N	\N	1498	\N	\N	tbl_trn_transactions	\N	\N	406	0
-1585821699	0	1585821699	\N	\N	\N	1504	\N	\N	tbl_trn_transactions	\N	\N	409	0
-1585821699	0	1585821699	\N	\N	\N	1507	\N	\N	tbl_trn_requests	\N	\N	411	0
-1585821700	0	1585821700	\N	\N	\N	1508	\N	\N	tbl_trn_transactions	\N	\N	411	0
-1585821700	0	1585821700	\N	\N	\N	1512	\N	\N	tbl_trn_transactions	\N	\N	413	0
-1585821702	0	1585821702	\N	\N	\N	1529	\N	\N	tbl_trn_requests	\N	\N	422	0
-1585821703	0	1585821703	\N	\N	\N	1536	\N	\N	tbl_trn_transactions	\N	\N	425	0
-1585821703	0	1585821703	\N	\N	\N	1538	\N	\N	tbl_trn_transactions	\N	\N	426	0
-1585821704	0	1585821704	\N	\N	\N	1550	\N	\N	tbl_trn_transactions	\N	\N	432	0
-1585821705	0	1585821705	\N	\N	\N	1554	\N	\N	tbl_trn_transactions	\N	\N	434	0
-1585821705	0	1585821705	\N	\N	\N	1556	\N	\N	tbl_trn_transactions	\N	\N	435	0
-1585821705	0	1585821705	\N	\N	\N	1558	\N	\N	tbl_trn_transactions	\N	\N	436	0
-1585821707	0	1585821707	\N	\N	\N	1574	\N	\N	tbl_trn_transactions	\N	\N	444	0
-1585821707	0	1585821707	\N	\N	\N	1579	\N	\N	tbl_trn_requests	\N	\N	447	0
-1585821711	0	1585821711	\N	\N	\N	1612	\N	\N	tbl_trn_transactions	\N	\N	463	0
-1585821712	0	1585821712	\N	\N	\N	1619	\N	\N	tbl_trn_requests	\N	\N	467	0
-1585821713	0	1585821713	\N	\N	\N	1626	\N	\N	tbl_trn_transactions	\N	\N	470	0
-1585821714	0	1585821714	\N	\N	\N	1640	\N	\N	tbl_trn_transactions	\N	\N	477	0
-1585821714	0	1585821714	\N	\N	\N	1642	\N	\N	tbl_trn_transactions	\N	\N	478	0
-1585821714	0	1585821714	\N	\N	\N	1643	\N	\N	tbl_trn_requests	\N	\N	479	0
-1585821716	0	1585821716	\N	\N	\N	1656	\N	\N	tbl_trn_transactions	\N	\N	485	0
-1585821716	0	1585821716	\N	\N	\N	1658	\N	\N	tbl_trn_transactions	\N	\N	486	0
-1585821717	0	1585821717	\N	\N	\N	1673	\N	\N	tbl_trn_requests	\N	\N	494	0
-1585821831	0	1585821831	\N	\N	\N	2641	\N	\N	tbl_trn_requests	\N	\N	978	0
-1585821834	0	1585821834	\N	\N	\N	2669	\N	\N	tbl_trn_requests	\N	\N	992	0
-1585821834	0	1585821834	\N	\N	\N	2672	\N	\N	tbl_trn_transactions	\N	\N	993	0
-1585821835	0	1585821835	\N	\N	\N	2681	\N	\N	tbl_trn_requests	\N	\N	998	0
-1585821836	0	1585821836	\N	\N	\N	2695	\N	\N	tbl_trn_requests	\N	\N	1005	0
-1585821837	0	1585821837	\N	\N	\N	2698	\N	\N	tbl_trn_transactions	\N	\N	1006	0
-1585821837	0	1585821837	\N	\N	\N	2706	\N	\N	tbl_trn_transactions	\N	\N	1010	0
-1585821838	0	1585821838	\N	\N	\N	2709	\N	\N	tbl_trn_requests	\N	\N	1012	0
-1585821663	0	1585821663	\N	\N	\N	1188	\N	\N	tbl_trn_transactions	\N	\N	251	0
-1585821664	0	1585821664	\N	\N	\N	1190	\N	\N	tbl_trn_transactions	\N	\N	252	0
-1585821666	0	1585821666	\N	\N	\N	1212	\N	\N	tbl_trn_transactions	\N	\N	263	0
-1585821669	0	1585821669	\N	\N	\N	1236	\N	\N	tbl_trn_transactions	\N	\N	275	0
-1585821671	0	1585821671	\N	\N	\N	1251	\N	\N	tbl_trn_requests	\N	\N	283	0
-1585821671	0	1585821671	\N	\N	\N	1253	\N	\N	tbl_trn_requests	\N	\N	284	0
-1585821673	0	1585821673	\N	\N	\N	1270	\N	\N	tbl_trn_transactions	\N	\N	292	0
-1585821673	0	1585821673	\N	\N	\N	1272	\N	\N	tbl_trn_transactions	\N	\N	293	0
-1585821673	0	1585821673	\N	\N	\N	1274	\N	\N	tbl_trn_transactions	\N	\N	294	0
-1585821676	0	1585821676	\N	\N	\N	1296	\N	\N	tbl_trn_transactions	\N	\N	305	0
-1585821676	0	1585821676	\N	\N	\N	1301	\N	\N	tbl_trn_requests	\N	\N	308	0
-1585821677	0	1585821677	\N	\N	\N	1305	\N	\N	tbl_trn_requests	\N	\N	310	0
-1585821677	0	1585821677	\N	\N	\N	1307	\N	\N	tbl_trn_requests	\N	\N	311	0
-1585821678	0	1585821678	\N	\N	\N	1315	\N	\N	tbl_trn_requests	\N	\N	315	0
-1585821678	0	1585821678	\N	\N	\N	1323	\N	\N	tbl_trn_requests	\N	\N	319	0
-1585821679	0	1585821679	\N	\N	\N	1330	\N	\N	tbl_trn_transactions	\N	\N	322	0
-1585821681	0	1585821681	\N	\N	\N	1336	\N	\N	tbl_trn_transactions	\N	\N	325	0
-1585821681	0	1585821681	\N	\N	\N	1338	\N	\N	tbl_trn_transactions	\N	\N	326	0
-1585821681	0	1585821681	\N	\N	\N	1340	\N	\N	tbl_trn_transactions	\N	\N	327	0
-1585821681	0	1585821681	\N	\N	\N	1341	\N	\N	tbl_trn_requests	\N	\N	328	0
-1585821683	0	1585821683	\N	\N	\N	1353	\N	\N	tbl_trn_requests	\N	\N	334	0
-1585821684	0	1585821684	\N	\N	\N	1363	\N	\N	tbl_trn_requests	\N	\N	339	0
-1585821684	0	1585821684	\N	\N	\N	1365	\N	\N	tbl_trn_requests	\N	\N	340	0
-1585821684	0	1585821684	\N	\N	\N	1367	\N	\N	tbl_trn_requests	\N	\N	341	0
-1585821684	0	1585821684	\N	\N	\N	1369	\N	\N	tbl_trn_requests	\N	\N	342	0
-1585821684	0	1585821684	\N	\N	\N	1371	\N	\N	tbl_trn_requests	\N	\N	343	0
-1585821687	0	1585821687	\N	\N	\N	1397	\N	\N	tbl_trn_requests	\N	\N	356	0
-1585821688	0	1585821688	\N	\N	\N	1399	\N	\N	tbl_trn_requests	\N	\N	357	0
-1585821691	0	1585821691	\N	\N	\N	1428	\N	\N	tbl_trn_transactions	\N	\N	371	0
-1585821691	0	1585821691	\N	\N	\N	1430	\N	\N	tbl_trn_transactions	\N	\N	372	0
-1585821693	0	1585821693	\N	\N	\N	1444	\N	\N	tbl_trn_transactions	\N	\N	379	0
-1585821694	0	1585821694	\N	\N	\N	1452	\N	\N	tbl_trn_transactions	\N	\N	383	0
-1585821694	0	1585821694	\N	\N	\N	1460	\N	\N	tbl_trn_transactions	\N	\N	387	0
-1585821697	0	1585821697	\N	\N	\N	1479	\N	\N	tbl_trn_requests	\N	\N	397	0
-1585821697	0	1585821697	\N	\N	\N	1481	\N	\N	tbl_trn_requests	\N	\N	398	0
-1585821700	0	1585821700	\N	\N	\N	1510	\N	\N	tbl_trn_transactions	\N	\N	412	0
-1585821701	0	1585821701	\N	\N	\N	1517	\N	\N	tbl_trn_requests	\N	\N	416	0
-1585821701	0	1585821701	\N	\N	\N	1519	\N	\N	tbl_trn_requests	\N	\N	417	0
-1585821702	0	1585821702	\N	\N	\N	1531	\N	\N	tbl_trn_requests	\N	\N	423	0
-1585821704	0	1585821704	\N	\N	\N	1539	\N	\N	tbl_trn_requests	\N	\N	427	0
-1585821704	0	1585821704	\N	\N	\N	1543	\N	\N	tbl_trn_requests	\N	\N	429	0
-1585821704	0	1585821704	\N	\N	\N	1545	\N	\N	tbl_trn_requests	\N	\N	430	0
-1585821704	0	1585821704	\N	\N	\N	1547	\N	\N	tbl_trn_requests	\N	\N	431	0
-1585821706	0	1585821706	\N	\N	\N	1563	\N	\N	tbl_trn_requests	\N	\N	439	0
-1585821707	0	1585821707	\N	\N	\N	1580	\N	\N	tbl_trn_transactions	\N	\N	447	0
-1585821710	0	1585821710	\N	\N	\N	1600	\N	\N	tbl_trn_transactions	\N	\N	457	0
-1585821710	0	1585821710	\N	\N	\N	1602	\N	\N	tbl_trn_transactions	\N	\N	458	0
-1585821712	0	1585821712	\N	\N	\N	1616	\N	\N	tbl_trn_transactions	\N	\N	465	0
-1585821714	0	1585821714	\N	\N	\N	1635	\N	\N	tbl_trn_requests	\N	\N	475	0
-1585821715	0	1585821715	\N	\N	\N	1646	\N	\N	tbl_trn_transactions	\N	\N	480	0
-1585821716	0	1585821716	\N	\N	\N	1655	\N	\N	tbl_trn_requests	\N	\N	485	0
-1585821716	0	1585821716	\N	\N	\N	1657	\N	\N	tbl_trn_requests	\N	\N	486	0
-1585821717	0	1585821717	\N	\N	\N	1667	\N	\N	tbl_trn_requests	\N	\N	491	0
-1585821717	0	1585821717	\N	\N	\N	1670	\N	\N	tbl_trn_transactions	\N	\N	492	0
-1585821718	0	1585821718	\N	\N	\N	1677	\N	\N	tbl_trn_requests	\N	\N	496	0
-1585821718	0	1585821718	\N	\N	\N	1679	\N	\N	tbl_trn_requests	\N	\N	497	0
-1585821718	0	1585821718	\N	\N	\N	1682	\N	\N	tbl_trn_transactions	\N	\N	498	0
-1585821836	0	1585821836	\N	\N	\N	2691	\N	\N	tbl_trn_requests	\N	\N	1003	0
-1585821837	0	1585821837	\N	\N	\N	2704	\N	\N	tbl_trn_transactions	\N	\N	1009	0
-1585821838	0	1585821838	\N	\N	\N	2707	\N	\N	tbl_trn_requests	\N	\N	1011	0
-1585821838	0	1585821838	\N	\N	\N	2710	\N	\N	tbl_trn_transactions	\N	\N	1012	0
-1585821839	0	1585821839	\N	\N	\N	2715	\N	\N	tbl_trn_requests	\N	\N	1015	0
-1585821663	0	1585821663	\N	\N	\N	1189	\N	\N	tbl_trn_requests	\N	\N	252	0
-1585821664	0	1585821664	\N	\N	\N	1191	\N	\N	tbl_trn_requests	\N	\N	253	0
-1585821665	0	1585821665	\N	\N	\N	1197	\N	\N	tbl_trn_requests	\N	\N	256	0
-1585821665	0	1585821665	\N	\N	\N	1199	\N	\N	tbl_trn_requests	\N	\N	257	0
-1585821667	0	1585821667	\N	\N	\N	1222	\N	\N	tbl_trn_transactions	\N	\N	268	0
-1585821667	0	1585821667	\N	\N	\N	1223	\N	\N	tbl_trn_requests	\N	\N	269	0
-1585821668	0	1585821668	\N	\N	\N	1232	\N	\N	tbl_trn_transactions	\N	\N	273	0
-1585821668	0	1585821668	\N	\N	\N	1234	\N	\N	tbl_trn_transactions	\N	\N	274	0
-1585821669	0	1585821669	\N	\N	\N	1240	\N	\N	tbl_trn_transactions	\N	\N	277	0
-1585821669	0	1585821669	\N	\N	\N	1241	\N	\N	tbl_trn_requests	\N	\N	278	0
-1585821670	0	1585821670	\N	\N	\N	1243	\N	\N	tbl_trn_requests	\N	\N	279	0
-1585821670	0	1585821670	\N	\N	\N	1245	\N	\N	tbl_trn_requests	\N	\N	280	0
-1585821670	0	1585821670	\N	\N	\N	1247	\N	\N	tbl_trn_requests	\N	\N	281	0
-1585821670	0	1585821670	\N	\N	\N	1250	\N	\N	tbl_trn_transactions	\N	\N	282	0
-1585821671	0	1585821671	\N	\N	\N	1257	\N	\N	tbl_trn_requests	\N	\N	286	0
-1585821672	0	1585821672	\N	\N	\N	1269	\N	\N	tbl_trn_requests	\N	\N	292	0
-1585821673	0	1585821673	\N	\N	\N	1275	\N	\N	tbl_trn_requests	\N	\N	295	0
-1585821675	0	1585821675	\N	\N	\N	1289	\N	\N	tbl_trn_requests	\N	\N	302	0
-1585821675	0	1585821675	\N	\N	\N	1291	\N	\N	tbl_trn_requests	\N	\N	303	0
-1585821676	0	1585821676	\N	\N	\N	1300	\N	\N	tbl_trn_transactions	\N	\N	307	0
-1585821678	0	1585821678	\N	\N	\N	1321	\N	\N	tbl_trn_requests	\N	\N	318	0
-1585821684	0	1585821684	\N	\N	\N	1373	\N	\N	tbl_trn_requests	\N	\N	344	0
-1585821685	0	1585821685	\N	\N	\N	1378	\N	\N	tbl_trn_transactions	\N	\N	346	0
-1585821686	0	1585821686	\N	\N	\N	1384	\N	\N	tbl_trn_transactions	\N	\N	349	0
-1585821686	0	1585821686	\N	\N	\N	1386	\N	\N	tbl_trn_transactions	\N	\N	350	0
-1585821686	0	1585821686	\N	\N	\N	1388	\N	\N	tbl_trn_transactions	\N	\N	351	0
-1585821688	0	1585821688	\N	\N	\N	1400	\N	\N	tbl_trn_transactions	\N	\N	357	0
-1585821690	0	1585821690	\N	\N	\N	1417	\N	\N	tbl_trn_requests	\N	\N	366	0
-1585821691	0	1585821691	\N	\N	\N	1431	\N	\N	tbl_trn_requests	\N	\N	373	0
-1585821693	0	1585821693	\N	\N	\N	1446	\N	\N	tbl_trn_transactions	\N	\N	380	0
-1585821693	0	1585821693	\N	\N	\N	1448	\N	\N	tbl_trn_transactions	\N	\N	381	0
-1585821693	0	1585821693	\N	\N	\N	1450	\N	\N	tbl_trn_transactions	\N	\N	382	0
-1585821694	0	1585821694	\N	\N	\N	1458	\N	\N	tbl_trn_transactions	\N	\N	386	0
-1585821695	0	1585821695	\N	\N	\N	1464	\N	\N	tbl_trn_transactions	\N	\N	389	0
-1585821695	0	1585821695	\N	\N	\N	1466	\N	\N	tbl_trn_transactions	\N	\N	390	0
-1585821695	0	1585821695	\N	\N	\N	1468	\N	\N	tbl_trn_transactions	\N	\N	391	0
-1585821695	0	1585821695	\N	\N	\N	1470	\N	\N	tbl_trn_transactions	\N	\N	392	0
-1585821695	0	1585821695	\N	\N	\N	1471	\N	\N	tbl_trn_requests	\N	\N	393	0
-1585821697	0	1585821697	\N	\N	\N	1484	\N	\N	tbl_trn_transactions	\N	\N	399	0
-1585821697	0	1585821697	\N	\N	\N	1486	\N	\N	tbl_trn_transactions	\N	\N	400	0
-1585821697	0	1585821697	\N	\N	\N	1488	\N	\N	tbl_trn_transactions	\N	\N	401	0
-1585821699	0	1585821699	\N	\N	\N	1499	\N	\N	tbl_trn_requests	\N	\N	407	0
-1585821699	0	1585821699	\N	\N	\N	1501	\N	\N	tbl_trn_requests	\N	\N	408	0
-1585821699	0	1585821699	\N	\N	\N	1505	\N	\N	tbl_trn_requests	\N	\N	410	0
-1585821702	0	1585821702	\N	\N	\N	1525	\N	\N	tbl_trn_requests	\N	\N	420	0
-1585821703	0	1585821703	\N	\N	\N	1535	\N	\N	tbl_trn_requests	\N	\N	425	0
-1585821703	0	1585821703	\N	\N	\N	1537	\N	\N	tbl_trn_requests	\N	\N	426	0
-1585821704	0	1585821704	\N	\N	\N	1549	\N	\N	tbl_trn_requests	\N	\N	432	0
-1585821705	0	1585821705	\N	\N	\N	1552	\N	\N	tbl_trn_transactions	\N	\N	433	0
-1585821706	0	1585821706	\N	\N	\N	1564	\N	\N	tbl_trn_transactions	\N	\N	439	0
-1585821706	0	1585821706	\N	\N	\N	1569	\N	\N	tbl_trn_requests	\N	\N	442	0
-1585821707	0	1585821707	\N	\N	\N	1578	\N	\N	tbl_trn_transactions	\N	\N	446	0
-1585821708	0	1585821708	\N	\N	\N	1584	\N	\N	tbl_trn_transactions	\N	\N	449	0
-1585821708	0	1585821708	\N	\N	\N	1587	\N	\N	tbl_trn_requests	\N	\N	451	0
-1585821710	0	1585821710	\N	\N	\N	1599	\N	\N	tbl_trn_requests	\N	\N	457	0
-1585821710	0	1585821710	\N	\N	\N	1601	\N	\N	tbl_trn_requests	\N	\N	458	0
-1585821711	0	1585821711	\N	\N	\N	1608	\N	\N	tbl_trn_transactions	\N	\N	461	0
-1585821711	0	1585821711	\N	\N	\N	1611	\N	\N	tbl_trn_requests	\N	\N	463	0
-1585821712	0	1585821712	\N	\N	\N	1620	\N	\N	tbl_trn_transactions	\N	\N	467	0
-1585821713	0	1585821713	\N	\N	\N	1625	\N	\N	tbl_trn_requests	\N	\N	470	0
-1585821713	0	1585821713	\N	\N	\N	1628	\N	\N	tbl_trn_transactions	\N	\N	471	0
-1585821713	0	1585821713	\N	\N	\N	1630	\N	\N	tbl_trn_transactions	\N	\N	472	0
-1585821713	0	1585821713	\N	\N	\N	1632	\N	\N	tbl_trn_transactions	\N	\N	473	0
-1585821714	0	1585821714	\N	\N	\N	1637	\N	\N	tbl_trn_requests	\N	\N	476	0
-1585821714	0	1585821714	\N	\N	\N	1639	\N	\N	tbl_trn_requests	\N	\N	477	0
-1585821714	0	1585821714	\N	\N	\N	1641	\N	\N	tbl_trn_requests	\N	\N	478	0
-1585821716	0	1585821716	\N	\N	\N	1665	\N	\N	tbl_trn_requests	\N	\N	490	0
-1585821839	0	1585821839	\N	\N	\N	2718	\N	\N	tbl_trn_transactions	\N	\N	1016	0
-1585821841	0	1585821841	\N	\N	\N	2723	\N	\N	tbl_trn_requests	\N	\N	1019	0
-1585821842	0	1585821842	\N	\N	\N	2727	\N	\N	tbl_trn_requests	\N	\N	1021	0
-1585821842	0	1585821842	\N	\N	\N	2730	\N	\N	tbl_trn_transactions	\N	\N	1022	0
-1585821843	0	1585821843	\N	\N	\N	2739	\N	\N	tbl_trn_requests	\N	\N	1027	0
-1585821664	0	1585821664	\N	\N	\N	1192	\N	\N	tbl_trn_transactions	\N	\N	253	0
-1585821664	0	1585821664	\N	\N	\N	1196	\N	\N	tbl_trn_transactions	\N	\N	255	0
-1585821665	0	1585821665	\N	\N	\N	1203	\N	\N	tbl_trn_requests	\N	\N	259	0
-1585821665	0	1585821665	\N	\N	\N	1206	\N	\N	tbl_trn_transactions	\N	\N	260	0
-1585821667	0	1585821667	\N	\N	\N	1220	\N	\N	tbl_trn_transactions	\N	\N	267	0
-1585821668	0	1585821668	\N	\N	\N	1225	\N	\N	tbl_trn_requests	\N	\N	270	0
-1585821668	0	1585821668	\N	\N	\N	1227	\N	\N	tbl_trn_requests	\N	\N	271	0
-1585821668	0	1585821668	\N	\N	\N	1229	\N	\N	tbl_trn_requests	\N	\N	272	0
-1585821669	0	1585821669	\N	\N	\N	1235	\N	\N	tbl_trn_requests	\N	\N	275	0
-1585821672	0	1585821672	\N	\N	\N	1266	\N	\N	tbl_trn_transactions	\N	\N	290	0
-1585821673	0	1585821673	\N	\N	\N	1277	\N	\N	tbl_trn_requests	\N	\N	296	0
-1585821673	0	1585821673	\N	\N	\N	1278	\N	\N	tbl_trn_transactions	\N	\N	296	0
-1585821674	0	1585821674	\N	\N	\N	1285	\N	\N	tbl_trn_requests	\N	\N	300	0
-1585821674	0	1585821674	\N	\N	\N	1288	\N	\N	tbl_trn_transactions	\N	\N	301	0
-1585821675	0	1585821675	\N	\N	\N	1293	\N	\N	tbl_trn_requests	\N	\N	304	0
-1585821676	0	1585821676	\N	\N	\N	1298	\N	\N	tbl_trn_transactions	\N	\N	306	0
-1585821676	0	1585821676	\N	\N	\N	1303	\N	\N	tbl_trn_requests	\N	\N	309	0
-1585821677	0	1585821677	\N	\N	\N	1314	\N	\N	tbl_trn_transactions	\N	\N	314	0
-1585821681	0	1585821681	\N	\N	\N	1335	\N	\N	tbl_trn_requests	\N	\N	325	0
-1585821681	0	1585821681	\N	\N	\N	1337	\N	\N	tbl_trn_requests	\N	\N	326	0
-1585821681	0	1585821681	\N	\N	\N	1339	\N	\N	tbl_trn_requests	\N	\N	327	0
-1585821681	0	1585821681	\N	\N	\N	1342	\N	\N	tbl_trn_transactions	\N	\N	328	0
-1585821684	0	1585821684	\N	\N	\N	1374	\N	\N	tbl_trn_transactions	\N	\N	344	0
-1585821687	0	1585821687	\N	\N	\N	1392	\N	\N	tbl_trn_transactions	\N	\N	353	0
-1585821687	0	1585821687	\N	\N	\N	1394	\N	\N	tbl_trn_transactions	\N	\N	354	0
-1585821687	0	1585821687	\N	\N	\N	1396	\N	\N	tbl_trn_transactions	\N	\N	355	0
-1585821688	0	1585821688	\N	\N	\N	1401	\N	\N	tbl_trn_requests	\N	\N	358	0
-1585821688	0	1585821688	\N	\N	\N	1403	\N	\N	tbl_trn_requests	\N	\N	359	0
-1585821688	0	1585821688	\N	\N	\N	1405	\N	\N	tbl_trn_requests	\N	\N	360	0
-1585821689	0	1585821689	\N	\N	\N	1414	\N	\N	tbl_trn_transactions	\N	\N	364	0
-1585821690	0	1585821690	\N	\N	\N	1424	\N	\N	tbl_trn_transactions	\N	\N	369	0
-1585821690	0	1585821690	\N	\N	\N	1426	\N	\N	tbl_trn_transactions	\N	\N	370	0
-1585821694	0	1585821694	\N	\N	\N	1461	\N	\N	tbl_trn_requests	\N	\N	388	0
-1585821696	0	1585821696	\N	\N	\N	1476	\N	\N	tbl_trn_transactions	\N	\N	395	0
-1585821696	0	1585821696	\N	\N	\N	1478	\N	\N	tbl_trn_transactions	\N	\N	396	0
-1585821700	0	1585821700	\N	\N	\N	1509	\N	\N	tbl_trn_requests	\N	\N	412	0
-1585821701	0	1585821701	\N	\N	\N	1521	\N	\N	tbl_trn_requests	\N	\N	418	0
-1585821701	0	1585821701	\N	\N	\N	1523	\N	\N	tbl_trn_requests	\N	\N	419	0
-1585821703	0	1585821703	\N	\N	\N	1532	\N	\N	tbl_trn_transactions	\N	\N	423	0
-1585821703	0	1585821703	\N	\N	\N	1534	\N	\N	tbl_trn_transactions	\N	\N	424	0
-1585821704	0	1585821704	\N	\N	\N	1544	\N	\N	tbl_trn_transactions	\N	\N	429	0
-1585821704	0	1585821704	\N	\N	\N	1546	\N	\N	tbl_trn_transactions	\N	\N	430	0
-1585821704	0	1585821704	\N	\N	\N	1548	\N	\N	tbl_trn_transactions	\N	\N	431	0
-1585821706	0	1585821706	\N	\N	\N	1562	\N	\N	tbl_trn_transactions	\N	\N	438	0
-1585821707	0	1585821707	\N	\N	\N	1577	\N	\N	tbl_trn_requests	\N	\N	446	0
-1585821708	0	1585821708	\N	\N	\N	1588	\N	\N	tbl_trn_transactions	\N	\N	451	0
-1585821709	0	1585821709	\N	\N	\N	1591	\N	\N	tbl_trn_requests	\N	\N	453	0
-1585821710	0	1585821710	\N	\N	\N	1598	\N	\N	tbl_trn_transactions	\N	\N	456	0
-1585821710	0	1585821710	\N	\N	\N	1605	\N	\N	tbl_trn_requests	\N	\N	460	0
-1585821712	0	1585821712	\N	\N	\N	1618	\N	\N	tbl_trn_transactions	\N	\N	466	0
-1585821713	0	1585821713	\N	\N	\N	1624	\N	\N	tbl_trn_transactions	\N	\N	469	0
-1585821713	0	1585821713	\N	\N	\N	1627	\N	\N	tbl_trn_requests	\N	\N	471	0
-1585821713	0	1585821713	\N	\N	\N	1629	\N	\N	tbl_trn_requests	\N	\N	472	0
-1585821713	0	1585821713	\N	\N	\N	1631	\N	\N	tbl_trn_requests	\N	\N	473	0
-1585821715	0	1585821715	\N	\N	\N	1649	\N	\N	tbl_trn_requests	\N	\N	482	0
-1585821715	0	1585821715	\N	\N	\N	1651	\N	\N	tbl_trn_requests	\N	\N	483	0
-1585821715	0	1585821715	\N	\N	\N	1653	\N	\N	tbl_trn_requests	\N	\N	484	0
-1585821716	0	1585821716	\N	\N	\N	1666	\N	\N	tbl_trn_transactions	\N	\N	490	0
-1585821717	0	1585821717	\N	\N	\N	1672	\N	\N	tbl_trn_transactions	\N	\N	493	0
-1585821718	0	1585821718	\N	\N	\N	1675	\N	\N	tbl_trn_requests	\N	\N	495	0
-1585821718	0	1585821718	\N	\N	\N	1681	\N	\N	tbl_trn_requests	\N	\N	498	0
-1585821839	0	1585821839	\N	\N	\N	2719	\N	\N	tbl_trn_requests	\N	\N	1017	0
-1585821843	0	1585821843	\N	\N	\N	2744	\N	\N	tbl_trn_transactions	\N	\N	1029	0
-1585821844	0	1585821844	\N	\N	\N	2747	\N	\N	tbl_trn_requests	\N	\N	1031	0
-1585821664	0	1585821664	\N	\N	\N	1194	\N	\N	tbl_trn_transactions	\N	\N	254	0
-1585821665	0	1585821665	\N	\N	\N	1201	\N	\N	tbl_trn_requests	\N	\N	258	0
-1585821665	0	1585821665	\N	\N	\N	1204	\N	\N	tbl_trn_transactions	\N	\N	259	0
-1585821666	0	1585821666	\N	\N	\N	1208	\N	\N	tbl_trn_transactions	\N	\N	261	0
-1585821666	0	1585821666	\N	\N	\N	1210	\N	\N	tbl_trn_transactions	\N	\N	262	0
-1585821666	0	1585821666	\N	\N	\N	1211	\N	\N	tbl_trn_requests	\N	\N	263	0
-1585821667	0	1585821667	\N	\N	\N	1216	\N	\N	tbl_trn_transactions	\N	\N	265	0
-1585821667	0	1585821667	\N	\N	\N	1218	\N	\N	tbl_trn_transactions	\N	\N	266	0
-1585821667	0	1585821667	\N	\N	\N	1221	\N	\N	tbl_trn_requests	\N	\N	268	0
-1585821667	0	1585821667	\N	\N	\N	1224	\N	\N	tbl_trn_transactions	\N	\N	269	0
-1585821668	0	1585821668	\N	\N	\N	1231	\N	\N	tbl_trn_requests	\N	\N	273	0
-1585821670	0	1585821670	\N	\N	\N	1244	\N	\N	tbl_trn_transactions	\N	\N	279	0
-1585821670	0	1585821670	\N	\N	\N	1246	\N	\N	tbl_trn_transactions	\N	\N	280	0
-1585821670	0	1585821670	\N	\N	\N	1248	\N	\N	tbl_trn_transactions	\N	\N	281	0
-1585821670	0	1585821670	\N	\N	\N	1249	\N	\N	tbl_trn_requests	\N	\N	282	0
-1585821671	0	1585821671	\N	\N	\N	1256	\N	\N	tbl_trn_transactions	\N	\N	285	0
-1585821671	0	1585821671	\N	\N	\N	1260	\N	\N	tbl_trn_transactions	\N	\N	287	0
-1585821672	0	1585821672	\N	\N	\N	1265	\N	\N	tbl_trn_requests	\N	\N	290	0
-1585821673	0	1585821673	\N	\N	\N	1276	\N	\N	tbl_trn_transactions	\N	\N	295	0
-1585821675	0	1585821675	\N	\N	\N	1294	\N	\N	tbl_trn_transactions	\N	\N	304	0
-1585821676	0	1585821676	\N	\N	\N	1302	\N	\N	tbl_trn_transactions	\N	\N	308	0
-1585821676	0	1585821676	\N	\N	\N	1304	\N	\N	tbl_trn_transactions	\N	\N	309	0
-1585821678	0	1585821678	\N	\N	\N	1317	\N	\N	tbl_trn_requests	\N	\N	316	0
-1585821678	0	1585821678	\N	\N	\N	1319	\N	\N	tbl_trn_requests	\N	\N	317	0
-1585821681	0	1585821681	\N	\N	\N	1334	\N	\N	tbl_trn_transactions	\N	\N	324	0
-1585821682	0	1585821682	\N	\N	\N	1352	\N	\N	tbl_trn_transactions	\N	\N	333	0
-1585821683	0	1585821683	\N	\N	\N	1355	\N	\N	tbl_trn_requests	\N	\N	335	0
-1585821683	0	1585821683	\N	\N	\N	1357	\N	\N	tbl_trn_requests	\N	\N	336	0
-1585821683	0	1585821683	\N	\N	\N	1359	\N	\N	tbl_trn_requests	\N	\N	337	0
-1585821685	0	1585821685	\N	\N	\N	1379	\N	\N	tbl_trn_requests	\N	\N	347	0
-1585821686	0	1585821686	\N	\N	\N	1389	\N	\N	tbl_trn_requests	\N	\N	352	0
-1585821687	0	1585821687	\N	\N	\N	1398	\N	\N	tbl_trn_transactions	\N	\N	356	0
-1585821690	0	1585821690	\N	\N	\N	1423	\N	\N	tbl_trn_requests	\N	\N	369	0
-1585821691	0	1585821691	\N	\N	\N	1427	\N	\N	tbl_trn_requests	\N	\N	371	0
-1585821691	0	1585821691	\N	\N	\N	1429	\N	\N	tbl_trn_requests	\N	\N	372	0
-1585821692	0	1585821692	\N	\N	\N	1436	\N	\N	tbl_trn_transactions	\N	\N	375	0
-1585821692	0	1585821692	\N	\N	\N	1440	\N	\N	tbl_trn_transactions	\N	\N	377	0
-1585821693	0	1585821693	\N	\N	\N	1443	\N	\N	tbl_trn_requests	\N	\N	379	0
-1585821694	0	1585821694	\N	\N	\N	1453	\N	\N	tbl_trn_requests	\N	\N	384	0
-1585821694	0	1585821694	\N	\N	\N	1455	\N	\N	tbl_trn_requests	\N	\N	385	0
-1585821696	0	1585821696	\N	\N	\N	1475	\N	\N	tbl_trn_requests	\N	\N	395	0
-1585821696	0	1585821696	\N	\N	\N	1477	\N	\N	tbl_trn_requests	\N	\N	396	0
-1585821698	0	1585821698	\N	\N	\N	1490	\N	\N	tbl_trn_transactions	\N	\N	402	0
-1585821698	0	1585821698	\N	\N	\N	1492	\N	\N	tbl_trn_transactions	\N	\N	403	0
-1585821698	0	1585821698	\N	\N	\N	1494	\N	\N	tbl_trn_transactions	\N	\N	404	0
-1585821699	0	1585821699	\N	\N	\N	1497	\N	\N	tbl_trn_requests	\N	\N	406	0
-1585821699	0	1585821699	\N	\N	\N	1503	\N	\N	tbl_trn_requests	\N	\N	409	0
-1585821700	0	1585821700	\N	\N	\N	1511	\N	\N	tbl_trn_requests	\N	\N	413	0
-1585821701	0	1585821701	\N	\N	\N	1522	\N	\N	tbl_trn_transactions	\N	\N	418	0
-1585821701	0	1585821701	\N	\N	\N	1524	\N	\N	tbl_trn_transactions	\N	\N	419	0
-1585821702	0	1585821702	\N	\N	\N	1530	\N	\N	tbl_trn_transactions	\N	\N	422	0
-1585821705	0	1585821705	\N	\N	\N	1560	\N	\N	tbl_trn_transactions	\N	\N	437	0
-1585821707	0	1585821707	\N	\N	\N	1573	\N	\N	tbl_trn_requests	\N	\N	444	0
-1585821708	0	1585821708	\N	\N	\N	1582	\N	\N	tbl_trn_transactions	\N	\N	448	0
-1585821708	0	1585821708	\N	\N	\N	1586	\N	\N	tbl_trn_transactions	\N	\N	450	0
-1585821709	0	1585821709	\N	\N	\N	1592	\N	\N	tbl_trn_transactions	\N	\N	453	0
-1585821709	0	1585821709	\N	\N	\N	1593	\N	\N	tbl_trn_requests	\N	\N	454	0
-1585821710	0	1585821710	\N	\N	\N	1597	\N	\N	tbl_trn_requests	\N	\N	456	0
-1585821710	0	1585821710	\N	\N	\N	1604	\N	\N	tbl_trn_transactions	\N	\N	459	0
-1585821711	0	1585821711	\N	\N	\N	1607	\N	\N	tbl_trn_requests	\N	\N	461	0
-1585821711	0	1585821711	\N	\N	\N	1609	\N	\N	tbl_trn_requests	\N	\N	462	0
-1585821711	0	1585821711	\N	\N	\N	1610	\N	\N	tbl_trn_transactions	\N	\N	462	0
-1585821712	0	1585821712	\N	\N	\N	1622	\N	\N	tbl_trn_transactions	\N	\N	468	0
-1585821716	0	1585821716	\N	\N	\N	1659	\N	\N	tbl_trn_requests	\N	\N	487	0
-1585821717	0	1585821717	\N	\N	\N	1668	\N	\N	tbl_trn_transactions	\N	\N	491	0
-1585821718	0	1585821718	\N	\N	\N	1684	\N	\N	tbl_trn_transactions	\N	\N	499	0
-1585821840	0	1585821840	\N	\N	\N	2720	\N	\N	tbl_trn_transactions	\N	\N	1017	0
-1585821842	0	1585821842	\N	\N	\N	2732	\N	\N	tbl_trn_transactions	\N	\N	1023	0
-1585821679	0	1585821679	\N	\N	\N	1325	\N	\N	tbl_trn_requests	\N	\N	320	0
-1585821679	0	1585821679	\N	\N	\N	1327	\N	\N	tbl_trn_requests	\N	\N	321	0
-1585821679	0	1585821679	\N	\N	\N	1329	\N	\N	tbl_trn_requests	\N	\N	322	0
-1585821679	0	1585821679	\N	\N	\N	1331	\N	\N	tbl_trn_requests	\N	\N	323	0
-1585821680	0	1585821680	\N	\N	\N	1332	\N	\N	tbl_trn_transactions	\N	\N	323	0
-1585821683	0	1585821683	\N	\N	\N	1361	\N	\N	tbl_trn_requests	\N	\N	338	0
-1585821683	0	1585821683	\N	\N	\N	1362	\N	\N	tbl_trn_transactions	\N	\N	338	0
-1585821684	0	1585821684	\N	\N	\N	1370	\N	\N	tbl_trn_transactions	\N	\N	342	0
-1585821684	0	1585821684	\N	\N	\N	1372	\N	\N	tbl_trn_transactions	\N	\N	343	0
-1585821685	0	1585821685	\N	\N	\N	1380	\N	\N	tbl_trn_transactions	\N	\N	347	0
-1585821687	0	1585821687	\N	\N	\N	1391	\N	\N	tbl_trn_requests	\N	\N	353	0
-1585821687	0	1585821687	\N	\N	\N	1393	\N	\N	tbl_trn_requests	\N	\N	354	0
-1585821687	0	1585821687	\N	\N	\N	1395	\N	\N	tbl_trn_requests	\N	\N	355	0
-1585821689	0	1585821689	\N	\N	\N	1410	\N	\N	tbl_trn_transactions	\N	\N	362	0
-1585821689	0	1585821689	\N	\N	\N	1412	\N	\N	tbl_trn_transactions	\N	\N	363	0
-1585821690	0	1585821690	\N	\N	\N	1418	\N	\N	tbl_trn_transactions	\N	\N	366	0
-1585821690	0	1585821690	\N	\N	\N	1420	\N	\N	tbl_trn_transactions	\N	\N	367	0
-1585821691	0	1585821691	\N	\N	\N	1434	\N	\N	tbl_trn_transactions	\N	\N	374	0
-1585821691	0	1585821691	\N	\N	\N	1435	\N	\N	tbl_trn_requests	\N	\N	375	0
-1585821692	0	1585821692	\N	\N	\N	1437	\N	\N	tbl_trn_requests	\N	\N	376	0
-1585821692	0	1585821692	\N	\N	\N	1442	\N	\N	tbl_trn_transactions	\N	\N	378	0
-1585821696	0	1585821696	\N	\N	\N	1473	\N	\N	tbl_trn_requests	\N	\N	394	0
-1585821697	0	1585821697	\N	\N	\N	1483	\N	\N	tbl_trn_requests	\N	\N	399	0
-1585821697	0	1585821697	\N	\N	\N	1485	\N	\N	tbl_trn_requests	\N	\N	400	0
-1585821697	0	1585821697	\N	\N	\N	1487	\N	\N	tbl_trn_requests	\N	\N	401	0
-1585821698	0	1585821698	\N	\N	\N	1489	\N	\N	tbl_trn_requests	\N	\N	402	0
-1585821698	0	1585821698	\N	\N	\N	1491	\N	\N	tbl_trn_requests	\N	\N	403	0
-1585821698	0	1585821698	\N	\N	\N	1493	\N	\N	tbl_trn_requests	\N	\N	404	0
-1585821698	0	1585821698	\N	\N	\N	1495	\N	\N	tbl_trn_requests	\N	\N	405	0
-1585821699	0	1585821699	\N	\N	\N	1500	\N	\N	tbl_trn_transactions	\N	\N	407	0
-1585821699	0	1585821699	\N	\N	\N	1502	\N	\N	tbl_trn_transactions	\N	\N	408	0
-1585821699	0	1585821699	\N	\N	\N	1506	\N	\N	tbl_trn_transactions	\N	\N	410	0
-1585821700	0	1585821700	\N	\N	\N	1513	\N	\N	tbl_trn_requests	\N	\N	414	0
-1585821700	0	1585821700	\N	\N	\N	1515	\N	\N	tbl_trn_requests	\N	\N	415	0
-1585821702	0	1585821702	\N	\N	\N	1528	\N	\N	tbl_trn_transactions	\N	\N	421	0
-1585821703	0	1585821703	\N	\N	\N	1533	\N	\N	tbl_trn_requests	\N	\N	424	0
-1585821706	0	1585821706	\N	\N	\N	1565	\N	\N	tbl_trn_requests	\N	\N	440	0
-1585821706	0	1585821706	\N	\N	\N	1567	\N	\N	tbl_trn_requests	\N	\N	441	0
-1585821707	0	1585821707	\N	\N	\N	1572	\N	\N	tbl_trn_transactions	\N	\N	443	0
-1585821709	0	1585821709	\N	\N	\N	1596	\N	\N	tbl_trn_transactions	\N	\N	455	0
-1585821711	0	1585821711	\N	\N	\N	1613	\N	\N	tbl_trn_requests	\N	\N	464	0
-1585821714	0	1585821714	\N	\N	\N	1634	\N	\N	tbl_trn_transactions	\N	\N	474	0
-1585821716	0	1585821716	\N	\N	\N	1661	\N	\N	tbl_trn_requests	\N	\N	488	0
-1585821716	0	1585821716	\N	\N	\N	1663	\N	\N	tbl_trn_requests	\N	\N	489	0
-1585821717	0	1585821717	\N	\N	\N	1674	\N	\N	tbl_trn_transactions	\N	\N	494	0
-1585821718	0	1585821718	\N	\N	\N	1680	\N	\N	tbl_trn_transactions	\N	\N	497	0
-1585821718	0	1585821718	\N	\N	\N	1683	\N	\N	tbl_trn_requests	\N	\N	499	0
-1585821719	0	1585821719	\N	\N	\N	1685	\N	\N	tbl_trn_requests	\N	\N	500	0
-1585821719	0	1585821719	\N	\N	\N	1687	\N	\N	tbl_trn_requests	\N	\N	501	0
-1585821719	0	1585821719	\N	\N	\N	1688	\N	\N	tbl_trn_transactions	\N	\N	501	0
-1585821840	0	1585821840	\N	\N	\N	2721	\N	\N	tbl_trn_requests	\N	\N	1018	0
-1585821841	0	1585821841	\N	\N	\N	2722	\N	\N	tbl_trn_transactions	\N	\N	1018	0
-1585821841	0	1585821841	\N	\N	\N	2724	\N	\N	tbl_trn_transactions	\N	\N	1019	0
-1585821842	0	1585821842	\N	\N	\N	2728	\N	\N	tbl_trn_transactions	\N	\N	1021	0
-1585821842	0	1585821842	\N	\N	\N	2736	\N	\N	tbl_trn_transactions	\N	\N	1025	0
+1586248438	0	1586248438	\N	\N	\N	3008	\N	\N	tbl_trn_requests	\N	\N	1	0
+1586248438	0	1586248438	\N	\N	\N	3009	\N	\N	tbl_trn_transactions	\N	\N	1	0
+1586248458	0	1586248458	\N	\N	\N	3010	\N	\N	tbl_trn_requests	\N	\N	2	0
+1586248458	0	1586248458	\N	\N	\N	3011	\N	\N	tbl_trn_transactions	\N	\N	2	0
+1586248529	0	1586248529	\N	\N	\N	3012	\N	\N	tbl_trn_requests	\N	\N	3	0
+1586248529	0	1586248529	\N	\N	\N	3013	\N	\N	tbl_trn_transactions	\N	\N	3	0
+1586248622	0	1586248622	\N	\N	\N	3014	\N	\N	tbl_trn_requests	\N	\N	4	0
+1586248622	0	1586248622	\N	\N	\N	3015	\N	\N	tbl_trn_transactions	\N	\N	4	0
+1586249146	0	1586249146	\N	\N	\N	3016	\N	\N	tbl_trn_requests	\N	\N	5	0
+1586249147	0	1586249147	\N	\N	\N	3017	\N	\N	tbl_trn_transactions	\N	\N	5	0
+1586343525	0	1586343525	\N	\N	\N	3018	\N	\N	tbl_trn_requests	\N	\N	1	0
+1586343525	0	1586343525	\N	\N	\N	3019	\N	\N	tbl_trn_transactions	\N	\N	1	0
+1586349223	0	1586349223	\N	\N	\N	3020	\N	\N	tbl_trn_requests	\N	\N	2	0
+1586349223	0	1586349223	\N	\N	\N	3021	\N	\N	tbl_trn_transactions	\N	\N	2	0
+1586423747	0	1586423747	\N	\N	\N	3022	\N	\N	tbl_trn_requests	\N	\N	1	0
+1586430335	0	1586430335	\N	\N	\N	3023	\N	\N	tbl_trn_requests	\N	\N	2	0
+1586841447	0	1586841447	\N	\N	\N	3024	\N	\N	tbl_trn_requests	\N	\N	1	0
+1586841462	0	1586841462	\N	\N	\N	3025	\N	\N	tbl_trn_requests	\N	\N	2	0
+1586846240	0	1586846240	\N	\N	\N	3026	\N	\N	tbl_trn_requests	\N	\N	3	0
+1586846240	0	1586846240	\N	\N	\N	3027	\N	\N	tbl_trn_transactions	\N	\N	1	0
+1586846316	0	1586846316	\N	\N	\N	3028	\N	\N	tbl_trn_requests	\N	\N	4	0
+1586846316	0	1586846316	\N	\N	\N	3029	\N	\N	tbl_trn_transactions	\N	\N	2	0
+1586846378	0	1586846378	\N	\N	\N	3030	\N	\N	tbl_trn_requests	\N	\N	5	0
+1586846378	0	1586846378	\N	\N	\N	3031	\N	\N	tbl_trn_transactions	\N	\N	3	0
+1586846380	0	1586846380	\N	\N	\N	3032	\N	\N	tbl_trn_requests	\N	\N	6	0
+1586846380	0	1586846380	\N	\N	\N	3033	\N	\N	tbl_trn_transactions	\N	\N	4	0
+1586846381	0	1586846381	\N	\N	\N	3034	\N	\N	tbl_trn_requests	\N	\N	7	0
+1586846381	0	1586846381	\N	\N	\N	3035	\N	\N	tbl_trn_transactions	\N	\N	5	0
+1586846383	0	1586846383	\N	\N	\N	3036	\N	\N	tbl_trn_requests	\N	\N	8	0
+1586846383	0	1586846383	\N	\N	\N	3037	\N	\N	tbl_trn_transactions	\N	\N	6	0
+1586846385	0	1586846385	\N	\N	\N	3038	\N	\N	tbl_trn_requests	\N	\N	9	0
+1586846385	0	1586846385	\N	\N	\N	3039	\N	\N	tbl_trn_transactions	\N	\N	7	0
+1586846386	0	1586846386	\N	\N	\N	3040	\N	\N	tbl_trn_requests	\N	\N	10	0
+1586846386	0	1586846386	\N	\N	\N	3041	\N	\N	tbl_trn_transactions	\N	\N	8	0
+1586846387	0	1586846387	\N	\N	\N	3042	\N	\N	tbl_trn_requests	\N	\N	11	0
+1586846387	0	1586846387	\N	\N	\N	3043	\N	\N	tbl_trn_transactions	\N	\N	9	0
+1586846388	0	1586846388	\N	\N	\N	3044	\N	\N	tbl_trn_requests	\N	\N	12	0
+1586846388	0	1586846388	\N	\N	\N	3045	\N	\N	tbl_trn_transactions	\N	\N	10	0
+1586846389	0	1586846389	\N	\N	\N	3046	\N	\N	tbl_trn_requests	\N	\N	13	0
+1586846389	0	1586846389	\N	\N	\N	3047	\N	\N	tbl_trn_transactions	\N	\N	11	0
+1586846390	0	1586846390	\N	\N	\N	3048	\N	\N	tbl_trn_requests	\N	\N	14	0
+1586846390	0	1586846390	\N	\N	\N	3049	\N	\N	tbl_trn_transactions	\N	\N	12	0
+1586846391	0	1586846391	\N	\N	\N	3050	\N	\N	tbl_trn_requests	\N	\N	15	0
+1586846391	0	1586846391	\N	\N	\N	3051	\N	\N	tbl_trn_transactions	\N	\N	13	0
+1586846487	0	1586846487	\N	\N	\N	3052	\N	\N	tbl_trn_requests	\N	\N	16	0
+1586846487	0	1586846487	\N	\N	\N	3053	\N	\N	tbl_trn_transactions	\N	\N	14	0
+1586846488	0	1586846488	\N	\N	\N	3054	\N	\N	tbl_trn_requests	\N	\N	17	0
+1586846488	0	1586846488	\N	\N	\N	3055	\N	\N	tbl_trn_transactions	\N	\N	15	0
+1586846489	0	1586846489	\N	\N	\N	3056	\N	\N	tbl_trn_requests	\N	\N	18	0
+1586846489	0	1586846489	\N	\N	\N	3057	\N	\N	tbl_trn_transactions	\N	\N	16	0
+1586846492	0	1586846492	\N	\N	\N	3058	\N	\N	tbl_trn_requests	\N	\N	19	0
+1586846492	0	1586846492	\N	\N	\N	3059	\N	\N	tbl_trn_transactions	\N	\N	17	0
+1586846493	0	1586846493	\N	\N	\N	3060	\N	\N	tbl_trn_requests	\N	\N	20	0
+1586846493	0	1586846493	\N	\N	\N	3061	\N	\N	tbl_trn_transactions	\N	\N	18	0
+1586846494	0	1586846494	\N	\N	\N	3062	\N	\N	tbl_trn_requests	\N	\N	21	0
+1586846494	0	1586846494	\N	\N	\N	3063	\N	\N	tbl_trn_transactions	\N	\N	19	0
+1586846495	0	1586846495	\N	\N	\N	3064	\N	\N	tbl_trn_requests	\N	\N	22	0
+1586846495	0	1586846495	\N	\N	\N	3065	\N	\N	tbl_trn_transactions	\N	\N	20	0
+1586846496	0	1586846496	\N	\N	\N	3066	\N	\N	tbl_trn_requests	\N	\N	23	0
+1586846496	0	1586846496	\N	\N	\N	3067	\N	\N	tbl_trn_transactions	\N	\N	21	0
+1586846497	0	1586846497	\N	\N	\N	3068	\N	\N	tbl_trn_requests	\N	\N	24	0
+1586846497	0	1586846497	\N	\N	\N	3069	\N	\N	tbl_trn_transactions	\N	\N	22	0
+1586846498	0	1586846498	\N	\N	\N	3070	\N	\N	tbl_trn_requests	\N	\N	25	0
+1586846498	0	1586846498	\N	\N	\N	3071	\N	\N	tbl_trn_transactions	\N	\N	23	0
+1586846499	0	1586846499	\N	\N	\N	3072	\N	\N	tbl_trn_requests	\N	\N	26	0
+1586846499	0	1586846499	\N	\N	\N	3073	\N	\N	tbl_trn_transactions	\N	\N	24	0
+1586846530	0	1586846530	\N	\N	\N	3074	\N	\N	tbl_trn_requests	\N	\N	27	0
+1586846530	0	1586846530	\N	\N	\N	3075	\N	\N	tbl_trn_transactions	\N	\N	25	0
+1586850452	0	1586850452	\N	\N	\N	3076	\N	\N	tbl_trn_requests	\N	\N	28	0
+1586850452	0	1586850452	\N	\N	\N	3077	\N	\N	tbl_trn_transactions	\N	\N	26	0
+1586940664	0	1586940664	\N	\N	\N	3078	\N	\N	tbl_trn_requests	\N	\N	1	0
+1586940665	0	1586940665	\N	\N	\N	3079	\N	\N	tbl_trn_transactions	\N	\N	1	0
+1586940740	0	1586940740	\N	\N	\N	3080	\N	\N	tbl_trn_requests	\N	\N	2	0
+1586940740	0	1586940740	\N	\N	\N	3081	\N	\N	tbl_trn_transactions	\N	\N	2	0
+1586940745	0	1586940745	\N	\N	\N	3082	\N	\N	tbl_trn_requests	\N	\N	3	0
+1586940745	0	1586940745	\N	\N	\N	3083	\N	\N	tbl_trn_transactions	\N	\N	3	0
+1586940791	0	1586940791	\N	\N	\N	3084	\N	\N	tbl_trn_requests	\N	\N	4	0
+1586940791	0	1586940791	\N	\N	\N	3085	\N	\N	tbl_trn_transactions	\N	\N	4	0
+1586941276	0	1586941276	\N	\N	\N	3086	\N	\N	tbl_trn_requests	\N	\N	5	0
+1586941276	0	1586941276	\N	\N	\N	3087	\N	\N	tbl_trn_transactions	\N	\N	5	0
+1587018035	0	1587018035	\N	\N	\N	3088	\N	\N	tbl_trn_requests	\N	\N	1	0
+1587018042	0	1587018042	\N	\N	\N	3089	\N	\N	tbl_trn_requests	\N	\N	2	0
+1587026747	0	1587026747	\N	\N	\N	3090	\N	\N	tbl_trn_requests	\N	\N	3	0
+1587028517	0	1587028517	\N	\N	\N	3091	\N	\N	tbl_trn_requests	\N	\N	4	0
+1587028536	0	1587028536	\N	\N	\N	3092	\N	\N	tbl_trn_requests	\N	\N	5	0
+1587028539	0	1587028539	\N	\N	\N	3093	\N	\N	tbl_trn_requests	\N	\N	6	0
+1587028539	0	1587028539	\N	\N	\N	3094	\N	\N	tbl_trn_transactions	\N	\N	1	0
+1587028541	0	1587028541	\N	\N	\N	3095	\N	\N	tbl_trn_requests	\N	\N	7	0
+1587028541	0	1587028541	\N	\N	\N	3096	\N	\N	tbl_trn_transactions	\N	\N	2	0
+1587028546	0	1587028546	\N	\N	\N	3097	\N	\N	tbl_trn_requests	\N	\N	8	0
+1587028546	0	1587028546	\N	\N	\N	3098	\N	\N	tbl_trn_transactions	\N	\N	3	0
+1587028549	0	1587028549	\N	\N	\N	3099	\N	\N	tbl_trn_requests	\N	\N	9	0
+1587028549	0	1587028549	\N	\N	\N	3100	\N	\N	tbl_trn_transactions	\N	\N	4	0
+1587028746	0	1587028746	\N	\N	\N	3102	\N	\N	tbl_trn_transactions	\N	\N	5	0
+1587028795	0	1587028795	\N	\N	\N	3104	\N	\N	tbl_trn_transactions	\N	\N	6	0
+1587028912	0	1587028912	\N	\N	\N	3105	\N	\N	tbl_trn_requests	\N	\N	12	0
+1587029034	0	1587029034	\N	\N	\N	3108	\N	\N	tbl_trn_transactions	\N	\N	8	0
+1587028746	0	1587028746	\N	\N	\N	3101	\N	\N	tbl_trn_requests	\N	\N	10	0
+1587028795	0	1587028795	\N	\N	\N	3103	\N	\N	tbl_trn_requests	\N	\N	11	0
+1587029034	0	1587029034	\N	\N	\N	3107	\N	\N	tbl_trn_requests	\N	\N	13	0
+1587028912	0	1587028912	\N	\N	\N	3106	\N	\N	tbl_trn_transactions	\N	\N	7	0
+1587029239	0	1587029239	\N	\N	\N	3109	\N	\N	tbl_trn_requests	\N	\N	14	0
+1587029240	0	1587029240	\N	\N	\N	3110	\N	\N	tbl_trn_transactions	\N	\N	9	0
+1587029527	0	1587029527	\N	\N	\N	3111	\N	\N	tbl_trn_requests	\N	\N	15	0
+1587029527	0	1587029527	\N	\N	\N	3112	\N	\N	tbl_trn_transactions	\N	\N	10	0
+1587029528	0	1587029528	\N	\N	\N	3113	\N	\N	tbl_trn_requests	\N	\N	16	0
+1587029529	0	1587029529	\N	\N	\N	3114	\N	\N	tbl_trn_requests	\N	\N	17	0
+1587029529	0	1587029529	\N	\N	\N	3115	\N	\N	tbl_trn_requests	\N	\N	18	0
+1587029530	0	1587029530	\N	\N	\N	3116	\N	\N	tbl_trn_requests	\N	\N	19	0
+1587029530	0	1587029530	\N	\N	\N	3117	\N	\N	tbl_trn_requests	\N	\N	20	0
+1587029530	0	1587029530	\N	\N	\N	3118	\N	\N	tbl_trn_requests	\N	\N	21	0
+1587029530	0	1587029530	\N	\N	\N	3119	\N	\N	tbl_trn_requests	\N	\N	22	0
+1587029531	0	1587029531	\N	\N	\N	3120	\N	\N	tbl_trn_requests	\N	\N	23	0
+1587029531	0	1587029531	\N	\N	\N	3121	\N	\N	tbl_trn_requests	\N	\N	24	0
+1587029532	0	1587029532	\N	\N	\N	3122	\N	\N	tbl_trn_requests	\N	\N	25	0
+1587029532	0	1587029532	\N	\N	\N	3123	\N	\N	tbl_trn_requests	\N	\N	26	0
+1587029532	0	1587029532	\N	\N	\N	3124	\N	\N	tbl_trn_requests	\N	\N	27	0
+1587029533	0	1587029533	\N	\N	\N	3125	\N	\N	tbl_trn_requests	\N	\N	28	0
+1587029533	0	1587029533	\N	\N	\N	3126	\N	\N	tbl_trn_requests	\N	\N	29	0
+1587029533	0	1587029533	\N	\N	\N	3127	\N	\N	tbl_trn_transactions	\N	\N	11	0
+1587029533	0	1587029533	\N	\N	\N	3128	\N	\N	tbl_trn_requests	\N	\N	30	0
+1587029533	0	1587029533	\N	\N	\N	3129	\N	\N	tbl_trn_transactions	\N	\N	12	0
+1587029534	0	1587029534	\N	\N	\N	3130	\N	\N	tbl_trn_requests	\N	\N	31	0
+1587029534	0	1587029534	\N	\N	\N	3131	\N	\N	tbl_trn_transactions	\N	\N	13	0
+1587029534	0	1587029534	\N	\N	\N	3132	\N	\N	tbl_trn_requests	\N	\N	32	0
+1587029534	0	1587029534	\N	\N	\N	3133	\N	\N	tbl_trn_transactions	\N	\N	14	0
+1587029534	0	1587029534	\N	\N	\N	3134	\N	\N	tbl_trn_requests	\N	\N	33	0
+1587029534	0	1587029534	\N	\N	\N	3135	\N	\N	tbl_trn_transactions	\N	\N	15	0
+1587029534	0	1587029534	\N	\N	\N	3136	\N	\N	tbl_trn_requests	\N	\N	34	0
+1587029534	0	1587029534	\N	\N	\N	3137	\N	\N	tbl_trn_transactions	\N	\N	16	0
+1587032430	0	1587032430	\N	\N	\N	3138	\N	\N	tbl_trn_requests	\N	\N	35	0
+1587032430	0	1587032430	\N	\N	\N	3139	\N	\N	tbl_trn_transactions	\N	\N	17	0
+1587032465	0	1587032465	\N	\N	\N	3140	\N	\N	tbl_trn_requests	\N	\N	36	0
+1587032465	0	1587032465	\N	\N	\N	3141	\N	\N	tbl_trn_transactions	\N	\N	18	0
+1587032506	0	1587032506	\N	\N	\N	3142	\N	\N	tbl_trn_requests	\N	\N	37	0
+1587032506	0	1587032506	\N	\N	\N	3143	\N	\N	tbl_trn_transactions	\N	\N	19	0
+1587032604	0	1587032604	\N	\N	\N	3144	\N	\N	tbl_trn_requests	\N	\N	38	0
+1587032605	0	1587032605	\N	\N	\N	3145	\N	\N	tbl_trn_transactions	\N	\N	20	0
+1587032751	0	1587032751	\N	\N	\N	3146	\N	\N	tbl_trn_requests	\N	\N	39	0
+1587032751	0	1587032751	\N	\N	\N	3147	\N	\N	tbl_trn_transactions	\N	\N	21	0
+1587032759	0	1587032759	\N	\N	\N	3148	\N	\N	tbl_trn_requests	\N	\N	40	0
+1587032759	0	1587032759	\N	\N	\N	3149	\N	\N	tbl_trn_transactions	\N	\N	22	0
+1587032804	0	1587032804	\N	\N	\N	3150	\N	\N	tbl_trn_requests	\N	\N	41	0
+1587032804	0	1587032804	\N	\N	\N	3151	\N	\N	tbl_trn_transactions	\N	\N	23	0
+1587032821	0	1587032821	\N	\N	\N	3152	\N	\N	tbl_trn_requests	\N	\N	42	0
+1587032821	0	1587032821	\N	\N	\N	3153	\N	\N	tbl_trn_transactions	\N	\N	24	0
+1587032968	0	1587032968	\N	\N	\N	3154	\N	\N	tbl_trn_requests	\N	\N	43	0
+1587032968	0	1587032968	\N	\N	\N	3155	\N	\N	tbl_trn_transactions	\N	\N	25	0
+1587102986	0	1587102986	\N	\N	\N	3156	\N	\N	tbl_trn_requests	\N	\N	1	0
+1587102986	0	1587102986	\N	\N	\N	3157	\N	\N	tbl_trn_transactions	\N	\N	1	0
+1587102986	0	1587102986	\N	\N	\N	3158	\N	\N	tbl_trn_transactions	\N	\N	2	0
+1587102986	0	1587102986	\N	\N	\N	3159	\N	\N	tbl_trn_transactions	\N	\N	3	0
+1587103996	0	1587103996	\N	\N	\N	3160	\N	\N	tbl_trn_requests	\N	\N	2	0
+1587103996	0	1587103996	\N	\N	\N	3161	\N	\N	tbl_trn_transactions	\N	\N	4	0
+1587104770	0	1587104770	\N	\N	\N	3162	\N	\N	tbl_trn_requests	\N	\N	3	0
+1587104770	0	1587104770	\N	\N	\N	3163	\N	\N	tbl_trn_transactions	\N	\N	5	0
+1587109662	0	1587109662	\N	\N	\N	3164	\N	\N	tbl_trn_requests	\N	\N	4	0
+1587109662	0	1587109662	\N	\N	\N	3165	\N	\N	tbl_trn_transactions	\N	\N	6	0
+1587109705	0	1587109705	\N	\N	\N	3166	\N	\N	tbl_trn_requests	\N	\N	5	0
+1587109705	0	1587109705	\N	\N	\N	3167	\N	\N	tbl_trn_transactions	\N	\N	7	0
+1587109775	0	1587109775	\N	\N	\N	3168	\N	\N	tbl_trn_requests	\N	\N	6	0
+1587109775	0	1587109775	\N	\N	\N	3169	\N	\N	tbl_trn_transactions	\N	\N	8	0
+1587111809	0	1587111809	\N	\N	\N	3170	\N	\N	tbl_trn_requests	\N	\N	7	0
+1587111809	0	1587111809	\N	\N	\N	3171	\N	\N	tbl_trn_transactions	\N	\N	9	0
+1587112430	0	1587112430	\N	\N	\N	3172	\N	\N	tbl_trn_requests	\N	\N	8	0
+1587112430	0	1587112430	\N	\N	\N	3173	\N	\N	tbl_trn_transactions	\N	\N	10	0
+1587112447	0	1587112447	\N	\N	\N	3174	\N	\N	tbl_trn_requests	\N	\N	9	0
+1587112447	0	1587112447	\N	\N	\N	3175	\N	\N	tbl_trn_transactions	\N	\N	11	0
+1587112592	0	1587112592	\N	\N	\N	3176	\N	\N	tbl_trn_requests	\N	\N	10	0
+1587112592	0	1587112592	\N	\N	\N	3177	\N	\N	tbl_trn_transactions	\N	\N	12	0
+1587113461	0	1587113461	\N	\N	\N	3178	\N	\N	tbl_trn_requests	\N	\N	11	0
+1587113461	0	1587113461	\N	\N	\N	3179	\N	\N	tbl_trn_transactions	\N	\N	13	0
+1587113473	0	1587113473	\N	\N	\N	3180	\N	\N	tbl_trn_requests	\N	\N	12	0
+1587113473	0	1587113473	\N	\N	\N	3181	\N	\N	tbl_trn_transactions	\N	\N	14	0
+1587192454	0	1587192454	\N	\N	\N	3182	\N	\N	tbl_trn_requests	\N	\N	1	0
+1587192454	0	1587192454	\N	\N	\N	3183	\N	\N	tbl_trn_transactions	\N	\N	1	0
+1587192565	0	1587192565	\N	\N	\N	3184	\N	\N	tbl_trn_requests	\N	\N	2	0
+1587192565	0	1587192565	\N	\N	\N	3185	\N	\N	tbl_trn_transactions	\N	\N	2	0
+1587192628	0	1587192628	\N	\N	\N	3186	\N	\N	tbl_trn_requests	\N	\N	3	0
+1587192628	0	1587192628	\N	\N	\N	3187	\N	\N	tbl_trn_transactions	\N	\N	3	0
+1587192807	0	1587192807	\N	\N	\N	3188	\N	\N	tbl_trn_requests	\N	\N	4	0
+1587192807	0	1587192807	\N	\N	\N	3189	\N	\N	tbl_trn_transactions	\N	\N	4	0
+1587193188	0	1587193188	\N	\N	\N	3190	\N	\N	tbl_trn_requests	\N	\N	5	0
+1587193188	0	1587193188	\N	\N	\N	3191	\N	\N	tbl_trn_transactions	\N	\N	5	0
+1587193189	0	1587193189	\N	\N	\N	3192	\N	\N	tbl_trn_requests	\N	\N	6	0
+1587193189	0	1587193189	\N	\N	\N	3193	\N	\N	tbl_trn_transactions	\N	\N	6	0
+1587193191	0	1587193191	\N	\N	\N	3194	\N	\N	tbl_trn_requests	\N	\N	7	0
+1587193191	0	1587193191	\N	\N	\N	3195	\N	\N	tbl_trn_transactions	\N	\N	7	0
+1587193193	0	1587193193	\N	\N	\N	3196	\N	\N	tbl_trn_requests	\N	\N	8	0
+1587193193	0	1587193193	\N	\N	\N	3197	\N	\N	tbl_trn_transactions	\N	\N	8	0
+1587193194	0	1587193194	\N	\N	\N	3198	\N	\N	tbl_trn_requests	\N	\N	9	0
+1587193194	0	1587193194	\N	\N	\N	3199	\N	\N	tbl_trn_transactions	\N	\N	9	0
+1587193195	0	1587193195	\N	\N	\N	3200	\N	\N	tbl_trn_requests	\N	\N	10	0
+1587193195	0	1587193195	\N	\N	\N	3201	\N	\N	tbl_trn_transactions	\N	\N	10	0
+1587193196	0	1587193196	\N	\N	\N	3202	\N	\N	tbl_trn_requests	\N	\N	11	0
+1587193197	0	1587193197	\N	\N	\N	3204	\N	\N	tbl_trn_requests	\N	\N	12	0
+1587193197	0	1587193197	\N	\N	\N	3205	\N	\N	tbl_trn_transactions	\N	\N	12	0
+1587193200	0	1587193200	\N	\N	\N	3208	\N	\N	tbl_trn_requests	\N	\N	14	0
+1587193200	0	1587193200	\N	\N	\N	3209	\N	\N	tbl_trn_transactions	\N	\N	14	0
+1587193196	0	1587193196	\N	\N	\N	3203	\N	\N	tbl_trn_transactions	\N	\N	11	0
+1587193198	0	1587193198	\N	\N	\N	3206	\N	\N	tbl_trn_requests	\N	\N	13	0
+1587193198	0	1587193198	\N	\N	\N	3207	\N	\N	tbl_trn_transactions	\N	\N	13	0
+1587193201	0	1587193201	\N	\N	\N	3210	\N	\N	tbl_trn_requests	\N	\N	15	0
+1587193201	0	1587193201	\N	\N	\N	3211	\N	\N	tbl_trn_transactions	\N	\N	15	0
+1587194724	0	1587194724	\N	\N	\N	3212	\N	\N	tbl_trn_requests	\N	\N	16	0
+1587194724	0	1587194724	\N	\N	\N	3213	\N	\N	tbl_trn_transactions	\N	\N	16	0
+1587195093	0	1587195093	\N	\N	\N	3214	\N	\N	tbl_trn_requests	\N	\N	17	0
+1587195093	0	1587195093	\N	\N	\N	3215	\N	\N	tbl_trn_transactions	\N	\N	17	0
+1587195580	0	1587195580	\N	\N	\N	3216	\N	\N	tbl_trn_requests	\N	\N	18	0
+1587195580	0	1587195580	\N	\N	\N	3217	\N	\N	tbl_trn_transactions	\N	\N	18	0
+1587195590	0	1587195590	\N	\N	\N	3218	\N	\N	tbl_trn_requests	\N	\N	19	0
+1587195590	0	1587195590	\N	\N	\N	3219	\N	\N	tbl_trn_transactions	\N	\N	19	0
+1587195592	0	1587195592	\N	\N	\N	3220	\N	\N	tbl_trn_requests	\N	\N	20	0
+1587195592	0	1587195592	\N	\N	\N	3221	\N	\N	tbl_trn_transactions	\N	\N	20	0
+1587195593	0	1587195593	\N	\N	\N	3222	\N	\N	tbl_trn_requests	\N	\N	21	0
+1587195593	0	1587195593	\N	\N	\N	3223	\N	\N	tbl_trn_transactions	\N	\N	21	0
+1587195595	0	1587195595	\N	\N	\N	3224	\N	\N	tbl_trn_requests	\N	\N	22	0
+1587195595	0	1587195595	\N	\N	\N	3225	\N	\N	tbl_trn_transactions	\N	\N	22	0
+1587195596	0	1587195596	\N	\N	\N	3226	\N	\N	tbl_trn_requests	\N	\N	23	0
+1587195596	0	1587195596	\N	\N	\N	3227	\N	\N	tbl_trn_transactions	\N	\N	23	0
+1587195597	0	1587195597	\N	\N	\N	3228	\N	\N	tbl_trn_requests	\N	\N	24	0
+1587195597	0	1587195597	\N	\N	\N	3229	\N	\N	tbl_trn_transactions	\N	\N	24	0
+1587195598	0	1587195598	\N	\N	\N	3230	\N	\N	tbl_trn_requests	\N	\N	25	0
+1587195598	0	1587195598	\N	\N	\N	3231	\N	\N	tbl_trn_transactions	\N	\N	25	0
+1587195599	0	1587195599	\N	\N	\N	3232	\N	\N	tbl_trn_requests	\N	\N	26	0
+1587195599	0	1587195599	\N	\N	\N	3233	\N	\N	tbl_trn_transactions	\N	\N	26	0
+1587195600	0	1587195600	\N	\N	\N	3234	\N	\N	tbl_trn_requests	\N	\N	27	0
+1587195600	0	1587195600	\N	\N	\N	3235	\N	\N	tbl_trn_transactions	\N	\N	27	0
+1587195601	0	1587195601	\N	\N	\N	3236	\N	\N	tbl_trn_requests	\N	\N	28	0
+1587195601	0	1587195601	\N	\N	\N	3237	\N	\N	tbl_trn_transactions	\N	\N	28	0
+1587195602	0	1587195602	\N	\N	\N	3238	\N	\N	tbl_trn_requests	\N	\N	29	0
+1587195602	0	1587195602	\N	\N	\N	3239	\N	\N	tbl_trn_transactions	\N	\N	29	0
+1587195847	0	1587195847	\N	\N	\N	3240	\N	\N	tbl_trn_requests	\N	\N	30	0
+1587195847	0	1587195847	\N	\N	\N	3241	\N	\N	tbl_trn_transactions	\N	\N	30	0
+1587195923	0	1587195923	\N	\N	\N	3242	\N	\N	tbl_trn_requests	\N	\N	31	0
+1587195923	0	1587195923	\N	\N	\N	3243	\N	\N	tbl_trn_transactions	\N	\N	31	0
+1587195942	0	1587195942	\N	\N	\N	3244	\N	\N	tbl_trn_requests	\N	\N	32	0
+1587195942	0	1587195942	\N	\N	\N	3245	\N	\N	tbl_trn_transactions	\N	\N	32	0
+1587195966	0	1587195966	\N	\N	\N	3246	\N	\N	tbl_trn_requests	\N	\N	33	0
+1587195966	0	1587195966	\N	\N	\N	3247	\N	\N	tbl_trn_transactions	\N	\N	33	0
+1587451672	0	1587451672	\N	\N	\N	3248	\N	\N	tbl_trn_requests	\N	\N	1	0
+1587451673	0	1587451673	\N	\N	\N	3249	\N	\N	tbl_trn_transactions	\N	\N	1	0
+1587451678	0	1587451678	\N	\N	\N	3250	\N	\N	tbl_trn_requests	\N	\N	2	0
+1587451679	0	1587451679	\N	\N	\N	3251	\N	\N	tbl_trn_transactions	\N	\N	2	0
+1587456466	0	1587456466	\N	\N	\N	3252	\N	\N	tbl_trn_requests	\N	\N	3	0
+1587456466	0	1587456466	\N	\N	\N	3253	\N	\N	tbl_trn_transactions	\N	\N	3	0
+1587456839	0	1587456839	\N	\N	\N	3254	\N	\N	tbl_trn_requests	\N	\N	4	0
+1587456839	0	1587456839	\N	\N	\N	3255	\N	\N	tbl_trn_transactions	\N	\N	4	0
+1587459839	0	1587459839	\N	\N	\N	3256	\N	\N	tbl_trn_requests	\N	\N	5	0
+1587459839	0	1587459839	\N	\N	\N	3257	\N	\N	tbl_trn_transactions	\N	\N	5	0
+1587460724	0	1587460724	\N	\N	\N	3258	\N	\N	tbl_trn_requests	\N	\N	6	0
+1587460724	0	1587460724	\N	\N	\N	3259	\N	\N	tbl_trn_transactions	\N	\N	6	0
+1587460878	0	1587460878	\N	\N	\N	3260	\N	\N	tbl_trn_requests	\N	\N	7	0
+1587460878	0	1587460878	\N	\N	\N	3261	\N	\N	tbl_trn_transactions	\N	\N	7	0
+1587461113	0	1587461113	\N	\N	\N	3262	\N	\N	tbl_trn_requests	\N	\N	8	0
+1587461113	0	1587461113	\N	\N	\N	3263	\N	\N	tbl_trn_transactions	\N	\N	8	0
+1587461191	0	1587461191	\N	\N	\N	3264	\N	\N	tbl_trn_requests	\N	\N	9	0
+1587461191	0	1587461191	\N	\N	\N	3265	\N	\N	tbl_trn_transactions	\N	\N	9	0
+1587461218	0	1587461218	\N	\N	\N	3266	\N	\N	tbl_trn_requests	\N	\N	10	0
+1587461218	0	1587461218	\N	\N	\N	3267	\N	\N	tbl_trn_transactions	\N	\N	10	0
+1587461227	0	1587461227	\N	\N	\N	3268	\N	\N	tbl_trn_requests	\N	\N	11	0
+1587461227	0	1587461227	\N	\N	\N	3269	\N	\N	tbl_trn_transactions	\N	\N	11	0
+1587461857	0	1587461857	\N	\N	\N	3270	\N	\N	tbl_trn_requests	\N	\N	12	0
+1587461857	0	1587461857	\N	\N	\N	3271	\N	\N	tbl_trn_transactions	\N	\N	12	0
+1587461871	0	1587461871	\N	\N	\N	3272	\N	\N	tbl_trn_requests	\N	\N	13	0
+1587461871	0	1587461871	\N	\N	\N	3273	\N	\N	tbl_trn_transactions	\N	\N	13	0
+1587461872	0	1587461872	\N	\N	\N	3274	\N	\N	tbl_trn_requests	\N	\N	14	0
+1587461872	0	1587461872	\N	\N	\N	3275	\N	\N	tbl_trn_transactions	\N	\N	14	0
+1587461874	0	1587461874	\N	\N	\N	3276	\N	\N	tbl_trn_requests	\N	\N	15	0
+1587461874	0	1587461874	\N	\N	\N	3277	\N	\N	tbl_trn_transactions	\N	\N	15	0
+1587461875	0	1587461875	\N	\N	\N	3278	\N	\N	tbl_trn_requests	\N	\N	16	0
+1587461875	0	1587461875	\N	\N	\N	3279	\N	\N	tbl_trn_transactions	\N	\N	16	0
+1587461880	0	1587461880	\N	\N	\N	3280	\N	\N	tbl_trn_requests	\N	\N	17	0
+1587461880	0	1587461880	\N	\N	\N	3281	\N	\N	tbl_trn_transactions	\N	\N	17	0
+1587461881	0	1587461881	\N	\N	\N	3282	\N	\N	tbl_trn_requests	\N	\N	18	0
+1587461882	0	1587461882	\N	\N	\N	3283	\N	\N	tbl_trn_requests	\N	\N	19	0
+1587461883	0	1587461883	\N	\N	\N	3284	\N	\N	tbl_trn_requests	\N	\N	20	0
+1587461895	0	1587461895	\N	\N	\N	3285	\N	\N	tbl_trn_requests	\N	\N	21	0
+1587461903	0	1587461903	\N	\N	\N	3286	\N	\N	tbl_trn_requests	\N	\N	22	0
+1587462650	0	1587462650	\N	\N	\N	3287	\N	\N	tbl_trn_requests	\N	\N	23	0
+1587462742	0	1587462742	\N	\N	\N	3288	\N	\N	tbl_trn_requests	\N	\N	24	0
+1587463764	0	1587463764	\N	\N	\N	3289	\N	\N	tbl_trn_requests	\N	\N	25	0
+1587463796	0	1587463796	\N	\N	\N	3290	\N	\N	tbl_trn_requests	\N	\N	26	0
+1587463801	0	1587463801	\N	\N	\N	3291	\N	\N	tbl_trn_requests	\N	\N	27	0
+1587467804	0	1587467804	\N	\N	\N	3292	\N	\N	tbl_trn_requests	\N	\N	28	0
+1587491608	0	1587491608	\N	\N	\N	3293	\N	\N	tbl_trn_requests	\N	\N	29	0
+1587528997	0	1587528997	\N	\N	\N	3294	\N	\N	tbl_trn_requests	\N	\N	1	0
+1587529000	0	1587529000	\N	\N	\N	3295	\N	\N	tbl_trn_requests	\N	\N	2	0
+1587536912	0	1587536912	\N	\N	\N	3296	\N	\N	tbl_trn_requests	\N	\N	3	0
+1587536912	0	1587536912	\N	\N	\N	3297	\N	\N	tbl_trn_transactions	\N	\N	1	0
+1587540704	0	1587540704	\N	\N	\N	3298	\N	\N	tbl_trn_requests	\N	\N	4	0
+1587540705	0	1587540705	\N	\N	\N	3299	\N	\N	tbl_trn_transactions	\N	\N	2	0
+1587541267	0	1587541267	\N	\N	\N	3300	\N	\N	tbl_trn_requests	\N	\N	5	0
+1587541267	0	1587541267	\N	\N	\N	3301	\N	\N	tbl_trn_transactions	\N	\N	3	0
+1587627321	0	1587627321	\N	\N	\N	3302	\N	\N	tbl_trn_requests	\N	\N	1	0
+1587627321	0	1587627321	\N	\N	\N	3303	\N	\N	tbl_trn_transactions	\N	\N	1	0
+1587637726	0	1587637726	\N	\N	\N	3304	\N	\N	tbl_trn_requests	\N	\N	2	0
+1587637726	0	1587637726	\N	\N	\N	3305	\N	\N	tbl_trn_transactions	\N	\N	2	0
+1587641340	0	1587641340	\N	\N	\N	3306	\N	\N	tbl_trn_requests	\N	\N	3	0
+1587641340	0	1587641340	\N	\N	\N	3307	\N	\N	tbl_trn_transactions	\N	\N	3	0
+1587645021	0	1587645021	\N	\N	\N	3308	\N	\N	tbl_trn_requests	\N	\N	4	0
+1587645021	0	1587645021	\N	\N	\N	3309	\N	\N	tbl_trn_transactions	\N	\N	4	0
+1587717663	0	1587717663	\N	\N	\N	3310	\N	\N	tbl_trn_requests	\N	\N	1	0
+1587722345	0	1587722345	\N	\N	\N	3311	\N	\N	tbl_trn_requests	\N	\N	2	0
+1587722345	0	1587722345	\N	\N	\N	3312	\N	\N	tbl_trn_transactions	\N	\N	1	0
+1587722382	0	1587722382	\N	\N	\N	3313	\N	\N	tbl_trn_requests	\N	\N	3	0
+1587722382	0	1587722382	\N	\N	\N	3314	\N	\N	tbl_trn_transactions	\N	\N	2	0
+1587726999	0	1587726999	\N	\N	\N	3315	\N	\N	tbl_trn_requests	\N	\N	4	0
+1587726999	0	1587726999	\N	\N	\N	3316	\N	\N	tbl_trn_transactions	\N	\N	3	0
+1587727010	0	1587727010	\N	\N	\N	3317	\N	\N	tbl_trn_requests	\N	\N	5	0
+1587727010	0	1587727010	\N	\N	\N	3318	\N	\N	tbl_trn_transactions	\N	\N	4	0
+1587727207	0	1587727207	\N	\N	\N	3319	\N	\N	tbl_trn_requests	\N	\N	6	0
+1587727208	0	1587727208	\N	\N	\N	3320	\N	\N	tbl_trn_transactions	\N	\N	5	0
+1587727376	0	1587727376	\N	\N	\N	3321	\N	\N	tbl_trn_requests	\N	\N	7	0
+1587727376	0	1587727376	\N	\N	\N	3322	\N	\N	tbl_trn_transactions	\N	\N	6	0
+1587727517	0	1587727517	\N	\N	\N	3323	\N	\N	tbl_trn_requests	\N	\N	8	0
+1587727517	0	1587727517	\N	\N	\N	3324	\N	\N	tbl_trn_transactions	\N	\N	7	0
+1587728711	0	1587728711	\N	\N	\N	3325	\N	\N	tbl_trn_requests	\N	\N	9	0
+1587728711	0	1587728711	\N	\N	\N	3326	\N	\N	tbl_trn_transactions	\N	\N	8	0
+1587728719	0	1587728719	\N	\N	\N	3327	\N	\N	tbl_trn_requests	\N	\N	10	0
+1587728719	0	1587728719	\N	\N	\N	3328	\N	\N	tbl_trn_transactions	\N	\N	9	0
+1587728725	0	1587728725	\N	\N	\N	3329	\N	\N	tbl_trn_requests	\N	\N	11	0
+1587728725	0	1587728725	\N	\N	\N	3330	\N	\N	tbl_trn_transactions	\N	\N	10	0
+1587728728	0	1587728728	\N	\N	\N	3331	\N	\N	tbl_trn_requests	\N	\N	12	0
+1587728728	0	1587728728	\N	\N	\N	3332	\N	\N	tbl_trn_transactions	\N	\N	11	0
+1587729144	0	1587729144	\N	\N	\N	3333	\N	\N	tbl_trn_requests	\N	\N	13	0
+1587729144	0	1587729144	\N	\N	\N	3334	\N	\N	tbl_trn_transactions	\N	\N	12	0
+1587729146	0	1587729146	\N	\N	\N	3335	\N	\N	tbl_trn_requests	\N	\N	14	0
+1587729146	0	1587729146	\N	\N	\N	3336	\N	\N	tbl_trn_transactions	\N	\N	13	0
+1587729148	0	1587729148	\N	\N	\N	3337	\N	\N	tbl_trn_requests	\N	\N	15	0
+1587729148	0	1587729148	\N	\N	\N	3338	\N	\N	tbl_trn_transactions	\N	\N	14	0
+1587729150	0	1587729150	\N	\N	\N	3339	\N	\N	tbl_trn_requests	\N	\N	16	0
+1587729150	0	1587729150	\N	\N	\N	3340	\N	\N	tbl_trn_transactions	\N	\N	15	0
+1587729152	0	1587729152	\N	\N	\N	3341	\N	\N	tbl_trn_requests	\N	\N	17	0
+1587729153	0	1587729153	\N	\N	\N	3342	\N	\N	tbl_trn_transactions	\N	\N	16	0
+1587729168	0	1587729168	\N	\N	\N	3343	\N	\N	tbl_trn_requests	\N	\N	18	0
+1587729168	0	1587729168	\N	\N	\N	3344	\N	\N	tbl_trn_transactions	\N	\N	17	0
+1587729178	0	1587729178	\N	\N	\N	3345	\N	\N	tbl_trn_requests	\N	\N	19	0
+1587729178	0	1587729178	\N	\N	\N	3346	\N	\N	tbl_trn_transactions	\N	\N	18	0
+1587729309	0	1587729309	\N	\N	\N	3347	\N	\N	tbl_trn_requests	\N	\N	20	0
+1587729309	0	1587729309	\N	\N	\N	3348	\N	\N	tbl_trn_transactions	\N	\N	19	0
+1587729314	0	1587729314	\N	\N	\N	3349	\N	\N	tbl_trn_requests	\N	\N	21	0
+1587729314	0	1587729314	\N	\N	\N	3350	\N	\N	tbl_trn_transactions	\N	\N	20	0
+1587729318	0	1587729318	\N	\N	\N	3351	\N	\N	tbl_trn_requests	\N	\N	22	0
+1587729318	0	1587729318	\N	\N	\N	3352	\N	\N	tbl_trn_transactions	\N	\N	21	0
+1587729542	0	1587729542	\N	\N	\N	3353	\N	\N	tbl_trn_requests	\N	\N	23	0
+1587729542	0	1587729542	\N	\N	\N	3354	\N	\N	tbl_trn_transactions	\N	\N	22	0
+1587729547	0	1587729547	\N	\N	\N	3355	\N	\N	tbl_trn_requests	\N	\N	24	0
+1587729547	0	1587729547	\N	\N	\N	3356	\N	\N	tbl_trn_transactions	\N	\N	23	0
+1587729550	0	1587729550	\N	\N	\N	3357	\N	\N	tbl_trn_requests	\N	\N	25	0
+1587729550	0	1587729550	\N	\N	\N	3358	\N	\N	tbl_trn_transactions	\N	\N	24	0
+1587729553	0	1587729553	\N	\N	\N	3359	\N	\N	tbl_trn_requests	\N	\N	26	0
+1587729553	0	1587729553	\N	\N	\N	3360	\N	\N	tbl_trn_transactions	\N	\N	25	0
+1587729554	0	1587729554	\N	\N	\N	3361	\N	\N	tbl_trn_requests	\N	\N	27	0
+1587729555	0	1587729555	\N	\N	\N	3362	\N	\N	tbl_trn_transactions	\N	\N	26	0
+1587729557	0	1587729557	\N	\N	\N	3363	\N	\N	tbl_trn_requests	\N	\N	28	0
+1587729557	0	1587729557	\N	\N	\N	3364	\N	\N	tbl_trn_transactions	\N	\N	27	0
+1587729575	0	1587729575	\N	\N	\N	3365	\N	\N	tbl_trn_requests	\N	\N	29	0
+1587729575	0	1587729575	\N	\N	\N	3366	\N	\N	tbl_trn_transactions	\N	\N	28	0
+1587729581	0	1587729581	\N	\N	\N	3367	\N	\N	tbl_trn_requests	\N	\N	30	0
+1587729581	0	1587729581	\N	\N	\N	3368	\N	\N	tbl_trn_transactions	\N	\N	29	0
+1587729583	0	1587729583	\N	\N	\N	3369	\N	\N	tbl_trn_requests	\N	\N	31	0
+1587729584	0	1587729584	\N	\N	\N	3370	\N	\N	tbl_trn_transactions	\N	\N	30	0
+1587729586	0	1587729586	\N	\N	\N	3371	\N	\N	tbl_trn_requests	\N	\N	32	0
+1587729586	0	1587729586	\N	\N	\N	3372	\N	\N	tbl_trn_transactions	\N	\N	31	0
+1587729589	0	1587729589	\N	\N	\N	3373	\N	\N	tbl_trn_requests	\N	\N	33	0
+1587729589	0	1587729589	\N	\N	\N	3374	\N	\N	tbl_trn_transactions	\N	\N	32	0
+1587729593	0	1587729593	\N	\N	\N	3375	\N	\N	tbl_trn_requests	\N	\N	34	0
+1587729593	0	1587729593	\N	\N	\N	3376	\N	\N	tbl_trn_transactions	\N	\N	33	0
+1587732941	0	1587732941	\N	\N	\N	3377	\N	\N	tbl_trn_requests	\N	\N	35	0
+1587732941	0	1587732941	\N	\N	\N	3378	\N	\N	tbl_trn_transactions	\N	\N	34	0
+1587733063	0	1587733063	\N	\N	\N	3379	\N	\N	tbl_trn_requests	\N	\N	36	0
+1587733063	0	1587733063	\N	\N	\N	3380	\N	\N	tbl_trn_transactions	\N	\N	35	0
+1587733112	0	1587733112	\N	\N	\N	3381	\N	\N	tbl_trn_requests	\N	\N	37	0
+1587733112	0	1587733112	\N	\N	\N	3382	\N	\N	tbl_trn_transactions	\N	\N	36	0
+1587756134	0	1587756134	\N	\N	\N	3383	\N	\N	tbl_trn_requests	\N	\N	38	0
+1587756134	0	1587756134	\N	\N	\N	3384	\N	\N	tbl_trn_transactions	\N	\N	37	0
+1587756153	0	1587756153	\N	\N	\N	3385	\N	\N	tbl_trn_requests	\N	\N	39	0
+1587756153	0	1587756153	\N	\N	\N	3386	\N	\N	tbl_trn_transactions	\N	\N	38	0
+1587756182	0	1587756182	\N	\N	\N	3387	\N	\N	tbl_trn_requests	\N	\N	40	0
+1587756183	0	1587756183	\N	\N	\N	3388	\N	\N	tbl_trn_transactions	\N	\N	39	0
+1587802361	0	1587802361	\N	\N	\N	3389	\N	\N	tbl_trn_requests	\N	\N	1	0
+1587802361	0	1587802361	\N	\N	\N	3390	\N	\N	tbl_trn_transactions	\N	\N	1	0
+1587803203	0	1587803203	\N	\N	\N	3391	\N	\N	tbl_trn_requests	\N	\N	2	0
+1587803203	0	1587803203	\N	\N	\N	3392	\N	\N	tbl_trn_transactions	\N	\N	2	0
+1587803743	0	1587803743	\N	\N	\N	3393	\N	\N	tbl_trn_requests	\N	\N	3	0
+1587803743	0	1587803743	\N	\N	\N	3394	\N	\N	tbl_trn_transactions	\N	\N	3	0
+1587804262	0	1587804262	\N	\N	\N	3395	\N	\N	tbl_trn_requests	\N	\N	4	0
+1587804262	0	1587804262	\N	\N	\N	3396	\N	\N	tbl_trn_transactions	\N	\N	4	0
+1587807475	0	1587807475	\N	\N	\N	3397	\N	\N	tbl_trn_requests	\N	\N	5	0
+1587807475	0	1587807475	\N	\N	\N	3398	\N	\N	tbl_trn_transactions	\N	\N	5	0
+1587809041	0	1587809041	\N	\N	\N	3399	\N	\N	tbl_trn_requests	\N	\N	6	0
+1587809041	0	1587809041	\N	\N	\N	3400	\N	\N	tbl_trn_transactions	\N	\N	6	0
+1587809895	0	1587809895	\N	\N	\N	3401	\N	\N	tbl_trn_requests	\N	\N	7	0
+1587809895	0	1587809895	\N	\N	\N	3402	\N	\N	tbl_trn_transactions	\N	\N	7	0
+1587810369	0	1587810369	\N	\N	\N	3403	\N	\N	tbl_trn_requests	\N	\N	8	0
+1587810369	0	1587810369	\N	\N	\N	3404	\N	\N	tbl_trn_transactions	\N	\N	8	0
+1587811943	0	1587811943	\N	\N	\N	3405	\N	\N	tbl_trn_requests	\N	\N	9	0
+1587811943	0	1587811943	\N	\N	\N	3406	\N	\N	tbl_trn_transactions	\N	\N	9	0
+1587812066	0	1587812066	\N	\N	\N	3407	\N	\N	tbl_trn_requests	\N	\N	10	0
+1587812067	0	1587812067	\N	\N	\N	3408	\N	\N	tbl_trn_transactions	\N	\N	10	0
+1587812177	0	1587812177	\N	\N	\N	3409	\N	\N	tbl_trn_requests	\N	\N	11	0
+1587812177	0	1587812177	\N	\N	\N	3410	\N	\N	tbl_trn_transactions	\N	\N	11	0
+1587812625	0	1587812625	\N	\N	\N	3411	\N	\N	tbl_trn_requests	\N	\N	12	0
+1587812625	0	1587812625	\N	\N	\N	3412	\N	\N	tbl_trn_transactions	\N	\N	12	0
+1587812636	0	1587812636	\N	\N	\N	3413	\N	\N	tbl_trn_requests	\N	\N	13	0
+1587812636	0	1587812636	\N	\N	\N	3414	\N	\N	tbl_trn_transactions	\N	\N	13	0
 \.
 
 
@@ -10827,20 +8929,50 @@ COPY public.tbl_sys_references (date_time_added, added_by, date_time_modified, m
 --
 
 COPY public.tbl_sys_settings (date_time_added, added_by, date_time_modified, modified_by, source_ip, latest_ip, setting_id, setting_profile, setting_name, setting_value, setting_type, setting_status, record_version, deleted_at) FROM stdin;
-1585897787	0	1585897787	\N	\N	\N	11	MONEYTRANS	access_token_19900	1e044930-e4ea-44c0-9382-1e9309220aa8	TEXT	ACTIVE	52	\N
-1585897787	0	1585897787	\N	\N	\N	12	MONEYTRANS	expires_in_19900	2020-04-03T09:09:46.8885254+02:00	NUMERIC	ACTIVE	52	\N
+1586178834	0	1586178834	\N	\N	\N	43	CASHLINK	query_url	http://cashlink:9090/switchlink/transactionStatus	TEXT	ACTIVE	0	\N
+1586178850	0	1586178850	\N	\N	\N	44	COREBANKING	url	http://backoffice:22963/api/Utilities/postTransaction	TEXT	ACTIVE	0	\N
 1585898635	0	1585898635	\N	\N	\N	16	AML	api_key	3f7f72ad-7ee5-48e5-beb7-c89f6d124dd3	TEXT	ACTIVE	0	\N
 1585898848	0	1585898848	\N	\N	\N	18	AML	min_score	90	NUMERIC	ACTIVE	0	\N
 1585898881	0	1585898881	\N	\N	\N	19	AML	url	https://search.ofac-api.com/v2	TEXT	ACTIVE	0	\N
 1585898942	0	1585898942	\N	\N	\N	20	AML	check_period	30	DAYS	ACTIVE	0	\N
 1585898973	0	1585898973	\N	\N	\N	21	AML	check	TRUE	BOOL	ACTIVE	0	\N
-1585401903	\N	1585401903	\N	\N	\N	10	TEST	back_office_url	http://umtl.upesimts.com:22963/api/Utilities/postTransaction	TEXT	ACTIVE	1	\N
-1584970683	\N	1584970683	\N	\N	\N	8	TEST	cashlink_url	http://umtl.upesimts.com:9090/switchlink/payments	TEXT	ACTIVE	1	\N
-1585244771	\N	1585244771	\N	\N	\N	9	TEST	cashlink_query_url	http://umtl.upesimts.com:9090/switchlink/transactionStatus	TEXT	ACTIVE	1	\N
+1585902749	0	1585902749	\N	\N	\N	23	SYSTEM	T&CS	https://switchlinkafrica.co.ke/	TEXT	ACTIVE	0	\N
+1585902777	0	1585902777	\N	\N	\N	24	CRB	source	CREDIT INFO	TEXT	ACTIVE	0	\N
+1585902634	0	1585902634	\N	\N	\N	22	BRIDGE	running_services	TRUE	BOOL	ACTIVE	0	\N
+1585903515	0	1585903515	\N	\N	\N	25	CUTOFF	time	1500	HOURS	ACTIVE	0	\N
+1585903554	0	1585903554	\N	\N	\N	27	Switch	retry	10	MINUTES	ACTIVE	0	\N
+1585904549	0	1585904549	\N	\N	\N	28	BRIDGE	host	0.0.0.0	TEXT	ACTIVE	0	\N
+1585904583	0	1585904583	\N	\N	\N	29	BRIDGE	port	8502	TEXT	ACTIVE	0	\N
+1585904614	0	1585904614	\N	\N	\N	30	PI	url	http://52.20.176.4:8090/api/eftv2/	TEXT	ACTIVE	0	\N
+1585904642	0	1585904642	\N	\N	\N	31	PI	username	apiaccount	TEXT	ACTIVE	0	\N
+1585904662	0	1585904662	\N	\N	\N	32	PI	password	AuE8u+(	TEXT	ACTIVE	0	\N
 1585723265	0	1585723265	\N	\N	\N	13	MONEYTRANS	end_point	https://test-networkextensions.moneytrans.eu/v3/PayoutServices.asmx	TEXT	ACTIVE	0	\N
-1584794639	\N	1584794639	\N	\N	\N	6	TEST	bridge_query_url	http://localhost:8501/api/bridge/query/	TEXT	ACTIVE	1	\N
-1584525558	\N	1584525558	\N	\N	\N	5	TEST	bridge_request_url	http://localhost:8501/api/bridge/request	TEXT	ACTIVE	1	\N
+1585904709	0	1585904709	\N	\N	\N	33	AML	fuzzyscore	70	NUMERIC	ACTIVE	0	\N
+1585904763	0	1585904763	\N	\N	\N	34	API	key	Jpfrk5qEol	TEXT	ACTIVE	0	\N
+1585904776	0	1585904776	\N	\N	\N	35	API	password	I6jTtlbKwcyTEXi	TEXT	ACTIVE	0	\N
+1585904787	0	1585904787	\N	\N	\N	36	API	host	localhost	TEXT	ACTIVE	0	\N
+1585904801	0	1585904801	\N	\N	\N	37	API	port	localhost	TEXT	8501	0	\N
+1586178914	0	1586178914	\N	\N	\N	45	CASHLINK	request_url	http://cashlink:9090/switchlink/payments	TEXT	ACTIVE	0	\N
+1586180266	0	1586180266	\N	\N	\N	48	BRIDGE	xrate_url	http://backoffice:22963/api/Utilities/getExchangeRates?partnerId=15	TEXT	ACTIVE	0	\N
 1585733781	0	1585733781	\N	\N	\N	15	MONEYTRANS	api_request_url	http://localhost:8500/api/v1/request	TEXT	ACTIVE	0	\N
+1586179308	0	1586179308	\N	\N	\N	46	BRIDGE	query_url	http://superbridge:8501/api/bridge/query/	TEXT	ACTIVE	0	\N
+1586179390	0	1586179390	\N	\N	\N	47	BRIDGE	request_url	http://superbridge:8501/api/bridge/request	TEXT	ACTIVE	0	\N
+1587190945	0	1587190945	\N	\N	\N	49	API	log_path	/root/moneytransapi/logs/	TEXT	ACTIVE	0	\N
+1587195588	0	1587195588	\N	\N	\N	11	MONEYTRANS	access_token_19900	a16443e7-ce1e-4f9c-9a39-0f204a7c8109	TEXT	ACTIVE	86	\N
+1587195588	0	1587195588	\N	\N	\N	12	MONEYTRANS	expires_in_19900	1587414673	NUMERIC	ACTIVE	86	\N
+1587753215	0	1587753215	\N	\N	\N	57	DISPATCHER	query_url	http://dispatcher:12000/api/v1/transactions/	TEXT	ACTIVE	0	\N
+1587753241	0	1587753241	\N	\N	\N	60	DISPATCHER	Api-Password	3tCNb4yd6er0GHd	TEXT	ACTIVE	0	\N
+1587753253	0	1587753253	\N	\N	\N	61	DISPATCHER	Api-Key	HTm2RmXjm9	TEXT	ACTIVE	0	\N
+1587753225	0	1587753225	\N	\N	\N	58	DISPATCHER	call_back_url	https://dispatcher:12000/api/callback	TEXT	ACTIVE	0	\N
+1587753232	0	1587753232	\N	\N	\N	59	DISPATCHER	url	http://dispatcher:12000/api/v1/disbursements	TEXT	ACTIVE	0	\N
+\.
+
+
+--
+-- Data for Name: tbl_trn_incidents; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.tbl_trn_incidents (date_time_added, added_by, date_time_modified, modified_by, user_activity_log_id, source_ip, latest_ip, incident_id, request_id, request_number, partner_id, partner_name, transaction_ref, transaction_date, collection_branch, transaction_type, service_type, sender_type, sender_full_name, sender_address, sender_city, sender_country_code, sender_currency_code, sender_mobile, send_amount, sender_id_type, sender_id_number, receiver_type, receiver_full_name, receiver_country_code, receiver_currency_code, receiver_amount, receiver_city, receiver_address, receiver_mobile, mobile_operator, receiver_id_type, receiver_id_number, receiver_account, receiver_bank, receiver_bank_code, receiver_swiftcode, receiver_branch, receiver_branch_code, exchange_rate, commission_amount, paybill, remarks, callbacks, original_message, incident_code, incident_note, incident_description, record_version, sent) FROM stdin;
 \.
 
 
@@ -10848,61 +8980,9 @@ COPY public.tbl_sys_settings (date_time_added, added_by, date_time_modified, mod
 -- Data for Name: tbl_trn_requests; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.tbl_trn_requests (date_time_added, added_by, date_time_modified, modified_by, user_activity_log_id, source_ip, latest_ip, request_id, request_number, request_hash, request_status, transactions, transactions_value, record_version) FROM stdin;
-1585897748	0	1585897748	\N	\N	\N	\N	1391	200402000003	1713cf4afcc737b853456be45c9ae648bb7590ee456760970e86c42ecb9b0fb20bfd7d1aca07c59e37c38d43b002134a74cfe35389eaf1c59123a394c428a47c	PROCESSED	1	2000	1
-1585897747	0	1585897747	\N	\N	\N	\N	1390	200402000002	edb193147d43d68ad831c5f71c9176fd100d7a87df176ea730b4d9c631097bdad0e1e2dce5390fc1b6d730515f7e3de59404a8b195f4b547faaefdff03a13f4e	PROCESSING	1	2000	0
-1585897748	0	1585897748	\N	\N	\N	\N	1392	200402000004	0ee6e1de68e4c7ff8f04b0d5fc977b99fc2d18ba6f16c73b707723c7831eece3f1f75210738417a6ee59a4d3a36dcf19297d6c2cdb5b16406ca9a8e4ae3bcc82	PROCESSED	1	3000	1
-1585897748	0	1585897748	\N	\N	\N	\N	1393	200402000005	a9313b2d6e7412ce48eae257ff499d9db4390438e56460cc4bca6569cc977e804777c646fc6fe986574e28b6e9324f9502e4e9eddaa554b3c7dda2e9e09dd4ca	PROCESSED	1	2000	1
-1585897749	0	1585897749	\N	\N	\N	\N	1395	200402000007	3f3472b93f2ecb7d08c188960ba069409cfb34abfda572fcf1bdbfa147c5844e7eeceaded6348cb03dcf6cfb8baf0b72127944a01ba8608c79d5277b093e89c3	PROCESSED	1	3000	1
-1585897749	0	1585897749	\N	\N	\N	\N	1394	200402000006	73f040569e597660cd5325ee231079a73967d41b2dc15e7c6915e12b6b7b4442c9f27f44dd76022d1aa599fab8363f6d93bfef371d29cd358e457721e63e2326	PROCESSING	1	1000	0
-1585897749	0	1585897749	\N	\N	\N	\N	1396	200402000008	91120c4586baad3f415760fe86431cc61357ae2f37a9f8f216b3d5deecdd2474a9505260cebf59d84e1f673eb75acbab9fb28b1123cc1f8295f01584a0edf167	PROCESSED	1	2000	1
-1585897751	0	1585897751	\N	\N	\N	\N	1398	200402000010	2fa36bdd2417b157cab6f0177c8db4edce42c5c86785aef485b616578c7d722ec5a653b5f098acdb6fa6f10303fbde1f72b676fbebae377635f78db6c792d876	PROCESSED	1	1000	1
-1585897750	0	1585897750	\N	\N	\N	\N	1397	200402000009	e66732f271319b892c63754f88bbdf3ffe6582022b7171ceb41620a86f04f1f170440115a762a3f3b38ddad27cf146883389cc46b5ed2a728fbdd76133be4219	PROCESSING	1	2000	0
-1585897755	0	1585897755	\N	\N	\N	\N	1413	200402000025	03d9c49153808ca1411783d28eddfc4b5af82131ba4999f0136392060b380337ae34df5b071f030ef608d6fdd853b654b543d3df5c1f5f10b171baa0a679bc45	PROCESSING	1	2000	0
-1585897756	0	1585897756	\N	\N	\N	\N	1419	200402000031	ce0b1f00ed2f5bf7f0b3d24b488515939c34bb3826ff2fd4d1e4d85dc734c088f3f5b51e14855dd9e8f0d049a470cd6e43bc05eabb7f8717d224b1f973741a92	NEW	1	2000	0
-1585897757	0	1585897757	\N	\N	\N	\N	1420	200402000032	bd0d95a301fb2f08ba03d13521f63721822fdd94f70d69e3f616c70e25f453378fe0b57e3ff964aaf9af31db17bae8e96eb142ce02ac70ad7a916a7841e1a7c9	NEW	1	2000	0
-1585897757	0	1585897757	\N	\N	\N	\N	1421	200402000033	1f59a8e7f7dcab8fb213be83dcf3f97eb482a034d8b6a9251948b9624d9ee3bee28bf80539031a364e152e5f8eb68502603e7806e23e59e59e710f3ddb1985f1	NEW	1	2000	0
-1585897757	0	1585897757	\N	\N	\N	\N	1422	200402000034	47b522b36b5e10f4d493c0bb561de36c24f251b702d9f08bb090e1989ff3d9a431bbfe223b1688febbbb3c9081cf75a7d2998d0e139196f0c5dae2f5e85bece6	NEW	1	3000	0
-1585897757	0	1585897757	\N	\N	\N	\N	1423	200402000035	29f53ad7c85defc7f037cb610761f06056ab0fdf0b9199b572c16a4ebb5dfb806d62da548027cf64e9cf58eaa19ecccf723b04ea0009734692414a6f9a47bb14	NEW	1	3000	0
-1585897758	0	1585897758	\N	\N	\N	\N	1424	200402000036	0d4357fe0c38f54d7b19dc2d2b83c668406046ac63c8815e39c12bce6846d3f0dd90e06cab03e4dc4a90274607ed1213e58b67fbdaf9a1da1bd072377355316a	NEW	1	3000	0
-1585897751	0	1585897751	\N	\N	\N	\N	1399	200402000011	f8d9576ddd0bd21f55f8df1451c851f36738586c40090b69cedd7126dd1df2980bde8f4ecfb6d287efe734e81a788e2e8ba7c98f0c427c165db733343f66a6e0	PROCESSED	1	1000	1
-1585897753	0	1585897753	\N	\N	\N	\N	1404	200402000016	9150fd0790cedfc246ae4d1e18fbad955d47f9dc53deb6995a9eb2c3980c9d882e011ced02a7cbc772d2757b88d1aafe7e7aaea8e86dbadb936a7a939c809b4b	PROCESSING	1	3000	0
-1585897755	0	1585897755	\N	\N	\N	\N	1416	200402000028	da579f82ac93f0fa17c78d1d7eb6f33b951beb32c58781911ea1c9e38d82f5847ab2279dd775c1e7cfa3b16b58533afd1d1de51b5ca85a8259a547cf9b8c20c5	PROCESSED	1	1000	1
-1585897756	0	1585897756	\N	\N	\N	\N	1418	200402000030	8f8769cc6d7ed66cdaee527f17c8f454bbe37180c70bfed11e2658b43cd4a0f851b8ed101e9296a763e23b7f5757ed3a1c422d9cd45f3464e7ad75e674643226	PROCESSING	1	1000	0
-1585897752	0	1585897752	\N	\N	\N	\N	1403	200402000015	5b57799ea0574017a15949ce944d4c0f37894b840dd65e71a59d562df0d52265db7ea3ef0c31159e2ef94d7f0816ab1a3b899675a1a348b5ee2d415eb5b37c4d	PROCESSED	1	1000	1
-1585897753	0	1585897753	\N	\N	\N	\N	1405	200402000017	b5d8eee9f054915fd4fde5ceef9d69925e2879357f8ca22e85135a9f5957707dd5dacbeb760396fb67074dde64fc99ddca312faad936c0b46b7e524b23f124a0	PROCESSED	1	2000	1
-1585897753	0	1585897753	\N	\N	\N	\N	1406	200402000018	ec6b5df7c67796f56c85613a8f08e0628a27b093615ed481ecac7ea1f854769e2ee6786ac142d9e3dfdef42c6f5dd307ca1101b46489c79909e27832b408f6c5	PROCESSED	1	2000	1
-1585897755	0	1585897755	\N	\N	\N	\N	1412	200402000024	f4dfbf1b527410b310e360f1f8c6d5058bef9b7220b35bf2372b9ccc1e3abe46798f9ec28ef532c02905912e45bf24df0ec2afbe9070e87a67dd32b301a16ded	PROCESSING	1	3000	0
-1585897754	0	1585897754	\N	\N	\N	\N	1409	200402000021	0682907ed4db8a472b6191a9fce5ed7a04ed4a6ad6834c4c461f8c86b23e286d4a0915f8a04773b2cfcd48f2e6ff9e387fc21e05b58c3f3c08fa11ef69b6c477	PROCESSED	1	1000	1
-1585897754	0	1585897754	\N	\N	\N	\N	1410	200402000022	3cfc2047532bfab82055739a84ed99309650ba71b51de808b001a74c96958ad94f04f0b6f5cc77777372620bd08d5c82f519cb667df3e48367d1015b536c1f98	PROCESSED	1	1000	1
-1585897754	0	1585897754	\N	\N	\N	\N	1411	200402000023	40161aa0e353d38579fd987b51b5dbbaf7989f1e1d009218f455574cc4694c7715e568ddd54a4271f8d64e92f48879f47ea3087006105e1d76543fa1a9fb6162	PROCESSED	1	2000	1
-1585897755	0	1585897755	\N	\N	\N	\N	1414	200402000026	c0ef52d06f89623f3be679fcbd41effa9d714ba2879dfa6ff7ac80be2a6bd0291e54c45b5f27c65d8e1069a9768b31f73b99adf4a7dbc3268e30d875c80738d8	PROCESSED	1	2000	1
-1585897755	0	1585897755	\N	\N	\N	\N	1415	200402000027	2b45fe925f89254405dfbf248e77ce8674db40f43a6df72537f9c35bc341d455b8f2546b43fff2e96f04a56c4d1a220ab543ab89cb620b48d75f53c04669464a	PROCESSED	1	2000	1
-1585897756	0	1585897756	\N	\N	\N	\N	1417	200402000029	c546ae799708d7b1814067b2aeea87ef4e749f6790bba1777548097422d04c6ce589f0d25497435b124e3b68eace9e9aaba96cc1494fcc261d6618e82c632e3a	PROCESSING	1	2000	0
-1585897758	0	1585897758	\N	\N	\N	\N	1425	200402000037	a1b2e576216a05a50dffec8612b9dd6f395ec1b085099eeb9c572190c32127019c2caa25e7b25a5ee6934cb86777e1764565e235cac1f32e8fce803c38811cd9	NEW	1	3000	0
-1585897758	0	1585897758	\N	\N	\N	\N	1426	200402000038	880fcf48adf0d6983d4e158fc97fd3bf3edd53995c113ef50ac19462e6b387006399d0d99d4c60575688ef39995843459e686a2b9ad8a7bd8974e95bad531103	NEW	1	1000	0
-1585897788	0	1585897788	\N	\N	\N	\N	1432	200402000044	019f59406bb1f0617685b4383fbd5a14e8fddc91fee71fd10ea89d2d6185b85b17862e8c5e2038bce15a2844dc21c19cb8accf47bfc95a15bbd01054324c9126	NEW	1	5.44	0
-1585897788	0	1585897788	\N	\N	\N	\N	1433	200402000045	3bcbb5378cabe268e3c11d286479185e99ef962892795546da1b886181b526f454135af6de960fe368ad7005b42a4b49741805db814fe763738eb17c7ad45338	NEW	1	10.89	0
-1585897789	0	1585897789	\N	\N	\N	\N	1437	200402000049	0fb0263575723375db95e9c39ede3645bfd4578d30a6a01b4288022d7d67d61efa709d63571cad4bd45b97157e3f230314746b15f98575151bb22ff7147dd2fa	NEW	1	25.28	0
-1585897789	0	1585897789	\N	\N	\N	\N	1440	200402000052	feda1035321e3d4eadda9e8b2de1262c294ecb845503cb31fafac604ebece7b2f9954e7be0b0ff828432ba505919fb1066c7d2c62d0a8197ee899f1a805cde7b	NEW	1	30.34	0
-1585897758	0	1585897758	\N	\N	\N	\N	1427	200402000039	3bc654b11d68a27176b81c78aba43ad54b234ec9ec947425078570a8cb5cda7518e6096f33df6cea9a5bc64fe06442c67656d572c0fc147c68f40673b4ec5e92	NEW	1	1000	0
-1585897789	0	1585897789	\N	\N	\N	\N	1436	200402000048	59e4ba979da2ea47e7f34b6ed51e0907c6243e7feed4d32400e1ef7488bf975b5eb2c51b5944ac0229b79dc6465418a979849259f731c2707e877fb2803f0b41	NEW	1	20.23	0
-1585897789	0	1585897789	\N	\N	\N	\N	1439	200402000051	0003ec6e66b4b5004260d52b996a9adf36235a6ff7d9a6e39270f51c6eadc68d5d158e9a508b3415158d0a9533798a3351021633c8fa9f9520d8c16818acc2b2	NEW	1	25.28	0
-1585897759	0	1585897759	\N	\N	\N	\N	1428	200402000040	b6937baf4f8e21ab837956e53b24227936c37d366b4e50647e9134efca7c16ffefbad5c70748b119f6721946d4bf4a8a54ba2d76fad3427c176926b2ec1d8ff7	NEW	1	1000	0
-1585897788	0	1585897788	\N	\N	\N	\N	1431	200402000043	456e4d7c4de5074ba5c270a735019711832eeac54ca34d368085543472aa990645ed241217936f2353363eeb93f0c125515f459f675e25fd9caa1faf11a4003a	NEW	1	20.23	0
-1585897759	0	1585897759	\N	\N	\N	\N	1429	200402000041	2a3f77457b5233a7b82ac9127cde09b4ed7c639bad6d471b45c202a17e4f2d50d2f7c3e8a1482a449688e40046b36efd8dbac0ae0a9bffcd0cb0a30a4d4599a6	NEW	1	2000	0
-1585897788	0	1585897788	\N	\N	\N	\N	1430	200402000042	96c66e04e88245d10b26185cce589c121b1dac31b5a7467817b2e2447d2ec2e57865c2571a1bef50c0cd478fe0903ccb49cfd266c9aa994cfa5f0b6ac8a803b7	NEW	1	21.24	0
-1585897789	0	1585897789	\N	\N	\N	\N	1434	200402000046	f9cc387c71b2c4b312c6e0df3282b426a3b663885c61121dd6c07a1deefdfa96ac90e627978c6edf48305a3c414541e71d2db7f49ee46128abf83a3f11b3c51c	NEW	1	10.11	0
-1585897789	0	1585897789	\N	\N	\N	\N	1435	200402000047	153404d4c00326d91607980bcdee475388271596f0619aa10b56e46ea67928db26f3b224f0858dd0e724e02b594ceaa70626a5473746edf93eeff5ad95137f0d	NEW	1	16.33	0
-1585897789	0	1585897789	\N	\N	\N	\N	1438	200402000050	4d10aac260667ecaf6f00a427941acd2b66e49fda0c2e2f63706c08d69404181b1651a0b88b8c5cd6f6c12bb3043ac02cf20b2d175e54dce6deece74c8d66763	NEW	1	20.23	0
-1585897789	0	1585897789	\N	\N	\N	\N	1441	200402000053	731f0fe602c8ba6a428b1ca284b27a3881f66eb56a57a09af1296b29daab98fb5e54598cf97dcf1dd920286a32780a0369d40f6f839f4b7f1fb7d7180d544aa4	NEW	1	3.27	0
-1585897789	0	1585897789	\N	\N	\N	\N	1442	200402000054	e2ca107abaf262eb263857a3a91114c0ad6fb180bac6fc1ee4de2378bd4030ce875d59f80f3614f459b61a72618379eb48537aa2d309bdc3cb9b793d0c0b333a	NEW	1	27.23	0
-1585897747	0	1585897747	\N	\N	\N	\N	1389	200402000001	569c03792293213242784011d860a7c0b788a9fd6cffb6a5f489140a46afee3b93cc7296d5c671ad594d9844f01f09c0aa834146cd66a0f242442b0e71bf10cf	PROCESSED	1	3000	1
-1585897752	0	1585897752	\N	\N	\N	\N	1401	200402000013	73ceaac92b4501c2d6bffa196f2ec04feff71d511ad172fcb9387467c0130e8e78aa07e662a436ecb3e70da1faf48338d3669d31401011287b97e9d1de641d73	PROCESSING	1	2000	0
-1585897751	0	1585897751	\N	\N	\N	\N	1400	200402000012	015d3d0c1179a39f5a69befddd9e0f2304db88b0a635f65d2af406702810ef63db05bf125ca3bda5820d6d2c67692365152f00913e461c6827803b8b428ffc8f	PROCESSED	1	1000	1
-1585897752	0	1585897752	\N	\N	\N	\N	1402	200402000014	347352483582ef0408b5ec7c03f02c171fda25961df31cd3d82e58eb993a6abd2d093a2fdcb88bb70cbf0fc13257bd2a24d5bd92bbf96fe4ae737d5da63c8f74	PROCESSED	1	2000	1
-1585897754	0	1585897754	\N	\N	\N	\N	1408	200402000020	2a288c749d29d06c90d8ea89673e90cc737135d52297be56dbae8081d4a6fc6438ac36daf6f64f8b686e6781cf974001a25409b4c25dc521766efa5641242bb5	PROCESSING	1	2000	0
-1585897753	0	1585897753	\N	\N	\N	\N	1407	200402000019	577797cd6cb24fa9492586acd418d82bfc0587cd655c6ee2150583ac3cfb44ffd5b021c35625c8addbea24b8b90c6e5c531f213f2c340d1cf9ba0f1a93f0707a	PROCESSED	1	2000	1
+COPY public.tbl_trn_requests (date_time_added, added_by, date_time_modified, modified_by, user_activity_log_id, source_ip, latest_ip, request_id, request_number, request_hash, request_status, transactions, transactions_value, original_message, record_version) FROM stdin;
+1587812625	0	1587812625	\N	\N	\N	\N	1742	200425000012	a8d36929093d57fb6ad7b1af9edb660af7b71bf71deb57bde1c0ee1db6f56e2090933bb6ddfb8c8b21dadb90be74b59116e6d184147f05bbca7625064e254a61	PROCESSING	1	2000	{entries=[{partner_id=SWLU0004, transaction_ref=acd4e36d3dd5, transaction_date=20200325, collection_branch=Nairobi, transaction_type=M, sender_type=P, sender_full_name=Lee KAMAU, sender_address=JOHN DOE'S ADDRESS, sender_city=NAIROBI, sender_country_code=KEN, sender_currency_code=USD, sender_mobile=2547201, send_amount=2000, sender_id_type=pass, sender_id_number=88998899, receiver_type=P, receiver_full_name=BEN WERU, receiver_country_code=KEN, receiver_currency_code=KES, receiver_amount=200, receiver_city=NAIROBI, receiver_address=RECIEVER ADDRESS, receiver_mobile=254708374149, mobile_operator=SAFARICOM, receiver_id_type=Passport, receiver_id_number=11223344, receiver_account=09809123456, receiver_bank=EQUITY BANK LIMITED, receiver_bank_code=50, receiver_swiftcode=EQBLKENA, receiver_branch_code=003, receiver_branch=KANGEMA, exchange_rate=1, commission_amount=, remarks=, callbacks=[]}]}	0
+1587812636	0	1587812636	\N	\N	\N	\N	1743	200425000013	4af79c9b12c1afc4247af421cbee61eaac4ea7926b9375c4649d1898437104cf630ff2854567ca222022254ae03f488fe83f44883370e457061fdc6152dcaba3	PROCESSING	1	2000	{entries=[{partner_id=SWLU0004, transaction_ref=acd4e336d3dd5, transaction_date=20200325, collection_branch=Nairobi, transaction_type=M, sender_type=P, sender_full_name=Lee KAMAU, sender_address=JOHN DOE'S ADDRESS, sender_city=NAIROBI, sender_country_code=KEN, sender_currency_code=USD, sender_mobile=2547201, send_amount=2000, sender_id_type=pass, sender_id_number=88998899, receiver_type=P, receiver_full_name=BEN WERU, receiver_country_code=KEN, receiver_currency_code=KES, receiver_amount=200, receiver_city=NAIROBI, receiver_address=RECIEVER ADDRESS, receiver_mobile=254708374149, mobile_operator=SAFARICOM, receiver_id_type=Passport, receiver_id_number=11223344, receiver_account=09809123456, receiver_bank=EQUITY BANK LIMITED, receiver_bank_code=50, receiver_swiftcode=EQBLKENA, receiver_branch_code=003, receiver_branch=KANGEMA, exchange_rate=1, commission_amount=, remarks=, callbacks=[]}]}	0
 \.
 
 
@@ -10910,61 +8990,9 @@ COPY public.tbl_trn_requests (date_time_added, added_by, date_time_modified, mod
 -- Data for Name: tbl_trn_transactions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.tbl_trn_transactions (date_time_added, added_by, date_time_modified, modified_by, user_activity_log_id, source_ip, latest_ip, transaction_id, request_id, request_number, partner_id, transaction_ref, transaction_date, collection_branch, transaction_type, service_type, sender_type, sender_full_name, sender_address, sender_city, sender_country_code, sender_currency_code, sender_mobile, send_amount, sender_id_type, sender_id_number, receiver_type, receiver_full_name, receiver_country_code, receiver_currency_code, receiver_amount, receiver_city, receiver_address, receiver_mobile, mobile_operator, receiver_id_type, receiver_id_number, receiver_account, receiver_bank, receiver_bank_code, receiver_swiftcode, receiver_branch, receiver_branch_code, exchange_rate, commission_amount, remarks, paybill, transaction_number, transaction_hash, transaction_status, transaction_response, switch_response, query_status, query_response, sent, callbacks, callbacks_status, queued_callbacks, completed_callbacks, callback_status, record_version) FROM stdin;
-1585897747	0	1585897808	\N	\N	\N	\N	1379	1389	200402000001	SWLU0004	sQBU5IYImv	20200403	BRANCH	C	\N	P	Ms. Alesha Corkery	431 Eartha Road, Lake Gene, AR 32918	Manama	td	HNL	com.github.javafaker.PhoneNumber@9a79d1d	3000	Passport	254720711388	P	Grace Douglas IV	KEN	KES	3000	Nairobi	158 Mertz Vista, Manstad, PA 12990	254720711388	SAFARICOM	National ID	254720711388	254720711388	N/A	N/A	KEXXXXX	BRANCH A	N/A	91	29	Wesley Crusher	\N	200402000001	7612c6f78975abf876e45de4abd05eccdabeec43ef32c741636ca05d2959cfb16c5eb28677a0b9510010e285c604e487b051b446654ef518c465e6be1490b15e	COMPLETED	Successfully submitted to bridge	Posted Successfully	10	Posted Successfully	t	[]	[]	0	0	1	5
-1585897754	0	1585897815	\N	\N	\N	\N	1401	1411	200402000023	SWLU0004	F3UEZifXwj	20200403	BRANCH	M	\N	P	Merri Bradtke	87566 Wehner Lane, Epifaniaside, TX 23531	Tbilisi	lb	HTG	com.github.javafaker.PhoneNumber@47c6b6ca	2000	Passport	254720711386	P	Michale Gleason	KEN	KES	2000	Nairobi	636 Little Fields, Funkview, AR 25049-2642	254720711386	SAFARICOM	National ID	254720711386	254720711386	N/A	N/A	KEXXXXX	BRANCH A	N/A	91	29	Jadzia Dax	\N	200402000023	e068509c2638d77359d7fe7e507350eaedbe9c3b4d2d98fd34e8be57f8cd95c9b5e08f78b1ceef97c32ac318258f14928fb2ccf0076cd3068a51a66b4176b8a2	COMPLETED	Successfully submitted to bridge	Posted Successfully	00	Posted Successfully	t	[]	[]	0	0	1	5
-1585897748	0	1585897809	\N	\N	\N	\N	1382	1392	200402000004	SWLU0004	mbQLwn2Kpd	20200403	BRANCH	C	\N	P	Monty Dibbert	3629 Vickie Forge, Sungmouth, RI 32327	Muscat	ua	CZK	com.github.javafaker.PhoneNumber@1dde0a26	3000	Passport	254720711387	P	Grace Rohan	KEN	KES	3000	Nairobi	Apt. 278 156 Latina Lock, West Lucillafurt, TN 29471	254720711387	SAFARICOM	National ID	254720711387	254720711387	N/A	N/A	KEXXXXX	BRANCH A	N/A	91	29	Wesley Crusher	\N	200402000004	8417290a2e9b82a9e899d924eb9d67a9e44f02794bef56479a65493fed134f97cd28cd256e47c1697928cc7dde36c537b0470fc2b1aae06dbab9eac3926ae76e	COMPLETED	Successfully submitted to bridge	Posted Successfully	10	Posted Successfully	t	[]	[]	0	0	1	5
-1585897749	0	1585897810	\N	\N	\N	\N	1386	1396	200402000008	SWLU0004	X7OEw5WaDI	20200403	BRANCH	M	\N	P	Errol Maggio	5068 Dario Isle, Port Jorgeview, DE 88373	Kinshasa	mw	BDT	com.github.javafaker.PhoneNumber@5513f8d1	2000	Passport	254720711386	P	Milton Abernathy	KEN	KES	2000	Nairobi	Suite 732 023 Graham Streets, Lake Lancetown, CA 07745-4512	254720711386	SAFARICOM	National ID	254720711386	254720711386	N/A	N/A	KEXXXXX	BRANCH A	N/A	91	29	Phlox	\N	200402000008	bccb434d300e9784525a2ca2f65541ffe9edb34721da5a7ab1b930af9c236051b067c915e08445b12d8c1a44c3b9998998c3ef478b5056cd71840975be0f79b2	COMPLETED	Successfully submitted to bridge	Posted Successfully	00	Posted Successfully	t	[]	[]	0	0	1	5
-1585897748	0	1585897809	\N	\N	\N	\N	1383	1393	200402000005	SWLU0004	3egTpwNLlU	20200403	BRANCH	M	\N	P	Latarsha Hand	76248 Sean Skyway, West Rosalyn, IL 53350	Tehran	jm	BYR	com.github.javafaker.PhoneNumber@2f2a308c	2000	Passport	254720711387	P	Willie Jakubowski	KEN	KES	2000	Nairobi	Suite 854 52393 Reilly Wells, West Eliatown, IA 39099	254720711387	SAFARICOM	National ID	254720711387	254720711387	N/A	N/A	KEXXXXX	BRANCH A	N/A	91	29	Data	\N	200402000005	895a491278fcf1f52ce20f00f1713db964c33e5cb9fdda64ca5c6dbc599cbe309642d10c2411e858026971397af709efe36c8227e07e04d3308d694d970b91e2	COMPLETED	Successfully submitted to bridge	Posted Successfully	00	Posted Successfully	t	[]	[]	0	0	1	5
-1585897749	0	1585899213	\N	\N	\N	\N	1384	1394	200402000006	SWLU0004	GZiaxMC5Y2	20200403	BRANCH	B	\N	P	Mr. Kyong Rohan	Apt. 261 88225 Major Stravenue, New Cicely, IN 44639	Jamestown	ml	JOD	com.github.javafaker.PhoneNumber@2e70485d	1000	Passport	254720711388	P	Catalina Feeney DVM	KEN	KES	1000	Nairobi	Suite 039 22157 Welch Shoals, Lindgrenside, GA 97227-9506	254720711388	SAFARICOM	National ID	254720711388	254720711388	BARCLAYS BANK OF KENYA LTD.	B0003	KEXXXXX	BRANCH A	001	91	29	Pavel Chekov	\N	200402000006	56a680eb3fe7ab980c9d6a41c2d75940a72d7b046b25342255acc67ee5c955b14049fd0e3b3dbae9d9753b31168c66a81f608f35344d0b819cb815d825aa7e3b	UPLOADED	Successfully submitted to bridge	Transaction failed initialization.Backoffice intervention needed	10	Transaction failed initialization.Backoffice intervention needed	t	[]	\N	1	0	0	50
-1585897749	0	1585897810	\N	\N	\N	\N	1385	1395	200402000007	SWLU0004	kjRxY6cVkR	20200403	BRANCH	M	\N	P	Malik Weimann	Apt. 370 97139 Buck Ports, Macejkovicbury, TX 64299-7773	Tegucigalpa	hn	LYD	com.github.javafaker.PhoneNumber@5e25b8e2	3000	Passport	254720711387	P	Norberto Nikolaus	KEN	KES	3000	Nairobi	Apt. 415 527 Irvin Plaza, South Reynaldoborough, NH 07509-1812	254720711387	SAFARICOM	National ID	254720711387	254720711387	N/A	N/A	KEXXXXX	BRANCH A	N/A	91	29	Phlox	\N	200402000007	f14d7ad7c03a8c6c425cc3ef225a591f674fa25b2a7b7cc87683d48ed346721a296022860ed00580bc26fdc807cb4d284fdca5d96c75e30e72bd94270a232ed9	COMPLETED	Successfully submitted to bridge	Posted Successfully	00	Posted Successfully	t	[]	[]	0	0	1	5
-1585897751	0	1585897812	\N	\N	\N	\N	1388	1398	200402000010	SWLU0004	lsNvQHoCyw	20200403	BRANCH	M	\N	P	Anamaria Kirlin	703 Carl Corners, Ngoctown, ND 68696-5862	Vientiane	ga	NIO	com.github.javafaker.PhoneNumber@4e9d3a8a	1000	Passport	254720711388	P	Ha Yundt	KEN	KES	1000	Nairobi	Apt. 719 87566 Shu Keys, Beahanbury, MN 26442	254720711388	SAFARICOM	National ID	254720711388	254720711388	N/A	N/A	KEXXXXX	BRANCH A	N/A	91	29	Beverly Crusher	\N	200402000010	d1d7c0bfb75a8c298415daf9b48af46939ed3f967a118b7095e1b92a935e1389d843b375875d6f9c05697e56012a83018d34083a6ef565428a387c83c0935e35	COMPLETED	Successfully submitted to bridge	Posted Successfully	00	Posted Successfully	t	[]	[]	0	0	1	5
-1585897756	0	1585899222	\N	\N	\N	\N	1407	1417	200402000029	SWLU0004	tbY8tiZXrI	20200403	BRANCH	B	\N	P	Mrs. Jordan Leuschke	9200 Nida Skyway, New Lolita, TN 65590	Hamilton	ss	HRK	com.github.javafaker.PhoneNumber@7ebc8c4c	2000	Passport	254720711386	P	Mrs. Manual Kilback	KEN	KES	2000	Nairobi	Apt. 721 27997 Abbott Canyon, New Delshire, NH 50178-0092	254720711386	SAFARICOM	National ID	254720711386	254720711386	STANDARD CHARTERED BANK	B0002	KEXXXXX	BRANCH A	000	91	29	Nyota Uhuru	\N	200402000029	cc6ab1462884a907449fb7accad3191368bf6d9d0d75b0dbc56f538ff465deb9caa6979dc524a9e165a6d946dd2f814b6f9f4769318ecb66fe1f91de2092af80	UPLOADED	Successfully submitted to bridge	Transaction failed initialization.Backoffice intervention needed	10	Transaction failed initialization.Backoffice intervention needed	t	[]	\N	1	0	0	50
-1585897755	0	1585897816	\N	\N	\N	\N	1404	1414	200402000026	SWLU0004	pQDj4sq2xZ	20200403	BRANCH	C	\N	P	Heriberto Monahan	7177 Harley Estates, Port Altheaport, WI 79826-5193	Kingstown	al	SYP	com.github.javafaker.PhoneNumber@49b4bf6d	2000	Passport	254720711386	P	Darlena Leuschke	KEN	KES	2000	Nairobi	Apt. 341 89809 Schaden Pass, Port Esteban, SC 58552-9944	254720711386	SAFARICOM	National ID	254720711386	254720711386	N/A	N/A	KEXXXXX	BRANCH A	N/A	91	29	Charles Tucker III	\N	200402000026	9e9af4d05cbc5a1eec397c86bff8d06da159ef0eb989267585379e11497a6f3ececa93ed68f46365e6d19cc035eebfa30e29530fc867ba2e7ae7bbe7683f9279	COMPLETED	Successfully submitted to bridge	Posted Successfully	10	Posted Successfully	t	[]	[]	0	0	1	5
-1585897753	0	1585897814	\N	\N	\N	\N	1396	1406	200402000018	SWLU0004	sj9zImcJSf	20200403	BRANCH	C	\N	P	Tommie Howe	Suite 511 235 Kristofer Trace, North Careyport, MO 51789	San Salvador	kn	JPY	com.github.javafaker.PhoneNumber@285ba7e9	2000	Passport	254720711388	P	Hugo Macejkovic DDS	KEN	KES	2000	Nairobi	Apt. 852 511 Greenholt Street, Batzville, ID 14916	254720711388	SAFARICOM	National ID	254720711388	254720711388	N/A	N/A	KEXXXXX	BRANCH A	N/A	91	29	Kira Nerys	\N	200402000018	50fccf1b99127fc5561b529c4b6849a100eb9e5ac593163a4a5252d7cde295c896e99135787872d966786ec667342493bfa175d71f08ee4c8512c09b2941505c	COMPLETED	Successfully submitted to bridge	Posted Successfully	10	Posted Successfully	t	[]	[]	0	0	1	5
-1585897755	0	1585899219	\N	\N	\N	\N	1402	1412	200402000024	SWLU0004	RbKyq6tRHE	20200403	BRANCH	B	\N	P	Marlen Toy	3844 Torp Key, Elviaport, SD 03551-5510	Mexico City	de	MYR	com.github.javafaker.PhoneNumber@1ed18fd6	3000	Passport	254720711386	P	Dr. Kiesha Spinka	KEN	KES	3000	Nairobi	15359 Kuphal Stream, Markuston, MA 38003	254720711386	SAFARICOM	National ID	254720711386	254720711386	BANK OF BARODA	B0005	KEXXXXX	BRANCH A	000	91	29	Charles Tucker III	\N	200402000024	f9fc4834f1165d7590cf8c78b979fa970146d4db6e6c9be837b0efb492c3731e26301898b432507fd28832fb9f0e53d893860dd9e09f3c78077eee15690d2d7f	UPLOADED	Successfully submitted to bridge	Transaction failed initialization.Backoffice intervention needed	10	Transaction failed initialization.Backoffice intervention needed	t	[]	\N	1	0	0	50
-1585897753	0	1585897814	\N	\N	\N	\N	1395	1405	200402000017	SWLU0004	NHoDDSvMB3	20200403	BRANCH	C	\N	P	Dirk Reilly	Suite 806 1491 Upton Mountain, New Maileland, ID 81414	San Juan	cz	AFN	com.github.javafaker.PhoneNumber@795a8b90	2000	Passport	254720711387	P	Wilfredo Huels	KEN	KES	2000	Nairobi	Suite 884 842 Labadie Ford, Bertton, AR 60350-3975	254720711387	SAFARICOM	National ID	254720711387	254720711387	N/A	N/A	KEXXXXX	BRANCH A	N/A	91	29	Beverly Crusher	\N	200402000017	eb567b8a7d0444195cb3b3fb48d2c2c75163bb0ad70b4218fedffa0d4518788715229717a506b149f9351c435315533aed12c46d4a2299bc9fc2c19fc9da1e1c	COMPLETED	Successfully submitted to bridge	Posted Successfully	10	Posted Successfully	t	[]	[]	0	0	1	5
-1585897753	0	1585899217	\N	\N	\N	\N	1394	1404	200402000016	SWLU0004	I76W3gzB0T	20200403	BRANCH	B	\N	P	Danika Sawayn	8017 Gwenda Turnpike, Haydenbury, CT 94298	Ouagadougou	gd	BIF	com.github.javafaker.PhoneNumber@3477ee04	3000	Passport	254720711388	P	Ester Boyer	KEN	KES	3000	Nairobi	621 Beata Spring, Ebertside, MN 24574-6933	254720711388	SAFARICOM	National ID	254720711388	254720711388	BARCLAYS BANK OF KENYA LTD.	B0003	KEXXXXX	BRANCH A	001	91	29	Julian Bashir	\N	200402000016	d76024789f0c977ac3c98c92f0afff093c08ef4874915e77fa8bac8da350b509124be46aa2ed7a41c5a1590c452dc347ac3bcd326a88a10537f09bae82b7d215	UPLOADED	Successfully submitted to bridge	Transaction failed initialization.Backoffice intervention needed	10	Transaction failed initialization.Backoffice intervention needed	t	[]	\N	1	0	0	50
-1585897757	0	1585897818	\N	\N	\N	\N	1410	1420	200402000032	SWLU0004	SxnvzCUUE6	20200403	BRANCH	C	\N	P	Leo Beer	18456 Hassan Common, North Violetview, NE 45001-6654	Thimphu	do	GBP	com.github.javafaker.PhoneNumber@c076f4c	2000	Passport	254720711387	P	Wilson Waters	KEN	KES	2000	Nairobi	Apt. 835 2810 Clint Harbors, New Jacinto, MO 57927	254720711387	SAFARICOM	National ID	254720711387	254720711387	N/A	N/A	KEXXXXX	BRANCH A	N/A	91	29	Deanna Troi	\N	200402000032	da02394660e82e124f4b2678360cf654d6d3a82639e8ac2f377220ffe6080cc70863805437b2dbadd54a76e0c016b2fc32e8db517ee9888701882fb0a5e1c252	COMPLETED	Successfully submitted to bridge	Posted Successfully	10	Posted Successfully	t	[]	[]	0	0	1	5
-1585897752	0	1585897814	\N	\N	\N	\N	1393	1403	200402000015	SWLU0004	1FyWtMNgGe	20200403	BRANCH	M	\N	P	Simon Leffler	Apt. 645 924 Klocko Garden, Thielport, VA 84997	Baku	dz	TTD	com.github.javafaker.PhoneNumber@1d399d8f	1000	Passport	254720711388	P	Brent Cremin	KEN	KES	1000	Nairobi	1763 Yost Vista, West Liza, PA 86229-9279	254720711388	SAFARICOM	National ID	254720711388	254720711388	N/A	N/A	KEXXXXX	BRANCH A	N/A	91	29	The Doctor	\N	200402000015	4feafcf166b7785a4d27ecd2c3bb177678bd924f63069b951970476f1024a6d4a6a075c9a9318afb98a691acb53d25b34b17853b43e82f180fa0c93e092f847c	COMPLETED	Successfully submitted to bridge	Posted Successfully	00	Posted Successfully	t	[]	[]	0	0	1	5
-1585897754	0	1585897815	\N	\N	\N	\N	1400	1410	200402000022	SWLU0004	s3ACOQ09yo	20200403	BRANCH	C	\N	P	Ms. Michael Willms	Suite 825 362 Omer Highway, Ozieburgh, AK 15944	Basseterre	kr	HUF	com.github.javafaker.PhoneNumber@3e66b755	1000	Passport	254720711387	P	Tyler Hand	KEN	KES	1000	Nairobi	44266 Alton Hollow, Abshireborough, GA 25179	254720711387	SAFARICOM	National ID	254720711387	254720711387	N/A	N/A	KEXXXXX	BRANCH A	N/A	91	29	Kes	\N	200402000022	b9c0ffda25cbf9305c4a0840d4011d94eb72cd1b4ebc4bb244326e038bf91bb5c521bc06f8ae39f5dc5d2d280e27ff4308e9b293d8835cb815dc3f72c0ccd9e6	COMPLETED	Successfully submitted to bridge	Posted Successfully	10	Posted Successfully	t	[]	[]	0	0	1	5
-1585897758	0	1585897819	\N	\N	\N	\N	1417	1427	200402000039	SWLU0004	iEfJJ7M0h9	20200403	BRANCH	M	\N	P	Emery Connelly	Suite 388 8799 Derick Gateway, Port Javiershire, MA 62542	Brazzaville	by	DZD	com.github.javafaker.PhoneNumber@3e15545a	1000	Passport	254720711387	P	Corrine Windler	KEN	KES	1000	Nairobi	91524 Dahlia Freeway, New Rocco, WI 41277-3083	254720711387	SAFARICOM	National ID	254720711387	254720711387	N/A	N/A	KEXXXXX	BRANCH A	N/A	91	29	Kes	\N	200402000039	0a715fc1d3a3a653a978c8eb7411e574bbd2f5e4883abf5ee11611f810b1307324f086209be7f8f147e70685a1a9a042a68937fb1069b32d26408718d1b14ec3	COMPLETED	Successfully submitted to bridge	Posted Successfully	00	Posted Successfully	t	[]	[]	0	0	1	5
-1585897758	0	1585899224	\N	\N	\N	\N	1416	1426	200402000038	SWLU0004	vya5IOXNJl	20200403	BRANCH	B	\N	P	Yevette Abernathy	Apt. 028 0741 Rey Inlet, Weldonview, CA 44960	Saint John's	me	XAF	com.github.javafaker.PhoneNumber@178206e1	1000	Passport	254720711386	P	Justin Wunsch Sr.	KEN	KES	1000	Nairobi	Apt. 212 99232 Mitchell Summit, East Orvilleborough, WA 66531-4503	254720711386	SAFARICOM	National ID	254720711386	254720711386	KENYA COMMERCIAL BANK	B0001	KEXXXXX	BRANCH A	091	91	29	Jean-Luc Picard	\N	200402000038	4abf3cf11e4c86d7a127f14db69316596de2b9e102a52372bfd4a702b0316e543233e80008dcda43c3c645af50d9ed82735b5f9b373f82782ba675eee28b3345	UPLOADED	Successfully submitted to bridge	Transaction failed initialization.Backoffice intervention needed	10	Transaction failed initialization.Backoffice intervention needed	t	[]	\N	1	0	0	50
-1585897757	0	1585897818	\N	\N	\N	\N	1411	1421	200402000033	SWLU0004	nCnEdliq1i	20200403	BRANCH	M	\N	P	Serafina Gottlieb PhD	92647 Rosalind Squares, Huelfort, CT 44658-4203	Pretoria	er	AUD	com.github.javafaker.PhoneNumber@115a54fe	2000	Passport	254720711388	P	Alethea Kassulke	KEN	KES	2000	Nairobi	69141 Lashaunda Point, South Antwan, MN 36257-3114	254720711388	SAFARICOM	National ID	254720711388	254720711388	N/A	N/A	KEXXXXX	BRANCH A	N/A	91	29	Leonard McCoy	\N	200402000033	bf964bdf51429393c01dac6774d95e0824506ee305e09e4ec22795dce204e98bd2e72318ff2a523ccba6c631d4d5bccd20d0fe578b02a21389ecc1539bfe4184	COMPLETED	Successfully submitted to bridge	Posted Successfully	00	Posted Successfully	t	[]	[]	0	0	1	5
-1585897758	0	1585899224	\N	\N	\N	\N	1414	1424	200402000036	SWLU0004	pXYSMRGB13	20200403	BRANCH	B	\N	P	Carmella Corwin	Apt. 932 689 Shanti Meadow, Tyrellshire, IL 67692-7011	Andorra la Vella	ml	BBD	com.github.javafaker.PhoneNumber@63a4a9c5	3000	Passport	254720711388	P	Delphia O'Reilly	KEN	KES	3000	Nairobi	992 Konopelski Meadows, New Aliaberg, MD 52226-8739	254720711388	SAFARICOM	National ID	254720711388	254720711388	BANK OF INDIA	B0004	KEXXXXX	BRANCH A	000	91	29	Phlox	\N	200402000036	bbfe71b65ca6503f6fbba7743352a19f064f5199e90b984926b8d25b118d154171d1c5aafb344e5ca1908af469ef784631a7246042be97159140cd7d1ede5464	UPLOADED	Successfully submitted to bridge	Transaction failed initialization.Backoffice intervention needed	10	Transaction failed initialization.Backoffice intervention needed	t	[]	\N	1	0	0	50
-1585897788	0	1585897849	\N	\N	\N	\N	1422	1432	200402000044	UPESI0005	104098429	20200402	02	C	\N	P	MARIA JOSE BELGIUM	BEL	Brussels	BEL	USD	104098429	5.44	Passport	104098429	P	TEST KENYA	USD	KES	538	Nairobi	2nd Floor, NHIF Building, Ragati Road, Nairobi	254720711386	SAFARICOM	National ID	104098429	123456789	N/A	N/A	02	02	N/A	99.67	0.04	Upesi Money Transfer - Nairobi NHIF (ex Ngao Credit) 	\N	200402000044	cf0255fba7f76ee2b6ca02bdc91bfaa786e601087b3e791fb2b180b8d73e2be7c2b5e497cab2f7d72de79fe6b850d852ae0d806c035c3c749ae43b70f58cb13d	COMPLETED	Successfully submitted to bridge	Posted Successfully	10	Posted Successfully	t	[]	[]	0	0	1	5
-1585897755	0	1585899221	\N	\N	\N	\N	1403	1413	200402000025	SWLU0004	V0qOOau7fw	20200403	BRANCH	B	\N	P	Kevin Cole DVM	6666 Myles Via, Port Billybury, AK 55986-9344	Washington	mg	BDT	com.github.javafaker.PhoneNumber@2a0a2892	2000	Passport	254720711388	P	Tracey Hessel	KEN	KES	2000	Nairobi	Suite 939 201 Bettyann Corners, South Filomena, LA 53585-1460	254720711388	SAFARICOM	National ID	254720711388	254720711388	HABIB BANK LTD	B0007	KEXXXXX	BRANCH A	046	91	29	Kira Nerys	\N	200402000025	5d09da12aac5f7ba094d01fb87824b7b7074534dbace20b316b1e77ce170035a1886cad6b8b7d6658d4ee998c758567b80f0289c9bea56f0cd3057aebcf4937f	UPLOADED	Successfully submitted to bridge	Transaction failed initialization.Backoffice intervention needed	10	Transaction failed initialization.Backoffice intervention needed	t	[]	\N	1	0	0	50
-1585897757	0	1585897818	\N	\N	\N	\N	1413	1423	200402000035	SWLU0004	IOV5j0upqN	20200403	BRANCH	C	\N	P	Dr. Jessica Beahan	Apt. 055 125 Dane Tunnel, Volkmanstad, IL 73849-3709	Avarua	mc	ANG	com.github.javafaker.PhoneNumber@71d5cb1b	3000	Passport	254720711388	P	Lara DuBuque Jr.	KEN	KES	3000	Nairobi	Suite 454 328 Bins Extension, Laurenbury, AK 54098	254720711388	SAFARICOM	National ID	254720711388	254720711388	N/A	N/A	KEXXXXX	BRANCH A	N/A	91	29	Hikaru Sulu	\N	200402000035	afad85a5b3d6894e1b22fb184628065de1558305d24c8243338bcf486ad974cc91eda8b2bb5840a815fea2b3e8619cf2824051966bcb484f17967548e9ab0c38	COMPLETED	Successfully submitted to bridge	Posted Successfully	10	Posted Successfully	t	[]	[]	0	0	1	5
-1585897756	0	1585897817	\N	\N	\N	\N	1406	1416	200402000028	SWLU0004	YiR692Suk2	20200403	BRANCH	M	\N	P	Rich Jenkins IV	Suite 156 4700 Stehr Cape, Lennaton, NH 03623	Paris	ge	MWK	com.github.javafaker.PhoneNumber@32efd859	1000	Passport	254720711388	P	Kristi Grant	KEN	KES	1000	Nairobi	7117 Kub Alley, New Eusebio, IN 01093-2956	254720711388	SAFARICOM	National ID	254720711388	254720711388	N/A	N/A	KEXXXXX	BRANCH A	N/A	91	29	Kathryn Janeway	\N	200402000028	99ad8d0d0bdfcdc85ece1967ff873f72b101ae54c79a1807e53a9c80b738c8e8b880579ba4771e9f1045f0a99b10a107709b2341f8939069bb0701cf7e10b0bc	COMPLETED	Successfully submitted to bridge	Posted Successfully	00	Posted Successfully	t	[]	[]	0	0	1	5
-1585897758	0	1585899224	\N	\N	\N	\N	1415	1425	200402000037	SWLU0004	p1ONOhK81D	20200403	BRANCH	B	\N	P	Dr. Eli Kuhlman	Apt. 702 274 Foster Loop, Raymondbury, CA 27449	Andorra la Vella	mw	CUP	com.github.javafaker.PhoneNumber@372145d9	3000	Passport	254720711387	P	Nathaniel Predovic	KEN	KES	3000	Nairobi	Suite 522 505 Ludivina Stream, Cherlynmouth, KS 95555	254720711387	SAFARICOM	National ID	254720711387	254720711387	STANDARD CHARTERED BANK	B0002	KEXXXXX	BRANCH A	000	91	29	Travis Mayweather	\N	200402000037	0739e11606a2e7c4df52cfac35dc51ddc1b14069a93593a1d588ea37914dc8b236d90c24dc362b76fc377466da4db2a6c0c16b8462282dffb2b71ec3120e187b	UPLOADED	Successfully submitted to bridge	Transaction failed initialization.Backoffice intervention needed	10	Transaction failed initialization.Backoffice intervention needed	t	[]	\N	1	0	0	50
-1585897789	0	1585899192	\N	\N	\N	\N	1430	1440	200402000052	UPESI0005	104098368	20200323	12	B	\N	P	Javier test last name send	BEL	Bruxelles	BEL	USD	104098368	30.34	Passport	104098368	P	Javier G. last name benf	USD	KES	3000	Nairobi	All offices of this payer (Bank Deposits)	254720711386	SAFARICOM	National ID	104098368	666555443	NATIONAL BANK 	B0011	12	12	000	99.67	0.24	National Bank of Kenya Limited - All offices of this payer (Bank Deposits)	\N	200402000052	ed25e4c192ab20f557832d1998cc39b98a09175a38f5938531decb8f5ae089cdd6115f2806d43dba5df42e61506e5e99e2864142ca97def3767796d50bbe1fb8	UPLOADED	Successfully submitted to bridge	Transaction failed initialization.Backoffice intervention needed	10	Transaction failed initialization.Backoffice intervention needed	t	[]	\N	1	0	0	48
-1585897756	0	1585899223	\N	\N	\N	\N	1409	1419	200402000031	SWLU0004	L3JUqxCeJc	20200403	BRANCH	B	\N	P	Annice Hickle	Apt. 503 876 Howe Fall, Londaland, AL 82493	Tirana	ug	BDT	com.github.javafaker.PhoneNumber@23c39d9a	2000	Passport	254720711386	P	Jolynn Hilll Sr.	KEN	KES	2000	Nairobi	1825 Minta Crossroad, Doylefurt, MO 26354-3390	254720711386	SAFARICOM	National ID	254720711386	254720711386	KENYA COMMERCIAL BANK	B0001	KEXXXXX	BRANCH A	091	91	29	Hikaru Sulu	\N	200402000031	dd9026c87c45f94149d7da4c4b168953b880ef5b34eb8af53a9ebf05d7f5e0e92fa883c328ec209f102216952576fecb00ec01a455d6ddfaeedbd3a4ce3f9461	UPLOADED	Successfully submitted to bridge	Transaction failed initialization.Backoffice intervention needed	10	Transaction failed initialization.Backoffice intervention needed	t	[]	\N	1	0	0	50
-1585897759	0	1585897821	\N	\N	\N	\N	1419	1429	200402000041	SWLU0004	CypTxjMFAL	20200403	BRANCH	C	\N	P	Carmine Kuhlman	7589 Carter Crossing, Lake Herschelbury, IL 69602	Addis Ababa	zw	ALL	com.github.javafaker.PhoneNumber@517ad84d	2000	Passport	254720711387	P	Hedwig Greenholt I	KEN	KES	2000	Nairobi	8596 Genevie Walks, Genesisborough, NM 84165	254720711387	SAFARICOM	National ID	254720711387	254720711387	N/A	N/A	KEXXXXX	BRANCH A	N/A	91	29	Travis Mayweather	\N	200402000041	f6c05efa91121b7d7cfe28e7b64e39f7b72fa9b991d1a5b4623e2a2c7d930b44acc788d2b0541b22c2a6e112124b8ed3cc2dcdbe2265dd8ba09dd2929f0bbf54	COMPLETED	Successfully submitted to bridge	Posted Successfully	10	Posted Successfully	t	[]	[]	0	0	1	5
-1585897757	0	1585899224	\N	\N	\N	\N	1412	1422	200402000034	SWLU0004	zSv7RaVTCm	20200403	BRANCH	B	\N	P	Jaimee Kuphal	812 Upton Plaza, Lake Leonland, WV 84188-2933	Port of Spain	sa	TWD	com.github.javafaker.PhoneNumber@76cc42bb	3000	Passport	254720711388	P	Carol Huels II	KEN	KES	3000	Nairobi	Apt. 213 2111 Ervin Valley, Kassulkefort, WA 07260-2325	254720711388	SAFARICOM	National ID	254720711388	254720711388	BARCLAYS BANK OF KENYA LTD.	B0003	KEXXXXX	BRANCH A	001	91	29	Pavel Chekov	\N	200402000034	6f152d18482662ee0f8431642165d8f05c922b82f919e1163aff56d46e5c4b73dcdfd0907589f6170bee74c3b255d5df6cebfff141dadb70b4a20d1f48a94259	UPLOADED	Successfully submitted to bridge	Transaction failed initialization.Backoffice intervention needed	10	Transaction failed initialization.Backoffice intervention needed	t	[]	\N	1	0	0	50
-1585897788	0	1585897788	\N	\N	\N	\N	1421	1431	200402000043	UPESI0005	104098433	20200402	05	B	\N	P	MARIA JOSE BELGIUM	BEL	Brussels	BEL	USD	104098433	20.23	Passport	104098433	P	TEST BANK TWO	USD	KES	2000	Nairobi	All offices of this payer (Bank Deposits)	254720711386	SAFARICOM	National ID	104098433	+2548901234567	BANK OF INDIA	B0004	05	05	000	99.67	0.16	Bank of India Kenya Limited - All offices of this payer (Bank Deposits)	\N	200402000043	28fabf80fe068ca8de8a102c11411ae5c4644ee8d091a84119ab6052190fb3748b363b51388fd470a4e297b30e10e73deeb634937c2911d230d08c8fb984f206	UPLOADED	Successfully submitted to bridge	\N	\N	\N	t	[]	\N	1	0	0	2
-1585897789	0	1585897850	\N	\N	\N	\N	1424	1434	200402000046	UPESI0005	104098432	20200402	02	C	\N	P	MARIA JOSE BELGIUM	BEL	Brussels	BEL	USD	104098432	10.11	Passport	104098432	P	TEST KENYA CASH TWO	USD	KES	1000	Nairobi	2nd Floor, NHIF Building, Ragati Road, Nairobi	254720711386	SAFARICOM	National ID	104098432	+25412345678	N/A	N/A	02	02	N/A	99.67	0.08	Upesi Money Transfer - Nairobi NHIF (ex Ngao Credit) 	\N	200402000046	37da0e06019cf163a3079d0c902ed92421de2fe2a5b7d2bb00cda588d1fb3ece2a25ce5820ca564b5c714f19f772cff528f4d212a36fbbc87805b8e61dadf7b7	COMPLETED	Successfully submitted to bridge	Posted Successfully	10	Posted Successfully	t	[]	[]	0	0	1	5
-1585897789	0	1585897850	\N	\N	\N	\N	1428	1438	200402000050	UPESI0005	104098366	20200323	01	C	\N	P	Javier test last name send	BEL	Bruxelles	BEL	USD	104098366	20.23	Passport	104098366	P	Javier G. last name benf	USD	KES	2000	Nairobi	3rd Floor, TrustForte Building, Moi Avenue, Nairobi	254720711386	SAFARICOM	National ID	104098366		N/A	N/A	01	01	N/A	99.67	0.16	Upesi Money Transfer - Nairobi-CBD (ex Ngao Credit)	\N	200402000050	581d15378ebe77d187230a682413549a901a165491a9c1dc4a38a2c767a3142a70ce0c19193e11080e9be080289d9e36f3d5965a85845b56addf249514afbde9	COMPLETED	Successfully submitted to bridge	Posted Successfully	10	Posted Successfully	t	[]	[]	0	0	1	5
-1585897789	0	1585897850	\N	\N	\N	\N	1425	1435	200402000047	UPESI0005	104098329	20200309	07	M	\N	P	MARIA JOSE BELGIUM	BEL	Brussels	BEL	USD	104098329	16.33	Passport	104098329	P	TEST KENYA MBP	USD	KES	1615	Nairobi	Mobile Payment	254720711386	SAFARICOM	National ID	104098329	+254654321	N/A	N/A	07	07	N/A	99.67	0.13	Mobile Payment - Safaricom	\N	200402000047	0fd9b11afd579cdca3e267a7dd0ddc8c6f2c17e3f3a4c747ee7bd22d1afc374b9b47b9dab70b7209dc0fb19e34a49ea713ad60a91febb7be5bcbd3a12bc3acfd	COMPLETED	Successfully submitted to bridge	Posted Successfully	00	Posted Successfully	t	[]	[]	0	0	1	5
-1585897789	0	1585897850	\N	\N	\N	\N	1431	1441	200402000053	UPESI0005	104098326	20200309	04	C	\N	P	MARIA JOSE BELGIUM	BEL	Brussels	BEL	USD	104098326	3.27	Passport	104098326	P	TEST KENYA	USD	KES	323	Eldoret	2nd Floor, Saito Centre, Elijah Cheruiyot/Oloo Street Eldoret	254720711386	SAFARICOM	National ID	104098326	123456789	N/A	N/A	04	04	N/A	99.67	0.03	Upesi Money Transfer - Eldoret (ex Ngao Credit)	\N	200402000053	dc477ce3a96829d81f5792be83d094f79dc56930a8cbffab6925b7633e6fc9f89191ab248fdc686f355c577b4fd77121bd38b3f31b63f2a0603270029f932b17	FAILED	Successfully submitted to bridge	Receiver exceeds maximum transactions Limit	05	Receiver exceeds maximum transactions Limit	t	[]	[]	0	0	1	5
-1585897789	0	1585897850	\N	\N	\N	\N	1426	1436	200402000048	UPESI0005	104098363	20200323	01	C	\N	P	Javier test last name send	BEL	Bruxelles	BEL	USD	104098363	20.23	Passport	104098363	P	Javier G. last name benf	USD	KES	2000	Nairobi	3rd Floor, TrustForte Building, Moi Avenue, Nairobi	254720711386	SAFARICOM	National ID	104098363		N/A	N/A	01	01	N/A	99.67	0.16	Upesi Money Transfer - Nairobi-CBD (ex Ngao Credit)	\N	200402000048	99fd852fb9dda19c99006b4cfd7eed1b8d9c5879ff7451499bb39b28330b2c9d5323aa4273031591c744ebde707c2486ea618b82e1c7565e542e9fb3a3e40f51	COMPLETED	Successfully submitted to bridge	Posted Successfully	10	Posted Successfully	t	[]	[]	0	0	1	5
-1585897789	0	1585897850	\N	\N	\N	\N	1429	1439	200402000051	UPESI0005	104098367	20200323	07	M	\N	P	Javier test last name send	BEL	Bruxelles	BEL	USD	104098367	25.28	Passport	104098367	P	Javier G. last name benf	USD	KES	2500	Nairobi	Mobile Payment	254720711386	SAFARICOM	National ID	104098367	666555443	N/A	N/A	07	07	N/A	99.67	0.2	Mobile Payment - Safaricom	\N	200402000051	45125154a57876ab7f1b9fc855364e88ae86d5dc604ae98cb1c389b7642e48b2220b10d6e2da7169d96bff5e463da107a9dd83d64823d0e6a624e98ef22bda18	COMPLETED	Successfully submitted to bridge	Posted Successfully	00	Posted Successfully	t	[]	[]	0	0	1	5
-1585897788	0	1585897849	\N	\N	\N	\N	1420	1430	200402000042	UPESI0005	104098434	20200402	07	M	\N	P	MARIA JOSE BELGIUM	BEL	Brussels	BEL	USD	104098434	21.24	Passport	104098434	P	TEST MOBILE EIGHT	USD	KES	2100	Nairobi	Mobile Payment	254720711386	SAFARICOM	National ID	104098434	2548901234567	N/A	N/A	07	07	N/A	99.67	0.17	Mobile Payment - Safaricom	\N	200402000042	663c2b8820c8809cbc55c2bd212e6deee572e00f70325ebf71f54ff27082dc16dc21ae37ed434e0ffc0ab9a7a8ea5c334fa3172a736047aa847031afe8ca89fe	COMPLETED	Successfully submitted to bridge	Posted Successfully	00	Posted Successfully	t	[]	[]	0	0	1	5
-1585897789	0	1585897850	\N	\N	\N	\N	1427	1437	200402000049	UPESI0005	104098364	20200323	07	M	\N	P	Javier test last name send	BEL	Bruxelles	BEL	USD	104098364	25.28	Passport	104098364	P	Javier G. last name benf	USD	KES	2500	Nairobi	Mobile Payment	254720711386	SAFARICOM	National ID	104098364		N/A	N/A	07	07	N/A	99.67	0.2	Mobile Payment - Safaricom	\N	200402000049	edd335f488212a73b8e05b74738c1a5131daa773f4767534825ae7ec4c00b6f01f9abadc3ff3477ce6ce96cf8b2bbe8e510ccecb0db715280f8679fddd6ab26c	COMPLETED	Successfully submitted to bridge	Posted Successfully	00	Posted Successfully	t	[]	[]	0	0	1	5
-1585897752	0	1585899219	\N	\N	\N	\N	1391	1401	200402000013	SWLU0004	r92M0a44kr	20200403	BRANCH	C	\N	P	Denyse Powlowski	5524 Ledner Stream, Port Isabelleport, DE 21497-1420	Monaco	ss	UGX	com.github.javafaker.PhoneNumber@2320680	2000	Passport	254720711388	P	Mr. Leone Nicolas	KEN	KES	2000	Nairobi	042 Ma Court, North Pierre, ME 32231	254720711388	SAFARICOM	National ID	254720711388	254720711388	N/A	N/A	KEXXXXX	BRANCH A	N/A	91	29	Harry Kim	\N	200402000013	4da4326136508300124e65219675b53caa0fa1d50dc295dd6ac69f41273609fb012d76d044c73dbbe1211eb91102265da2bea7444aca9626e0fed95a673bf265	UPLOADED	Successfully submitted to bridge	Transaction failed initialization.Backoffice intervention needed	06	Transaction failed initialization.Backoffice intervention needed	t	[]	\N	1	0	0	50
-1585897748	0	1585897809	\N	\N	\N	\N	1381	1391	200402000003	SWLU0004	9jYM8WG81O	20200403	BRANCH	M	\N	P	Araceli Fisher Sr.	Apt. 310 44783 Streich Throughway, Hirtheside, AL 13226-0931	Asuncion	iq	GEL	com.github.javafaker.PhoneNumber@196efcfa	2000	Passport	254720711388	P	Basil Effertz	KEN	KES	2000	Nairobi	9771 Hauck Manors, Gusikowskimouth, OR 40662-4038	254720711388	SAFARICOM	National ID	254720711388	254720711388	N/A	N/A	KEXXXXX	BRANCH A	N/A	91	29	Data	\N	200402000003	f9436638479df88920ca293106ece3adaaac9ae6669f720fc0501b0f33056262b814802724d5300fbf2f2e72f57e6cfb00096d3a04e7280ae24d1b5a4a853c79	COMPLETED	Successfully submitted to bridge	Posted Successfully	00	Posted Successfully	t	[]	[]	0	0	1	5
-1585897751	0	1585897813	\N	\N	\N	\N	1389	1399	200402000011	SWLU0004	QuLjlzzu11	20200403	BRANCH	C	\N	P	Herma Beatty	3229 Bo Court, Hamillmouth, DE 13765	Valletta	kn	ALL	com.github.javafaker.PhoneNumber@10348e48	1000	Passport	254720711387	P	Georgina Streich	KEN	KES	1000	Nairobi	Apt. 913 1249 Trinidad Neck, Kleinside, SD 54524-4608	254720711387	SAFARICOM	National ID	254720711387	254720711387	N/A	N/A	KEXXXXX	BRANCH A	N/A	91	29	Jean-Luc Picard	\N	200402000011	20e8eebeb230c3da8dc945b82dcd34cbeb71b721b7c9696e9c30476479ce281d9afb796d9c017c40c49e782dc201d50e1054e1437b04541f435074b36277b942	COMPLETED	Successfully submitted to bridge	Posted Successfully	10	Posted Successfully	t	[]	[]	0	0	1	5
-1585897751	0	1585897812	\N	\N	\N	\N	1390	1400	200402000012	SWLU0004	0C1mNVIz4i	20200403	BRANCH	C	\N	P	Stacey Olson	595 Harber Drives, Chetfort, MN 35754-7741	Islamabad	cd	MNT	com.github.javafaker.PhoneNumber@163c3b81	1000	Passport	254720711386	P	Oliver Kohler	KEN	KES	1000	Nairobi	Apt. 293 07412 Reynolds Neck, East Elliestad, PA 96099-8827	254720711386	SAFARICOM	National ID	254720711386	254720711386	N/A	N/A	KEXXXXX	BRANCH A	N/A	91	29	Wesley Crusher	\N	200402000012	12451d1c305cb99d140fd30c97dba054a13393489644f927988065f16a9d5be5a97dab3764222602f2a8e702998f0e1eed9c5f6b289dd8f9f327a571d11c260e	COMPLETED	Successfully submitted to bridge	Posted Successfully	10	Posted Successfully	t	[]	[]	0	0	1	5
-1585897752	0	1585897814	\N	\N	\N	\N	1392	1402	200402000014	SWLU0004	CM4r52F4Gv	20200403	BRANCH	M	\N	P	Miss Jay Zieme	47761 Thompson Loop, Mayerhaven, OK 00254	Tegucigalpa	ad	MKD	com.github.javafaker.PhoneNumber@bc2f2f2	2000	Passport	254720711387	P	Virginia Witting	KEN	KES	2000	Nairobi	107 Eric Road, West Mary, UT 19696-3974	254720711387	SAFARICOM	National ID	254720711387	254720711387	N/A	N/A	KEXXXXX	BRANCH A	N/A	91	29	Benjamin Sisko	\N	200402000014	8ecf20e30861f211e55424d89c7dce0f63bda248a9de018a321821c0e2dd62d0bb0c4d9fad3c21208585a8cd5b5a85cbae9cb25f77f143483f22ebfd7ea887d9	COMPLETED	Successfully submitted to bridge	Posted Successfully	00	Posted Successfully	t	[]	[]	0	0	1	5
-1585897753	0	1585897814	\N	\N	\N	\N	1397	1407	200402000019	SWLU0004	eNIcwigdV8	20200403	BRANCH	M	\N	P	Verlene Smitham	Apt. 712 132 Labadie Light, Ullrichmouth, NE 19254	Tunis	iq	PAB	com.github.javafaker.PhoneNumber@2c3381de	2000	Passport	254720711388	P	Linwood Powlowski	KEN	KES	2000	Nairobi	Suite 945 224 Jasmin Drive, Houstonport, IN 67035	254720711388	SAFARICOM	National ID	254720711388	254720711388	N/A	N/A	KEXXXXX	BRANCH A	N/A	91	29	Spock	\N	200402000019	ddbaea27479fc31c2125793772d82de499cd7b70576dccee9c27f68a6596aa9d7f92a79dd651dd0bd72c3e553d4499f8e1bb896179b643f30b69eaba8023a9db	COMPLETED	Successfully submitted to bridge	Posted Successfully	00	Posted Successfully	t	[]	[]	0	0	1	5
-1585897747	0	1585899211	\N	\N	\N	\N	1380	1390	200402000002	SWLU0004	KmhHaPxYz1	20200403	BRANCH	B	\N	P	Vern Bartell	Apt. 610 053 Renner Haven, Jameyburgh, HI 46403-6900	Suva	ye	STD	com.github.javafaker.PhoneNumber@27dc9f28	2000	Passport	254720711388	P	Amy Kub	KEN	KES	2000	Nairobi	3611 Fabiola Crossing, East Abeltown, AK 29059-6622	254720711388	SAFARICOM	National ID	254720711388	254720711388	COMMERCIAL BANK OF AFRICA	B0006	KEXXXXX	BRANCH A	000	91	29	Kes	\N	200402000002	b155baf970ea65569ed2b16d08bb6fd657aca2be256488e5688f30afe7ecf8a2a26ed2e2a642858e145bcc9d8cbb70bc2b6775f98e58465d9010dd147b5179c8	UPLOADED	Successfully submitted to bridge	Transaction failed initialization.Backoffice intervention needed	10	Transaction failed initialization.Backoffice intervention needed	t	[]	\N	1	0	0	50
-1585897754	0	1585897815	\N	\N	\N	\N	1399	1409	200402000021	SWLU0004	vdjQpZFlFF	20200403	BRANCH	C	\N	P	Scotty Goodwin	987 Monroe Summit, Williamshaven, RI 65706-6887	Longyearbyen	fj	USD	com.github.javafaker.PhoneNumber@26d0ec82	1000	Passport	254720711386	P	Carter Rodriguez	KEN	KES	1000	Nairobi	09705 Kiehn Junction, South Joellefort, MD 50637-0459	254720711386	SAFARICOM	National ID	254720711386	254720711386	N/A	N/A	KEXXXXX	BRANCH A	N/A	91	29	Nyota Uhuru	\N	200402000021	5e40019ecfd2773d2e8dae02a9bff16dd70844a38b020504fa566fcd7cbb2d9dc0014ac889ccbc9de3533769621c7be80ef8c70e00cfe0a281f6f313695e0e52	COMPLETED	Successfully submitted to bridge	Posted Successfully	10	Posted Successfully	t	[]	[]	0	0	1	5
-1585897755	0	1585897816	\N	\N	\N	\N	1405	1415	200402000027	SWLU0004	faVtRHYcto	20200403	BRANCH	M	\N	P	Blair Wolff	11447 Daniel Islands, Port Veroniqueburgh, IL 27571-1977	Tbilisi	ro	UAH	com.github.javafaker.PhoneNumber@5ce15d3a	2000	Passport	254720711388	P	Felipe Abernathy	KEN	KES	2000	Nairobi	Apt. 623 5876 Katherine Divide, East Orvalstad, AR 47944	254720711388	SAFARICOM	National ID	254720711388	254720711388	N/A	N/A	KEXXXXX	BRANCH A	N/A	91	29	Jadzia Dax	\N	200402000027	2eb8c1fd675070f9fc96f5f55c59726553e2f190e98f7e4e62b250d983486a9038f3fe0688a0f3cbce42d12a9bc89cf079cbaac543ad8e8e25c4f188101bfaff	COMPLETED	Successfully submitted to bridge	Posted Successfully	00	Posted Successfully	t	[]	[]	0	0	1	5
-1585897754	0	1585899220	\N	\N	\N	\N	1398	1408	200402000020	SWLU0004	eBNNeV3b88	20200403	BRANCH	B	\N	P	Reginald Bergnaum	99615 Brown Stream, East Deshawnfurt, IN 18869-0271	Manila	li	TJS	com.github.javafaker.PhoneNumber@41e6d7fe	2000	Passport	254720711388	P	Parthenia Cassin	KEN	KES	2000	Nairobi	824 Hsiu Overpass, South Denver, NH 97258-0632	254720711388	SAFARICOM	National ID	254720711388	254720711388	STANDARD CHARTERED BANK	B0002	KEXXXXX	BRANCH A	000	91	29	The Doctor	\N	200402000020	77a8c1ecf2906b8a311b9ed1a33f05657d9f20f6a824f8014ceeeb721207d64e492f0c3a617660bb4dbc7c80c6d1185e9b20128db1c3e3b6ccfb1854fb5e8693	UPLOADED	Successfully submitted to bridge	Transaction failed initialization.Backoffice intervention needed	10	Transaction failed initialization.Backoffice intervention needed	t	[]	\N	1	0	0	50
-1585897756	0	1585899223	\N	\N	\N	\N	1408	1418	200402000030	SWLU0004	xrjFpxUBhk	20200403	BRANCH	B	\N	P	Christiane Lueilwitz	3011 Tyler Estates, West Jeannetta, ND 58924-5063	Muscat	sn	PGK	com.github.javafaker.PhoneNumber@216a0055	1000	Passport	254720711387	P	Loreta Nienow	KEN	KES	1000	Nairobi	86241 Jackie Route, Stiedemannside, CA 76046-8993	254720711387	SAFARICOM	National ID	254720711387	254720711387	STANDARD CHARTERED BANK	B0002	KEXXXXX	BRANCH A	000	91	29	Chakotay	\N	200402000030	c8bf522f5aa73e7ac4e93f6972e50484e422f21ee129926aa7e15bbb5df0168e8c91ab22a513109179aa45d056c74f733138751bb1e38cef5d7ac9bbbd4d89a2	UPLOADED	Successfully submitted to bridge	Transaction failed initialization.Backoffice intervention needed	10	Transaction failed initialization.Backoffice intervention needed	t	[]	\N	1	0	0	50
-1585897759	0	1585897820	\N	\N	\N	\N	1418	1428	200402000040	SWLU0004	EpKPVcWoYE	20200403	BRANCH	M	\N	P	Grace Dicki	Suite 458 16962 McGlynn Street, Andersonburgh, TN 88256-3054	Kabul	si	INR	com.github.javafaker.PhoneNumber@12fc6148	1000	Passport	254720711386	P	Toney Koch	KEN	KES	1000	Nairobi	813 O'Kon Harbor, Lake Tressachester, MT 75103	254720711386	SAFARICOM	National ID	254720711386	254720711386	N/A	N/A	KEXXXXX	BRANCH A	N/A	91	29	Julian Bashir	\N	200402000040	2020516288bf02fa8c8cd02bf91b7091a35de95e8e16549608f7d61f8330c6fe8d12e3792e2377039a5e4a32306e86f6e25281a33162eb3305d4b599fac7a3a2	COMPLETED	Successfully submitted to bridge	Posted Successfully	00	Posted Successfully	t	[]	[]	0	0	1	5
-1585897788	0	1585897849	\N	\N	\N	\N	1423	1433	200402000045	UPESI0005	104098431	20200402	07	M	\N	P	MARIA JOSE BELGIUM	BEL	Brussels	BEL	USD	104098431	10.89	Passport	104098431	P	TEST KENYA MBP	USD	KES	1077	Nairobi	Mobile Payment	254720711386	SAFARICOM	National ID	104098431	+254654321	N/A	N/A	07	07	N/A	99.67	0.09	Mobile Payment - Safaricom	\N	200402000045	410ccc9718697e7eeb6ecec3a0c6209251bc74bc84f19a8432acc2b2e4a46123fe6af2fc26555ea67d06c1012e6e161c09a5ac00b6aee1bc802f9500da7b8f54	COMPLETED	Successfully submitted to bridge	Posted Successfully	00	Posted Successfully	t	[]	[]	0	0	1	5
-1585897789	0	1585897850	\N	\N	\N	\N	1432	1442	200402000054	UPESI0005	104098327	20200309	04	C	\N	P	MARIA JOSE BELGIUM	BEL	Brussels	BEL	USD	104098327	27.23	Passport	104098327	P	TEST KENYA	USD	KES	2692	Eldoret	2nd Floor, Saito Centre, Elijah Cheruiyot/Oloo Street Eldoret	254720711386	SAFARICOM	National ID	104098327	123456789	N/A	N/A	04	04	N/A	99.67	0.22	Upesi Money Transfer - Eldoret (ex Ngao Credit)	\N	200402000054	169b8753ef9990bf078a58d06cab7ef8e1d10af83a96bcb768e08ef3566e9a9a1a3e2ec35138bf00e4dbd50b2eee8482569549755d7d5e7d46e418247438db67	FAILED	Successfully submitted to bridge	Receiver exceeds maximum transactions Limit	05	Receiver exceeds maximum transactions Limit	t	[]	[]	0	0	1	5
-1585897750	0	1585899214	\N	\N	\N	\N	1387	1397	200402000009	SWLU0004	O3NUXf8KSr	20200403	BRANCH	B	\N	P	Roman Greenfelder	12514 Veda Trail, Jacobsburgh, WY 35920	Melekeok	bd	MRO	com.github.javafaker.PhoneNumber@4cc94065	2000	Passport	254720711386	P	Jessica Cummings	KEN	KES	2000	Nairobi	5295 Erdman Hills, Prosaccoberg, TX 13099	254720711386	SAFARICOM	National ID	254720711386	254720711386	STANDARD CHARTERED BANK	B0002	KEXXXXX	BRANCH A	000	91	29	Neelix	\N	200402000009	d484e977b558a1379524ced1409e2356a5a804439a6e6cec20f5a6dea201de55c06e3274b3f21c539ef6bd7abccfb8ae82dc8c3db3d90095ba1257d709b9d224	UPLOADED	Successfully submitted to bridge	Transaction failed initialization.Backoffice intervention needed	10	Transaction failed initialization.Backoffice intervention needed	t	[]	\N	1	0	0	50
+COPY public.tbl_trn_transactions (date_time_added, added_by, date_time_modified, modified_by, user_activity_log_id, source_ip, latest_ip, transaction_id, request_id, request_number, partner_id, partner_name, transaction_ref, transaction_date, collection_branch, transaction_type, service_type, sender_type, sender_full_name, sender_address, sender_city, sender_country_code, sender_currency_code, sender_mobile, send_amount, sender_id_type, sender_id_number, receiver_type, receiver_full_name, receiver_country_code, receiver_currency_code, receiver_amount, receiver_city, receiver_address, receiver_mobile, mobile_operator, receiver_id_type, receiver_id_number, receiver_account, receiver_bank, receiver_bank_code, receiver_swiftcode, receiver_branch, receiver_branch_code, exchange_rate, commission_amount, remarks, paybill, transaction_number, transaction_hash, transaction_status, original_message, transaction_response, switch_response, query_status, query_response, callbacks, callbacks_status, queued_callbacks, completed_callbacks, callback_status, record_version, need_syncing, synced, sent, incident_code, incident_description, incident_note) FROM stdin;
+1587812625	0	1587917026	\N	\N	\N	\N	1677	1742	200425000012	SWLU0004	LULU	acd4e36d3dd5	20200325	Nairobi	M	\N	P	Lee KAMAU	JOHN DOE'S ADDRESS	NAIROBI	KEN	USD	2547201	2000	Passport	88998899	P	BEN WERU	KEN	KES	200	NAIROBI	RECIEVER ADDRESS	254708374149	SAFARICOM	Passport	11223344	09809123456	N/A	N/A	EQBLKENA	KANGEMA	N/A	1	0		\N	200425000012	9a5aeb37e23162a4de4be199fef584546d766c2e9d14417c091be5aec8c20dd4515e75f8f90d95e3f4b8d937864ceb1a218b3f4bec5e93f9ab5e894dc51cab88	UPLOADED	{entries=[{partner_id=SWLU0004, transaction_ref=acd4e36d3dd5, transaction_date=20200325, collection_branch=Nairobi, transaction_type=M, sender_type=P, sender_full_name=Lee KAMAU, sender_address=JOHN DOE'S ADDRESS, sender_city=NAIROBI, sender_country_code=KEN, sender_currency_code=USD, sender_mobile=2547201, send_amount=2000, sender_id_type=pass, sender_id_number=88998899, receiver_type=P, receiver_full_name=BEN WERU, receiver_country_code=KEN, receiver_currency_code=KES, receiver_amount=200, receiver_city=NAIROBI, receiver_address=RECIEVER ADDRESS, receiver_mobile=254708374149, mobile_operator=SAFARICOM, receiver_id_type=Passport, receiver_id_number=11223344, receiver_account=09809123456, receiver_bank=EQUITY BANK LIMITED, receiver_bank_code=50, receiver_swiftcode=EQBLKENA, receiver_branch_code=003, receiver_branch=KANGEMA, exchange_rate=1, commission_amount=, remarks=, callbacks=[]}]}	Successfully submitted to bridge	Transaction in progress	00	Transaction in progress	[]	\N	0	0	0	2615	f	f	t	\N	\N	\N
+1587812636	0	1587917023	\N	\N	\N	\N	1678	1743	200425000013	SWLU0004	LULU	acd4e336d3dd5	20200325	Nairobi	M	\N	P	Lee KAMAU	JOHN DOE'S ADDRESS	NAIROBI	KEN	USD	2547201	2000	Passport	88998899	P	BEN WERU	KEN	KES	200	NAIROBI	RECIEVER ADDRESS	254708374149	SAFARICOM	Passport	11223344	09809123456	N/A	N/A	EQBLKENA	KANGEMA	N/A	1	0		\N	200425000013	8e094e945624c7a14e3b0c3d2d40eb354ee5e80f49081495ad6ee69b7fa861516b497b82caf9e288adbdc97f7c22009233ac2151722b9a0527b2254978e2a0b0	UPLOADED	{entries=[{partner_id=SWLU0004, transaction_ref=acd4e336d3dd5, transaction_date=20200325, collection_branch=Nairobi, transaction_type=M, sender_type=P, sender_full_name=Lee KAMAU, sender_address=JOHN DOE'S ADDRESS, sender_city=NAIROBI, sender_country_code=KEN, sender_currency_code=USD, sender_mobile=2547201, send_amount=2000, sender_id_type=pass, sender_id_number=88998899, receiver_type=P, receiver_full_name=BEN WERU, receiver_country_code=KEN, receiver_currency_code=KES, receiver_amount=200, receiver_city=NAIROBI, receiver_address=RECIEVER ADDRESS, receiver_mobile=254708374149, mobile_operator=SAFARICOM, receiver_id_type=Passport, receiver_id_number=11223344, receiver_account=09809123456, receiver_bank=EQUITY BANK LIMITED, receiver_bank_code=50, receiver_swiftcode=EQBLKENA, receiver_branch_code=003, receiver_branch=KANGEMA, exchange_rate=1, commission_amount=, remarks=, callbacks=[]}]}	Successfully submitted to bridge	Transaction in progress	00	Transaction in progress	[]	\N	0	0	0	2614	f	f	t	\N	\N	\N
 \.
 
 
@@ -10972,23 +9000,100 @@ COPY public.tbl_trn_transactions (date_time_added, added_by, date_time_modified,
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.users (id, company_id, role_id, name, contact_person, email, password, msisdn, status, remember_token, created_at, updated_at) FROM stdin;
-2	1	3	Administrator	SWITCH LINK	admin@switchlink.co.ke	$2y$10$Jkvwmr2jkI8DcAACSUepSupAF7014mqGvDGdwEOVYlDSBFzNYtMR6	254720711386	ACTIVE	\N	2019-12-17 09:31:57	2019-12-17 09:31:57
+COPY public.users (id, company_id, role_id, name, contact_person, email, password, msisdn, status, remember_token, created_at, updated_at, deleted_at) FROM stdin;
+2	1	3	Administrator	SWITCH LINK	admin@switchlink.co.ke	$2y$10$Jkvwmr2jkI8DcAACSUepSupAF7014mqGvDGdwEOVYlDSBFzNYtMR6	254720711386	ACTIVE	\N	2019-12-17 09:31:57	2019-12-17 09:31:57	\N
 \.
 
 
 --
--- Name: settings_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Data for Name: workflow_stage_approvers; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.settings_id_seq', 1, false);
+COPY public.workflow_stage_approvers (id, user_id, granted_by, workflow_stage_id, workflow_stage_type_id, deleted_at, created_at, updated_at) FROM stdin;
+1	2	2	1	1	\N	2020-04-27 09:41:31	2020-04-27 09:41:31
+\.
 
 
 --
--- Name: surveys_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Data for Name: workflow_stage_checklist; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.surveys_id_seq', 1, false);
+COPY public.workflow_stage_checklist (id, name, text, status, workflow_stages_id, deleted_at, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: workflow_stage_type; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.workflow_stage_type (id, name, slug, weight, deleted_at, created_at, updated_at) FROM stdin;
+1	Switchlink	switchlink	3	\N	2020-04-27 09:40:50	2020-04-27 10:04:02
+\.
+
+
+--
+-- Data for Name: workflow_stages; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.workflow_stages (id, workflow_stage_type_id, workflow_type_id, weight, deleted_at, created_at, updated_at) FROM stdin;
+1	1	1	5	\N	2020-04-27 09:41:18	2020-04-27 09:41:18
+\.
+
+
+--
+-- Data for Name: workflow_step_checklist; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.workflow_step_checklist (id, name, user_id, text, status, workflow_steps_id, deleted_at, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: workflow_steps; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.workflow_steps (id, workflow_stage_id, workflow_id, user_id, approved_at, rejected_at, weight, deleted_at, created_at, updated_at) FROM stdin;
+1	1	1	2	2020-04-27 10:33:55	\N	5	\N	2020-04-27 09:59:41	2020-04-27 10:33:55
+\.
+
+
+--
+-- Data for Name: workflow_types; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.workflow_types (id, name, slug, type, deleted_at, created_at, updated_at) FROM stdin;
+1	Transaction Approval	transaction_approval	0	\N	2020-04-27 09:23:58	2020-04-27 09:59:10
+\.
+
+
+--
+-- Data for Name: workflows; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.workflows (id, user_id, workflow_type, model_id, model_type, collection_name, payload, sent_by, approved, approved_at, rejected_at, awaiting_stage_id, deleted_at, created_at, updated_at) FROM stdin;
+1	2	transaction_approval	1815	App\\Models\\Transactions	transaction_approval	\N	2	1	2020-04-27 10:33:55	\N	1	\N	2020-04-27 09:59:41	2020-04-27 10:33:55
+\.
+
+
+--
+-- Name: media_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.media_id_seq', 1, false);
+
+
+--
+-- Name: permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.permissions_id_seq', 1, false);
+
+
+--
+-- Name: roles_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.roles_id_seq', 1, false);
 
 
 --
@@ -11034,13 +9139,6 @@ SELECT pg_catalog.setval('public.tbl_sec_roles_roleid_seq', 1, false);
 
 
 --
--- Name: tbl_switch_settings_switchsettingid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.tbl_switch_settings_switchsettingid_seq', 12, true);
-
-
---
 -- Name: tbl_sys_banks_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -11051,7 +9149,7 @@ SELECT pg_catalog.setval('public.tbl_sys_banks_id_seq', 1534, true);
 -- Name: tbl_sys_currencies_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.tbl_sys_currencies_id_seq', 157, true);
+SELECT pg_catalog.setval('public.tbl_sys_currencies_id_seq', 158, true);
 
 
 --
@@ -11072,7 +9170,7 @@ SELECT pg_catalog.setval('public.tbl_sys_iso_eod_requests_eod_request_id_seq', 1
 -- Name: tbl_sys_iso_iso_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.tbl_sys_iso_iso_id_seq', 1621, true);
+SELECT pg_catalog.setval('public.tbl_sys_iso_iso_id_seq', 1816, true);
 
 
 --
@@ -11107,14 +9205,14 @@ SELECT pg_catalog.setval('public.tbl_sys_paybills_paybill_id_seq', 8, true);
 -- Name: tbl_sys_references_reference_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.tbl_sys_references_reference_id_seq', 2858, true);
+SELECT pg_catalog.setval('public.tbl_sys_references_reference_id_seq', 3414, true);
 
 
 --
 -- Name: tbl_sys_settings_setting_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.tbl_sys_settings_setting_id_seq', 21, true);
+SELECT pg_catalog.setval('public.tbl_sys_settings_setting_id_seq', 61, true);
 
 
 --
@@ -11125,17 +9223,24 @@ SELECT pg_catalog.setval('public.tbl_trn_aml_id_seq', 1, false);
 
 
 --
+-- Name: tbl_trn_incidents_incident_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.tbl_trn_incidents_incident_id_seq', 1, false);
+
+
+--
 -- Name: tbl_trn_requests_request_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.tbl_trn_requests_request_id_seq', 1442, true);
+SELECT pg_catalog.setval('public.tbl_trn_requests_request_id_seq', 1743, true);
 
 
 --
 -- Name: tbl_trn_transaction_transaction_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.tbl_trn_transaction_transaction_id_seq', 1432, true);
+SELECT pg_catalog.setval('public.tbl_trn_transaction_transaction_id_seq', 1678, true);
 
 
 --
@@ -11146,19 +9251,115 @@ SELECT pg_catalog.setval('public.users_id_seq', 2, true);
 
 
 --
--- Name: settings settings_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: workflow_stage_approvers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.settings
-    ADD CONSTRAINT settings_pkey PRIMARY KEY (id);
+SELECT pg_catalog.setval('public.workflow_stage_approvers_id_seq', 1, true);
 
 
 --
--- Name: surveys surveys_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: workflow_stage_checklist_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.surveys
-    ADD CONSTRAINT surveys_pkey PRIMARY KEY (id);
+SELECT pg_catalog.setval('public.workflow_stage_checklist_id_seq', 1, false);
+
+
+--
+-- Name: workflow_stage_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.workflow_stage_type_id_seq', 1, true);
+
+
+--
+-- Name: workflow_stages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.workflow_stages_id_seq', 1, true);
+
+
+--
+-- Name: workflow_step_checklist_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.workflow_step_checklist_id_seq', 1, false);
+
+
+--
+-- Name: workflow_steps_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.workflow_steps_id_seq', 1, true);
+
+
+--
+-- Name: workflow_types_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.workflow_types_id_seq', 1, true);
+
+
+--
+-- Name: workflows_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.workflows_id_seq', 1, true);
+
+
+--
+-- Name: media media_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.media
+    ADD CONSTRAINT media_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: model_has_permissions model_has_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.model_has_permissions
+    ADD CONSTRAINT model_has_permissions_pkey PRIMARY KEY (permission_id, model_id, model_type);
+
+
+--
+-- Name: model_has_roles model_has_roles_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.model_has_roles
+    ADD CONSTRAINT model_has_roles_pkey PRIMARY KEY (role_id, model_id, model_type);
+
+
+--
+-- Name: permissions permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.permissions
+    ADD CONSTRAINT permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: role_has_permissions role_has_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.role_has_permissions
+    ADD CONSTRAINT role_has_permissions_pkey PRIMARY KEY (permission_id, role_id);
+
+
+--
+-- Name: roles roles_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.roles
+    ADD CONSTRAINT roles_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: workflow_types slug_UNIQUE; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.workflow_types
+    ADD CONSTRAINT "slug_UNIQUE" UNIQUE (slug);
 
 
 --
@@ -11207,14 +9408,6 @@ ALTER TABLE ONLY public.tbl_pvd_serviceprovider
 
 ALTER TABLE ONLY public.tbl_sec_roles
     ADD CONSTRAINT tbl_sec_roles_pkey PRIMARY KEY (roleid);
-
-
---
--- Name: tbl_switch_settings tbl_switch_settings_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.tbl_switch_settings
-    ADD CONSTRAINT tbl_switch_settings_pkey PRIMARY KEY (switchsettingid);
 
 
 --
@@ -11338,6 +9531,14 @@ ALTER TABLE ONLY public.tbl_sys_settings
 
 
 --
+-- Name: tbl_trn_incidents tbl_trn_incidents_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tbl_trn_incidents
+    ADD CONSTRAINT tbl_trn_incidents_pkey PRIMARY KEY (incident_id);
+
+
+--
 -- Name: tbl_trn_requests tbl_trn_requests_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -11362,11 +9563,11 @@ ALTER TABLE ONLY public.tbl_trn_transactions
 
 
 --
--- Name: tbl_trn_transactions ttbl_trn_transactions_txn_no; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tbl_trn_transactions tbl_trn_transactions_txn_no; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.tbl_trn_transactions
-    ADD CONSTRAINT ttbl_trn_transactions_txn_no UNIQUE (transaction_number);
+    ADD CONSTRAINT tbl_trn_transactions_txn_no UNIQUE (transaction_number);
 
 
 --
@@ -11399,6 +9600,189 @@ ALTER TABLE ONLY public.users
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: workflow_stage_approvers workflow_stage_approvers_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.workflow_stage_approvers
+    ADD CONSTRAINT workflow_stage_approvers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: workflow_stage_checklist workflow_stage_checklist_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.workflow_stage_checklist
+    ADD CONSTRAINT workflow_stage_checklist_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: workflow_stage_type workflow_stage_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.workflow_stage_type
+    ADD CONSTRAINT workflow_stage_type_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: workflow_stages workflow_stages_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.workflow_stages
+    ADD CONSTRAINT workflow_stages_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: workflow_step_checklist workflow_step_checklist_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.workflow_step_checklist
+    ADD CONSTRAINT workflow_step_checklist_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: workflow_steps workflow_steps_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.workflow_steps
+    ADD CONSTRAINT workflow_steps_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: workflow_types workflow_types_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.workflow_types
+    ADD CONSTRAINT workflow_types_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: workflows workflows_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.workflows
+    ADD CONSTRAINT workflows_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: fk_transaction_approval_steps_transaction_approval_stages1_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX fk_transaction_approval_steps_transaction_approval_stages1_idx ON public.workflow_steps USING btree (workflow_stage_id);
+
+
+--
+-- Name: fk_transaction_approval_steps_transaction_approvals1_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX fk_transaction_approval_steps_transaction_approvals1_idx ON public.workflow_steps USING btree (workflow_id);
+
+
+--
+-- Name: fk_transaction_approval_steps_users1_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX fk_transaction_approval_steps_users1_idx ON public.workflow_steps USING btree (user_id);
+
+
+--
+-- Name: fk_transaction_approvals_transaction_approval_stages1_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX fk_transaction_approvals_transaction_approval_stages1_idx ON public.workflows USING btree (awaiting_stage_id);
+
+
+--
+-- Name: fk_transaction_approvals_transaction_approval_types1_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX fk_transaction_approvals_transaction_approval_types1_idx ON public.workflows USING btree (workflow_type);
+
+
+--
+-- Name: fk_transaction_approvals_users1_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX fk_transaction_approvals_users1_idx ON public.workflows USING btree (user_id);
+
+
+--
+-- Name: fk_transaction_approvals_users2_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX fk_transaction_approvals_users2_idx ON public.workflows USING btree (sent_by);
+
+
+--
+-- Name: fk_transaction_approvers_transaction_approval_stages1_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX fk_transaction_approvers_transaction_approval_stages1_idx ON public.workflow_stage_approvers USING btree (workflow_stage_type_id);
+
+
+--
+-- Name: fk_transaction_approvers_transaction_approval_stages2_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX fk_transaction_approvers_transaction_approval_stages2_idx ON public.workflow_stage_approvers USING btree (workflow_stage_id);
+
+
+--
+-- Name: fk_transaction_approvers_users1_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX fk_transaction_approvers_users1_idx ON public.workflow_stage_approvers USING btree (user_id);
+
+
+--
+-- Name: fk_transaction_approvers_users2_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX fk_transaction_approvers_users2_idx ON public.workflow_stage_approvers USING btree (granted_by);
+
+
+--
+-- Name: fk_workflow_stage_checklist_copy1_workflow_steps1_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX fk_workflow_stage_checklist_copy1_workflow_steps1_idx ON public.workflow_step_checklist USING btree (workflow_steps_id);
+
+
+--
+-- Name: fk_workflow_stage_checklist_workflow_stages1_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX fk_workflow_stage_checklist_workflow_stages1_idx ON public.workflow_stage_checklist USING btree (workflow_stages_id);
+
+
+--
+-- Name: media_model_type_model_id_index; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX media_model_type_model_id_index ON public.media USING btree (model_type, model_id);
+
+
+--
+-- Name: model_has_permissions_model_id_model_type_index; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX model_has_permissions_model_id_model_type_index ON public.model_has_permissions USING btree (model_id, model_type);
+
+
+--
+-- Name: model_has_roles_model_id_model_type_index; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX model_has_roles_model_id_model_type_index ON public.model_has_roles USING btree (model_id, model_type);
+
+
+--
+-- Name: password_resets_email_index; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX password_resets_email_index ON public.password_resets USING btree (email);
 
 
 --
@@ -11469,6 +9853,142 @@ CREATE INDEX tbl_sys_iso_sent_idx ON public.tbl_sys_iso USING btree (sent);
 --
 
 CREATE INDEX tbl_sys_iso_synced_idx ON public.tbl_sys_iso USING btree (synced);
+
+
+--
+-- Name: workflow_steps fk_transaction_approval_steps_transaction_approval_stages1_idx; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.workflow_steps
+    ADD CONSTRAINT fk_transaction_approval_steps_transaction_approval_stages1_idx FOREIGN KEY (workflow_stage_id) REFERENCES public.workflow_stages(id);
+
+
+--
+-- Name: workflow_steps fk_transaction_approval_steps_transaction_approvals1_idx; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.workflow_steps
+    ADD CONSTRAINT fk_transaction_approval_steps_transaction_approvals1_idx FOREIGN KEY (workflow_id) REFERENCES public.workflows(id);
+
+
+--
+-- Name: workflow_steps fk_transaction_approval_steps_users1_idx; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.workflow_steps
+    ADD CONSTRAINT fk_transaction_approval_steps_users1_idx FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: workflows fk_transaction_approvals_transaction_approval_stages1_idx; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.workflows
+    ADD CONSTRAINT fk_transaction_approvals_transaction_approval_stages1_idx FOREIGN KEY (awaiting_stage_id) REFERENCES public.workflow_stages(id);
+
+
+--
+-- Name: workflows fk_transaction_approvals_transaction_approval_types1_idx; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.workflows
+    ADD CONSTRAINT fk_transaction_approvals_transaction_approval_types1_idx FOREIGN KEY (workflow_type) REFERENCES public.workflow_types(slug);
+
+
+--
+-- Name: workflows fk_transaction_approvals_users1_idx; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.workflows
+    ADD CONSTRAINT fk_transaction_approvals_users1_idx FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: workflows fk_transaction_approvals_users2_idx; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.workflows
+    ADD CONSTRAINT fk_transaction_approvals_users2_idx FOREIGN KEY (sent_by) REFERENCES public.users(id);
+
+
+--
+-- Name: workflow_stage_approvers fk_transaction_approvers_transaction_approval_stages1_idx; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.workflow_stage_approvers
+    ADD CONSTRAINT fk_transaction_approvers_transaction_approval_stages1_idx FOREIGN KEY (workflow_stage_type_id) REFERENCES public.workflow_stage_type(id);
+
+
+--
+-- Name: workflow_stage_approvers fk_transaction_approvers_transaction_approval_stages2_idx; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.workflow_stage_approvers
+    ADD CONSTRAINT fk_transaction_approvers_transaction_approval_stages2_idx FOREIGN KEY (workflow_stage_id) REFERENCES public.workflow_stages(id);
+
+
+--
+-- Name: workflow_stage_approvers fk_transaction_approvers_users1_idx; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.workflow_stage_approvers
+    ADD CONSTRAINT fk_transaction_approvers_users1_idx FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: workflow_stage_approvers fk_transaction_approvers_users2_idx; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.workflow_stage_approvers
+    ADD CONSTRAINT fk_transaction_approvers_users2_idx FOREIGN KEY (granted_by) REFERENCES public.users(id);
+
+
+--
+-- Name: workflow_step_checklist fk_workflow_stage_checklist_copy1_workflow_steps1_idx; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.workflow_step_checklist
+    ADD CONSTRAINT fk_workflow_stage_checklist_copy1_workflow_steps1_idx FOREIGN KEY (workflow_steps_id) REFERENCES public.workflow_steps(id);
+
+
+--
+-- Name: workflow_stage_checklist fk_workflow_stage_checklist_workflow_stages1_idx; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.workflow_stage_checklist
+    ADD CONSTRAINT fk_workflow_stage_checklist_workflow_stages1_idx FOREIGN KEY (workflow_stages_id) REFERENCES public.workflow_stages(id);
+
+
+--
+-- Name: model_has_permissions model_has_permissions_permission_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.model_has_permissions
+    ADD CONSTRAINT model_has_permissions_permission_id_foreign FOREIGN KEY (permission_id) REFERENCES public.permissions(id) ON DELETE CASCADE;
+
+
+--
+-- Name: model_has_roles model_has_roles_role_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.model_has_roles
+    ADD CONSTRAINT model_has_roles_role_id_foreign FOREIGN KEY (role_id) REFERENCES public.roles(id) ON DELETE CASCADE;
+
+
+--
+-- Name: role_has_permissions role_has_permissions_permission_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.role_has_permissions
+    ADD CONSTRAINT role_has_permissions_permission_id_foreign FOREIGN KEY (permission_id) REFERENCES public.permissions(id) ON DELETE CASCADE;
+
+
+--
+-- Name: role_has_permissions role_has_permissions_role_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.role_has_permissions
+    ADD CONSTRAINT role_has_permissions_role_id_foreign FOREIGN KEY (role_id) REFERENCES public.roles(id) ON DELETE CASCADE;
 
 
 --

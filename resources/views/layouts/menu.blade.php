@@ -137,7 +137,11 @@
 {{--<li class="{{ Request::is('comps*') ? 'active' : '' }}">--}}
 {{--    <a href="{{ route('comps.index') }}"><i class="fa fa-edit"></i><span>Comps</span></a>--}}
 {{--</li>--}}
-@include("wizpack::layouts.menu")
+@if(auth()->user()->can('Update transactions'))
+    //
+    @include("wizpack::layouts.menu")
+
+@endif
 
 {{--<li class="{{ Request::is('tXNS*') ? 'active' : '' }}">--}}
 {{--    <a href="{{ route('tXNS.index') }}"><i class="fa fa-edit"></i><span>T X N S</span></a>--}}

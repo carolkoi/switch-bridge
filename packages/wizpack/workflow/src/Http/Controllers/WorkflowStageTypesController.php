@@ -11,6 +11,7 @@ use Exception;
 use Illuminate\Support\Facades\Response;
 use Laracasts\Flash\Flash;
 use Prettus\Validator\Exceptions\ValidatorException;
+use Illuminate\http\Request;
 
 
 class WorkflowStageTypesController extends AppBaseController
@@ -115,7 +116,7 @@ class WorkflowStageTypesController extends AppBaseController
      * @return Response
      * @throws ValidatorException
      */
-    public function update($id, UpdateWorkflowStageTypesRequest $request)
+    public function update($id, Request $request)
     {
         $workflowStageTypes = $this->workflowStageTypesRepository->find($id);
 

@@ -2087,8 +2087,8 @@ class Transactions extends Model implements ApprovableInterface
         // TODO: Implement markApprovalComplete() method.
         $model = self::find($id);
 //        dd($model);
-        $model->maker_checker_approve_status = true;
-        $model->approved_at = Carbon::now();
+        $model->maker_checker_approve_status = 1;
+        $model->approved_at = time();
         $model->save();
     }
 
@@ -2099,8 +2099,8 @@ class Transactions extends Model implements ApprovableInterface
     {
         // TODO: Implement markApprovalAsRejected() method.
         $model = self::find($id);
-        $model->maker_checker_reject_status = true;
-        $model->rejected_at = Carbon::now();
+        $model->maker_checker_reject_status = 1;
+        $model->rejected_at = time();
         $model->save();
     }
 }

@@ -96,7 +96,7 @@ class WorkflowStage extends Model
     public static $rules = [
         'workflow_stage_type_id' => 'required|exists:workflow_stage_type,id',
         'workflow_type_id' => 'required|exists:workflow_types,id',
-        'weight' => 'required|integer'
+//        'weight' => 'required|integer'
     ];
 
 
