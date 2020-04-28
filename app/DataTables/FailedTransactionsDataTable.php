@@ -52,6 +52,7 @@ class FailedTransactionsDataTable extends DataTable
             ->addColumn('response', function ($query){
                 return $query->res_field44;
             })
+            ->escapeColumns('response')
             ->addColumn('receiver_bank', function ($query){
                 return $query->req_field112;
             })
