@@ -73,7 +73,7 @@ class PendingTransactionsDataTable extends DataTable
      */
     public function query(Transactions $model)
     {
-        return $model->where('res_field48', 'UPLOADED')->newQuery();
+        return $model->WhereNotIn('res_field48', ['COMPLETED', 'FAILED'])->newQuery();
     }
 
     /**

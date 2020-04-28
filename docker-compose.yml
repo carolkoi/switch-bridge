@@ -43,7 +43,7 @@
       volumes:
         - .:/var/www/html
       ports:
-        - 8513:80
+        - 8510:80
       networks:
         backend:
           aliases:
