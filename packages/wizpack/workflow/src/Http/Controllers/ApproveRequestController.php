@@ -70,7 +70,6 @@ class ApproveRequestController extends AppBaseController
 
         if($request->session()->has('txn_status') && $request->session()->has('aml_listed') && $request->session()->has('remarks')) {
 //            dd(session('txn_status'), session('aml_listed'), session('remarks'));
-//dd('here');
             $transaction = Transactions::where('iso_id', $kdata[0]['model_id'])->update([
                 'res_field48' => session('txn_status'),
                 'aml_listed' => session('aml_listed'),
@@ -97,11 +96,11 @@ class ApproveRequestController extends AppBaseController
 
             event(new WorkflowStageApproved($data, $approvedStep));
 
-            Flash::success('Stage Approved successfully');
+            Flash::success('Transaction Request Approved successfully');
             return redirect('/wizpack/approvals/' . $workflowApprovalId);
         }
 
-        Flash::success('An error occurred stage not approved ');
+        Flash::success('An error occurred Transaction Request not approved ');
         return redirect()->back();
 
     }

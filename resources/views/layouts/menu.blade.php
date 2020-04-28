@@ -137,7 +137,7 @@
 {{--<li class="{{ Request::is('comps*') ? 'active' : '' }}">--}}
 {{--    <a href="{{ route('comps.index') }}"><i class="fa fa-edit"></i><span>Comps</span></a>--}}
 {{--</li>--}}
-@if(auth()->user()->can('Update transactions'))
+@if(auth()->user()->can('Authorize Transaction Update'))
     //
     @include("wizpack::layouts.menu")
 
