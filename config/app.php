@@ -137,6 +137,11 @@ return [
     | this array to grant expanded functionality to your applications.
     |
     */
+    'db_fields' => [
+        'customer_name',
+        'mobile_number',
+        'customer_idnumber'
+    ],
 
     'providers' => [
 

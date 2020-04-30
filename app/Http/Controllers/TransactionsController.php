@@ -161,4 +161,31 @@ class TransactionsController extends AppBaseController
 
         return redirect(route('transactions.index'));
     }
+
+    public function getTransactionStatus($status)
+    {
+        // Fetch transaction status
+        $txn_status = array(
+            'AML-APPROVED' => 'AML-APPROVED',
+            'FAILED' => 'FAILED',
+            'INIT-FAILED' => 'INIT-FAILED',
+            'AML-FAILED' => 'AML-FAILED',
+            'COMPLETED' => 'COMPLETED',
+            'UPLOADED ' => 'UPLOADED ',
+            'UPLOAD-FAILED' => 'UPLOAD FAILED',
+        );
+        $txn_status_aml_failed = array(
+            'AML-APPROVED' => 'AML-APPROVED',
+            'FAILED' => 'FAILED',
+//            'INIT-FAILED' => 'INIT-FAILED',
+//            'AML-FAILED' => 'AML-FAILED',
+//            'COMPLETED' => 'COMPLETED',
+//            'UPLOADED ' => 'UPLOADED ',
+//            'UPLOAD-FAILED' => 'UPLOAD FAILED',
+        );
+
+
+//        $transactionStatus = Transactions::where('res_field48', $status)->get()->pluck('res_field48', 'res_field48');
+        return response()->json(['data' => $txn_status, 'aml_failed_data' => $txn_status_aml_failed]);
+    }
 }

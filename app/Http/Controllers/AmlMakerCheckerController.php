@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\DataTables\AmlMakerCheckerDataTable;
 use App\Http\Requests;
+use App\Imports\BlacklistImport;
+use Illuminate\Support\Facades\Input;
 use App\Http\Requests\CreateAmlMakerCheckerRequest;
 use App\Http\Requests\UpdateAmlMakerCheckerRequest;
 use App\Repositories\AmlMakerCheckerRepository;
@@ -14,6 +16,8 @@ use Response;
 use App\Models\AmlMakerChecker;
 use Carbon\Carbon;
 use Auth;
+use Maatwebsite\Excel\Facades\Excel;
+//use Swagger\Annotations\Contact;
 
 class AmlMakerCheckerController extends AppBaseController
 {
@@ -51,32 +55,60 @@ class AmlMakerCheckerController extends AppBaseController
      *
      * @param CreateAmlMakerCheckerRequest $request
      *
-     * @return Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(CreateAmlMakerCheckerRequest $request)
     {
-//        dd($request->input('blacklist_source'));
-        $input = $request->except('blacklist_source');
-        $input['added_by'] = Auth::user()->id;
-        $input['modified_by'] = Auth::user()->id;
+        $input = $request->all();
+        if ($request->has('blacklist_source')) {
+            $path = $request->file('blacklist_source')->getRealPath();
+            if ($request->has('csv_header')) {
+//                $data = Excel::load($path, function ($reader) {
+//                })->get()->toArray();
+                $data = Excel::toArray(new BlacklistImport(),$request->file('blacklist_source'))[0];
+            } else {
+                $data = array_map('str_getcsv', file($path));
+            }
+            if (count($data) > 0) {
+                if ($request->has('csv_header')) {
+                    $csv_header_fields = [];
+                    foreach ($data[0] as $key => $value) {
+                        $csv_header_fields[] = $key;
+                    }
+                }
+                $csv_data = array_slice($data, 0, 3);
+                $csv_data_file = AmlMakerChecker::create([
+                    'csv_filename' => $request->file('blacklist_source')->getClientOriginalName(),
+                    'csv_header' => $request->has('csv_header'),
+                    'csv_data' => json_encode($data)
+                ]);
+            } else {
+                return redirect()->back();
+            }
+//
+            return view('aml_maker_checkers.import_table', compact('csv_data', 'csv_data_file'));
+        } else {
+            $input['added_by'] = Auth::user()->id;
+            $input['modified_by'] = Auth::user()->id;
 
-        $input['date_time_added'] = time();
+            $input['date_time_added'] = time();
 //        dd($input);
-        $amlMakerChecker = $this->amlMakerCheckerRepository->create($input);
+            $amlMakerChecker = $this->amlMakerCheckerRepository->create($input);
 //        dd($amlMakerChecker);
-        foreach ($request->input('blacklist_source', []) as $file) {
-            $amlMakerChecker->addMedia(storage_path('tmp/uploads/' . $file))->toMediaCollection('document');
+            foreach ($request->input('blacklist_source', []) as $file) {
+                $amlMakerChecker->addMedia(storage_path('tmp/uploads/' . $file))->toMediaCollection('document');
+            }
+
+            Flash::success('Member blacklist record saved successfully.');
+
+            return redirect(route('amlMakerCheckers.index'));
         }
-
-        Flash::success('Member blacklist record saved successfully.');
-
-        return redirect(route('amlMakerCheckers.index'));
     }
 
     /**
      * Display the specified AmlMakerChecker.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
@@ -97,7 +129,7 @@ class AmlMakerCheckerController extends AppBaseController
     /**
      * Show the form for editing the specified AmlMakerChecker.
      *
-     * @param  int $blacklist_id
+     * @param int $blacklist_id
      *
      * @return Response
      */
@@ -117,7 +149,7 @@ class AmlMakerCheckerController extends AppBaseController
     /**
      * Update the specified AmlMakerChecker in storage.
      *
-     * @param  int              $blacklist_id
+     * @param int $blacklist_id
      * @param UpdateAmlMakerCheckerRequest $request
      *
      * @return Response
@@ -154,7 +186,7 @@ class AmlMakerCheckerController extends AppBaseController
     /**
      * Remove the specified AmlMakerChecker from storage.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
@@ -193,6 +225,37 @@ class AmlMakerCheckerController extends AppBaseController
             'name' => $name,
             'original_name' => $file->getClientOriginalName(),
         ]);
+
+    }
+
+    public function getImport()
+    {
+        return view('aml_maker_checkers.import');
+    }
+
+    public function processImport(Request $request)
+    {
+//        dd($request->all());
+        $data = AmlMakerChecker::find($request->blacklist_id);
+        $csv_data = json_decode($data->csv_data, true);
+
+        foreach ($csv_data as $row) {
+            $record = new AmlMakerChecker();
+            foreach (config('app.db_fields') as $index => $field) {
+                if ($data->csv_header) {
+//                    dd($row[$field]);
+//                    dd($request->fields[$index]);
+                    $record->$field = $row[$index];
+//                    dd($record->$field);
+                } else {
+                    $record->$field = $row[$field];
+                }
+            }
+            $record->save();
+        }
+        Flash::success('Data imported successfully.');
+
+        return redirect(route('amlMakerCheckers.index'));
 
     }
 }

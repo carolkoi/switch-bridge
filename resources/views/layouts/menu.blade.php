@@ -137,9 +137,15 @@
 {{--<li class="{{ Request::is('comps*') ? 'active' : '' }}">--}}
 {{--    <a href="{{ route('comps.index') }}"><i class="fa fa-edit"></i><span>Comps</span></a>--}}
 {{--</li>--}}
+{{--{!! Auth::user() ? auth()->user()->can('Authorize Transaction Update') : redirect('/')!!}--}}
 @if(auth()->user()->can('Authorize Transaction Update'))
-    //
     @include("wizpack::layouts.menu")
+    @else
+    @section('scripts')
+    <script type="text/javascript">
+        window.location = "{ url('/') }";//here double curly bracket
+    </script>
+    @endsection
 
 @endif
 

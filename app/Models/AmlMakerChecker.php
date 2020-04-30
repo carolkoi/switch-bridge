@@ -144,7 +144,10 @@ class AmlMakerChecker extends Model implements HasMedia
         'blacklist_source',
         'remarks',
         'blacklisted',
-        'blacklist_version'
+        'blacklist_version',
+        'csv_filename',
+        'csv_header',
+        'csv_data'
     ];
 
     /**
@@ -170,7 +173,10 @@ class AmlMakerChecker extends Model implements HasMedia
         'blacklist_source' => 'string',
         'remarks' => 'string',
         'blacklisted' => 'boolean',
-        'blacklist_version' => 'integer'
+        'blacklist_version' => 'integer',
+        'csv_filename' => 'string',
+        'csv_header' => 'integer',
+        'csv_data' => 'string'
     ];
 
     /**

@@ -21,10 +21,4 @@
         </div>
     </div>
 @endsection
-@section('scripts')
-<script>
-alert('here')
-    CKEDITOR.replace('editor')
 
-</script>
-@endsection

@@ -91,8 +91,7 @@ Route::get('role-permissions/{id}', 'RoleController@permission')->name('role.per
 Route::post('/assign-permissions/{id}', 'RoleController@assign');
 Route::post('aml/media', 'AmlMakerCheckerController@storeMedia')
     ->name('aml.storeMedia');
-
-
-
-
-Route::resource('tXNS', 'TXNController');
+Route::get('transaction-status/{status}', 'TransactionsController@getTransactionStatus');
+Route::get('import-source', 'AmlMakerCheckerController@getImport')->name('source.import');
+//Route::post('/import-parse', 'AmlMakerCheckerController@parseImport')->name('import_parse');
+Route::post('/import-process', 'AmlMakerCheckerController@processImport')->name('import_process');
