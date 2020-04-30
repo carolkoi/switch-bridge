@@ -185,6 +185,7 @@ class AmlMakerChecker extends Model implements HasMedia
      * @var array
      */
     public static $rules = [
+        'customer_idnumber' => 'unique:tbl_cus_blacklist'
 
     ];
     public function media()

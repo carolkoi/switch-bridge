@@ -11,7 +11,7 @@
         <div class="box box-primary">
             <div class="box-body">
                 <div class="row">
-                    {!! Form::open(['route' => 'amlMakerCheckers.store']) !!}
+                    {!! Form::open(['route' => 'aml-listing.store']) !!}
 
                         @include('aml_maker_checkers.fields')
 

@@ -14,7 +14,7 @@
 
                     <div class="box-body" style="margin-left: 50px; margin-right: 50px">
                         <div class="row">
-                    {!! Form::open(['route' => 'amlMakerCheckers.store', 'files' => true]) !!}
+                    {!! Form::open(['route' => 'aml-listing.store', 'files' => true]) !!}
 
                     @include('aml_maker_checkers.import_field')
 

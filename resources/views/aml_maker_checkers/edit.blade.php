@@ -11,7 +11,7 @@
        <div class="box box-primary">
            <div class="box-body">
                <div class="row">
-                   {!! Form::model($amlMakerChecker, ['route' => ['amlMakerCheckers.update', $amlMakerChecker->blacklist_id], 'method' => 'patch']) !!}
+                   {!! Form::model($amlMakerChecker, ['route' => ['aml-listing.update', $amlMakerChecker->blacklist_id], 'method' => 'patch']) !!}
 
                         @include('aml_maker_checkers.fields')
 

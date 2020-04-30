@@ -101,7 +101,7 @@ class AmlMakerCheckerController extends AppBaseController
 
             Flash::success('Member blacklist record saved successfully.');
 
-            return redirect(route('amlMakerCheckers.index'));
+            return redirect(route('aml-listing.index'));
         }
     }
 
@@ -120,7 +120,7 @@ class AmlMakerCheckerController extends AppBaseController
         if (empty($amlMakerChecker)) {
             Flash::error('Aml Maker Checker not found');
 
-            return redirect(route('amlMakerCheckers.index'));
+            return redirect(route('aml-listing.index'));
         }
 
         return view('aml_maker_checkers.show')->with('amlMakerChecker', $amlMakerChecker);
@@ -140,7 +140,7 @@ class AmlMakerCheckerController extends AppBaseController
         if (empty($amlMakerChecker)) {
             Flash::error('Aml Maker Checker not found');
 
-            return redirect(route('amlMakerCheckers.index'));
+            return redirect(route('aml-listing.index'));
         }
 
         return view('aml_maker_checkers.edit')->with('amlMakerChecker', $amlMakerChecker);
@@ -160,7 +160,7 @@ class AmlMakerCheckerController extends AppBaseController
         if (empty($amlMakerChecker)) {
             Flash::error('Aml Maker Checker not found');
 
-            return redirect(route('amlMakerCheckers.index'));
+            return redirect(route('aml-listing.index'));
         }
         $input = $request->except(['_method', '_token', 'blacklist_source']);
         $input['date_time_modified'] = time();
@@ -180,7 +180,7 @@ class AmlMakerCheckerController extends AppBaseController
 
         Flash::success('Member blacklist record updated successfully.');
 
-        return redirect(route('amlMakerCheckers.index'));
+        return redirect(route('aml-listing.index'));
     }
 
     /**
@@ -197,14 +197,14 @@ class AmlMakerCheckerController extends AppBaseController
         if (empty($amlMakerChecker)) {
             Flash::error('Blacklist record not found');
 
-            return redirect(route('amlMakerCheckers.index'));
+            return redirect(route('aml-listing.index'));
         }
 
         $this->amlMakerCheckerRepository->delete($id);
 
         Flash::success('Blacklist record deleted successfully.');
 
-        return redirect(route('amlMakerCheckers.index'));
+        return redirect(route('aml-listing.index'));
     }
 
     public function storeMedia(Request $request)
@@ -255,7 +255,7 @@ class AmlMakerCheckerController extends AppBaseController
         }
         Flash::success('Data imported successfully.');
 
-        return redirect(route('amlMakerCheckers.index'));
+        return redirect(route('aml-listing.index'));
 
     }
 }

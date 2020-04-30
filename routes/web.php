@@ -64,7 +64,10 @@ Route::prefix('services')->group(function () {
 //Route::resource('aMLCheckers', 'AML-CheckerController');
 Route::prefix('checker')->group(function () {
 //    Route::resource('serviceProviders', 'ServiceProvidersController');
-    Route::resource('amlMakerCheckers', 'AmlMakerCheckerController');
+    Route::resource('aml-listing', 'AmlMakerCheckerController');
+    Route::get('import-source', 'AmlMakerCheckerController@getImport')->name('source.import');
+//Route::post('/import-parse', 'AmlMakerCheckerController@parseImport')->name('import_parse');
+    Route::post('/import-process', 'AmlMakerCheckerController@processImport')->name('import_process');
 });
 
 Route::prefix('members')->group(function () {
@@ -92,6 +95,6 @@ Route::post('/assign-permissions/{id}', 'RoleController@assign');
 Route::post('aml/media', 'AmlMakerCheckerController@storeMedia')
     ->name('aml.storeMedia');
 Route::get('transaction-status/{status}', 'TransactionsController@getTransactionStatus');
-Route::get('import-source', 'AmlMakerCheckerController@getImport')->name('source.import');
-//Route::post('/import-parse', 'AmlMakerCheckerController@parseImport')->name('import_parse');
-Route::post('/import-process', 'AmlMakerCheckerController@processImport')->name('import_process');
+//Route::get('import-source', 'AmlMakerCheckerController@getImport')->name('source.import');
+////Route::post('/import-parse', 'AmlMakerCheckerController@parseImport')->name('import_parse');
+//Route::post('/import-process', 'AmlMakerCheckerController@processImport')->name('import_process');
