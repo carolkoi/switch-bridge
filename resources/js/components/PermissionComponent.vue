@@ -28,7 +28,7 @@
 <!--                        <th>Role Assigned</th>-->
                         </thead>
                         <tbody>
-                        <tr v-for="permission in resultQuery">
+                        <tr v-for="(permission) in resultQuery">
                             <td><input type="checkbox" @change="addPermission(permission)"
                                        :checked="isChecked(permission.roles)"
                                        ></td>
@@ -74,6 +74,7 @@
                 errors: [],
                 permissions: [],
                 selectedPermissions: [],
+                // selectedPermissions: [{id:'',name:'', guard_name:'',description:'', roles:[]}],
                 status: null,
                 qty_ordered: null,
                 stock_link: null,
@@ -104,28 +105,6 @@
                     return this.permissions;
                 }
             },
-            hasPermissions() {
-                let currentRole = this.data;
-                let permissions = this.permissions;
-                // console.log(currentRole, permissions)
-
-                let ret = {}
-                // for(let i = 0; i < userCars.length; i++){
-                for (let j = 0; j < permissions.length; j++) {
-                    let roles = permissions[j].roles;
-
-                    for (let i = 0; i < roles.length; i++) {
-
-                        if (roles[i] === currentRole) {
-                            // console.log('here')
-                            ret[roles[i]] = true
-                        }
-
-                        // }
-                    }
-                    return ret
-                }
-            },
         },
 
         methods: {
@@ -145,13 +124,19 @@
                 this.getAllPermissions(this.api);
             },
             addPermission(permission) {
-                this.selectedPermissions.push(permission)
-                // console.log(item)
+                let index = this.selectedPermissions.indexOf(permission);
+                if (index >= 0)
+                    this.selectedPermissions.splice(index, 1)
+                else
+                        this.selectedPermissions.push(permission);
 
             },
+                // this.selectedPermissions.push(permission)
+                // console.log(item)
+
             assignPermission(){
                 // alert(this.permissions);
-                let uri = '/roles';
+                let uri = '/members/roles';
                 axios.post('/assign-permissions/' + this.data,this.selectedPermissions).then((response)=>{
 
                     console.log(response);
@@ -159,7 +144,7 @@
                 }).catch(err => {
                     console.log(err)
                 });
-                return window.location = uri;
+                // return window.location = uri;
             },
             isChecked(roles) {
                 return roles.includes(this.data)

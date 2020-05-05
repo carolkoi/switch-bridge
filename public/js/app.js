@@ -1805,6 +1805,7 @@ __webpack_require__.r(__webpack_exports__);
       errors: [],
       permissions: [],
       selectedPermissions: [],
+      // selectedPermissions: [{id:'',name:'', guard_name:'',description:'', roles:[]}],
       status: null,
       qty_ordered: null,
       stock_link: null,
@@ -1837,26 +1838,6 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         return this.permissions;
       }
-    },
-    hasPermissions: function hasPermissions() {
-      var currentRole = this.data;
-      var permissions = this.permissions; // console.log(currentRole, permissions)
-
-      var ret = {}; // for(let i = 0; i < userCars.length; i++){
-
-      for (var j = 0; j < permissions.length; j++) {
-        var roles = permissions[j].roles;
-
-        for (var i = 0; i < roles.length; i++) {
-          if (roles[i] === currentRole) {
-            // console.log('here')
-            ret[roles[i]] = true;
-          } // }
-
-        }
-
-        return ret;
-      }
     }
   },
   methods: {
@@ -1875,17 +1856,19 @@ __webpack_require__.r(__webpack_exports__);
       this.getAllPermissions(this.api);
     },
     addPermission: function addPermission(permission) {
-      this.selectedPermissions.push(permission); // console.log(item)
+      var index = this.selectedPermissions.indexOf(permission);
+      if (index >= 0) this.selectedPermissions.splice(index, 1);else this.selectedPermissions.push(permission);
     },
+    // this.selectedPermissions.push(permission)
+    // console.log(item)
     assignPermission: function assignPermission() {
       // alert(this.permissions);
-      var uri = '/roles';
+      var uri = '/members/roles';
       axios.post('/assign-permissions/' + this.data, this.selectedPermissions).then(function (response) {
         console.log(response);
       })["catch"](function (err) {
         console.log(err);
-      });
-      return window.location = uri;
+      }); // return window.location = uri;
     },
     isChecked: function isChecked(roles) {
       return roles.includes(this.data);

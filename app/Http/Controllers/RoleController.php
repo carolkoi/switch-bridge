@@ -96,6 +96,7 @@ class RoleController extends AppBaseController
     public function assign($id, Request $request)
     {
         $inputs = $request->all();
+        dd($inputs);
 
         return collect($inputs)->each(function ($input) use ($id) {
             $role = $this->roleRepository->find($id);
