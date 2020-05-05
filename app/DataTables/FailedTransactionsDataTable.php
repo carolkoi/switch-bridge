@@ -56,14 +56,10 @@ class FailedTransactionsDataTable extends DataTable
             ->addColumn('receiver_bank', function ($query){
                 return $query->req_field112;
             })
-            ->addColumn('action', 'transactions.datatables_actions');
-//            ->setRowAttr([
-//                'style' => function($query){
-////                dd($query->res_field48);
-//                    return $query->res_field48 == "FAILED" ? 'background-color: #ff0000;' :
-//                        ( $query->res_field48 == "COMPLETED" ? 'background-color: green;' : null);
-//                }
-//            ]);
+            ->addColumn('modified_at', 'transactions.datatables_modified')
+            ->addColumn('action', 'transactions.datatables_actions')
+            ->rawColumns(['modified_at', 'action']);
+
     }
 
     /**
@@ -117,6 +113,7 @@ class FailedTransactionsDataTable extends DataTable
                 'txn_time' => ['name' => 'req_field7'],
                 'txn_status' => ['name' => 'res_field48'],
                 'txn_type'  => ['name' => 'req_field41'],
+            'modified_at',
                 'txn_ref'  => ['name' => 'req_field37'],
 //            'req_field49',
                 'amt_sent'  => ['name' => 'req_field49'],

@@ -119,7 +119,6 @@ class TransactionsController extends AppBaseController
 
             return redirect(route('transactions.index'));
         }
-//        dd($request->get('res_field48'));
         $request->session()->put('txn_status', $request->get('res_field48'));
         $request->session()->put('aml_listed', $request->get('aml_listed'));
         $request->session()->put('remarks', $request->get('res_field44'));
@@ -128,10 +127,6 @@ class TransactionsController extends AppBaseController
         //initiating the approval request
         $approval = new Transactions();
         $approval->addApproval($transactions);
-//        dd($request->all());
-
-//        $transactions = Transactions::where('iso_id', $iso_id)->update($request->except(['_method', '_token']));
-//        dd($transactions);
 
         Flash::success('Approval to Update the Transaction sent successfully.');
 

@@ -98,6 +98,7 @@
 </li>
     </ul>
 </li>
+<li class="divider" style="color:white; padding: 15px"><span><b>Administration</b></span></li>
 <li class="treeview {{ Request::is('members*') ? 'active menu-open' : '' }}">
     <a class="dropdown-toggle" href="#">
         <span class="glyphicon glyphicon-lock"></span><span>Administration</span>
@@ -116,16 +117,20 @@
             <a href="{{ route('permissions.index') }}"><i class="fa fa-check-square-o"></i><span>Permissions</span></a>
         </li>
     </ul>
-</li>
 
-@if(auth()->user()->can('Authorize Transaction Update'))
+{{--{!! Auth::user()->can('Authorize Transaction Update')?--}}
+{{--include("wizpack::layouts.menu")--}}
+{{--: redirect('/')!!}--}}
+<li class="divider" style="color:white; padding: 15px"><span><b>Approval Settings</b></span></li>
+@if(Auth::check() && auth()->user()->can('Authorize Transaction Update'))
     @include("wizpack::layouts.menu")
-    @else
-    @section('scripts')
-    <script type="text/javascript">
-        window.location = "{ url('/') }";//here double curly bracket
-    </script>
-    @endsection
+{{--    @else--}}
+{{--    {!! redirect('/') !!}--}}
+{{--    @section('scripts')--}}
+{{--    <script type="text/javascript">--}}
+{{--        window.location = "{ url('/') }";//here double curly bracket--}}
+{{--    </script>--}}
+{{--    @endsection--}}
 
 @endif
 

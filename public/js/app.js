@@ -1781,6 +1781,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['data'],
   data: function data() {
@@ -1793,14 +1810,20 @@ __webpack_require__.r(__webpack_exports__);
       stock_link: null,
       links: {},
       api: '/assign-permission',
+      role_per_api: '/role-has-permission',
       meta: {},
       index: 1,
-      searchQuery: null
+      searchQuery: null,
+      isCheckAll: false,
+      assignedPerm: []
     };
   },
   computed: {
     statusArr: function statusArr() {
       return this.selectedPermissions;
+    },
+    permissionsArr: function permissionsArr() {
+      return this.permissions;
     },
     resultQuery: function resultQuery() {
       var _this = this;
@@ -1814,6 +1837,26 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         return this.permissions;
       }
+    },
+    hasPermissions: function hasPermissions() {
+      var currentRole = this.data;
+      var permissions = this.permissions; // console.log(currentRole, permissions)
+
+      var ret = {}; // for(let i = 0; i < userCars.length; i++){
+
+      for (var j = 0; j < permissions.length; j++) {
+        var roles = permissions[j].roles;
+
+        for (var i = 0; i < roles.length; i++) {
+          if (roles[i] === currentRole) {
+            // console.log('here')
+            ret[roles[i]] = true;
+          } // }
+
+        }
+
+        return ret;
+      }
     }
   },
   methods: {
@@ -1823,7 +1866,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.get(api).then(function (response) {
         _this2.permissions = response.data.data;
         _this2.links = response.data.links;
-        _this2.meta = response.data.meta;
+        _this2.meta = response.data.meta; // console.log(this.permissions, this.data)
       })["catch"](function (err) {
         console.log(err);
       });
@@ -1835,8 +1878,7 @@ __webpack_require__.r(__webpack_exports__);
       this.selectedPermissions.push(permission); // console.log(item)
     },
     assignPermission: function assignPermission() {
-      // alert(this.selectedPermissions);
-      // return console.log(this.selectedPermissions);
+      // alert(this.permissions);
       var uri = '/roles';
       axios.post('/assign-permissions/' + this.data, this.selectedPermissions).then(function (response) {
         console.log(response);
@@ -1844,6 +1886,28 @@ __webpack_require__.r(__webpack_exports__);
         console.log(err);
       });
       return window.location = uri;
+    },
+    isChecked: function isChecked(roles) {
+      return roles.includes(this.data);
+    },
+    getRoles: function getRoles(roles) {
+      var rolesString = '';
+      roles.forEach(function (role, index) {
+        rolesString += ', ';
+        rolesString = rolesString + role.name;
+      });
+      return rolesString;
+    },
+    checkAll: function checkAll() {
+      this.isCheckAll = !this.isCheckAll;
+      this.assignedPerm = [];
+
+      if (this.isCheckAll) {
+        // Check all
+        for (var key in this.permissions) {
+          this.assignedPerm.push(this.permissions[key]);
+        }
+      }
     }
   },
   created: function created() {
@@ -33093,6 +33157,52 @@ var render = function() {
       _vm._v(" "),
       _c("div", { staticClass: "row" }, [
         _c("div", { staticClass: "col-md-12" }, [
+          _c("div", { staticClass: "pull-left" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.isCheckAll,
+                  expression: "isCheckAll"
+                }
+              ],
+              attrs: { type: "checkbox" },
+              domProps: {
+                checked: Array.isArray(_vm.isCheckAll)
+                  ? _vm._i(_vm.isCheckAll, null) > -1
+                  : _vm.isCheckAll
+              },
+              on: {
+                click: function($event) {
+                  return _vm.checkAll()
+                },
+                change: function($event) {
+                  var $$a = _vm.isCheckAll,
+                    $$el = $event.target,
+                    $$c = $$el.checked ? true : false
+                  if (Array.isArray($$a)) {
+                    var $$v = null,
+                      $$i = _vm._i($$a, $$v)
+                    if ($$el.checked) {
+                      $$i < 0 && (_vm.isCheckAll = $$a.concat([$$v]))
+                    } else {
+                      $$i > -1 &&
+                        (_vm.isCheckAll = $$a
+                          .slice(0, $$i)
+                          .concat($$a.slice($$i + 1)))
+                    }
+                  } else {
+                    _vm.isCheckAll = $$c
+                  }
+                }
+              }
+            }),
+            _vm._v(" Check All Permissions\n\n                    ")
+          ]),
+          _vm._v(" "),
+          _c("br"),
+          _vm._v(" "),
           _vm.permissions.length
             ? _c(
                 "table",
@@ -33110,6 +33220,9 @@ var render = function() {
                         _c("td", [
                           _c("input", {
                             attrs: { type: "checkbox" },
+                            domProps: {
+                              checked: _vm.isChecked(permission.roles)
+                            },
                             on: {
                               change: function($event) {
                                 return _vm.addPermission(permission)
@@ -33134,6 +33247,14 @@ var render = function() {
                 ]
               )
             : _vm._e(),
+          _vm._v(" "),
+          _c("h2", [
+            _vm._v(
+              "\n                                            Derived output\n                                        "
+            )
+          ]),
+          _vm._v(" "),
+          _c("pre", [_vm._v(_vm._s(_vm.statusArr))]),
           _vm._v(" "),
           _c(
             "div",

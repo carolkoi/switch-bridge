@@ -8,17 +8,7 @@
     </section>
     <div class="content">
         @include('adminlte-templates::common.errors')
-        {{--        <div class="box box-primary">--}}
-        {{--            <div class="box-body">--}}
-        {{--                <div class="row">--}}
-        {{--                    {!! Form::open(['route' => 'reorders.store']) !!}--}}
 
-        {{--                        @include('reorders.fields')--}}
-
-        {{--                    {!! Form::close() !!}--}}
-        {{--                </div>--}}
-        {{--            </div>--}}
-        {{--        </div>--}}
         <permission-component :data={{$role->id}}></permission-component>
 
     </div>

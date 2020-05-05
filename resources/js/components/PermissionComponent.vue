@@ -4,30 +4,47 @@
             <h1 class="pull-right">
                 <button class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" @click="assignPermission()">Assign Role</button>
             </h1>
-            <div id="dataTableBuilder_filter" class="dataTables_filter"><label>Search:<input type="search" v-model="searchQuery" class="form-control input-sm pull-left" placeholder="" aria-controls="dataTableBuilder"></label></div>
+            <div id="dataTableBuilder_filter" class="dataTables_filter">
+                <label>Search:<input type="search" v-model="searchQuery"
+                                     class="form-control input-sm pull-left"
+                                     placeholder="" aria-controls="dataTableBuilder"></label>
+                <!-- Check All -->
+            </div>
 
             <div class="row">
                 <div class="col-md-12">
+                    <div class="pull-left">
+                        <input type='checkbox' @click='checkAll()' v-model='isCheckAll'> Check All Permissions
+
+                    </div>
+                    <br/>
+
 
                     <table v-if="permissions.length" class="table table-responsive table-striped table-bordered">
                         <thead>
                         <th>Select</th>
                         <th>Name</th>
                         <th>Description</th>
+<!--                        <th>Role Assigned</th>-->
                         </thead>
                         <tbody>
                         <tr v-for="permission in resultQuery">
-                            <td><input type="checkbox" @change="addPermission(permission)"></td>
+                            <td><input type="checkbox" @change="addPermission(permission)"
+                                       :checked="isChecked(permission.roles)"
+                                       ></td>
                             <td>{{permission.name}}</td>
                             <td><span v-html='permission.description'></span></td>
+<!--                            <td>{{permission.roles}}</td>-->
+<!--                            <td>{{getRoles(permission.roles)}}</td>-->
                         </tr>
                         </tbody>
 
                     </table>
-<!--                                        <h2>-->
-<!--                                            Derived output-->
-<!--                                        </h2>-->
-<!--                                        <pre>{{statusArr}}</pre>-->
+                                        <h2>
+                                            Derived output
+                                        </h2>
+                                        <pre>{{statusArr}}</pre>
+<!--                    <pre>{{permissionsArr}}</pre>-->
 
 
                     <div class="dataTables_paginate paging_simple_numbers" id="dataTableBuilder_paginate">
@@ -62,24 +79,53 @@
                 stock_link: null,
                 links: {},
                 api: '/assign-permission',
+                role_per_api: '/role-has-permission',
                 meta: {},
                 index : 1,
                 searchQuery: null,
+                isCheckAll: false,
+                assignedPerm: []
             }
         },
         computed: {
+
             statusArr() {
                 return this.selectedPermissions;
             },
-            resultQuery(){
-                if(this.searchQuery){
-                    return this.permissions.filter((permission)=>{
+            permissionsArr() {
+                return this.permissions;
+            },
+            resultQuery() {
+                if (this.searchQuery) {
+                    return this.permissions.filter((permission) => {
                         return this.searchQuery.toLowerCase().split(' ').every(v => permission.name.toLowerCase().includes(v))
                     })
-                }else{
+                } else {
                     return this.permissions;
                 }
-            }
+            },
+            hasPermissions() {
+                let currentRole = this.data;
+                let permissions = this.permissions;
+                // console.log(currentRole, permissions)
+
+                let ret = {}
+                // for(let i = 0; i < userCars.length; i++){
+                for (let j = 0; j < permissions.length; j++) {
+                    let roles = permissions[j].roles;
+
+                    for (let i = 0; i < roles.length; i++) {
+
+                        if (roles[i] === currentRole) {
+                            // console.log('here')
+                            ret[roles[i]] = true
+                        }
+
+                        // }
+                    }
+                    return ret
+                }
+            },
         },
 
         methods: {
@@ -89,6 +135,8 @@
                     this.permissions = response.data.data;
                     this.links = response.data.links;
                     this.meta = response.data.meta;
+                    // console.log(this.permissions, this.data)
+
                 }).catch(err => {
                     console.log(err)
                 })
@@ -102,8 +150,7 @@
 
             },
             assignPermission(){
-                // alert(this.selectedPermissions);
-                // return console.log(this.selectedPermissions);
+                // alert(this.permissions);
                 let uri = '/roles';
                 axios.post('/assign-permissions/' + this.data,this.selectedPermissions).then((response)=>{
 
@@ -111,9 +158,31 @@
 
                 }).catch(err => {
                     console.log(err)
-                })
+                });
                 return window.location = uri;
-            }
+            },
+            isChecked(roles) {
+                return roles.includes(this.data)
+            },
+            getRoles: function(roles) {
+                let rolesString = '';
+
+                roles.forEach((role, index) => {
+                        rolesString += ', ';
+                    rolesString = rolesString + role.name
+                });
+                return rolesString
+            },
+            checkAll: function(){
+
+                this.isCheckAll = !this.isCheckAll;
+                this.assignedPerm = [];
+                if(this.isCheckAll){ // Check all
+                    for (var key in this.permissions) {
+                        this.assignedPerm.push(this.permissions[key]);
+                    }
+                }
+            },
         },
         created() {
             this.fetchItems();

@@ -77,19 +77,22 @@ Route::prefix('members')->group(function () {
 
 });
 
-
-Route::resource('roles', 'RoleController');
-
-
-Route::resource('products', 'ProductController');
-
-Route::resource('paybills', 'PaybillController');
+//
+//Route::resource('roles', 'RoleController');
+//
+//
+//Route::resource('products', 'ProductController');
+//
+//Route::resource('paybills', 'PaybillController');
 
 
 Route::resource('comps', 'CompController');
 Route::get('/assign-permission', function () {
-    return Permission::collection(\App\Models\Permission::paginate(10));
+    return Permission::collection(\Spatie\Permission\Models\Permission::paginate(10));
 });
+//Route::get('/role-has-permission', function () {
+//    return \App\Http\Resources\RoleHasPermission::collection();
+//});
 Route::get('role-permissions/{id}', 'RoleController@permission')->name('role.permission');
 Route::post('/assign-permissions/{id}', 'RoleController@assign');
 Route::post('aml/media', 'AmlMakerCheckerController@storeMedia')
