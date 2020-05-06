@@ -22,9 +22,7 @@ class PendingTransactionsDataTable extends DataTable
             ->addColumn('partner', function ($query){
                 return $query->req_field123;
             })
-            ->addColumn('txn_time', function ($query){
-                return $query->req_field7;
-            })
+            ->addColumn('txn_time', 'transactions.datatables_added')
             ->addColumn('txn_status', function ($query){
                 return $query->res_field48;
             })
@@ -58,7 +56,7 @@ class PendingTransactionsDataTable extends DataTable
             })
             ->addColumn('modified_at', 'transactions.datatables_modified')
             ->addColumn('action', 'transactions.datatables_actions')
-            ->rawColumns(['modified_at', 'action']);
+            ->rawColumns(['modified_at', 'txn_time', 'action']);
     }
 
     /**
@@ -109,7 +107,7 @@ class PendingTransactionsDataTable extends DataTable
 //                'visible' => false
 //            ],
             'partner' => ['name' => 'req_field123'],
-            'txn_time' => ['name' => 'req_field7'],
+            'txn_time' => ['name' => 'date_time_added'],
             'txn_status' => ['name' => 'res_field48'],
             'txn_type'  => ['name' => 'req_field41'],
             'modified_at',

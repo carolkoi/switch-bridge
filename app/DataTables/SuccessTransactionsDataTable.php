@@ -22,9 +22,7 @@ class SuccessTransactionsDataTable extends DataTable
             ->addColumn('partner', function ($query){
                 return $query->req_field123;
             })
-            ->addColumn('txn_time', function ($query){
-                return $query->req_field7;
-            })
+            ->addColumn('txn_time', 'transactions.datatables_added')
             ->addColumn('txn_status', function ($query){
                 return $query->res_field48;
             })
@@ -55,14 +53,10 @@ class SuccessTransactionsDataTable extends DataTable
             ->addColumn('receiver_bank', function ($query){
                 return $query->req_field112;
             })
-            ->addColumn('action', 'transactions.datatables_actions');
-//            ->setRowAttr([
-//                'style' => function($query){
-////                dd($query->res_field48);
-//                    return $query->res_field48 == "FAILED" ? 'background-color: #ff0000;' :
-//                        ( $query->res_field48 == "COMPLETED" ? 'background-color: green;' : null);
-//                }
-//            ]);
+            ->addColumn('action', 'transactions.datatables_actions')
+            ->rawColumns(['txn_time', 'action']);
+
+
     }
 
     /**
@@ -113,7 +107,7 @@ class SuccessTransactionsDataTable extends DataTable
 //                'visible' => false
 //            ],
             'partner' => ['name' => 'req_field123'],
-            'txn_time' => ['name' => 'req_field7'],
+            'txn_time' => ['name' => 'date_time_added'],
             'txn_status' => ['name' => 'res_field48'],
             'txn_type'  => ['name' => 'req_field41'],
             'txn_ref'  => ['name' => 'req_field37'],
