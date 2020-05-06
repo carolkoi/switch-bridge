@@ -74,7 +74,8 @@ class ApproveRequestController extends AppBaseController
                 'res_field48' => session('txn_status'),
                 'aml_listed' => session('aml_listed'),
                 'res_field44' => session('remarks'),
-                'date_time_modified' => session('date_time_modified')
+                'date_time_modified' => session('date_time_modified'),
+                'modified_by' => session('modified_by')
             ]);
 //            dd($transaction);
         }

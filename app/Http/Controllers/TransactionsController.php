@@ -11,6 +11,7 @@ use App\Repositories\TransactionsRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
+use Illuminate\Support\Facades\Auth;
 
 class TransactionsController extends AppBaseController
 {
@@ -114,6 +115,7 @@ class TransactionsController extends AppBaseController
     public function update($iso_id, UpdateTransactionsRequest $request)
     {
         $transactions = Transactions::where('iso_id', $iso_id)->first();
+
         if (empty($transactions)) {
             Flash::error('Transactions not found');
 
@@ -123,6 +125,7 @@ class TransactionsController extends AppBaseController
         $request->session()->put('aml_listed', $request->get('aml_listed'));
         $request->session()->put('remarks', $request->get('res_field44'));
         $request->session()->put('date_time_modified', time());
+        $request->session()->put('modified_by', Auth::user()->id);
 
         //initiating the approval request
         $approval = new Transactions();
