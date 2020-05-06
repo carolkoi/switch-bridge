@@ -123,7 +123,7 @@ class TransactionsDataTable extends DataTable
             'txn_time' => ['name' => 'req_field7'],
             'txn_status' => ['name' => 'res_field48'],
             'txn_type'  => ['name' => 'req_field41'],
-            'modified_at',
+//            'modified_at',
             'txn_ref'  => ['name' => 'req_field37'],
 //            'req_field49',
             'amt_sent'  => ['name' => 'req_field49'],
