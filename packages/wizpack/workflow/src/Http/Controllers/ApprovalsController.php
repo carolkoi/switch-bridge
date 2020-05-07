@@ -79,6 +79,7 @@ class ApprovalsController extends AppBaseController
 
         $workflow = $this->approvalsRepository->getApprovalSteps($id)->get();
 //        dd($workflow);
+//        dd(collect($workflow)->pluck('approvable'));
 
 
         $transformedResult = new Collection($workflow, new ApprovalTransformer());
@@ -93,12 +94,14 @@ class ApprovalsController extends AppBaseController
 
         $workflow = $data->pluck('workflowDetails')->first();
 
+        $transaction = $data->pluck('workflowInfo')->first();
+
         $approvalHasBeenRejected = $data->pluck('approvalRejected')->first();
 
         if (empty($approvals)) {
             Flash::error('Approvals not found');
 
-            return redirect(route('wizpack::approvals.index'));
+            return redirect(route('upesi::approvals.index'));
         }
 
         return view('wizpack::approvals.show', compact(
@@ -106,7 +109,8 @@ class ApprovalsController extends AppBaseController
                 'workflow',
                 'approvers',
                 'currentStage',
-                'approvalHasBeenRejected'
+                'approvalHasBeenRejected',
+                'transaction'
             )
         );
     }

@@ -14,7 +14,7 @@
 
                     <div class="box-body" style="margin-left: 50px; margin-right: 50px">
                         <div class="row">
-                    {!! Form::open(['route' => 'wizpack::workflowStageTypes.store']) !!}
+                    {!! Form::open(['route' => 'upesi::approval-partners.store']) !!}
 
                         @include('wizpack::workflow_stage_types.fields')
 

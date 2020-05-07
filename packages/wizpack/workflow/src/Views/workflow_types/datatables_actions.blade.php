@@ -1,9 +1,9 @@
-{!! Form::open(['route' => ['wizpack::workflowTypes.destroy', $id], 'method' => 'delete']) !!}
+{!! Form::open(['route' => ['upesi::approval-types.destroy', $id], 'method' => 'delete']) !!}
 <div class='btn-group'>
-    <a href="{{ route('wizpack::workflowTypes.show', $id) }}" class='btn btn-default btn-xs'>
+    <a href="{{ route('upesi::approval-types.show', $id) }}" class='btn btn-default btn-xs'>
         <i class="glyphicon glyphicon-eye-open"></i>
     </a>
-    <a href="{{ route('wizpack::workflowTypes.edit', $id) }}" class='btn btn-default btn-xs'>
+    <a href="{{ route('upesi::approval-types.edit', $id) }}" class='btn btn-default btn-xs'>
         <i class="glyphicon glyphicon-edit"></i>
     </a>
     {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', [

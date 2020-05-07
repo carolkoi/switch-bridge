@@ -1,6 +1,6 @@
 {{--{!! Form::open(['route' => ['wizpack::approvals.destroy', $id], 'method' => 'delete']) !!}--}}
 {{--<div class='btn-group'>--}}
-    <a href="{{ route('wizpack::approvals.show', $id) }}" class='btn btn-default'>
+    <a href="{{ route('upesi::approvals.show', $id) }}" class='btn btn-default'>
         View
     </a>
 {{--    <a href="{{ route('wizpack::approvals.edit', $id) }}" class='btn btn-default btn-sm'>--}}

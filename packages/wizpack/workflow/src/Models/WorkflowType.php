@@ -49,10 +49,10 @@ use App\User;
  */
 class WorkflowType extends Model
 {
-    use SoftDeletes;
+//    use SoftDeletes;
 
     public $table = 'workflow_types';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -84,8 +84,8 @@ class WorkflowType extends Model
      */
     public static $rules = [
         'name'=>'required',
-        'slug'=>'required|bail|string|unique:workflow_types,slug'
-        
+//        'slug'=>'bail|string|slug'
+
     ];
 
     /**

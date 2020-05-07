@@ -14,7 +14,7 @@
 
                    <div class="box-body" style="margin-left: 50px; margin-right: 50px">
                        <div class="row">
-                   {!! Form::model($workflowTypes, ['route' => ['wizpack::workflowTypes.update', $workflowTypes->id], 'method' => 'patch']) !!}
+                   {!! Form::model($workflowTypes, ['route' => ['upesi::approval-types.update', $workflowTypes->id], 'method' => 'patch']) !!}
 
                         @include('wizpack::workflow_types.fields')
 

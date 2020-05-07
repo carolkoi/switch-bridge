@@ -92,7 +92,7 @@ class WorkflowStageType extends Model
     public static $rules = [
         'name' => 'required|string',
 //        'weight' => 'required|integer',
-        'slug' => 'required|bail|string|unique:workflow_stage_type,slug'
+//        'slug' => 'required|bail|string|unique:workflow_stage_type,slug'
     ];
 
     /**
