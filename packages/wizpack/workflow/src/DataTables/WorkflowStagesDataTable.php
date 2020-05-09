@@ -20,11 +20,14 @@ class WorkflowStagesDataTable extends DataTable
     {
         $dataTable = new EloquentDataTable($query);
 
-        return $dataTable->addColumn('workflowStageType', function ($q){
+        return $dataTable->addColumn('approvalStagePartner', function ($q){
             return $q->workflowStageType->name;
-        })->addColumn('workflowType', function ($q){
+        })->addColumn('approvalType', function ($q){
             return $q->workflowType->name;
         })
+//            ->editColumn('weight', function ($query){
+//                dd($query->weight);
+//            })
             ->addColumn('action', 'wizpack::workflow_stages.datatables_actions');
     }
 
@@ -72,10 +75,10 @@ class WorkflowStagesDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'workflowStageType'=>[
+            'approvalStagePartner'=>[
                 'name'=>'workflowStageType.name'
             ],
-            'workflowType'=>[
+            'approvalType'=>[
                 'name'=>'workflowType.name'
             ],
             'weight'

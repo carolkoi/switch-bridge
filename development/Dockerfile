@@ -29,7 +29,7 @@ RUN a2enmod rewrite headers
 # 4. start with base php config, then add extensions
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 
-# 5. Install Postgre PDO
+# 5. Install Postgres PDO
 RUN apt-get install -y libpq-dev \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
     &&  docker-php-ext-install \

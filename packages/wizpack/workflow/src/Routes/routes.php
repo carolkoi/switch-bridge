@@ -15,11 +15,11 @@ Route::group([
 
     Route::resource('approval-partners', 'WorkflowStageTypesController');
 
-    Route::resource('workflowStages', 'WorkflowStagesController');
+    Route::resource('approval-stages', 'WorkflowStagesController');
 
     Route::resource('workflowStageCheckLists', 'WorkflowStageCheckListController');
 
-    Route::resource('workflowStageApprovers', 'WorkflowStageApproversController');
+    Route::resource('stage-approvers', 'WorkflowStageApproversController');
 
     Route::resource('approvals', 'ApprovalsController');
 

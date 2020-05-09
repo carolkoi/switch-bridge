@@ -131,7 +131,7 @@ class TransactionsController extends AppBaseController
         $approval = new Transactions();
         $approval->addApproval($transactions);
 
-        Flash::success('Approval to Update the Transaction sent successfully.');
+        Flash::success('Approval Request to Update the Transaction sent successfully.');
 
         return redirect(route('transactions.index'));
     }

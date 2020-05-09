@@ -11,10 +11,10 @@
 {{--</div>--}}
 
 <!-- Weight Field -->
-<div class="form-group">
-    {!! Form::label('weight', 'Weightss:') !!}
-    {!! Form::number('weight', null, ['class' => 'form-control']) !!}
-</div>
+{{--<div class="form-group">--}}
+{{--    {!! Form::label('weight', 'Weightss:') !!}--}}
+{{--    {!! Form::number('weight', null, ['class' => 'form-control']) !!}--}}
+{{--</div>--}}
 
 <!-- Submit Field -->
 <div class="form-group col-sm-12">

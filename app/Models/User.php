@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Eloquent as Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Permission\Traits\HasRoles;
@@ -139,12 +141,29 @@ class User extends Authenticatable
         'msisdn' => 'required',
     ];
 
-    public function role(){
-    return $this->hasOne(Role::class, 'roleid', 'id');
-    }
     public function company(){
     return $this->belongsTo(Company::class, 'company_id', 'companyid');
     }
+
+//    public function roles(): BelongsToMany
+//    {
+//        return $this->belongsToMany(
+//            config('permission.models.permission'),
+//            config('permission.table_names.role_has_permissions'),
+//            'role_id',
+//            'permission_id'
+//        );
+//    }
+//    public function roles(): MorphToMany
+//    {
+//        return $this->morphedByMany(
+////            getModelForGuard($this->attributes['guard_name']),
+//            '\Spatie\Permission\Models\Role',
+//            config('permission.table_names.model_has_roles'),
+//            'model_id',
+//            config('permission.column_names.model_morph_key')
+//        );
+//    }
 
 
 }

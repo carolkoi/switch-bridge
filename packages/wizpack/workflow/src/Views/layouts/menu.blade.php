@@ -2,7 +2,7 @@
     <a href="{!! route('upesi::approvals.index') !!}"><i class="fa fa-check-square-o"></i><span>Approvals Requests</span></a>
 </li>
 
-<li class="{{ Request::is('upesi/workflow*') ? 'active' : '' }} treeview">
+<li class="{{ Request::is('upesi*') ? 'active' : '' }} treeview">
     <a href="#">
         <i class="fa fa-dashboard"></i> <span>Approval Flow</span>
         <span class="pull-right-container">
@@ -11,12 +11,12 @@
     </a>
     <ul class="treeview-menu">
 
-        <li class="{{ Request::is('upesi/workflowStageApprovers*') ? 'active' : '' }}">
-            <a href="{!! route('upesi::workflowStageApprovers.index') !!}"><i class="fa fa-id-badge"></i><span>Flow Stage Approvers</span></a>
+        <li class="{{ Request::is('upesi/stage-approvers*') ? 'active' : '' }}">
+            <a href="{!! route('upesi::stage-approvers.index') !!}"><i class="fa fa-id-badge"></i><span>Flow Stage Approvers</span></a>
         </li>
 
-        <li class="{{ Request::is('upesi/workflowStages*') ? 'active' : '' }}">
-            <a href="{!! route('upesi::workflowStages.index') !!}"><i class="fa fa-line-chart"></i><span> Approval Flow Stages</span></a>
+        <li class="{{ Request::is('upesi/approval-stages*') ? 'active' : '' }}">
+            <a href="{!! route('upesi::approval-stages.index') !!}"><i class="fa fa-line-chart"></i><span> Approval Flow Stages</span></a>
         </li>
 
 {{--        <li class="{{ Request::is('wizpack/workflowStageCheckLists*') ? 'active' : '' }}">--}}

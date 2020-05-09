@@ -1,25 +1,25 @@
 <!-- Date Time Added Field -->
 <div class="form-group">
     {!! Form::label('date_time_added', 'Date Time Added:') !!}
-    <p>{!!  date('Y-m-d H:i:s', $transactions->date_time_added) !!}</p>
+    <p>{!!  date('Y-m-d H:i:s', ($transactions->date_time_added / 1000)) !!}</p>
 </div>
 
 <!-- Added By Field -->
-<div class="form-group">
-    {!! Form::label('added_by', 'Added By:') !!}
-    <p>{!! \App\Models\User::where('id', $transactions->added_by)->first()['name'] ?  \App\Models\User::where('id', $transactions->added_by)->first()['name'] : null!!}</p>
-</div>
+{{--<div class="form-group">--}}
+{{--    {!! Form::label('added_by', 'Added By:') !!}--}}
+{{--    <p>{!! \App\Models\User::where('id', $transactions->added_by)->first()['name'] ?  \App\Models\User::where('id', $transactions->added_by)->first()['name'] : null!!}</p>--}}
+{{--</div>--}}
 
 <!-- Date Time Modified Field -->
 <div class="form-group">
     {!! Form::label('date_time_modified', 'Date Time Modified:') !!}
-    <p>{!! date('Y-m-d H:i:s', $transactions->date_time_modified) !!}</p>
+    <p>{!! date('Y-m-d H:i:s', ($transactions->date_time_modified / 1000)) !!}</p>
 </div>
 
 <!-- Modified By Field -->
 <div class="form-group">
     {!! Form::label('modified_by', 'Modified By:') !!}
-    <p>{!! $transactions->modified_by !!}</p>
+{{--    <p>{!! $transactions->modified_by !!}</p>--}}
     <p>{!! \App\Models\User::where('id', $transactions->modified_by)->first()['name'] ?  \App\Models\User::where('id', $transactions->modified_by)->first()['name'] : null!!}</p>
 
 </div>

@@ -5,6 +5,7 @@ namespace WizPack\Workflow\Http\Controllers;
 use WizPack\Workflow\DataTables\WorkflowStagesDataTable;
 use WizPack\Workflow\Http\Requests\CreateWorkflowStagesRequest;
 use WizPack\Workflow\Http\Requests\UpdateWorkflowStagesRequest;
+use WizPack\Workflow\Models\WorkflowStage;
 use WizPack\Workflow\Repositories\WorkflowStagesRepository;
 use WizPack\Workflow\Repositories\WorkflowStageTypesRepository;
 use WizPack\Workflow\Repositories\WorkflowStepRepository;
@@ -70,13 +71,18 @@ class WorkflowStagesController extends AppBaseController
     public function store(CreateWorkflowStagesRequest $request)
     {
         $input = $request->all();
-//        dd($input);
+//        $input['workflow_type_id'] = $request->get('workflow_type_id');
+//        if (WorkflowStage::where('id', '=', $input['workflow_type_id'] )->exists()) {
+//            Flash::error('Approval Stage Partner already exist');
+//            return redirect(route('upesi::approval-stages.index'));
+//
+//        }else
 
         $workflowStages = $this->workflowStagesRepository->create($input);
 
-        Flash::success('Workflow Stages saved successfully.');
+        Flash::success('Approval Stage saved successfully.');
 
-        return redirect(route('wizpack::workflowStages.index'));
+        return redirect(route('upesi::approval-stages.index'));
     }
 
     /**
@@ -91,9 +97,9 @@ class WorkflowStagesController extends AppBaseController
         $workflowStages = $this->workflowStagesRepository->find($id);
 
         if (empty($workflowStages)) {
-            Flash::error('Workflow Stages not found');
+            Flash::error('Approval Stage not found');
 
-            return redirect(route('wizpack::workflowStages.index'));
+            return redirect(route('upesi::approval-stages.index'));
         }
 
         return view('wizpack::workflow_stages.show')
@@ -114,9 +120,9 @@ class WorkflowStagesController extends AppBaseController
         $workflowStages = $this->workflowStagesRepository->find($id);
 
         if (empty($workflowStages)) {
-            Flash::error('Workflow Stages not found');
+            Flash::error('Approval Stage not found');
 
-            return redirect(route('wizpack::workflowStages.index'));
+            return redirect(route('upesi::approval-stages.index'));
         }
 
         return view('wizpack::workflow_stages.edit')->with('workflowStages', $workflowStages)
@@ -138,16 +144,16 @@ class WorkflowStagesController extends AppBaseController
         $workflowStages = $this->workflowStagesRepository->find($id);
 
         if (empty($workflowStages)) {
-            Flash::error('Workflow Stages not found');
+            Flash::error('Approval Stage not found');
 
-            return redirect(route('wizpack::workflowStages.index'));
+            return redirect(route('upesi::approval-stages.index'));
         }
 
         $workflowStages = $this->workflowStagesRepository->update($request->all(), $id);
 
-        Flash::success('Workflow Stages updated successfully.');
+        Flash::success('Approval Stage updated successfully.');
 
-        return redirect(route('wizpack::workflowStages.index'));
+        return redirect(route('upesi::approval-stages.index'));
     }
 
     /**
@@ -163,22 +169,22 @@ class WorkflowStagesController extends AppBaseController
         $checkIfStepIsAttached = $this->workflowStepRepository->count(['workflow_stage_id' => $id]);
 
         if ($checkIfStepIsAttached > 0) {
-            Flash::error('Workflow stage Cannot be deleted, there is a workflow step attached to this workflow stage ');
+            Flash::error('Approval Stage Cannot be deleted, there is an approval step attached to this partner stage ');
             return redirect()->back();
         }
 
         $workflowStages = $this->workflowStagesRepository->find($id);
 
         if (empty($workflowStages)) {
-            Flash::error('Workflow Stages not found');
+            Flash::error('Approval Stage not found');
 
-            return redirect(route('wizpack::workflowStages.index'));
+            return redirect(route('upesi::approval-stages.index'));
         }
 
         $this->workflowStagesRepository->delete($id);
 
-        Flash::success('Workflow Stages deleted successfully.');
+        Flash::success('Approval Stage deleted successfully.');
 
-        return redirect(route('workflowStages.index'));
+        return redirect(route('upesi::approval-stages.index'));
     }
 }
