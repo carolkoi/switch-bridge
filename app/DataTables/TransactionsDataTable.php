@@ -36,10 +36,11 @@ class TransactionsDataTable extends DataTable
                 return $query->req_field37;
             })
             ->addColumn('amt_sent', function ($query){
-                return $query->req_field49." ".$query->req_field4;
+                return $query->req_field49." ".intval($query->req_field4)/100;
             })
+//                ->addColumn('amt_sent', 'transactions.datatables_amt_sent')
             ->addColumn('amt_received', function ($query){
-                return $query->req_field5;
+                return intval($query->req_field5)/100;
             })
             ->addColumn('sender', function ($query){
                 return $query->req_field105;
@@ -64,8 +65,8 @@ class TransactionsDataTable extends DataTable
         ->setRowAttr([
                 'style' => function($query){
 //                dd($query->res_field48);
-                    return $query->res_field48 == "FAILED" ? 'background-color: #ff0000;' :
-                        ( $query->res_field48 == "COMPLETED" ? 'background-color: green;' : null);
+                    return $query->res_field48 == "FAILED" ? 'text-color: #ff0000;' :
+                        ( $query->res_field48 == "COMPLETED" ? 'text-color: green;' : null);
                 }
             ]);
     }
