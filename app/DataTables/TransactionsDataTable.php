@@ -65,8 +65,8 @@ class TransactionsDataTable extends DataTable
         ->setRowAttr([
                 'style' => function($query){
 //                dd($query->res_field48);
-                    return $query->res_field48 == "FAILED" ? 'text-color: #ff0000;' :
-                        ( $query->res_field48 == "COMPLETED" ? 'text-color: green;' : null);
+                    return $query->res_field48 == "FAILED" ? 'color: #ff0000;' :
+                        ( $query->res_field48 == "COMPLETED" ? 'color: green;' : null);
                 }
             ]);
     }
