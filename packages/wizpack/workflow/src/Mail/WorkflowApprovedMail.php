@@ -32,7 +32,7 @@ class WorkflowApprovedMail extends Mailable
         $this->workflow = $workflow;
         $this->approvedStep = $approvedStep;
         $this->approvalInfo = $approvalInfo;
-        $this->url = 'wizpack/approvals/'.$workflow['id'];
+        $this->url = 'upesi/approvals/'.$workflow['id'];
         $this->text = 'View approval';
         $this->model_id = $model_id;
     }

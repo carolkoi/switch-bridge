@@ -33,7 +33,7 @@ class WorkflowRejectedMail extends Mailable
         $this->workflow = $workflow;
         $this->approvedStep = $approvedStep;
         $this->sentBy = $sentBy;
-        $this->url = 'wizpack/approvals/'.$workflow['id'];
+        $this->url = 'upesi/approvals/'.$workflow['id'];
         $this->text = 'View approval';
     }
 

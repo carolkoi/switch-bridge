@@ -13,11 +13,11 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <div class="pull-left">
-                        <input type='checkbox' @click='checkAll()' v-model='isCheckAll'> Check All Permissions
+<!--                    <div class="pull-left">-->
+<!--                        <input type='checkbox' @click='checkAll()' v-model='isCheckAll'> Check All Permissions-->
 
-                    </div>
-                    <br/>
+<!--                    </div>-->
+<!--                    <br/>-->
 
 
                     <table v-if="permissions.length" class="table table-responsive table-striped table-bordered">
@@ -40,22 +40,22 @@
                         </tbody>
 
                     </table>
-                                        <h2>
-                                            Derived output
-                                        </h2>
-                                        <pre>{{statusArr}}</pre>
+<!--                                        <h2>-->
+<!--                                            Derived output-->
+<!--                                        </h2>-->
+<!--                                        <pre>{{statusArr}}</pre>-->
 <!--                    <pre>{{permissionsArr}}</pre>-->
 
 
                     <div class="dataTables_paginate paging_simple_numbers" id="dataTableBuilder_paginate">
                         <ul class="pagination">
                             <li class="paginate_button previous pointed" id="dataTableBuilder_previous"><a
-                                @click="getReorderItems(links.prev)">Previous</a>
+                                @click="getAllPermissions(links.prev)">Previous</a>
                             </li>
                             <li class="paginate_button active"><a href="#" aria-controls="dataTableBuilder" data-dt-idx="1"
                                                                   tabindex="0">{{meta.current_page}}</a></li>
                             <li class="paginate_button next pointed" id="dataTableBuilder_next"><a
-                                @click="getReorderItems(links.next)">Next</a>
+                                @click="getAllPermissions(links.next)">Next</a>
                             </li>
                         </ul>
                     </div>
@@ -144,7 +144,7 @@
                 }).catch(err => {
                     console.log(err)
                 });
-                // return window.location = uri;
+                return window.location = uri;
             },
             isChecked(roles) {
                 return roles.includes(this.data)
@@ -158,16 +158,16 @@
                 });
                 return rolesString
             },
-            checkAll: function(){
-
-                this.isCheckAll = !this.isCheckAll;
-                this.assignedPerm = [];
-                if(this.isCheckAll){ // Check all
-                    for (var key in this.permissions) {
-                        this.assignedPerm.push(this.permissions[key]);
-                    }
-                }
-            },
+            // checkAll: function(){
+            //
+            //     this.isCheckAll = !this.isCheckAll;
+            //     this.assignedPerm = [];
+            //     if(this.isCheckAll){ // Check all
+            //         for (var key in this.permissions) {
+            //             this.assignedPerm.push(this.permissions[key]);
+            //         }
+            //     }
+            // },
         },
         created() {
             this.fetchItems();

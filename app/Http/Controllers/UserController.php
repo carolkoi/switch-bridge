@@ -136,9 +136,10 @@ class UserController extends AppBaseController
 
             return redirect(route('users.index'));
         }
-        $role = \Spatie\Permission\Models\Role::where('id', $user->role_id)->first()->name;
+        $role = \Spatie\Permission\Models\Role::where('id', $user->role_id)->first()['name'];
 
         $user = $this->userRepository->update($request->all(), $id);
+//        $user->removeRole('User');
         $user->assignRole($role);
 
         Flash::success('User updated successfully.');

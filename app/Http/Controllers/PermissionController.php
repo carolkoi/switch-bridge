@@ -11,6 +11,7 @@ use App\Repositories\PermissionRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
+use Illuminate\Support\Facades\Artisan;
 
 class PermissionController extends AppBaseController
 {
@@ -58,6 +59,7 @@ class PermissionController extends AppBaseController
         $input['guard_name'] = 'web';
 //dd($input);
         $permission = $this->permissionRepository->create($input);
+        Artisan::call('cache:clear');
 
         Flash::success('Permission saved successfully.');
 
@@ -123,6 +125,7 @@ class PermissionController extends AppBaseController
         }
 
         $permission = $this->permissionRepository->update($request->all(), $id);
+        Artisan::call('cache:clear');
 
         Flash::success('Permission updated successfully.');
 

@@ -7,7 +7,7 @@
 <!-- Role Id Field -->
 <div class="form-group">
     {!! Form::label('role_id', 'Role:') !!}
-    <p>{!! implode(' ', $user->getRoleNames()->toArray()) !!}</p>
+    <p>{!! implode(' ,', $user->getRoleNames()->toArray()) !!}</p>
 </div>
 
 <!-- Name Field -->

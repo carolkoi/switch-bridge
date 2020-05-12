@@ -27,7 +27,7 @@
 <div class="form-group col-sm-6">
     {!! Form::label('blacklist_status', 'Blacklist Status:') !!}
     {!! Form::select('blacklist_status',array('AML-LISTED' => 'AML-LISTED',
-    'BLACK-LISTED' => 'BLACK-LISTED', 'PEP-LISTED' => 'PEP-LISTED', 'CLEAN' => 'CLEAN'),
+    'BLACK-LISTED' => 'BLACK-LISTED', 'PEP-LISTED' => 'PEP-LISTED', 'CLEAN' => 'WHITE-LIST'),
     isset($amlMakerChecker) ? $amlMakerChecker->blacklist_status : null,
     ['class' => 'form-control select2']) !!}
 </div>

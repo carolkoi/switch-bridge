@@ -1868,7 +1868,8 @@ __webpack_require__.r(__webpack_exports__);
         console.log(response);
       })["catch"](function (err) {
         console.log(err);
-      }); // return window.location = uri;
+      });
+      return window.location = uri;
     },
     isChecked: function isChecked(roles) {
       return roles.includes(this.data);
@@ -1880,18 +1881,17 @@ __webpack_require__.r(__webpack_exports__);
         rolesString = rolesString + role.name;
       });
       return rolesString;
-    },
-    checkAll: function checkAll() {
-      this.isCheckAll = !this.isCheckAll;
-      this.assignedPerm = [];
+    } // checkAll: function(){
+    //
+    //     this.isCheckAll = !this.isCheckAll;
+    //     this.assignedPerm = [];
+    //     if(this.isCheckAll){ // Check all
+    //         for (var key in this.permissions) {
+    //             this.assignedPerm.push(this.permissions[key]);
+    //         }
+    //     }
+    // },
 
-      if (this.isCheckAll) {
-        // Check all
-        for (var key in this.permissions) {
-          this.assignedPerm.push(this.permissions[key]);
-        }
-      }
-    }
   },
   created: function created() {
     this.fetchItems();
@@ -33140,52 +33140,6 @@ var render = function() {
       _vm._v(" "),
       _c("div", { staticClass: "row" }, [
         _c("div", { staticClass: "col-md-12" }, [
-          _c("div", { staticClass: "pull-left" }, [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.isCheckAll,
-                  expression: "isCheckAll"
-                }
-              ],
-              attrs: { type: "checkbox" },
-              domProps: {
-                checked: Array.isArray(_vm.isCheckAll)
-                  ? _vm._i(_vm.isCheckAll, null) > -1
-                  : _vm.isCheckAll
-              },
-              on: {
-                click: function($event) {
-                  return _vm.checkAll()
-                },
-                change: function($event) {
-                  var $$a = _vm.isCheckAll,
-                    $$el = $event.target,
-                    $$c = $$el.checked ? true : false
-                  if (Array.isArray($$a)) {
-                    var $$v = null,
-                      $$i = _vm._i($$a, $$v)
-                    if ($$el.checked) {
-                      $$i < 0 && (_vm.isCheckAll = $$a.concat([$$v]))
-                    } else {
-                      $$i > -1 &&
-                        (_vm.isCheckAll = $$a
-                          .slice(0, $$i)
-                          .concat($$a.slice($$i + 1)))
-                    }
-                  } else {
-                    _vm.isCheckAll = $$c
-                  }
-                }
-              }
-            }),
-            _vm._v(" Check All Permissions\n\n                    ")
-          ]),
-          _vm._v(" "),
-          _c("br"),
-          _vm._v(" "),
           _vm.permissions.length
             ? _c(
                 "table",
@@ -33231,14 +33185,6 @@ var render = function() {
               )
             : _vm._e(),
           _vm._v(" "),
-          _c("h2", [
-            _vm._v(
-              "\n                                            Derived output\n                                        "
-            )
-          ]),
-          _vm._v(" "),
-          _c("pre", [_vm._v(_vm._s(_vm.statusArr))]),
-          _vm._v(" "),
           _c(
             "div",
             {
@@ -33259,7 +33205,7 @@ var render = function() {
                       {
                         on: {
                           click: function($event) {
-                            return _vm.getReorderItems(_vm.links.prev)
+                            return _vm.getAllPermissions(_vm.links.prev)
                           }
                         }
                       },
@@ -33295,7 +33241,7 @@ var render = function() {
                       {
                         on: {
                           click: function($event) {
-                            return _vm.getReorderItems(_vm.links.next)
+                            return _vm.getAllPermissions(_vm.links.next)
                           }
                         }
                       },

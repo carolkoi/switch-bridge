@@ -69,7 +69,7 @@ class WorkflowStageTypesDataTable extends DataTable
         return [
             'name',
             'slug',
-            'weight'
+//            'weight'
         ];
     }
 

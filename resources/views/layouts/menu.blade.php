@@ -40,6 +40,7 @@
 
     </ul>
 </li>
+@if(Auth::check() && auth()->user()->can('Can View Switch Settings'))
 <li class="divider" style="color:white; padding: 15px"><span><b>Parameters</b></span></li>
 <li class="treeview {{ Request::is('configurations*') ? 'active menu-open' : '' }}">
     <a class="dropdown-toggle" href="#">
@@ -58,6 +59,8 @@
 
     </ul>
 </li>
+@endif
+@if(Auth::check() && auth()->user()->can('Can View Partners	'))
 <li class="treeview {{ Request::is('list*') ? 'active menu-open' : '' }}">
     <a class="dropdown-toggle" href="#">
         <i class="fa fa-institution"></i> <span>Companies</span>
@@ -72,6 +75,8 @@
 
     </ul>
 </li>
+@endif
+@if(Auth::check() && auth()->user()->can('Can View Service Providers'))
 <li class="treeview {{ Request::is('services*') ? 'active menu-open' : '' }}">
     <a class="dropdown-toggle" href="#">
         <span class="glyphicon glyphicon-globe"></span><span>Service Providers</span>
@@ -85,9 +90,11 @@
         </li>
     </ul>
 </li>
+@endif
+
 <li class="treeview {{ Request::is('checker*') ? 'active menu-open' : '' }}">
     <a class="dropdown-toggle" href="#">
-        <span class="glyphicon glyphicon-repeat"></span><span>Reprocessing</span>
+        <span class="glyphicon glyphicon-repeat"></span><span>AML CHECKER</span>
         <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -98,6 +105,7 @@
 </li>
     </ul>
 </li>
+@if(Auth::check() && auth()->user()->can('Can Create User'))
 <li class="divider" style="color:white; padding: 15px"><span><b>Administration</b></span></li>
 <li class="treeview {{ Request::is('members*') ? 'active menu-open' : '' }}">
     <a class="dropdown-toggle" href="#">
@@ -117,12 +125,12 @@
             <a href="{{ route('permissions.index') }}"><i class="fa fa-check-square-o"></i><span>Permissions</span></a>
         </li>
     </ul>
-
+@endif
 {{--{!! Auth::user()->can('Authorize Transaction Update')?--}}
 {{--include("wizpack::layouts.menu")--}}
 {{--: redirect('/')!!}--}}
-<li class="divider" style="color:white; padding: 15px"><span><b>Approval Settings</b></span></li>
-@if(Auth::check() && auth()->user()->can('Authorize Transaction Update'))
+@if(Auth::check() && auth()->user()->can('Can Authorize Transaction Update'))
+    <li class="divider" style="color:white; padding: 15px"><span><b>Approval Settings</b></span></li>
     @include("wizpack::layouts.menu")
 {{--    @else--}}
 {{--    {!! redirect('/') !!}--}}
