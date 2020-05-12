@@ -105,7 +105,7 @@
 </li>
     </ul>
 </li>
-{{--@if(Auth::check() && auth()->user()->can('Can Create User'))--}}
+@if(Auth::check() && auth()->user()->can('Can Create User'))
 <li class="divider" style="color:white; padding: 15px"><span><b>Administration</b></span></li>
 <li class="treeview {{ Request::is('members*') ? 'active menu-open' : '' }}">
     <a class="dropdown-toggle" href="#">
@@ -125,7 +125,7 @@
             <a href="{{ route('permissions.index') }}"><i class="fa fa-check-square-o"></i><span>Permissions</span></a>
         </li>
     </ul>
-{{--@endif--}}
+@endif
 {{--{!! Auth::user()->can('Authorize Transaction Update')?--}}
 {{--include("wizpack::layouts.menu")--}}
 {{--: redirect('/')!!}--}}
