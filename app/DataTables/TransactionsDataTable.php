@@ -66,7 +66,7 @@ class TransactionsDataTable extends DataTable
                 'style' => function($query){
 //                dd($query->res_field48);
                     return $query->res_field48 == "FAILED" ? 'color: #ff0000;' :
-                        ( $query->res_field48 == "COMPLETED" ? 'color: green;' : null);
+                        ( $query->res_field48 == "COMPLETED" ? 'color: #7CFC00;' : null);
                 }
             ]);
     }
