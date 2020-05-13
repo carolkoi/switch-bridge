@@ -29,8 +29,11 @@ class SuccessTransactionsDataTable extends DataTable
             ->addColumn('txn_type', function ($query){
                 return $query->req_field41;
             })
-            ->addColumn('txn_ref', function ($query){
-                return $query->req_field37;
+            ->addColumn('sync_msg_ref', function ($query){
+                return $query->sync_message;
+            })
+            ->addColumn('primary_txn_ref', function ($query){
+                return $query->req_field34;
             })
             ->addColumn('amt_sent', function ($query){
                 return $query->req_field49." ".$query->req_field4;
@@ -67,7 +70,7 @@ class SuccessTransactionsDataTable extends DataTable
      */
     public function query(Transactions $model)
     {
-        return $model->where('res_field48', 'COMPLETED')->newQuery();
+        return $model->orderBy('date_time_added')->where('res_field48', 'COMPLETED')->newQuery();
     }
 
     /**
@@ -110,13 +113,14 @@ class SuccessTransactionsDataTable extends DataTable
             'txn_time' => ['name' => 'date_time_added'],
             'txn_status' => ['name' => 'res_field48'],
             'txn_type'  => ['name' => 'req_field41'],
-            'txn_ref'  => ['name' => 'req_field37'],
+            'primary_txn_ref'  => ['name' => 'req_field34'],
+            'sync_msg_ref' => ['name' => 'sync_message'],
 //            'req_field49',
             'amt_sent'  => ['name' => 'req_field49'],
             'amt_received'  => ['name' => 'req_field5'],
-            'sender'  => ['name' => 'req_field105'],
-//        'req_field105',
-            'receiver'  => ['name' => 'req_field108'],
+//            'sender'  => ['name' => 'req_field105'],
+////        'req_field105',
+//            'receiver'  => ['name' => 'req_field108'],
             'receiver_acc/No'  => ['name' => 'req_field102'],
             'response'  => ['name' => 'res_field44'],
 //            'res_field39',

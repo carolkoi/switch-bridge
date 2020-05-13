@@ -1,25 +1,23 @@
   version: '2'
 
   services:
-
-    # The Database
-#    database:
-#      container_name: Bridge_db
-#      #      image: postgresql- 12.1
-#      build:
-#        context: '.'
-#      volumes:
-#        - dbdata:/var/lib/postgresql/data
-#      environment:
-#        - POSTGRES_HOST=172.17.0.1
-#        - POSTGRES_PASSWORD=!QAZxsw2
-#        - POSTGRES_DATABASE=${DB_DATABASE}
-#      networks:
-#        backend:
-#          aliases:
-#            - db
-#      ports:
-#        - 5433:5432
+    database:
+      container_name: Bridge_db
+      #      image: postgresql- 12.1
+      build:
+        context: '.'
+      volumes:
+        - dbdata:/var/lib/postgresql/data
+      environment:
+        - POSTGRES_HOST=172.17.0.1
+        - POSTGRES_PASSWORD=!QAZxsw2
+        - POSTGRES_DATABASE=${DB_DATABASE}
+      networks:
+        backend:
+          aliases:
+            - db
+      ports:
+        - 5433:5432
 
     redis:
       image: redis:alpine

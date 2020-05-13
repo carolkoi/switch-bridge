@@ -60,7 +60,7 @@
     </ul>
 </li>
 @endif
-@if(Auth::check() && auth()->user()->can('Can View Partners	'))
+@if(Auth::check() && auth()->user()->can('Can View Partners'))
 <li class="treeview {{ Request::is('list*') ? 'active menu-open' : '' }}">
     <a class="dropdown-toggle" href="#">
         <i class="fa fa-institution"></i> <span>Companies</span>

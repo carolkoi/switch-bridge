@@ -108,7 +108,6 @@
     {!! Form::label('req_field2', 'PAN -Primary Account Number / Sender Mobile:') !!}
     <p>{!! $transactions->req_field2 !!}</p>
 </div>
-
 <!-- Req Field3 Field -->
 <div class="form-group">
     {!! Form::label('req_field3', 'Req Field3:') !!}
