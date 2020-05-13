@@ -19,6 +19,7 @@ class TransactionsDataTable extends DataTable
         $dataTable = new EloquentDataTable($query);
 
         return $dataTable
+            ->skipPaging()
             ->addColumn('id', function ($query){
                 return $query->iso_id;
             })

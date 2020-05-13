@@ -2,22 +2,21 @@
     @include('layouts.datatables_css')
 @endsection
 
-{!! $dataTable->table(['width' => '100%', 'class' => 'table table-striped table-bordered', 'data-page-length'=>'25']) !!}
+{!! $dataTable->table(['width' => '100%', 'class' => 'table table-striped table-bordered']) !!}
 
 @section('scripts')
     @include('layouts.datatables_js')
     {!! $dataTable->scripts() !!}
     <script>
-        jQuery(document).ready(function() {
-            let table = $('#dataTableBuilder').DataTable( {
+        jQuery(document).ready(function () {
+        let table = $('#dataTableBuilder').DataTable( {
             retrieve: true,
-                "paging":   false,
-                "info":     false,
-            ajax: "data.json"
+            ajax: "data.json",
+            paging: false
         } );
 
         setInterval( function () {
-            table.ajax.reload(); // user paging is not reset on reload
+            table.ajax.reload(null, false); // user paging is not reset on reload
         }, 10000 );
         });
     </script>
