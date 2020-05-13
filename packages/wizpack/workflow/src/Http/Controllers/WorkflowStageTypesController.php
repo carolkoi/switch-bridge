@@ -2,15 +2,18 @@
 
 namespace WizPack\Workflow\Http\Controllers;
 
+use Illuminate\Support\Str;
 use WizPack\Workflow\DataTables\WorkflowStageTypesDataTable;
 use WizPack\Workflow\Http\Requests\CreateWorkflowStageTypesRequest;
 use WizPack\Workflow\Http\Requests\UpdateWorkflowStageTypesRequest;
+use WizPack\Workflow\Models\WorkflowStageType;
 use WizPack\Workflow\Repositories\WorkflowStagesRepository;
 use WizPack\Workflow\Repositories\WorkflowStageTypesRepository;
 use Exception;
 use Illuminate\Support\Facades\Response;
 use Laracasts\Flash\Flash;
 use Prettus\Validator\Exceptions\ValidatorException;
+use Illuminate\http\Request;
 
 
 class WorkflowStageTypesController extends AppBaseController
@@ -58,12 +61,19 @@ class WorkflowStageTypesController extends AppBaseController
     public function store(CreateWorkflowStageTypesRequest $request)
     {
         $input = $request->all();
+        $input['slug'] = Str::lower(str_replace(' ', '_', $request->get('name')));
+//        dd($input);
 
+        if (WorkflowStageType::where('slug', '=', $input['slug'] )->exists()) {
+            Flash::error('Approval Stage Partner with the same Slug already exist');
+            return redirect(route('upesi::approval-partners.index'));
+
+        }else
         $workflowStageTypes = $this->workflowStageTypesRepository->create($input);
 
-        Flash::success('Workflow Stage Types saved successfully.');
+        Flash::success('Approval Stage Partner saved successfully.');
 
-        return redirect(route('wizpack::workflowStageTypes.index'));
+        return redirect(route('upesi::approval-partners.index'));
     }
 
     /**
@@ -78,9 +88,9 @@ class WorkflowStageTypesController extends AppBaseController
         $workflowStageTypes = $this->workflowStageTypesRepository->find($id);
 
         if (empty($workflowStageTypes)) {
-            Flash::error('Workflow Stage Types not found');
+            Flash::error('Approval Stage Partner Types not found');
 
-            return redirect(route('wizpack::workflowStageTypes.index'));
+            return redirect(route('upesi::approval-partners.index'));
         }
 
         return view('wizpack::workflow_stage_types.show')->with('workflowStageTypes', $workflowStageTypes);
@@ -100,7 +110,7 @@ class WorkflowStageTypesController extends AppBaseController
         if (empty($workflowStageTypes)) {
             Flash::error('Workflow Stage Types not found');
 
-            return redirect(route('wizpack::workflowStageTypes.index'));
+            return redirect(route('upesi::approval-partners.index'));
         }
 
         return view('wizpack::workflow_stage_types.edit')->with('workflowStageTypes', $workflowStageTypes);
@@ -115,21 +125,29 @@ class WorkflowStageTypesController extends AppBaseController
      * @return Response
      * @throws ValidatorException
      */
-    public function update($id, UpdateWorkflowStageTypesRequest $request)
+    public function update($id, Request $request)
     {
         $workflowStageTypes = $this->workflowStageTypesRepository->find($id);
+        $input = $request->all();
+        $input['slug'] = Str::lower(str_replace(' ', '_', $request->get('name')));
 
         if (empty($workflowStageTypes)) {
-            Flash::error('Workflow Stage Types not found');
+            Flash::error('Approval Stage Partner not found');
 
             return redirect(route('wizpack::workflowStageTypes.index'));
         }
+//        if (WorkflowStageType::where('slug', '=', $input['slug'] )->exists()) {
+//            Flash::error('Approval Stage Partner with the same Slug already exist');
+//
+//            return redirect(route('upesi::approval-partners.index'));
+//
+//        }else
 
-        $workflowStageTypes = $this->workflowStageTypesRepository->update($request->all(), $id);
+        $workflowStageTypes = $this->workflowStageTypesRepository->update($input, $id);
 
-        Flash::success('Workflow Stage Types updated successfully.');
+        Flash::success('Approval Stage Partner updated successfully.');
 
-        return redirect(route('wizpack::workflowStageTypes.index'));
+        return redirect(route('upesi::approval-partners.index'));
     }
 
     /**
@@ -145,22 +163,22 @@ class WorkflowStageTypesController extends AppBaseController
         $checkIfStageIsAttached = $this->stagesRepository->count(['workflow_stage_type_id'=>$id]);
 
         if($checkIfStageIsAttached>0){
-            Flash::error('Workflow stage Types Cannot be deleted, there is a workflow stages attached to this workflow stage type');
+            Flash::error('Approval Stage Partner Cannot be deleted, there is a transaction approval attached to this Approval Stage Partner');
             return redirect()->back();
         }
 
         $workflowStageTypes = $this->workflowStageTypesRepository->find($id);
 
         if (empty($workflowStageTypes)) {
-            Flash::error('Workflow Stage Types not found');
+            Flash::error('Approval Stage Partner not found');
 
-            return redirect(route('wizpack::workflowStageTypes.index'));
+            return redirect(route('upesi::approval-partners.index'));
         }
 
         $this->workflowStageTypesRepository->delete($id);
 
-        Flash::success('Workflow Stage Types deleted successfully.');
+        Flash::success('Approval Stage Partner deleted successfully.');
 
-        return redirect(route('wizpack::workflowStageTypes.index'));
+        return redirect(route('upesi::approval-partners.index'));
     }
 }

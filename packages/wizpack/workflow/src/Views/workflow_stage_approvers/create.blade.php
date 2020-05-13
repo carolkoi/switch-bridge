@@ -12,7 +12,7 @@
 
             <div class="box-body">
                 <div class="row">
-                    {!! Form::open(['route' => 'wizpack::workflowStageApprovers.store']) !!}
+                    {!! Form::open(['route' => 'upesi::stage-approvers.store']) !!}
 
                         @include('wizpack::workflow_stage_approvers.fields')
 

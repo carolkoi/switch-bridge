@@ -1,0 +1,55 @@
+  version: '2'
+
+  services:
+#    database:
+#      container_name: Bridge_db
+#      #      image: postgresql- 12.1
+#      build:
+#        context: '.'
+#      volumes:
+#        - dbdata:/var/lib/postgresql/data
+#      environment:
+#        - POSTGRES_HOST=172.17.0.1
+#        - POSTGRES_PASSWORD=!QAZxsw2
+#        - POSTGRES_DATABASE=${DB_DATABASE}
+#      networks:
+#        backend:
+#          aliases:
+#            - db
+#      ports:
+#        - 5433:5432
+
+    redis:
+      image: redis:alpine
+      command: redis-server --appendonly yes --appendfsync always --save 900 1 --save 300 10 --save 60 1000
+      volumes:
+        - redis:/data
+      restart: always
+      container_name: redis
+
+    #  The Application
+
+    app:
+      build:
+        context: ./development
+        args:
+          uid: ${UID}
+      container_name: bridge_ui
+      environment:
+        - APACHE_RUN_USER=#${UID}
+        - APACHE_RUN_GROUP=#${UID}
+      volumes:
+        - .:/var/www/html
+      ports:
+        - 8510:80
+      networks:
+        backend:
+          aliases:
+            - app
+
+  networks:
+    backend:
+  volumes:
+    dbdata:
+    redis:
+    db:

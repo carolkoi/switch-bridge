@@ -2,9 +2,11 @@
 
 namespace WizPack\Workflow\Http\Controllers;
 
+use App\Models\User;
 use WizPack\Workflow\DataTables\WorkflowStageApproversDataTable;
 use WizPack\Workflow\Http\Requests\CreateWorkflowStageApproversRequest;
 use WizPack\Workflow\Http\Requests\UpdateWorkflowStageApproversRequest;
+use WizPack\Workflow\Models\WorkflowStageApprovers;
 use WizPack\Workflow\Repositories\UserRepository;
 use WizPack\Workflow\Repositories\WorkflowStageApproversRepository;
 use WizPack\Workflow\Repositories\WorkflowStagesRepository;
@@ -56,6 +58,9 @@ class WorkflowStageApproversController extends AppBaseController
      */
     public function create()
     {
+//        $users = User::pluck('name', 'id') && hasRole('Administrator');
+//dd($users);
+
         return view('wizpack::workflow_stage_approvers.create')
             ->withUsers($this->userRepository->all()->pluck('name', 'id'))
             ->withWorkflowStage($this->stagesRepository->with('workflowStageType')->get()->pluck('workflowStageType.name', 'id'))
@@ -74,6 +79,11 @@ class WorkflowStageApproversController extends AppBaseController
     {
         $input = $request->all();
         $input['granted_by'] = Auth::id();
+        if (WorkflowStageApprovers::where('user_id', '=', $input['user_id'] )->exists()) {
+            Flash::error('User already on the Approver List');
+            return redirect(route('upesi::stage-approvers.index'));
+
+        }else
 
         $stageType = $this->stagesRepository->find($request->get('workflow_stage_id'));
 
@@ -86,9 +96,9 @@ class WorkflowStageApproversController extends AppBaseController
             $input
         );
 
-        Flash::success('Workflow Stage Approvers saved successfully.');
+        Flash::success('Transaction Stage Approver saved successfully.');
 
-        return redirect(route('wizpack::workflowStageApprovers.index'));
+        return redirect(route('upesi::stage-approvers.index'));
     }
 
     /**
@@ -105,7 +115,7 @@ class WorkflowStageApproversController extends AppBaseController
         if (empty($workflowStageApprovers)) {
             Flash::error('Workflow Stage Approvers not found');
 
-            return redirect(route('workflowStageApprovers.index'));
+            return redirect(route('upesi::stage-approvers.index'));
         }
 
         return view('wizpack::workflow_stage_approvers.show')->with('workflowStageApprovers', $workflowStageApprovers);
@@ -125,7 +135,7 @@ class WorkflowStageApproversController extends AppBaseController
         if (empty($workflowStageApprovers)) {
             Flash::error('Workflow Stage Approvers not found');
 
-            return redirect(route('wizpack::workflowStageApprovers.index'));
+            return redirect(route('upesi::stage-approvers.index'));
         }
 
         return view('wizpack::workflow_stage_approvers.edit')
@@ -152,7 +162,7 @@ class WorkflowStageApproversController extends AppBaseController
         if (empty($workflowStageApprovers)) {
             Flash::error('Workflow Stage Approvers not found');
 
-            return redirect(route('workflowStageApprovers.index'));
+            return redirect(route('upesi::stage-approvers.index'));
         }
         $input = $request->all();
 
@@ -184,13 +194,13 @@ class WorkflowStageApproversController extends AppBaseController
         if (empty($workflowStageApprovers)) {
             Flash::error('Workflow Stage Approvers not found');
 
-            return redirect(route('workflowStageApprovers.index'));
+            return redirect(route('upesi::stage-approvers.index'));
         }
 
         $this->workflowStageApproversRepository->delete($id);
 
         Flash::success('Workflow Stage Approvers deleted successfully.');
 
-        return redirect(route('wizpack::workflowStageApprovers.index'));
+        return redirect(route('upesi::stage-approvers.index'));
     }
 }

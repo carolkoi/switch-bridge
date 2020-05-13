@@ -59,7 +59,7 @@ use WizPack\Workflow\Models\Scopes\WeightScope;
  */
 class WorkflowStage extends Model
 {
-    use SoftDeletes;
+//    use SoftDeletes;
 
     public $table = 'workflow_stages';
 

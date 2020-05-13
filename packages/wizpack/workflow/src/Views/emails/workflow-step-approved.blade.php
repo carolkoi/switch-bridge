@@ -6,13 +6,14 @@
             <b>{{$workflow['name']}}</b> request submitted by {{$approvalInfo['sentBy']->name}};
             <b>{{$approvalInfo['approved_stage']}}</b> completed. Please review the next stage(
             <b>{{$approvalInfo['next_stage']}} </b>) using
-            this link <a href="{{env('APP_NAME').'wizpack/approvals/'.$workflow['id']}}">View</a>.
+            this link <a href="{{env('APP_URL').'/'.'all/transactions/'.$model_id}}">View</a>.
         </p>
     @else
         <p>
-            {{$approvalInfo['sentBy']->name}},
-            <b>{{$approvalInfo['approved_stage']}}</b>  completed. Your request is now fully approved
-            Please use this <a href="{{env('APP_NAME').'wizpack/approvals/'.$workflow['id']}}">link</a> to view it.
+            {{$approvalInfo['sentBy']->name}},</p>
+        <p>
+            <b>{{$approvalInfo['approved_stage']}}</b>  you submitted has been completed. Your request is now fully approved.
+            Please use this <a href="{{env('APP_URL').'/'.'all/transactions/'.$model_id}}">link</a> to view it.
         </p>
     @endif
 

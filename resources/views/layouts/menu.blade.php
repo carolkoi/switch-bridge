@@ -1,112 +1,148 @@
-    <li class="header">MAIN NAVIGATION</li>
-    <li class="{{ Request::is('users*') ? 'active' : '' }}">
-        <a href="{!! route('home') !!}"><i class="fa fa-dashboard"></i><span>Dashboard</span></a>
-    </li>
 
-
-
-    <li class="{{ Request::is('templates*') ? 'active' : '' }}">
-        <a href="{!! route('templates.index') !!}"><i class="fa fa-file-text"></i><span>Surveys</span></a>
-    </li>
-
-
-<li class="{{ Request::is('allocations*') ? 'active' : '' }}">
-    <a href="{!! route('allocations.index') !!}"><i class="fa fa-address-card"></i><span>Allocations</span></a>
+<li class="divider" style="color:white; padding: 15px"><span><b>Menu</b></span></li>
+{{--<br/>--}}
+<li class="{{ Request::is('home*') ? 'active' : '' }}">
+    <a href="{{ route('home') }}"><span class="glyphicon glyphicon-home"></span><span>Dashboard</span></a>
 </li>
-    <li class="{{ Request::is('responses*') ? 'active' : '' }}">
-        <a href="{!! route('responses.index') !!}"><i class="fa fa-reply-all"></i><span>Responses</span></a>
-    </li>
 
-{{--    <li class="treeview {{ Request::is('report*') ? 'active menu-open' : '' }}">--}}
-{{--        <a class="dropdown-toggle" href="#">--}}
-{{--            <i class="fa fa-book"></i> <span>Reports</span>--}}
-{{--            <span class="pull-right-container">--}}
-{{--              <i class="fa fa-angle-left pull-right"></i>--}}
-{{--            </span>--}}
-{{--        </a>--}}
-{{--        <ul class="treeview-menu">--}}
-{{--            <li class="{{ Request::is('report/surveyReports*') ? 'active' : '' }}">--}}
-{{--                <a href="{!! route('surveyReports.index') !!}"><i class="fa fa-file"></i><span>Survey Reports</span></a>--}}
-{{--            </li>--}}
-{{--            <li class="{{ Request::is('report/responseReports*') ? 'active' : '' }}">--}}
-{{--                <a href="{!! route('responseReports.index') !!}"><i class="fa fa-file-o"></i><span>Response Reports</span></a>--}}
-{{--            </li>--}}
-{{--        </ul>--}}
-{{--    </li>--}}
-    <li class="treeview {{ Request::is('people*') ? 'active menu-open' : '' }}">
-        <a class="dropdown-toggle" href="#">
-            <i class="fa fa-users"></i> <span>Users</span>
-            <span class="pull-right-container">
+<li class="treeview {{ Request::is('all*') ? 'active menu-open' : '' }}">
+    <a class="dropdown-toggle" href="#">
+        <span class="glyphicon glyphicon-list-alt"></span> <span>Transaction Manager</span>
+        <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
-        </a>
-        <ul class="treeview-menu">
-            <li class="{{ Request::is('people/users*') ? 'active' : '' }}">
-                <a href="{!! route('users.index') !!}"><i class="fa fa-user-o"></i><span>Staffs</span></a>
-            </li>
-            <li class="{{ Request::is('people/clients*') ? 'active' : '' }}">
-                <a href="{!! route('clients.index') !!}"><i class="fa fa-user-circle-o"></i><span>Clients</span></a>
-            </li>
-            <li class="{{ Request::is('people/vendors*') ? 'active' : '' }}">
-                <a href="{!! route('vendors.index') !!}"><i class="fa fa-user-circle"></i><span>Vendors</span></a>
-            </li>
-        </ul>
+    </a>
+    <ul class="treeview-menu">
+        <li class="{{ Request::is('all/transactions*') ? 'active' : '' }}">
+            <a href="{{ route('transactions.index') }}"><span class="glyphicon glyphicon-list"></span><span>All Transactions</span></a>
+        </li>
+        <li class="{{ Request::is('all/successful-transactions*') ? 'active' : '' }}">
+            <a href="{{ route('success-transactions.index') }}"><span class="glyphicon glyphicon-check"></span><span> Successful Transactions</span></a>
+        </li>
+        <li class="{{ Request::is('all/failed-transactions*') ? 'active' : '' }}">
+            <a href="{{ route('failed-transactions.index') }}"><span class="glyphicon glyphicon-ban-circle"></span><span>Failed Transactions</span></a>
+        </li>
+        <li class="{{ Request::is('all/pending-transactions*') ? 'active' : '' }}">
+            <a href="{{ route('pending-transactions.index') }}"><span class="glyphicon glyphicon-upload"></span><span>Pending Transactions</span></a>
+        </li>
+    </ul>
+</li>
+<li class="treeview {{ Request::is('charts*') ? 'active menu-open' : '' }}">
+    <a class="dropdown-toggle" href="#">
+        <span class="glyphicon glyphicon-object-align-bottom"></span><span>High Charts</span>
+        <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+    </a>
+    <ul class="treeview-menu">
+        <li class="{{ Request::is('charts/failed-vs-successful*') ? 'active' : '' }}">
+            <a href="{{ route('charts.index') }}"><span class="glyphicon glyphicon-random"></span><span>Failed Vs Successful</span></a>
+
+    </ul>
+</li>
+@if(Auth::check() && auth()->user()->can('Can View Switch Settings'))
+<li class="divider" style="color:white; padding: 15px"><span><b>Parameters</b></span></li>
+<li class="treeview {{ Request::is('configurations*') ? 'active menu-open' : '' }}">
+    <a class="dropdown-toggle" href="#">
+        <span class="glyphicon glyphicon-cog"></span> <span>Settings</span>
+        <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+    </a>
+    <ul class="treeview-menu">
+{{--        <li class="{{ Request::is('configurations/globalSettings*') ? 'active' : '' }}">--}}
+{{--            <a href="{{ route('settings.index') }}"><i class="fa fa-gears"></i><span>Global Settings</span></a>--}}
+{{--        </li>--}}
+        <li class="{{ Request::is('configurations/switchSettings*') ? 'active' : '' }}">
+            <a href="{!! route('switchSettings.index') !!}"><i class="fa fa-cogs"></i><span>Switch Settings</span></a>
+        </li>
+
+    </ul>
+</li>
+@endif
+@if(Auth::check() && auth()->user()->can('Can View Partners'))
+<li class="treeview {{ Request::is('list*') ? 'active menu-open' : '' }}">
+    <a class="dropdown-toggle" href="#">
+        <i class="fa fa-institution"></i> <span>Companies</span>
+        <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+    </a>
+    <ul class="treeview-menu">
+        <li class="{{ Request::is('list/companies*') ? 'active' : '' }}">
+            <a href="{{ route('companies.index') }}"><i class="fa fa-building"></i><span>Companies</span></a>
+        </li>
+
+    </ul>
+</li>
+@endif
+@if(Auth::check() && auth()->user()->can('Can View Service Providers'))
+<li class="treeview {{ Request::is('services*') ? 'active menu-open' : '' }}">
+    <a class="dropdown-toggle" href="#">
+        <span class="glyphicon glyphicon-globe"></span><span>Service Providers</span>
+        <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+    </a>
+    <ul class="treeview-menu">
+        <li class="{{ Request::is('services/providers*') ? 'active' : '' }}">
+            <a href="{!! route('providers.index') !!}"><span class="glyphicon glyphicon-certificate"></span><span>Providers</span></a>
+        </li>
+    </ul>
+</li>
+@endif
+
+<li class="treeview {{ Request::is('checker*') ? 'active menu-open' : '' }}">
+    <a class="dropdown-toggle" href="#">
+        <span class="glyphicon glyphicon-repeat"></span><span>AML CHECKER</span>
+        <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+    </a>
+    <ul class="treeview-menu">
+       <li class="{{ Request::is('/checker/amlMakerCheckers*') ? 'active' : '' }}">
+    <a href="{!! route('aml-listing.index') !!}"><i class="fa fa-search"></i><span>Aml Listing</span></a>
+</li>
+    </ul>
+</li>
+@if(Auth::check() && auth()->user()->can('Can Create User'))
+<li class="divider" style="color:white; padding: 15px"><span><b>Administration</b></span></li>
+<li class="treeview {{ Request::is('members*') ? 'active menu-open' : '' }}">
+    <a class="dropdown-toggle" href="#">
+        <span class="glyphicon glyphicon-lock"></span><span>Administration</span>
+        <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+    </a>
+    <ul class="treeview-menu">
+       <li class="{{ Request::is('members/users*') ? 'active' : '' }}">
+    <a href="{!! route('users.index') !!}"><i class="fa fa-users"></i><span>Users</span></a>
     </li>
-
-{{--    <li class="{{ Request::is('approvals*') ? 'active' : '' }}">--}}
-{{--        <a href="{!! route('approvals.index') !!}"><i class="fa fa-edit"></i><span>Approvals</span></a>--}}
-{{--    </li>--}}
-
-{{--    <li class="{{ Request::is('workflow*') ? 'active' : '' }} treeview">--}}
-{{--        <a href="#">--}}
-{{--            <i class="fa fa-dashboard"></i> <span>WorkFlow</span>--}}
-{{--            <span class="pull-right-container">--}}
-{{--              <i class="fa fa-angle-left pull-right"></i>--}}
-{{--            </span>--}}
-{{--        </a>--}}
-{{--        <ul class="treeview-menu">--}}
-
-{{--            <li class="{{ Request::is('workflowStages*') ? 'active' : '' }}">--}}
-{{--                <a href="{!! route('workflowStages.index') !!}"><i class="fa fa-edit"></i><span>Workflow Stages</span></a>--}}
-{{--            </li>--}}
-{{--            <li class="{{ Request::is('workflowStageApprovers*') ? 'active' : '' }}">--}}
-{{--                <a href="{!! route('workflowStageApprovers.index') !!}"><i class="fa fa-edit"></i><span>Workflow Stage Approvers</span></a>--}}
-{{--            </li>--}}
-
-{{--            <li class="{{ Request::is('workflowStageCheckLists*') ? 'active' : '' }}">--}}
-{{--                <a href="{!! route('workflowStageCheckLists.index') !!}"><i class="fa fa-edit"></i><span>Workflow Stage Check Lists</span></a>--}}
-{{--            </li>--}}
-
-{{--            <li class="{{ Request::is('workflowStageTypes*') ? 'active' : '' }}">--}}
-{{--                <a href="{!! route('workflowStageTypes.index') !!}"><i--}}
-{{--                        class="fa fa-edit"></i><span>Workflow Stage Types</span></a>--}}
-{{--            </li>--}}
-
-{{--            <li class="{{ Request::is('workflowTypes*') ? 'active' : '' }}">--}}
-{{--                <a href="{!! route('workflowTypes.index') !!}"><i class="fa fa-edit"></i><span>Workflow Types</span></a>--}}
-{{--            </li>--}}
-
-{{--        </ul>--}}
-{{--    </li>--}}
+    <li class="{{ Request::is('members/roles*') ? 'active' : '' }}">
+        <a href="{!! route('roles.index') !!}"><i class="fa fa-user-plus"></i><span>Roles</span></a>
+    </li>
+        <li class="{{ Request::is('members/permissions*') ? 'active' : '' }}">
+            <a href="{{ route('permissions.index') }}"><i class="fa fa-check-square-o"></i><span>Permissions</span></a>
+        </li>
+    </ul>
+@endif
+{{--{!! Auth::user()->can('Authorize Transaction Update')?--}}
+{{--include("wizpack::layouts.menu")--}}
+{{--: redirect('/')!!}--}}
+@if(Auth::check() && auth()->user()->can('Can Authorize Transaction Update'))
+    <li class="divider" style="color:white; padding: 15px"><span><b>Approval Settings</b></span></li>
     @include("wizpack::layouts.menu")
+{{--    @else--}}
+{{--    {!! redirect('/') !!}--}}
+{{--    @section('scripts')--}}
+{{--    <script type="text/javascript">--}}
+{{--        window.location = "{ url('/') }";//here double curly bracket--}}
+{{--    </script>--}}
+{{--    @endsection--}}
 
-    <li class="treeview {{ Request::is('settings*') ? 'active menu-open' : '' }}">
-        <a class="dropdown-toggle" href="#">
-            <i class="fa fa-cogs"></i> <span>Settings</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-        </a>
-        <ul class="treeview-menu">
-            <li class="{{ Request::is('settings/options*') ? 'active' : '' }}">
-                <a href="{!! route('options.index') !!}"><i class="fa fa-bars"></i><span>Optional Settings</span></a>
-            </li>
-            <li class="{{ Request::is('settings/surveyTypes*') ? 'active' : '' }}">
-                <a href="{!! route('surveyTypes.index') !!}"><i class="fa fa-edit"></i><span>Survey Types</span></a>
-            </li>
-        </ul>
-    </li>
+@endif
 
-
-
+{{--<li class="{{ Request::is('tXNS*') ? 'active' : '' }}">--}}
+{{--    <a href="{{ route('tXNS.index') }}"><i class="fa fa-edit"></i><span>T X N S</span></a>--}}
+{{--</li>--}}
 

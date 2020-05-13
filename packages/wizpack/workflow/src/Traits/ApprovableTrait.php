@@ -10,8 +10,8 @@ use WizPack\Workflow\Models\Approvals;
 trait ApprovableTrait
 {
     protected static $approvalType = __CLASS__;
-    protected static $workflowType = 'survey_approval';
-    protected static $workflowName = 'Survey Approval';
+    protected static $workflowType = 'transaction_approval';
+    protected static $workflowName = 'Transaction Approval';
 
     /**
      *model listener
@@ -84,13 +84,13 @@ trait ApprovableTrait
     public function approvedLabel()
     {
         if (!empty($this->approved_at)) {
-            return "<a href=" . env('APP_URL') . '/wizpack/approvals/' . $this->approval->id . " class='label label-success'> Approved</a>";
+            return "<a href=" . env('APP_URL') . '/upesi/approvals/' . $this->approval->id . " class='label label-success'> Approved</a>";
         }
 
         if (!empty($this->rejected_at)) {
-            return "<a href=" . env('APP_URL') . '/wizpack/approvals/' . $this->approval->id . " class='label label-danger'> Rejected</a>";
+            return "<a href=" . env('APP_URL') . '/upesi/approvals/' . $this->approval->id . " class='label label-danger'> Rejected</a>";
         }
 
-        return "<a href=" . env('APP_URL') . '/wizpack/approvals/' . $this->approval->id . " class='label label-info'> Pending</a>";
+        return "<a href=" . env('APP_URL') . '/upesi/approvals/' . $this->approval->id . " class='label label-info'> Pending</a>";
     }
 }

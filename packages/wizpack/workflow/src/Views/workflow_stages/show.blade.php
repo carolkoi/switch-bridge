@@ -11,7 +11,7 @@
             <div class="box-body">
                 <div class="row" style="padding-left: 20px">
                     @include('wizpack::workflow_stages.show_fields')
-                    <a href="{!! route('wizpack::workflowStages.index') !!}" class="btn btn-default">Back</a>
+                    <a href="{!! route('upesi::approval-stages.index') !!}" class="btn btn-default">Back</a>
                 </div>
             </div>
         </div>

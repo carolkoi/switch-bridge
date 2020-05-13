@@ -81,6 +81,8 @@ class ApprovalsRepository extends BaseRepository
     {
         $approvals = $this->myApprovals()->limit(1)
             ->where('id', $id);
+//        dd($approvals);
+
 
         return $approvals;
     }

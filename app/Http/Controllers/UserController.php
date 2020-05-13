@@ -6,10 +6,15 @@ use App\DataTables\UserDataTable;
 use App\Http\Requests;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\Company;
+use App\Models\Role;
+use App\Models\User;
 use App\Repositories\UserRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
+use Spatie\Permission\Models\Permission;
+use Illuminate\Http\Request;
 
 class UserController extends AppBaseController
 {
@@ -29,6 +34,7 @@ class UserController extends AppBaseController
      */
     public function index(UserDataTable $userDataTable)
     {
+//        dd(User::all()->toArray());
         return $userDataTable->render('users.index');
     }
 
@@ -39,7 +45,9 @@ class UserController extends AppBaseController
      */
     public function create()
     {
-        return view('users.create');
+        $companies = Company::pluck('companyname', 'companyid');
+        $roles = \Spatie\Permission\Models\Role::pluck('name', 'id');
+        return view('users.create', ['companies' => $companies, 'roles' => $roles]);
     }
 
     /**
@@ -52,8 +60,16 @@ class UserController extends AppBaseController
     public function store(CreateUserRequest $request)
     {
         $input = $request->all();
-
+        $input['password'] = bcrypt('vitamins');
+        $input['status'] = "ACTIVE";
+//        dd($input);
+        $role = \Spatie\Permission\Models\Role::where('id', $input['role_id'])->first()->name;
+        $permissions = \Spatie\Permission\Models\Permission::pluck('name');
         $user = $this->userRepository->create($input);
+        $user->assignRole($role);
+//        $user->givePermissionTo($permissions);
+//        $user->givePermissionTo('create roles');
+
 
         Flash::success('User saved successfully.');
 
@@ -96,8 +112,10 @@ class UserController extends AppBaseController
 
             return redirect(route('users.index'));
         }
+        $companies = Company::pluck('companyname', 'companyid');
+        $roles = \Spatie\Permission\Models\Role::pluck('name', 'id');
 
-        return view('users.edit')->with('user', $user);
+        return view('users.edit')->with(['user' => $user, 'companies' => $companies, 'roles' => $roles]);
     }
 
     /**
@@ -108,17 +126,21 @@ class UserController extends AppBaseController
      *
      * @return Response
      */
-    public function update($id, UpdateUserRequest $request)
+    public function update($id, Request $request)
     {
         $user = $this->userRepository->find($id);
+//        dd($user->role_id);
 
         if (empty($user)) {
             Flash::error('User not found');
 
             return redirect(route('users.index'));
         }
+        $role = \Spatie\Permission\Models\Role::where('id', $user->role_id)->first()['name'];
 
         $user = $this->userRepository->update($request->all(), $id);
+//        $user->removeRole('User');
+        $user->assignRole($role);
 
         Flash::success('User updated successfully.');
 

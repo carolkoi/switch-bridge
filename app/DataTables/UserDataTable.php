@@ -2,9 +2,12 @@
 
 namespace App\DataTables;
 
+use App\Models\Role;
 use App\Models\User;
+use App\Models\UserRole;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
+use App\Models\Company;
 
 class UserDataTable extends DataTable
 {
@@ -18,10 +21,14 @@ class UserDataTable extends DataTable
     {
         $dataTable = new EloquentDataTable($query);
 
-        return $dataTable->addColumn('action', 'users.datatables_actions')
-            ->editColumn('name', function ($query){
-                return $query->first_name. ' '.$query->last_name;
-            });
+        return $dataTable
+        ->addColumn('role', function ($query){
+            return \Spatie\Permission\Models\Role::where('id', $query->role_id)->first()['name'];
+            })
+        ->addColumn('company', function ($query){
+            return $query->company['companyname'];
+            })
+        ->addColumn('action', 'users.datatables_actions');
     }
 
     /**
@@ -32,7 +39,7 @@ class UserDataTable extends DataTable
      */
     public function query(User $model)
     {
-        return $model->newQuery();
+        return $model->with(['company'])->newQuery();
     }
 
     /**
@@ -68,8 +75,17 @@ class UserDataTable extends DataTable
     protected function getColumns()
     {
         return [
+            'company' => [
+                'name' => 'company.companyname'
+            ],
+            'role',
             'name',
+            'contact_person',
             'email',
+            //'password',
+            'msisdn',
+            'status',
+           // 'remember_token'
         ];
     }
 

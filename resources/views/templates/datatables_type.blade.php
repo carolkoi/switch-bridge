@@ -1,1 +1,0 @@
-{{$survey_type['type']}}

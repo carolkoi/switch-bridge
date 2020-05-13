@@ -35,11 +35,12 @@ class WhenApprovalRequestIsRaised
         //getting all the approval stages and their approvers
         $workflow = WorkflowType::Where([
             'slug' => $event->workflowType
-        ])->with(
+        ])->latest()->first()->with(
             [
                 'workflowStages' => function ($q) {
                     return $q->orderBy('weight', 'asc');
-                }, 'workflowStages.workflowApprovers',
+                },
+                'workflowStages.workflowApprovers',
                  'workflowStages.workflowApprovers.user'
             ]
         )->latest()->first();

@@ -3,7 +3,7 @@
 @section('content')
     <section class="content-header">
         <h1>
-            Workflow : - {{$workflowTypes->name}}
+            Approval : - {{$workflowTypes->name}}
         </h1>
     </section>
     <div class="content">

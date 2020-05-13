@@ -25,9 +25,9 @@ class WorkflowStageApproversDataTable extends DataTable
                 return $q->user->name;
             })->editColumn('granted_by', function ($q) {
                 return $q->grantedBy->name;
-            })->addColumn('workflow_stage', function ($q) {
+            })->addColumn('approval_stage_partner', function ($q) {
                 return $q->workflowStage->workflowStageType->name;
-            })->addColumn('workflow', function ($q) {
+            })->addColumn('approval_type', function ($q) {
                 return $q->workflowStage->workflowType->name;
             })
             ->addColumn('action', 'wizpack::workflow_stage_approvers.datatables_actions');
@@ -85,10 +85,10 @@ class WorkflowStageApproversDataTable extends DataTable
             'Approver' => [
                 'name' => 'user.name'
             ],
-            'workflow' => [
+            'approval_type' => [
                 'name' => 'workflowStage.workflowType.name'
             ],
-            'workflow_stage' => [
+            'approval_stage_partner' => [
                 'name' => 'workflowStage.workflowStageType.name'
             ],
             'granted_by' => [

@@ -3,7 +3,7 @@
 @section('content')
     <section class="content-header">
         <h1>
-            Workflow Stages
+            Approval Stages
         </h1>
     </section>
     <div class="content">
@@ -12,7 +12,7 @@
 
             <div class="box-body">
                 <div class="row">
-                    {!! Form::open(['route' => 'wizpack::workflowStages.store']) !!}
+                    {!! Form::open(['route' => 'upesi::approval-stages.store']) !!}
 
                         @include('wizpack::workflow_stages.fields')
 

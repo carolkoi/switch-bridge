@@ -1,7 +1,7 @@
 [
     {
         "name": "id",
-        "dbType": "bigInteger,true,true",
+        "dbType": "integer,true",
         "htmlType": null,
         "validations": null,
         "searchable": false,
@@ -12,7 +12,43 @@
         "inView": false
     },
     {
+        "name": "company_id",
+        "dbType": "integer,false",
+        "htmlType": null,
+        "validations": "required",
+        "searchable": true,
+        "fillable": true,
+        "primary": false,
+        "inForm": true,
+        "inIndex": true,
+        "inView": true
+    },
+    {
+        "name": "role_id",
+        "dbType": "integer,false",
+        "htmlType": null,
+        "validations": "required",
+        "searchable": true,
+        "fillable": true,
+        "primary": false,
+        "inForm": true,
+        "inIndex": true,
+        "inView": true
+    },
+    {
         "name": "name",
+        "dbType": "string,255",
+        "htmlType": "text",
+        "validations": "required",
+        "searchable": true,
+        "fillable": true,
+        "primary": false,
+        "inForm": true,
+        "inIndex": true,
+        "inView": true
+    },
+    {
+        "name": "contact_person",
         "dbType": "string,255",
         "htmlType": "text",
         "validations": "required",
@@ -36,10 +72,10 @@
         "inView": true
     },
     {
-        "name": "email_verified_at",
-        "dbType": "datetime:nullable",
-        "htmlType": "date",
-        "validations": null,
+        "name": "password",
+        "dbType": "string,60",
+        "htmlType": "text",
+        "validations": "required",
         "searchable": true,
         "fillable": true,
         "primary": false,
@@ -48,7 +84,19 @@
         "inView": true
     },
     {
-        "name": "password",
+        "name": "msisdn",
+        "dbType": "bigInteger,false",
+        "htmlType": null,
+        "validations": "required",
+        "searchable": true,
+        "fillable": true,
+        "primary": false,
+        "inForm": true,
+        "inIndex": true,
+        "inView": true
+    },
+    {
+        "name": "status",
         "dbType": "string,255",
         "htmlType": "text",
         "validations": "required",
@@ -72,22 +120,10 @@
         "inView": true
     },
     {
-        "name": "deleted_at",
-        "dbType": "datetime:nullable",
-        "htmlType": "date",
-        "validations": null,
-        "searchable": false,
-        "fillable": false,
-        "primary": false,
-        "inForm": false,
-        "inIndex": false,
-        "inView": false
-    },
-    {
         "name": "created_at",
-        "dbType": "datetime:nullable",
+        "dbType": "datetime",
         "htmlType": "date",
-        "validations": null,
+        "validations": "required",
         "searchable": false,
         "fillable": false,
         "primary": false,
@@ -97,9 +133,9 @@
     },
     {
         "name": "updated_at",
-        "dbType": "datetime:nullable",
+        "dbType": "datetime",
         "htmlType": "date",
-        "validations": null,
+        "validations": "required",
         "searchable": false,
         "fillable": false,
         "primary": false,

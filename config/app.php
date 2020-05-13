@@ -137,6 +137,11 @@ return [
     | this array to grant expanded functionality to your applications.
     |
     */
+    'db_fields' => [
+        'customer_name',
+        'mobile_number',
+        'customer_idnumber'
+    ],
 
     'providers' => [
 
@@ -178,6 +183,7 @@ return [
         Yajra\Datatables\DatatablesServiceProvider::class,
         Yajra\Datatables\ButtonsServiceProvider::class,
         Yajra\Datatables\HtmlServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
         /*
          * Application Service Providers...
          */

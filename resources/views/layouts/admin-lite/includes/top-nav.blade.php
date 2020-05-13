@@ -3,7 +3,9 @@
 
     <!-- Logo -->
     <a href="#" class="logo">
-        <b>{{env('APP_NAME', 'WizSurvey')}}</b>
+        <img class="logo-img" src="{{asset('images/logo-sla.png')}}" alt="logo" width="227" height="50">
+
+        {{--        <b>{{env('APP_NAME', 'Wizag')}}</b>--}}
     </a>
 
     <!-- Header Navbar -->
@@ -20,19 +22,24 @@
                     <!-- Menu Toggle Button -->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <!-- The user image in the navbar-->
-                        <img src="http://infyom.com/images/logo/blue_logo_150x150.jpg"
+                        <img src="{{asset('images/blue_logo_150x150.jpg')}}"
                              class="user-image" alt="User Image"/>
                         <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                        <span class="hidden-xs">{!! Auth::user() ? Auth::user()->first_name : redirect('/') !!}</span>
+                        {{--                        <span class="hidden-xs">{!! Auth::user()->name !!}</span>--}}
+                        <span class="hidden-xs">{!! Auth::user() ? Auth::user()->name : redirect('/') !!}</span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- The user image in the menu -->
                         <li class="user-header">
-                            <img src="http://infyom.com/images/logo/blue_logo_150x150.jpg"
+                            <img src="{{asset('images/blue_logo_150x150.jpg')}}"
                                  class="img-circle" alt="User Image"/>
                             <p>
-                                {!! Auth::user() ? Auth::user()->first_name.' '.Auth::user()->last_name : redirect('/')!!}
+                                {!! Auth::user() ? Auth::user()->name : redirect('/')!!}
+                                <small>{!! Auth::user() ? Auth::user()->msisdn : redirect('/') !!}</small>
+{{--                                <small>{!! Auth::user() ? Auth::user()->status : redirect('/')!!}</small>--}}
+
                                 <small>Member since {!! Auth::user() ? Auth::user()->created_at->format('M. Y') : redirect('/')!!}</small>
+
                             </p>
                         </li>
                         <!-- Menu Footer-->

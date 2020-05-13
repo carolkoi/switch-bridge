@@ -2,6 +2,8 @@
 
 namespace WizPack\Workflow\Http\Controllers;
 
+use App\Models\Transactions;
+use Illuminate\Http\Request;
 use WizPack\Workflow\Events\WorkflowStageApproved;
 use WizPack\Workflow\Repositories\ApprovalsRepository;
 use WizPack\Workflow\Repositories\WorkflowStageApproversRepository;
@@ -36,12 +38,15 @@ class ApproveRequestController extends AppBaseController
     /**
      * @param $workflowApprovalId
      * @param $stageId
+     * @param $request
      * @return RedirectResponse
      * @throws ValidatorException
      */
-    public function handle($workflowApprovalId, $stageId)
+    public function handle($workflowApprovalId, $stageId, Request $request)
     {
         $workflow = $this->approvalsRepository->getApprovalSteps($workflowApprovalId)->get();
+        $kdata = $workflow->toArray();
+//        dd($kdata[0]['model_id']);
 
         $transformedResult = new Collection($workflow, new ApprovalTransformer());
 
@@ -54,7 +59,7 @@ class ApproveRequestController extends AppBaseController
         if (!$approvers->contains('user_id', auth()->id())) {
             Flash::error('You are not authorized to approve this request');
 
-            return redirect('/wizpack/approvals/' . $workflowApprovalId);
+            return redirect('/upesi/approvals/' . $workflowApprovalId);
         }
 
         $workflowStageToBeApproved = $data->pluck('currentApprovalStage')->flatten(1)->first();
@@ -62,6 +67,18 @@ class ApproveRequestController extends AppBaseController
         $workflow = $data->pluck('workflowDetails')->first();
 
         $stageId = $workflowStageToBeApproved['workflow_stage_type_id'] ?: $stageId;
+
+        if($request->session()->has('txn_status') && $request->session()->has('aml_listed') && $request->session()->has('remarks')) {
+//            dd(session('txn_status'), session('aml_listed'), session('remarks'));
+            $transaction = Transactions::where('iso_id', $kdata[0]['model_id'])->update([
+                'res_field48' => session('txn_status'),
+                'aml_listed' => session('aml_listed'),
+                'res_field44' => session('remarks'),
+                'date_time_modified' => session('date_time_modified'),
+                'modified_by' => session('modified_by')
+            ]);
+//            dd($transaction);
+        }
 
         $approvedStep = $this->workflowStepRepository->updateOrCreate([
             'workflow_stage_id' => $stageId,
@@ -80,11 +97,11 @@ class ApproveRequestController extends AppBaseController
 
             event(new WorkflowStageApproved($data, $approvedStep));
 
-            Flash::success('Stage Approved successfully');
-            return redirect('/wizpack/approvals/' . $workflowApprovalId);
+            Flash::success('Transaction Request Approved successfully');
+            return redirect('/upesi/approvals/' . $workflowApprovalId);
         }
 
-        Flash::success('An error occurred stage not approved ');
+        Flash::success('An error occurred Transaction Request not approved ');
         return redirect()->back();
 
     }
