@@ -33,7 +33,7 @@ class TransactionsDataTable extends DataTable
                 return $query->req_field41;
             })
             ->addColumn('sync_msg_ref', function ($query){
-                return $query->sync_message;
+                return $query->sync_message ? $query->sync_message : "N/A";
             })
             ->addColumn('primary_txn_ref', function ($query){
                 return $query->req_field34;
