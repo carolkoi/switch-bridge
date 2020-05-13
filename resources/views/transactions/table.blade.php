@@ -12,7 +12,9 @@
         let table = $('#dataTableBuilder').DataTable( {
             retrieve: true,
             ajax: "data.json",
-            paging: false
+            paging: false,
+            info: false,
+            scrollY: 400
         } );
 
         setInterval( function () {
