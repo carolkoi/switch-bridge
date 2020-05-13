@@ -12,13 +12,13 @@
             retrieve: true,
             scrollY: 300,
             paging: false,
+            select: true,
             ajax: "data.json"
         } );
 
         setInterval( function () {
             table.ajax.reload( null, false ); // user paging is not reset on reload
         }, 10000 );
-        // $('#dataTableBuilder').DataTable().ajax.reload(null, false);
     </script>
 
 @endsection
