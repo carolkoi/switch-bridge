@@ -85,7 +85,7 @@ class TransactionsDataTable extends DataTable
      */
     public function query(Transactions $model)
     {
-        return $model->orderBy('date_time_added')->newQuery();
+        return $model->orderBy('date_time_added', 'desc')->newQuery();
     }
 
     /**
