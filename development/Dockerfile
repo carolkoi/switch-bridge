@@ -56,3 +56,13 @@ ARG uid
 RUN useradd -G www-data,root -u $uid -d /home/devuser devuser
 RUN mkdir -p /home/devuser/.composer && \
     chown -R devuser:devuser /home/devuser
+
+##9. Set this environment variable to true to set timezone on container start.
+#    ENV SET_CONTAINER_TIMEZONE false
+##10. Default container timezone as found under the directory /usr/share/zoneinfo/.
+#    ENV CONTAINER_TIMEZONE EAT
+RUN apt-get install tzdata
+ENV TZ=Africa/Nairobi
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+
