@@ -35,6 +35,9 @@ class SuccessTransactionsDataTable extends DataTable
             ->addColumn('primary_txn_ref', function ($query){
                 return $query->req_field34;
             })
+            ->addColumn('txn_no', function ($query){
+                return $query->req_field37;
+            })
             ->addColumn('amt_sent', function ($query){
                 return $query->req_field49." ".$query->req_field4;
             })
@@ -115,6 +118,7 @@ class SuccessTransactionsDataTable extends DataTable
             'txn_type'  => ['name' => 'req_field41'],
             'primary_txn_ref'  => ['name' => 'req_field34'],
             'sync_msg_ref' => ['name' => 'sync_message'],
+            'txn_no' => ['name' => 'req_field37'],
 //            'req_field49',
             'amt_sent'  => ['name' => 'req_field49'],
             'amt_received'  => ['name' => 'req_field5'],
