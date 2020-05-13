@@ -10,6 +10,7 @@
     <script>
         let table = $('#dataTableBuilder').DataTable( {
             retrieve: true,
+            scrollY: 300,
             paging: false,
             ajax: "data.json"
         } );
