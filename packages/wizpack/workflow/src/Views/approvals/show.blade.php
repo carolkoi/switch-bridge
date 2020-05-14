@@ -75,7 +75,7 @@
                                                             Approval pending for <a href="{{route('transactions.show', $transaction['iso_id'])}}"
                                                                                     >Transaction</a> <br/>
                                                             from<br/>
-                                                            <span class="label label-info">{{$transaction->res_field48}}</span> to <span class="label label-warning">{{Session::get('txn_status')}}</span>
+                                                            <span class="label label-info">{{$transaction->res_field48}}</span>
                                                         </span></p>
                                                     <br>
 
