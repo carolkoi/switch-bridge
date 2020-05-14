@@ -33183,75 +33183,7 @@ var render = function() {
                   )
                 ]
               )
-            : _vm._e(),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "dataTables_paginate paging_simple_numbers",
-              attrs: { id: "dataTableBuilder_paginate" }
-            },
-            [
-              _c("ul", { staticClass: "pagination" }, [
-                _c(
-                  "li",
-                  {
-                    staticClass: "paginate_button previous pointed",
-                    attrs: { id: "dataTableBuilder_previous" }
-                  },
-                  [
-                    _c(
-                      "a",
-                      {
-                        on: {
-                          click: function($event) {
-                            return _vm.getAllPermissions(_vm.links.prev)
-                          }
-                        }
-                      },
-                      [_vm._v("Previous")]
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c("li", { staticClass: "paginate_button active" }, [
-                  _c(
-                    "a",
-                    {
-                      attrs: {
-                        href: "#",
-                        "aria-controls": "dataTableBuilder",
-                        "data-dt-idx": "1",
-                        tabindex: "0"
-                      }
-                    },
-                    [_vm._v(_vm._s(_vm.meta.current_page))]
-                  )
-                ]),
-                _vm._v(" "),
-                _c(
-                  "li",
-                  {
-                    staticClass: "paginate_button next pointed",
-                    attrs: { id: "dataTableBuilder_next" }
-                  },
-                  [
-                    _c(
-                      "a",
-                      {
-                        on: {
-                          click: function($event) {
-                            return _vm.getAllPermissions(_vm.links.next)
-                          }
-                        }
-                      },
-                      [_vm._v("Next")]
-                    )
-                  ]
-                )
-              ])
-            ]
-          )
+            : _vm._e()
         ])
       ])
     ])

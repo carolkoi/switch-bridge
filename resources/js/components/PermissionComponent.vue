@@ -47,18 +47,18 @@
 <!--                    <pre>{{permissionsArr}}</pre>-->
 
 
-                    <div class="dataTables_paginate paging_simple_numbers" id="dataTableBuilder_paginate">
-                        <ul class="pagination">
-                            <li class="paginate_button previous pointed" id="dataTableBuilder_previous"><a
-                                @click="getAllPermissions(links.prev)">Previous</a>
-                            </li>
-                            <li class="paginate_button active"><a href="#" aria-controls="dataTableBuilder" data-dt-idx="1"
-                                                                  tabindex="0">{{meta.current_page}}</a></li>
-                            <li class="paginate_button next pointed" id="dataTableBuilder_next"><a
-                                @click="getAllPermissions(links.next)">Next</a>
-                            </li>
-                        </ul>
-                    </div>
+<!--                    <div class="dataTables_paginate paging_simple_numbers" id="dataTableBuilder_paginate">-->
+<!--                        <ul class="pagination">-->
+<!--                            <li class="paginate_button previous pointed" id="dataTableBuilder_previous"><a-->
+<!--                                @click="getAllPermissions(links.prev)">Previous</a>-->
+<!--                            </li>-->
+<!--                            <li class="paginate_button active"><a href="#" aria-controls="dataTableBuilder" data-dt-idx="1"-->
+<!--                                                                  tabindex="0">{{meta.current_page}}</a></li>-->
+<!--                            <li class="paginate_button next pointed" id="dataTableBuilder_next"><a-->
+<!--                                @click="getAllPermissions(links.next)">Next</a>-->
+<!--                            </li>-->
+<!--                        </ul>-->
+<!--                    </div>-->
                 </div>
 
             </div>
