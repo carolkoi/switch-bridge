@@ -2,7 +2,7 @@
     <div class="box box-primary">
         <div class="box-body">
             <h1 class="pull-right">
-                <button class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" @click="assignPermission()">Assign Role</button>
+                <button class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" @click="assignPermission()">Assign Permissions</button>
             </h1>
             <div id="dataTableBuilder_filter" class="dataTables_filter">
                 <label>Search:<input type="search" v-model="searchQuery"
