@@ -37,6 +37,10 @@
             <option value="COMPLETED" {{$transactions->res_field48 ==="COMPLETED" ? 'selected="selected"' : ''}}>COMPLETED</option>
         </select>
     </div>
+    <div class="form-group">
+        {!! Form::label('sync_message', 'Sync Message:') !!}
+        {!! Form::text('sync_message', null, ['class' => 'form-control']) !!}
+    </div>
 @elseif($transactions->res_field48 == "EXPIRED")
     <div class="form-group">
         {!! Form::label('res_field48', 'Transaction Status:') !!}
