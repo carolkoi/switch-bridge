@@ -25,7 +25,7 @@ class HomeController extends Controller
     public function index()
     {
     $all_transactions = Transactions::all();
-        $transactions = Transactions::orderBy('date_time_added', 'desc')->get();
+        $transactions = Transactions::orderBy('date_time_added', 'desc')->paginate(80);
         return view('home', ['transactions' => $transactions, 'all_transactions' => $all_transactions] );
     }
 }
