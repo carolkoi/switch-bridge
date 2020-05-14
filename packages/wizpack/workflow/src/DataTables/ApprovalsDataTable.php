@@ -31,7 +31,8 @@ class ApprovalsDataTable extends DataTable
                 return $query->awaitingStage->workflowStageType->name;
             })
             ->editColumn('created_at', function ($query){
-                return $query->created_at->format('Y-m-d H:i:s');
+//                return $query->created_at->format('Y-m-d H:i:s');
+                return date('Y-m-d H:i:s',strtotime('+3 hours',strtotime($query->created_at->format('Y-m-d H:i:s'))));
             })
             ->addColumn('approval_type', function ($query){
                 return $query->workflow->name;
@@ -48,7 +49,7 @@ class ApprovalsDataTable extends DataTable
      */
     public function query(Approvals $model)
     {
-        return $model->with(['user','awaitingStage.workflowStageType'])->orderBy('created_at')->MyApprovals()->newQuery();
+        return $model->with(['user','awaitingStage.workflowStageType'])->orderBy('created_at', 'desc')->MyApprovals()->newQuery();
     }
 
     /**

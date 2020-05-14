@@ -1,7 +1,8 @@
 <!-- Date Time Added Field -->
 <div class="form-group">
     {!! Form::label('date_time_added', 'Date Time Added:') !!}
-    <p>{!!  date('Y-m-d H:i:s', ($transactions->date_time_added / 1000)) !!}</p>
+    <p>{!!  date('Y-m-d H:i:s',strtotime('+3 hours',strtotime(date('Y-m-d H:i:s', $transactions->date_time_added / 1000)))) !!}</p>
+    date('Y-m-d H:i:s',strtotime('+3 hours',strtotime(date('Y-m-d H:i:s', $date_time_added / 1000))))
 </div>
 
 <!-- Added By Field -->
@@ -13,7 +14,7 @@
 <!-- Date Time Modified Field -->
 <div class="form-group">
     {!! Form::label('date_time_modified', 'Date Time Modified:') !!}
-    <p>{!! date('Y-m-d H:i:s', ($transactions->date_time_modified / 1000)) !!}</p>
+    <p>{!! date('Y-m-d H:i:s',strtotime('+3 hours',strtotime(date('Y-m-d H:i:s', $transactions->date_time_modified / 1000)))) !!}</p>
 </div>
 
 <!-- Modified By Field -->
@@ -117,13 +118,13 @@
 <!-- Req Field4 Field -->
 <div class="form-group">
     {!! Form::label('req_field4', 'Amount Sent:') !!}
-    <p>{!! $transactions->req_field4 !!}</p>
+    <p>{!!intval($transactions->req_field4) / 100 !!}</p>
 </div>
 
 <!-- Req Field5 Field -->
 <div class="form-group">
     {!! Form::label('req_field5', 'Amount Received:') !!}
-    <p>{!! $transactions->req_field5 !!}</p>
+    <p>{!! intval($transactions->req_field5) / 100 !!}</p>
 </div>
 
 <!-- Req Field6 Field -->
