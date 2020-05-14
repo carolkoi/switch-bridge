@@ -3,7 +3,7 @@
     <a href="{{ route('transactions.show', $iso_id) }}" class='btn btn-primary btn-sm'>
         <i class="glyphicon glyphicon-eye-open"></i>
     </a>
-    @elseif(Auth::check() && auth()->user()->can('Can Update Transaction') OR ($res_field48 === "AML-APPROVED" AND $req_field41 === "CASH"))
+    @elseif(Auth::check() && auth()->user()->can('Can Update Transaction') OR $req_field41 === "CASH")
 <div class='btn-group'>
     <a href="{{ route('transactions.show', $iso_id) }}" class='btn btn-primary btn-sm'>
         <i class="glyphicon glyphicon-eye-open"></i>
