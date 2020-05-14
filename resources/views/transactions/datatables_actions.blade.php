@@ -1,9 +1,9 @@
 {{--{!! Form::open(['route' => ['transactions.destroy', $iso_id], 'method' => 'delete']) !!}--}}
-@if($res_field48 === "COMPLETED" OR $res_field48 === "FAILED" OR $res_field48 === "AML-APPROVED" OR Auth::check() && auth()->user()->cannot('Can Update Transaction'))
+@if($res_field48 === "COMPLETED" OR $res_field48 === "FAILED" OR (!($req_field41 === "CASH") && $res_field48 === "AML-APPROVED") OR Auth::check() && auth()->user()->cannot('Can Update Transaction'))
     <a href="{{ route('transactions.show', $iso_id) }}" class='btn btn-primary btn-sm'>
         <i class="glyphicon glyphicon-eye-open"></i>
     </a>
-    @elseif(Auth::check() && auth()->user()->can('Can Update Transaction') OR $req_field41 === "CASH")
+    @elseif(Auth::check() && auth()->user()->can('Can Update Transaction') OR $req_field41 !== "CASH")
 <div class='btn-group'>
     <a href="{{ route('transactions.show', $iso_id) }}" class='btn btn-primary btn-sm'>
         <i class="glyphicon glyphicon-eye-open"></i>
