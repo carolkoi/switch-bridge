@@ -78,7 +78,7 @@ Route::prefix('members')->group(function () {
 });
 Route::resource('comps', 'CompController');
 Route::get('/assign-permission', function () {
-    return Permission::collection(\Spatie\Permission\Models\Permission::paginate(10));
+    return Permission::collection(\Spatie\Permission\Models\Permission::get());
 });
 
 Route::get('role-permissions/{id}', 'RoleController@permission')->name('role.permission');
