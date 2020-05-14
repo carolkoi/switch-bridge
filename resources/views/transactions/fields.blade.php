@@ -1,17 +1,5 @@
-<!-- Res Field48 Field -->
-@if($transactions->res_field48 == "INIT-FAILED")
-<div class="form-group">
-    {!! Form::label('res_field48', 'Transaction Status:') !!}
-{{--    {!!Form::select('res_field48', [],--}}
-{{--    isset($transactions) ? $transactions->res_field48 : null, ['class' => 'form-control select2', 'id' => "res_field48_id"])!!}--}}
-    <select name="res_field48" id="res_field48_id" class="form-control select2">
-        <option value="INIT-FAILED" {{$transactions->res_field48 ==="INIT-FAILED" ? 'selected="selected"' : ''}} disabled>INIT-FAILED</option>
-        <option value="AML-FAILED" {{$transactions->res_field48 ==="AML-FAILED" ? 'selected="selected"' : ''}} >AML-FAILED</option>
-        <option value="AML-APPROVED" {{$transactions->res_field48 ==="AML-APPROVED" ? 'selected="selected"' : ''}}>AML-APPROVED</option>
-        <option value="FAILED" {{$transactions->res_field48 ==="FAILED" ? 'selected="selected"' : ''}}>FAILED</option>
-    </select>
-</div>
-@elseif($transactions->res_field48 == "AML-FAILED")
+
+@if($transactions->res_field48 == "AML-FAILED")
 <div class="form-group">
     {!! Form::label('res_field48', 'Transaction Status:') !!}
     {{--    {!!Form::select('res_field48', [],--}}
@@ -72,6 +60,19 @@
                 AML-APPROVED</option>
             <option value="FAILED" {{$transactions->res_field48 ==="FAILED" ? 'selected="selected"' : ''}}>FAILED</option>
             <option value="COMPLETED" {{$transactions->res_field48 ==="COMPLETED" ? 'selected="selected"' : ''}}>COMPLETED</option>
+        </select>
+    </div>
+@elseif( $transactions->res_field48 == "AML-LISTED")
+    <div class="form-group">
+        {!! Form::label('res_field48', 'Transaction Status:') !!}
+        {{--    {!!Form::select('res_field48', [],--}}
+        {{--    isset($transactions) ? $transactions->res_field48 : null, ['class' => 'form-control select2', 'id' => "res_field48_id"])!!}--}}
+        <select name="res_field48" id="res_field48_id" class="form-control select2">
+            <option value="AML-LISTED" {{$transactions->res_field48 ==="AML-LISTED" ? 'selected="selected"' : ''}} disabled>
+                AML-LISTED</option>
+            <option value="AML-APPROVED" {{$transactions->res_field48 ==="AML-APPROVED" ? 'selected="selected"' : ''}}>
+                AML-APPROVED</option>
+            <option value="FAILED" {{$transactions->res_field48 ==="FAILED" ? 'selected="selected"' : ''}}>FAILED</option>
         </select>
     </div>
 @endif
