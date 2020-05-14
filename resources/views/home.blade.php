@@ -160,8 +160,8 @@
                                     <td>{{ $transaction->res_field48 }}</td>
                                     <td>{{ $transaction->req_field41 }}</td>
                                     <td>{{ $transaction->req_field37 }}</td>
-                                    <td>{{ $transaction->req_field49. " ".$transaction->req_field4 }}</td>
-                                    <td>{{ $transaction->req_field5  }}</td>
+                                    <td>{{ $transaction->req_field49. " ".intval($transaction->req_field4)/100 }}</td>
+                                    <td>{{ intval($transaction->req_field5)/100  }}</td>
                                     {{--                                <td>{{ $transaction->req_field3 }}</td>--}}
                                     <td>{{ $transaction->req_field105  }}</td>
                                     <td>{{ $transaction->req_field108   }}</td>
