@@ -74,7 +74,7 @@ class FailedTransactionsDataTable extends DataTable
      */
     public function query(Transactions $model)
     {
-        return $model->orderBy('date_time_added')->where('res_field48', 'FAILED')->newQuery();
+        return $model->orderBy('date_time_added', 'desc')->where('res_field48', 'FAILED')->newQuery();
     }
 
     /**
