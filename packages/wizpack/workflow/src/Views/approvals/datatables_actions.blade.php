@@ -1,7 +1,7 @@
 {{--{!! Form::open(['route' => ['upesi::approvals.destroy', $id], 'method' => 'delete']) !!}--}}
 {{--<div class='btn-group'>--}}
 @if($approved)
-    <a href="{{ route('upesi::approvals.show', $id) }}" class='btn btn-primary'>
+    <a href="{{ route('upesi::approvals.show', $id) }}" class='btn btn-default'>
         View
     </a>
     @else
