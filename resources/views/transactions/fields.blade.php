@@ -50,7 +50,7 @@
             <option value="COMPLETED" {{$transactions->res_field48 ==="COMPLETED" ? 'selected="selected"' : ''}}>COMPLETED</option>
         </select>
     </div>
-    @elseif($transactions->req_field41 == "CASH" AND $transactions->res_field48 == "AML-APPROVED")
+    @elseif($transactions->req_field41 === "CASH" && $transactions->res_field48 === "AML-APPROVED")
     <div class="form-group">
         {!! Form::label('res_field48', 'Transaction Status:') !!}
         {{--    {!!Form::select('res_field48', [],--}}
