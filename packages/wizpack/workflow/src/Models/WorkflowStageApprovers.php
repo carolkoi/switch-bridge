@@ -62,7 +62,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class WorkflowStageApprovers extends Model
 {
-    use SoftDeletes;
+//    use SoftDeletes;
 
     public $table = 'workflow_stage_approvers';
 
