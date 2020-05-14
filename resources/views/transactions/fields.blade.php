@@ -77,11 +77,11 @@
     </div>
 @endif
 <!-- Aml Listed Field -->
-<div class="form-group">
-    {!! Form::label('aml_listed', 'AML Listing Status:') !!}
-    {!!Form::select('aml_listed', array('1' => 'LISTED', '0' => 'NOT LISTED'),
-    isset($transactions) ? $transactions->aml_listed : null, ['class' => 'form-control select2'])!!}
-</div>
+{{--<div class="form-group">--}}
+{{--    {!! Form::label('aml_listed', 'AML Listing Status:') !!}--}}
+{{--    {!!Form::select('aml_listed', array('1' => 'LISTED', '0' => 'NOT LISTED'),--}}
+{{--    isset($transactions) ? $transactions->aml_listed : null, ['class' => 'form-control select2'])!!}--}}
+{{--</div>--}}
 <!-- Remarks Field -->
 <div class="form-group">
     {!! Form::label('res_field44', 'Transaction Remarks:') !!}
