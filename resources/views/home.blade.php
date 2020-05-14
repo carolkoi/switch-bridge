@@ -154,9 +154,11 @@
                             @foreach($transactions as $transaction)
                                 <tr class="odd gradeX">
                                     <td>{{ $transaction->req_field123  }}</td>
-                                    <td>{{ $transaction->req_field7  }}</td>
+{{--                                    <td>{{ $transaction->req_field7  }}</td>--}}
+                                    <td>{{date('Y-m-d H:i:s',strtotime('+3 hours',strtotime(date('Y-m-d H:i:s', ($transaction->date_time_added / 1000)))))}}</td>
+
                                     <td>{{ $transaction->res_field48 }}</td>
-                                    <td>{{ $transaction->req_field122 }}</td>
+                                    <td>{{ $transaction->req_field41 }}</td>
                                     <td>{{ $transaction->req_field37 }}</td>
                                     <td>{{ $transaction->req_field49. " ".$transaction->req_field4 }}</td>
                                     <td>{{ $transaction->req_field5  }}</td>

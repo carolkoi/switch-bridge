@@ -27,7 +27,7 @@ class PendingTransactionsDataTable extends DataTable
                 return $query->res_field48;
             })
             ->addColumn('txn_type', function ($query){
-                return $query->req_field122;
+                return $query->req_field41;
             })
             ->addColumn('sync_msg_ref', function ($query){
                 return $query->sync_message;

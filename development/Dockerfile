@@ -64,5 +64,6 @@ RUN mkdir -p /home/devuser/.composer && \
 RUN apt-get install tzdata
 ENV TZ=Africa/Nairobi
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+RUN printf '[PHP]\ndate.timezone = "Africa/Nairobi"\n' > /usr/local/etc/php/conf.d/tzone.ini
 
 
