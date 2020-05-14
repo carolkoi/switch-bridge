@@ -67,12 +67,12 @@ class ApproveRequestController extends AppBaseController
         $workflow = $data->pluck('workflowDetails')->first();
 
         $stageId = $workflowStageToBeApproved['workflow_stage_type_id'] ?: $stageId;
-
-        if($request->session()->has('txn_status') && $request->session()->has('aml_listed') && $request->session()->has('remarks')) {
+//dd('here', session('txn_status'), session('aml_listed'), session('remarks'));
+        if($request->session()->has('txn_status') && $request->session()->has('remarks')) {
 //            dd(session('txn_status'), session('aml_listed'), session('remarks'));
             $transaction = Transactions::where('iso_id', $kdata[0]['model_id'])->update([
                 'res_field48' => session('txn_status'),
-                'aml_listed' => session('aml_listed'),
+//                'aml_listed' => session('aml_listed'),
                 'res_field44' => session('remarks'),
                 'date_time_modified' => session('date_time_modified'),
                 'modified_by' => session('modified_by')

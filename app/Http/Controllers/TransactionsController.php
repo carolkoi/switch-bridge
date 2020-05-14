@@ -127,6 +127,8 @@ class TransactionsController extends AppBaseController
         $request->session()->put('date_time_modified', time()*1000);
         $request->session()->put('modified_by', Auth::user()->id);
 
+//        dd(session('txn_status'), session('aml_listed'), session('remarks'));
+
         //initiating the approval request
         $approval = new Transactions();
         $approval->addApproval($transactions);
