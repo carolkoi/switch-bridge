@@ -79,6 +79,19 @@
             <option value="FAILED" {{$transactions->res_field48 ==="FAILED" ? 'selected="selected"' : ''}}>FAILED</option>
         </select>
     </div>
+{{--    @elseif($txnExist == 'true')--}}
+{{--    <div class="form-group">--}}
+{{--        {!! Form::label('res_field48', 'Transaction Status:') !!}--}}
+{{--        --}}{{--    {!!Form::select('res_field48', [],--}}
+{{--        --}}{{--    isset($transactions) ? $transactions->res_field48 : null, ['class' => 'form-control select2', 'id' => "res_field48_id"])!!}--}}
+{{--        <select name="res_field48" id="res_field48_id" class="form-control select2">--}}
+{{--            <option value="AML-LISTED" {{$transactions->res_field48 ==="AML-LISTED" ? 'selected="selected"' : ''}} disabled>--}}
+{{--                AML-LISTED</option>--}}
+{{--            <option value="AML-APPROVED" {{$transactions->res_field48 ==="AML-APPROVED" ? 'selected="selected"' : ''}}>--}}
+{{--                AML-APPROVED</option>--}}
+{{--            <option value="FAILED" {{$transactions->res_field48 ==="FAILED" ? 'selected="selected"' : ''}}>FAILED</option>--}}
+{{--        </select>--}}
+{{--    </div>--}}
 @endif
 <!-- Aml Listed Field -->
 {{--<div class="form-group">--}}

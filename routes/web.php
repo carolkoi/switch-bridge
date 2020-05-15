@@ -86,3 +86,10 @@ Route::post('/assign-permissions/{id}', 'RoleController@assign');
 Route::post('aml/media', 'AmlMakerCheckerController@storeMedia')
     ->name('aml.storeMedia');
 Route::get('transaction-status/{status}', 'TransactionsController@getTransactionStatus');
+
+
+Route::resource('sessionTxns', 'SessionTxnController');
+
+Route::resource('sessionTxns', 'SessionTxnController');
+
+Route::resource('sessionTxns', 'SessionTxnController');

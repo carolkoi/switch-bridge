@@ -2,7 +2,6 @@
 <div class="form-group">
     {!! Form::label('date_time_added', 'Date Time Added:') !!}
     <p>{!!  date('Y-m-d H:i:s',strtotime('+3 hours',strtotime(date('Y-m-d H:i:s', $transactions->date_time_added / 1000)))) !!}</p>
-    date('Y-m-d H:i:s',strtotime('+3 hours',strtotime(date('Y-m-d H:i:s', $date_time_added / 1000))))
 </div>
 
 <!-- Added By Field -->

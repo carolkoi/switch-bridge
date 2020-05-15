@@ -27,19 +27,19 @@
         </li>
     </ul>
 </li>
-<li class="treeview {{ Request::is('charts*') ? 'active menu-open' : '' }}">
-    <a class="dropdown-toggle" href="#">
-        <span class="glyphicon glyphicon-object-align-bottom"></span><span>High Charts</span>
-        <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-    </a>
-    <ul class="treeview-menu">
-        <li class="{{ Request::is('charts/failed-vs-successful*') ? 'active' : '' }}">
-            <a href="{{ route('charts.index') }}"><span class="glyphicon glyphicon-random"></span><span>Failed Vs Successful</span></a>
+{{--<li class="treeview {{ Request::is('charts*') ? 'active menu-open' : '' }}">--}}
+{{--    <a class="dropdown-toggle" href="#">--}}
+{{--        <span class="glyphicon glyphicon-object-align-bottom"></span><span>High Charts</span>--}}
+{{--        <span class="pull-right-container">--}}
+{{--              <i class="fa fa-angle-left pull-right"></i>--}}
+{{--            </span>--}}
+{{--    </a>--}}
+{{--    <ul class="treeview-menu">--}}
+{{--        <li class="{{ Request::is('charts/failed-vs-successful*') ? 'active' : '' }}">--}}
+{{--            <a href="{{ route('charts.index') }}"><span class="glyphicon glyphicon-random"></span><span>Failed Vs Successful</span></a>--}}
 
-    </ul>
-</li>
+{{--    </ul>--}}
+{{--</li>--}}
 @if(Auth::check() && auth()->user()->can('Can View Switch Settings'))
 <li class="divider" style="color:white; padding: 15px"><span><b>Parameters</b></span></li>
 <li class="treeview {{ Request::is('configurations*') ? 'active menu-open' : '' }}">
@@ -144,5 +144,9 @@
 
 {{--<li class="{{ Request::is('tXNS*') ? 'active' : '' }}">--}}
 {{--    <a href="{{ route('tXNS.index') }}"><i class="fa fa-edit"></i><span>T X N S</span></a>--}}
+{{--</li>--}}
+
+{{--<li class="{{ Request::is('sessionTxns*') ? 'active' : '' }}">--}}
+{{--    <a href="{{ route('sessionTxns.index') }}"><i class="fa fa-edit"></i><span>Session Txns</span></a>--}}
 {{--</li>--}}
 

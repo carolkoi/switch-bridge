@@ -6,7 +6,9 @@ use App\DataTables\TransactionsDataTable;
 use App\Http\Requests;
 use App\Http\Requests\CreateTransactionsRequest;
 use App\Http\Requests\UpdateTransactionsRequest;
+use App\Models\SessionTxn;
 use App\Models\Transactions;
+use App\Repositories\SessionTxnRepository;
 use App\Repositories\TransactionsRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
@@ -17,10 +19,12 @@ class TransactionsController extends AppBaseController
 {
     /** @var  TransactionsRepository */
     private $transactionsRepository;
+    private $sessionTxnRepository;
 
-    public function __construct(TransactionsRepository $transactionsRepo)
+    public function __construct(TransactionsRepository $transactionsRepo, SessionTxnRepository $sessionTxnRepo)
     {
         $this->transactionsRepository = $transactionsRepo;
+        $this->sessionTxnRepository = $sessionTxnRepo;
     }
 
     /**
@@ -94,6 +98,12 @@ class TransactionsController extends AppBaseController
     public function edit($iso_id)
     {
         $transactions = Transactions::where('iso_id', $iso_id)->first();
+        $txnExist = SessionTxn::where('txn_id', $iso_id)->exists();
+//        if ($txnExist){
+//            dd($txnExist);
+//
+//        }else
+//            dd('tehre');
 
         if (empty($transactions)) {
             Flash::error('Transactions not found');
@@ -101,7 +111,7 @@ class TransactionsController extends AppBaseController
             return redirect(route('transactions.index'));
         }
 
-        return view('transactions.edit')->with('transactions', $transactions);
+        return view('transactions.edit')->with(['transactions' => $transactions, 'txnExist' => $txnExist]);
     }
 
     /**
@@ -115,17 +125,30 @@ class TransactionsController extends AppBaseController
     public function update($iso_id, UpdateTransactionsRequest $request)
     {
         $transactions = Transactions::where('iso_id', $iso_id)->first();
+        $input = $request->all();
 
         if (empty($transactions)) {
             Flash::error('Transactions not found');
 
             return redirect(route('transactions.index'));
         }
-        $request->session()->put('txn_status', $request->get('res_field48'));
-        $request->session()->put('aml_listed', $request->get('aml_listed'));
-        $request->session()->put('remarks', $request->get('res_field44'));
-        $request->session()->put('date_time_modified', time()*1000);
-        $request->session()->put('modified_by', Auth::user()->id);
+        Transactions::where('iso_id', $iso_id)->update(['modified_by' => Auth::user()->id]);
+//        if ($request->get('res_field48') == "AML-APPROVED" || $request->get('res_field48') == "COMPLETED" || $request->get('res_field48') == "FAILED"){
+            $sessionTxn = $this->sessionTxnRepository->create([
+                'txn_id' => $transactions->iso_id,
+                'orig_txn_no' => $transactions->res_field37,
+                'appended_txn_no' => $transactions->res_field37,
+                'txn_status' => $input['res_field48'],
+                'comments' => $input['res_field44']
+            ]);
+//        }
+
+//
+//        $request->session()->put('txn_status', $request->get('res_field48'));
+//        $request->session()->put('aml_listed', $request->get('aml_listed'));
+//        $request->session()->put('remarks', $request->get('res_field44'));
+//        $request->session()->put('date_time_modified', time()*1000);
+//        $request->session()->put('modified_by', Auth::user()->id);
 
 //        dd(session('txn_status'), session('aml_listed'), session('remarks'));
 

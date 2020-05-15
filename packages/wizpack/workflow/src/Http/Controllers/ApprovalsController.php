@@ -2,6 +2,7 @@
 
 namespace WizPack\Workflow\Http\Controllers;
 
+use App\Models\SessionTxn;
 use Illuminate\Support\Facades\Auth;
 use WizPack\Workflow\DataTables\ApprovalsDataTable;
 use WizPack\Workflow\Http\Requests\CreateApprovalsRequest;
@@ -91,9 +92,10 @@ class ApprovalsController extends AppBaseController
         $workflow = $data->pluck('workflowDetails')->first();
 
         $transaction = $data->pluck('workflowInfo')->first();
+//        dd($transaction->iso_id);
 
         $approvalHasBeenRejected = $data->pluck('approvalRejected')->first();
-
+        $sessionTxn = SessionTxn::where('txn_id', $transaction->iso_id)->first();
         if (empty($approvals)) {
             Flash::error('Approvals not found');
 
@@ -106,7 +108,8 @@ class ApprovalsController extends AppBaseController
                 'approvers',
                 'currentStage',
                 'approvalHasBeenRejected',
-                'transaction'
+                'transaction',
+                'sessionTxn'
             )
         );
     }

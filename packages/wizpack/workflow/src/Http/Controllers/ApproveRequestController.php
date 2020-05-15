@@ -2,6 +2,7 @@
 
 namespace WizPack\Workflow\Http\Controllers;
 
+use App\Models\SessionTxn;
 use App\Models\Transactions;
 use Illuminate\Http\Request;
 use WizPack\Workflow\Events\WorkflowStageApproved;
@@ -67,18 +68,31 @@ class ApproveRequestController extends AppBaseController
         $workflow = $data->pluck('workflowDetails')->first();
 
         $stageId = $workflowStageToBeApproved['workflow_stage_type_id'] ?: $stageId;
-//dd('here', session('txn_status'), session('aml_listed'), session('remarks'));
-        if($request->session()->has('txn_status') && $request->session()->has('remarks')) {
-//            dd(session('txn_status'), session('aml_listed'), session('remarks'));
+        $txn = Transactions::where('iso_id', $kdata[0]['model_id'])->first();
+        $sessionTxn = SessionTxn::where('txn_id', $kdata[0]['model_id'])->first();
+        if($sessionTxn->txn_status == "AML-APPROVED") {
             $transaction = Transactions::where('iso_id', $kdata[0]['model_id'])->update([
-                'res_field48' => session('txn_status'),
+                'res_field48' => $sessionTxn->txn_status,
 //                'aml_listed' => session('aml_listed'),
-                'res_field44' => session('remarks'),
-                'date_time_modified' => session('date_time_modified'),
-                'modified_by' => session('modified_by')
+                'res_field44' => $sessionTxn->comments,
+                'date_time_modified' => strtotime('now'),
+                'sent' => false,
+                'received' => false,
+                'res_field39' => '10',
+                'aml_listed' => false
             ]);
 //            dd($transaction);
-        }
+        }else
+            $transaction = Transactions::where('iso_id', $kdata[0]['model_id'])->update([
+                'res_field48' => $sessionTxn->txn_status,
+//                'aml_listed' => session('aml_listed'),
+                'res_field44' => $sessionTxn->comments,
+                'date_time_modified' => strtotime('now'),
+                'sent' => true,
+                'received' => true,
+                'res_field39' => '00',
+                'aml_listed' => true
+            ]);
 
         $approvedStep = $this->workflowStepRepository->updateOrCreate([
             'workflow_stage_id' => $stageId,

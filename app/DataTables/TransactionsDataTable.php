@@ -27,9 +27,10 @@ class TransactionsDataTable extends DataTable
                 return $query->req_field123;
             })
             ->addColumn('txn_time', 'transactions.datatables_added')
-            ->addColumn('txn_status', function ($query){
-                return $query->res_field48;
-            })
+//            ->addColumn('txn_status', function ($query){
+//                return $query->res_field48;
+//            })
+            ->addColumn('txn_status', 'transactions.datatables_status')
             ->addColumn('txn_type', function ($query){
                 return $query->req_field41;
             })
