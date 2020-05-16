@@ -4,7 +4,7 @@
 
 {!! $dataTable->table(['width' => '100%', 'class' => 'table table-striped table-bordered', 'data-page-length' => '50', 'data-page-size' => '50']) !!}
 
-@section('js')
+@section('scripts')
     @include('layouts.datatables_js')
     {!! $dataTable->scripts() !!}
     <script>
@@ -18,7 +18,7 @@
             retrieve: true,
             ajax: "data.json",
             "data-page-length" : 50,
-            pageLength: 25,
+            pageLength: 50,
             lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, "All"] ]
         });
         table.attr("data-page-length",50);
