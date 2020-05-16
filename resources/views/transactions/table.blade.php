@@ -17,7 +17,9 @@
             // "iDisplayLength": 50,
             retrieve: true,
             ajax: "data.json",
-            "data-page-length" : 50
+            "data-page-length" : 50,
+            pageLength: 25,
+            lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, "All"] ]
         });
         table.attr("data-page-length",50);
             setInterval( function () {
