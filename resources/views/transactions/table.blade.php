@@ -2,7 +2,7 @@
     @include('layouts.datatables_css')
 @endsection
 
-{!! $dataTable->table(['width' => '100%', 'class' => 'table table-striped table-bordered', 'data-page-length'=>'50']) !!}
+{!! $dataTable->table(['width' => '100%', 'class' => 'table table-striped table-bordered', 'data-page-size'=>'50']) !!}
 
 @section('scripts')
     @include('layouts.datatables_js')
