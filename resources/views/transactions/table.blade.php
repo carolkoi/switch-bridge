@@ -10,8 +10,11 @@
     <script>
         jQuery(document).ready(function () {
         let table = $('#dataTableBuilder').DataTable({
+            "processing": true, //process it
+            "serverSide": true, //make it server side
             pageLength: 50,
             retrieve: true,
+            ajax: "data.json"
         });
 
             setInterval( function () {
