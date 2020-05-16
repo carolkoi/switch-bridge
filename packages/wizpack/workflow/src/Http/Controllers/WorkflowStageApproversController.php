@@ -176,7 +176,7 @@ class WorkflowStageApproversController extends AppBaseController
 
         Flash::success('Workflow Stage Approvers updated successfully.');
 
-        return redirect(route('upesi::workflowStageApprovers.index'));
+        return redirect(route('upesi::stage-approvers.index'));
     }
 
     /**
