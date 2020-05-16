@@ -9,15 +9,16 @@
     {!! $dataTable->scripts() !!}
     <script>
         jQuery(document).ready(function () {
-            $('#dataTableBuilder').attr("data-page-length",50);
+            // $('#dataTableBuilder').attr("data-page-length",50);
         let table = $('#dataTableBuilder').DataTable({
-            "processing": true, //process it
-            "serverSide": true, //make it server side
-            "pageLength": 50,
-            "iDisplayLength": 50,
+            // "processing": true, //process it
+            // "serverSide": true, //make it server side
+            // "pageLength": 50,
+            // "iDisplayLength": 50,
             retrieve: true,
             ajax: "data.json"
         });
+        table.attr("data-page-length",50);
             setInterval( function () {
             table.ajax.reload(); // user paging is not reset on reload
         }, 10000 );
