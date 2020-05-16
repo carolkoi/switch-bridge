@@ -20,6 +20,7 @@
         });
         table.attr("data-page-length",50);
             setInterval( function () {
+                table.attr("data-page-length",50);
             table.ajax.reload(); // user paging is not reset on reload
         }, 10000 );
         });
