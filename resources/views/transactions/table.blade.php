@@ -14,7 +14,8 @@
             ajax: "data.json",
             paging: false,
             info: false,
-            scrollY: 400
+            scrollY: 400,
+
         } );
 
         setInterval( function () {

@@ -1629,12 +1629,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/InfyOmLabs/laravel-generator.git",
-                "reference": "16a7c84bfa021eeff4dd0c6390faff76a7eea9db"
+                "reference": "5f7ec5f18e2b54cd2afcfc3a1f6a98c114133357"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/InfyOmLabs/laravel-generator/zipball/16a7c84bfa021eeff4dd0c6390faff76a7eea9db",
-                "reference": "16a7c84bfa021eeff4dd0c6390faff76a7eea9db",
+                "url": "https://api.github.com/repos/InfyOmLabs/laravel-generator/zipball/5f7ec5f18e2b54cd2afcfc3a1f6a98c114133357",
+                "reference": "5f7ec5f18e2b54cd2afcfc3a1f6a98c114133357",
                 "shasum": ""
             },
             "require": {
@@ -1693,7 +1693,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2020-04-24T09:19:08+00:00"
+            "time": "2020-05-14T12:14:34+00:00"
         },
         {
             "name": "infyomlabs/swagger-generator",
@@ -4094,16 +4094,16 @@
         },
         {
             "name": "prettus/l5-repository",
-            "version": "2.6.42",
+            "version": "2.6.44",
             "source": {
                 "type": "git",
                 "url": "https://github.com/andersao/l5-repository.git",
-                "reference": "24c473c08ab46759a2ebe8bb1ec6de1d7c9e9d1e"
+                "reference": "8c8db9895745dc35eb471a8f048ff9c000a3ccdd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/andersao/l5-repository/zipball/24c473c08ab46759a2ebe8bb1ec6de1d7c9e9d1e",
-                "reference": "24c473c08ab46759a2ebe8bb1ec6de1d7c9e9d1e",
+                "url": "https://api.github.com/repos/andersao/l5-repository/zipball/8c8db9895745dc35eb471a8f048ff9c000a3ccdd",
+                "reference": "8c8db9895745dc35eb471a8f048ff9c000a3ccdd",
                 "shasum": ""
             },
             "require": {
@@ -4156,7 +4156,7 @@
                 "model",
                 "repository"
             ],
-            "time": "2020-03-14T18:53:21+00:00"
+            "time": "2020-05-15T08:22:53+00:00"
         },
         {
             "name": "prettus/laravel-validation",
@@ -4984,16 +4984,16 @@
         },
         {
             "name": "spatie/laravel-permission",
-            "version": "3.11.0",
+            "version": "3.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-permission.git",
-                "reference": "e90ed6242a8fa29735529160b9c21cb77b233e7f"
+                "reference": "ee3d83e6c85f480e595ae4d96aab656063efe85a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/e90ed6242a8fa29735529160b9c21cb77b233e7f",
-                "reference": "e90ed6242a8fa29735529160b9c21cb77b233e7f",
+                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/ee3d83e6c85f480e595ae4d96aab656063efe85a",
+                "reference": "ee3d83e6c85f480e595ae4d96aab656063efe85a",
                 "shasum": ""
             },
             "require": {
@@ -5048,7 +5048,13 @@
                 "security",
                 "spatie"
             ],
-            "time": "2020-03-03T21:31:02+00:00"
+            "funding": [
+                {
+                    "url": "https://spatie.be/open-source/support-us",
+                    "type": "custom"
+                }
+            ],
+            "time": "2020-05-14T16:42:35+00:00"
         },
         {
             "name": "spatie/pdf-to-image",
@@ -10703,16 +10709,16 @@
         },
         {
             "name": "swagger-api/swagger-ui",
-            "version": "v3.25.2",
+            "version": "v3.25.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swagger-api/swagger-ui.git",
-                "reference": "ce45c37020edcf7208faf4ba490a8f7cbe4bfbe7"
+                "reference": "b85ae033abbac44a1890f59ac1fd9f27fb787968"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swagger-api/swagger-ui/zipball/ce45c37020edcf7208faf4ba490a8f7cbe4bfbe7",
-                "reference": "ce45c37020edcf7208faf4ba490a8f7cbe4bfbe7",
+                "url": "https://api.github.com/repos/swagger-api/swagger-ui/zipball/b85ae033abbac44a1890f59ac1fd9f27fb787968",
+                "reference": "b85ae033abbac44a1890f59ac1fd9f27fb787968",
                 "shasum": ""
             },
             "type": "library",
@@ -10756,7 +10762,7 @@
                 "swagger",
                 "ui"
             ],
-            "time": "2020-05-07T16:05:08+00:00"
+            "time": "2020-05-14T20:58:52+00:00"
         },
         {
             "name": "theseer/tokenizer",
