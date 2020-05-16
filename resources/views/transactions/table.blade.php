@@ -4,15 +4,16 @@
 
 {!! $dataTable->table(['width' => '100%', 'class' => 'table table-striped table-bordered', 'data-page-length' => '50', 'data-page-size' => '50']) !!}
 
-@section('scripts')
+@section('js')
     @include('layouts.datatables_js')
     {!! $dataTable->scripts() !!}
     <script>
         jQuery(document).ready(function () {
         let table = $('#dataTableBuilder').DataTable({
-            // "processing": true, //process it
-            // "serverSide": true, //make it server side
-            pageLength: 50,
+            "processing": true, //process it
+            "serverSide": true, //make it server side
+            "pageLength": 50,
+            "iDisplayLength": 50,
             retrieve: true,
             ajax: "data.json"
         });
