@@ -72,8 +72,9 @@ class ApproveRequestController extends AppBaseController
         $txn = Transactions::where('iso_id', $kdata[0]['model_id'])->first();
         $sessionTxn = SessionTxn::where('txn_id', $kdata[0]['model_id'])->first();
         if($txn->res_field48 == "UPLOAD-FAILED" && $sessionTxn->txn_status == "AML-APPROVED"){
+//            dd('here', $txn->res_field37, $sessionTxn->appended_txn_no);
             $api_txn = ApiTransaction::where('transaction_number', $txn->res_field37)->update([
-                'res_field37' => $sessionTxn->appended_txn_no,
+                'transaction_number' => $sessionTxn->appended_txn_no,
             ]);
             $transaction = Transactions::where('iso_id', $kdata[0]['model_id'])->update([
                 'res_field48' => $sessionTxn->txn_status,
@@ -88,7 +89,7 @@ class ApproveRequestController extends AppBaseController
             ]);
 
         }
-        if($sessionTxn->txn_status == "AML-APPROVED") {
+        elseif($sessionTxn->txn_status == "AML-APPROVED") {
             $transaction = Transactions::where('iso_id', $kdata[0]['model_id'])->update([
                 'res_field48' => $sessionTxn->txn_status,
 //                'aml_listed' => session('aml_listed'),
@@ -101,7 +102,6 @@ class ApproveRequestController extends AppBaseController
             ]);
 //            dd($transaction);
         }
-
         else
             $transaction = Transactions::where('iso_id', $kdata[0]['model_id'])->update([
                 'res_field48' => $sessionTxn->txn_status,

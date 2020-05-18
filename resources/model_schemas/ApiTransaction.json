@@ -826,5 +826,17 @@
         "inForm": false,
         "inIndex": false,
         "inView": false
+    },
+    {
+        "name": "updated_at",
+        "dbType": "time:nullable",
+        "htmlType": "text",
+        "validations": null,
+        "searchable": false,
+        "fillable": false,
+        "primary": false,
+        "inForm": false,
+        "inIndex": false,
+        "inView": false
     }
 ]

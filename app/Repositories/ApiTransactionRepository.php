@@ -8,7 +8,7 @@ use App\Repositories\BaseRepository;
 /**
  * Class ApiTransactionRepository
  * @package App\Repositories
- * @version May 18, 2020, 7:18 am UTC
+ * @version May 18, 2020, 9:15 am UTC
 */
 
 class ApiTransactionRepository extends BaseRepository

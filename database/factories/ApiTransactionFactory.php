@@ -75,6 +75,7 @@ $factory->define(ApiTransaction::class, function (Faker $faker) {
         'incident_code' => $faker->word,
         'incident_description' => $faker->word,
         'incident_note' => $faker->word,
-        'deleted_at' => $faker->word
+        'deleted_at' => $faker->word,
+        'updated_at' => $faker->word
     ];
 });
