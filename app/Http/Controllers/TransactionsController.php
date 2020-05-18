@@ -126,6 +126,9 @@ class TransactionsController extends AppBaseController
     {
         $transactions = Transactions::where('iso_id', $iso_id)->first();
         $input = $request->all();
+        $hyphen = "-";
+        $appended = $transactions->res_field37 .= $hyphen .= substr(md5(microtime()),rand(0,26),3);
+//        dd($appended);
 
         if (empty($transactions)) {
             Flash::error('Transactions not found');
@@ -136,8 +139,8 @@ class TransactionsController extends AppBaseController
 //        if ($request->get('res_field48') == "AML-APPROVED" || $request->get('res_field48') == "COMPLETED" || $request->get('res_field48') == "FAILED"){
             $sessionTxn = $this->sessionTxnRepository->create([
                 'txn_id' => $transactions->iso_id,
-                'orig_txn_no' => $transactions->res_field37,
-                'appended_txn_no' => $transactions->res_field37,
+                'orig_txn_no' => $input['res_field37'],
+                'appended_txn_no' => $appended,
                 'txn_status' => $input['res_field48'],
                 'comments' => $input['res_field44']
             ]);

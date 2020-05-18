@@ -1,4 +1,4 @@
-
+{!! Form::hidden('res_field37', $transactions->res_field37, ['class' => 'form-control']) !!}
 @if($transactions->res_field48 == "AML-FAILED")
 <div class="form-group">
     {!! Form::label('res_field48', 'Transaction Status:') !!}

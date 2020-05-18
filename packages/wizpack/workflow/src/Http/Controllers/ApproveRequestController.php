@@ -2,6 +2,7 @@
 
 namespace WizPack\Workflow\Http\Controllers;
 
+use App\Models\ApiTransaction;
 use App\Models\SessionTxn;
 use App\Models\Transactions;
 use Illuminate\Http\Request;
@@ -47,7 +48,7 @@ class ApproveRequestController extends AppBaseController
     {
         $workflow = $this->approvalsRepository->getApprovalSteps($workflowApprovalId)->get();
         $kdata = $workflow->toArray();
-//        dd($kdata[0]['model_id']);
+//        dd($kdata[0]['approvable']['res_field37']);
 
         $transformedResult = new Collection($workflow, new ApprovalTransformer());
 
@@ -70,6 +71,23 @@ class ApproveRequestController extends AppBaseController
         $stageId = $workflowStageToBeApproved['workflow_stage_type_id'] ?: $stageId;
         $txn = Transactions::where('iso_id', $kdata[0]['model_id'])->first();
         $sessionTxn = SessionTxn::where('txn_id', $kdata[0]['model_id'])->first();
+//        if($txn->res_field48 == "UPLOAD-FAILED" && $sessionTxn->txn_status == "AML-APPROVED"){
+//            $transaction = Transactions::where('iso_id', $kdata[0]['model_id'])->update([
+//                'res_field48' => $sessionTxn->txn_status,
+////                'aml_listed' => session('aml_listed'),
+//                'res_field44' => $sessionTxn->comments,
+//                'date_time_modified' => strtotime('now'),
+//                'sent' => false,
+//                'received' => false,
+//                'res_field39' => '10',
+//                'aml_listed' => false,
+//                'res_field37' => $sessionTxn->appended_txn_no,
+//            ]);
+//            $api_txn = ApiTransaction::where('transaction_number', '200425000012')->update([
+//                'res_field37' => $sessionTxn->appended_txn_no,
+//            ]);
+//
+//        }
         if($sessionTxn->txn_status == "AML-APPROVED") {
             $transaction = Transactions::where('iso_id', $kdata[0]['model_id'])->update([
                 'res_field48' => $sessionTxn->txn_status,
@@ -82,7 +100,9 @@ class ApproveRequestController extends AppBaseController
                 'aml_listed' => false
             ]);
 //            dd($transaction);
-        }else
+        }
+
+        else
             $transaction = Transactions::where('iso_id', $kdata[0]['model_id'])->update([
                 'res_field48' => $sessionTxn->txn_status,
 //                'aml_listed' => session('aml_listed'),

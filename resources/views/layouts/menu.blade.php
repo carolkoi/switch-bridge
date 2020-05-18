@@ -150,3 +150,7 @@
 {{--    <a href="{{ route('sessionTxns.index') }}"><i class="fa fa-edit"></i><span>Session Txns</span></a>--}}
 {{--</li>--}}
 
+<li class="{{ Request::is('apiTransactions*') ? 'active' : '' }}">
+    <a href="{{ route('apiTransactions.index') }}"><i class="fa fa-edit"></i><span>Api Transactions</span></a>
+</li>
+

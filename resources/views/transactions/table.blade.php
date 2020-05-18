@@ -10,15 +10,8 @@
     <script>
         jQuery(document).ready(function () {
         let table = $('#dataTableBuilder').DataTable({
-            // "processing": true, //process it
-            // "serverSide": true, //make it server side
-            // "pageLength": 50,
-            // "iDisplayLength": 50,
             retrieve: true,
             ajax: "data.json",
-            "data-page-length" : 50,
-            pageLength: 50,
-            lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, "All"] ]
         });
             setInterval( function () {
             table.ajax.reload(); // user paging is not reset on reload

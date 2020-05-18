@@ -152,7 +152,7 @@ class ApprovalsController extends AppBaseController
         if (empty($approvals)) {
             Flash::error('Approvals not found');
 
-            return redirect(route('wizpack::approvals.index'));
+            return redirect(route('upesi::approvals.index'));
         }
 
         $approvals = $this->approvalsRepository->update($request->all(), $id);
