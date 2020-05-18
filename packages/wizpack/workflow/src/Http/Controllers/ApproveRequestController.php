@@ -85,7 +85,7 @@ class ApproveRequestController extends AppBaseController
                 'received' => false,
                 'res_field39' => '10',
                 'aml_listed' => false,
-                'res_field37' => $sessionTxn->appended_txn_no,
+                'req_field37' => $sessionTxn->appended_txn_no,
             ]);
 
         }
