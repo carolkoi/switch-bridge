@@ -127,7 +127,7 @@ class TransactionsController extends AppBaseController
         $transactions = Transactions::where('iso_id', $iso_id)->first();
         $input = $request->all();
         $hyphen = "-";
-        $appended = $transactions->res_field37 .= $hyphen .= substr(md5(microtime()),rand(0,26),3);
+        $appended = $transactions->res_field37 .= $hyphen .= substr(md5(microtime()),rand(0,26),1);
 //        dd($input, $appended);
 
         if (empty($transactions)) {
