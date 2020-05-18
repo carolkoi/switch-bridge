@@ -19,13 +19,13 @@
 #      ports:
 #        - 5433:5432
 
-    redis:
-      image: redis:alpine
-      command: redis-server --appendonly yes --appendfsync always --save 900 1 --save 300 10 --save 60 1000
-      volumes:
-        - redis:/data
-      restart: always
-      container_name: redis
+#    redis:
+#      image: redis:alpine
+#      command: redis-server --appendonly yes --appendfsync always --save 900 1 --save 300 10 --save 60 1000
+#      volumes:
+#        - redis:/data
+#      restart: always
+#      container_name: redis
 
     #  The Application
 
