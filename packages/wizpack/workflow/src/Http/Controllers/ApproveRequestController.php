@@ -71,23 +71,23 @@ class ApproveRequestController extends AppBaseController
         $stageId = $workflowStageToBeApproved['workflow_stage_type_id'] ?: $stageId;
         $txn = Transactions::where('iso_id', $kdata[0]['model_id'])->first();
         $sessionTxn = SessionTxn::where('txn_id', $kdata[0]['model_id'])->first();
-//        if($txn->res_field48 == "UPLOAD-FAILED" && $sessionTxn->txn_status == "AML-APPROVED"){
-//            $transaction = Transactions::where('iso_id', $kdata[0]['model_id'])->update([
-//                'res_field48' => $sessionTxn->txn_status,
-////                'aml_listed' => session('aml_listed'),
-//                'res_field44' => $sessionTxn->comments,
-//                'date_time_modified' => strtotime('now'),
-//                'sent' => false,
-//                'received' => false,
-//                'res_field39' => '10',
-//                'aml_listed' => false,
-//                'res_field37' => $sessionTxn->appended_txn_no,
-//            ]);
-//            $api_txn = ApiTransaction::where('transaction_number', '200425000012')->update([
-//                'res_field37' => $sessionTxn->appended_txn_no,
-//            ]);
-//
-//        }
+        if($txn->res_field48 == "UPLOAD-FAILED" && $sessionTxn->txn_status == "AML-APPROVED"){
+            $api_txn = ApiTransaction::where('transaction_number', $txn->res_field37)->update([
+                'res_field37' => $sessionTxn->appended_txn_no,
+            ]);
+            $transaction = Transactions::where('iso_id', $kdata[0]['model_id'])->update([
+                'res_field48' => $sessionTxn->txn_status,
+//                'aml_listed' => session('aml_listed'),
+                'res_field44' => $sessionTxn->comments,
+                'date_time_modified' => strtotime('now'),
+                'sent' => false,
+                'received' => false,
+                'res_field39' => '10',
+                'aml_listed' => false,
+                'res_field37' => $sessionTxn->appended_txn_no,
+            ]);
+
+        }
         if($sessionTxn->txn_status == "AML-APPROVED") {
             $transaction = Transactions::where('iso_id', $kdata[0]['model_id'])->update([
                 'res_field48' => $sessionTxn->txn_status,
