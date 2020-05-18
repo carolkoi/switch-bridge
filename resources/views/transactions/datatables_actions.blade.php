@@ -6,7 +6,7 @@ OR Auth::check() && auth()->user()->cannot('Can Update Transaction'))
         <i class="glyphicon glyphicon-eye-open"></i>
     </a>
     @elseif(Auth::check() && auth()->user()->can('Can Update Transaction') OR ($req_field41 === "CASH" && $res_field48 === "AML-APPROVED") OR  $res_field48 === "AML-LISTED"
-OR ($res_field48 === "AML-LISTED" && \WizPack\Workflow\Models\Approvals::where('model_id', $iso_id)->first()['approved'] == true))
+OR ($res_field48 === "AML-LISTED" && \WizPack\Workflow\Models\Approvals::where('model_id', $iso_id)->first()['approved'] == true && \App\Models\SessionTxn::where('txn_id', $iso_id)->exists() == true))
 <div class='btn-group'>
     <a href="{{ route('transactions.show', $iso_id) }}" class='btn btn-primary btn-sm'>
         <i class="glyphicon glyphicon-eye-open"></i>
