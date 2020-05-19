@@ -67,9 +67,6 @@ class UserController extends AppBaseController
         $permissions = \Spatie\Permission\Models\Permission::pluck('name');
         $user = $this->userRepository->create($input);
         $user->assignRole($role);
-//        $user->givePermissionTo($permissions);
-//        $user->givePermissionTo('create roles');
-
 
         Flash::success('User saved successfully.');
 
@@ -139,8 +136,7 @@ class UserController extends AppBaseController
         $role = \Spatie\Permission\Models\Role::where('id', $user->role_id)->first()['name'];
 
         $user = $this->userRepository->update($request->all(), $id);
-//        $user->removeRole('User');
-        $user->assignRole($role);
+        $user->syncRoles($role);
 
         Flash::success('User updated successfully.');
 
