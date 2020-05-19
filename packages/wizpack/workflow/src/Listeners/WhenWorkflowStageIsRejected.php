@@ -57,8 +57,8 @@ class WhenWorkflowStageIsRejected
             ];
         });
 
-        return Mail::to($sentBy)
-            ->cc($allApprovers)
-            ->send(new WorkflowRejectedMail($workflowPayload, $approvedStep, $sentBy));
+//        return Mail::to($sentBy)
+//            ->cc($allApprovers)
+//            ->send(new WorkflowRejectedMail($workflowPayload, $approvedStep, $sentBy));
     }
 }

@@ -74,8 +74,8 @@ class WhenWorkflowStageIsApproved
             'next_stage' => $nextApprovalStage->pluck('workflow_stage_type_name')->first()
         ];
 
-        return Mail::to($allApprovers)
-            ->cc($sentBy)
-            ->send(new WorkflowApprovedMail($workflowPayload, $approvedStep, $approvalInfo, $nextStageUpdate->model_id));
+//        return Mail::to($allApprovers)
+//            ->cc($sentBy)
+//            ->send(new WorkflowApprovedMail($workflowPayload, $approvedStep, $approvalInfo, $nextStageUpdate->model_id));
     }
 }
