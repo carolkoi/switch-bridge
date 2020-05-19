@@ -40,7 +40,7 @@
 
 {{--    </ul>--}}
 {{--</li>--}}
-@if(Auth::check() && auth()->user()->can('Can View Switch Settings'))
+{{--@if(Auth::check() && auth()->user()->can('Can View Switch Settings'))--}}
 <li class="divider" style="color:white; padding: 15px"><span><b>Parameters</b></span></li>
 <li class="treeview {{ Request::is('configurations*') ? 'active menu-open' : '' }}">
     <a class="dropdown-toggle" href="#">
@@ -59,8 +59,8 @@
 
     </ul>
 </li>
-@endif
-@if(Auth::check() && auth()->user()->can('Can View Partners'))
+{{--@endif--}}
+{{--@if(Auth::check() && auth()->user()->can('Can View Partners'))--}}
 <li class="treeview {{ Request::is('list*') ? 'active menu-open' : '' }}">
     <a class="dropdown-toggle" href="#">
         <i class="fa fa-institution"></i> <span>Companies</span>
@@ -75,8 +75,8 @@
 
     </ul>
 </li>
-@endif
-@if(Auth::check() && auth()->user()->can('Can View Service Providers'))
+{{--@endif--}}
+{{--@if(Auth::check() && auth()->user()->can('Can View Service Providers'))--}}
 <li class="treeview {{ Request::is('services*') ? 'active menu-open' : '' }}">
     <a class="dropdown-toggle" href="#">
         <span class="glyphicon glyphicon-globe"></span><span>Service Providers</span>
@@ -90,7 +90,7 @@
         </li>
     </ul>
 </li>
-@endif
+{{--@endif--}}
 
 <li class="treeview {{ Request::is('checker*') ? 'active menu-open' : '' }}">
     <a class="dropdown-toggle" href="#">
@@ -105,7 +105,7 @@
 </li>
     </ul>
 </li>
-@if(Auth::check() && auth()->user()->can('Can Create User'))
+{{--@if(Auth::check() && auth()->user()->can('Can Create User'))--}}
 <li class="divider" style="color:white; padding: 15px"><span><b>Administration</b></span></li>
 <li class="treeview {{ Request::is('members*') ? 'active menu-open' : '' }}">
     <a class="dropdown-toggle" href="#">
@@ -125,32 +125,16 @@
             <a href="{{ route('permissions.index') }}"><i class="fa fa-check-square-o"></i><span>Permissions</span></a>
         </li>
     </ul>
-@endif
-{{--{!! Auth::user()->can('Authorize Transaction Update')?--}}
-{{--include("wizpack::layouts.menu")--}}
-{{--: redirect('/')!!}--}}
-@if(Auth::check() && auth()->user()->can('Can Authorize Transaction Update'))
+{{--@endif--}}
+
+{{--@if(Auth::check() && auth()->user()->can('Can Authorize Transaction Update'))--}}
     <li class="divider" style="color:white; padding: 15px"><span><b>Approval Settings</b></span></li>
     @include("wizpack::layouts.menu")
-{{--    @else--}}
-{{--    {!! redirect('/') !!}--}}
-{{--    @section('scripts')--}}
-{{--    <script type="text/javascript">--}}
-{{--        window.location = "{ url('/') }";//here double curly bracket--}}
-{{--    </script>--}}
-{{--    @endsection--}}
 
-@endif
 
-{{--<li class="{{ Request::is('tXNS*') ? 'active' : '' }}">--}}
-{{--    <a href="{{ route('tXNS.index') }}"><i class="fa fa-edit"></i><span>T X N S</span></a>--}}
+{{--@endif--}}
+
+{{--<li class="{{ Request::is('apiTransactions*') ? 'active' : '' }}">--}}
+{{--    <a href="{{ route('apiTransactions.index') }}"><i class="fa fa-edit"></i><span>Api Transactions</span></a>--}}
 {{--</li>--}}
-
-{{--<li class="{{ Request::is('sessionTxns*') ? 'active' : '' }}">--}}
-{{--    <a href="{{ route('sessionTxns.index') }}"><i class="fa fa-edit"></i><span>Session Txns</span></a>--}}
-{{--</li>--}}
-
-<li class="{{ Request::is('apiTransactions*') ? 'active' : '' }}">
-    <a href="{{ route('apiTransactions.index') }}"><i class="fa fa-edit"></i><span>Api Transactions</span></a>
-</li>
 
