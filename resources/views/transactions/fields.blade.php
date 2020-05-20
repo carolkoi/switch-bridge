@@ -29,15 +29,15 @@
         {!! Form::label('res_field48', 'Transaction Status:') !!}
         {{--    {!!Form::select('res_field48', [],--}}
         {{--    isset($transactions) ? $transactions->res_field48 : null, ['class' => 'form-control select2', 'id' => "res_field48_id"])!!}--}}
-        <select name="res_field48" id="res_field48_id" class="form-control select2">
+        <select name="res_field48" id="res_field48_id_upload_failed" class="form-control select2">
             <option value="UPLOAD-FAILED" {{$transactions->res_field48 ==="UPLOAD-FAILED" ? 'selected="selected"' : ''}} disabled>UPLOAD-FAILED</option>
             <option value="AML-APPROVED" {{$transactions->res_field48 ==="AML-APPROVED" ? 'selected="selected"' : ''}}
             >AML-APPROVED</option>
             <option value="FAILED" {{$transactions->res_field48 ==="FAILED" ? 'selected="selected"' : ''}}>FAILED</option>
-            <option value="COMPLETED" {{$transactions->res_field48 ==="COMPLETED" ? 'selected="selected"' : ''}}>COMPLETED</option>
+            <option data-relation-id="sync_message_id" value="COMPLETED" {{$transactions->res_field48 ==="COMPLETED" ? 'selected="selected"' : ''}}>COMPLETED</option>
         </select>
     </div>
-    <div class="form-group">
+    <div class="form-group" id="sync_message_id" style="display: none">
         {!! Form::label('sync_message', 'Sync Message:') !!}
         {!! Form::text('sync_message', null, ['class' => 'form-control']) !!}
     </div>

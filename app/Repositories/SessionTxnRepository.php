@@ -8,7 +8,7 @@ use App\Repositories\BaseRepository;
 /**
  * Class SessionTxnRepository
  * @package App\Repositories
- * @version May 15, 2020, 9:02 am UTC
+ * @version May 20, 2020, 9:45 am UTC
 */
 
 class SessionTxnRepository extends BaseRepository
@@ -21,7 +21,8 @@ class SessionTxnRepository extends BaseRepository
         'orig_txn_no',
         'appended_txn_no',
         'txn_status',
-        'comments'
+        'comments',
+        'sync_message'
     ];
 
     /**

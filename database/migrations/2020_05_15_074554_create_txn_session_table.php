@@ -20,6 +20,7 @@ class CreateTxnSessionTable extends Migration
             $table->string('appended_txn_no');
             $table->string('txn_status');
             $table->string('comments');
+            $table->string('sync_message');
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
         });

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * @SWG\Definition(
  *      definition="SessionTxn",
- *      required={""},
+ *      required={"txn_id", "orig_txn_no", "appended_txn_no", "txn_status", "comments"},
  *      @SWG\Property(
  *          property="id",
  *          description="id",
@@ -80,7 +80,8 @@ class SessionTxn extends Model
         'orig_txn_no',
         'appended_txn_no',
         'txn_status',
-        'comments'
+        'comments',
+        'sync_message'
     ];
 
     /**
@@ -94,7 +95,8 @@ class SessionTxn extends Model
         'orig_txn_no' => 'string',
         'appended_txn_no' => 'string',
         'txn_status' => 'string',
-        'comments' => 'string'
+        'comments' => 'string',
+        'sync_message' => 'string',
     ];
 
     /**
@@ -105,7 +107,7 @@ class SessionTxn extends Model
     public static $rules = [
         'txn_id' => 'required',
         'orig_txn_no' => 'required',
-//        'appended_txn_no' => 'required',
+        'appended_txn_no' => 'required',
         'txn_status' => 'required',
         'comments' => 'required'
     ];
