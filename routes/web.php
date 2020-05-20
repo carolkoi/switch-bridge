@@ -101,3 +101,9 @@ Route::resource('apiTransactions', 'ApiTransactionController');
 Route::resource('apiTransactions', 'ApiTransactionController');
 
 Route::resource('apiTransactions', 'ApiTransactionController');
+
+Route::resource('apiTransactions', 'ApiTransactionController');
+
+Route::resource('apiTransactions', 'ApiTransactionController');
+
+Route::resource('sessionTxns', 'SessionTxnController');

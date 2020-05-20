@@ -72,7 +72,6 @@ class ApproveRequestController extends AppBaseController
         $txn = Transactions::where('iso_id', $kdata[0]['model_id'])->first();
         $sessionTxn = SessionTxn::where('txn_id', $kdata[0]['model_id'])->first();
         if($txn->res_field48 == "UPLOAD-FAILED" && $sessionTxn->txn_status == "AML-APPROVED"){
-            dd('here', $txn->res_field37, $sessionTxn->appended_txn_no);
             $api_txn = ApiTransaction::where('transaction_number', $txn->res_field37)->update([
                 'transaction_number' => $sessionTxn->appended_txn_no,
             ]);
@@ -86,6 +85,7 @@ class ApproveRequestController extends AppBaseController
                 'res_field39' => '10',
                 'aml_listed' => false,
                 'req_field37' => $sessionTxn->appended_txn_no,
+                'sync_message' => $sessionTxn->sync_message
             ]);
 
         }
@@ -98,7 +98,8 @@ class ApproveRequestController extends AppBaseController
                 'sent' => false,
                 'received' => false,
                 'res_field39' => '10',
-                'aml_listed' => false
+                'aml_listed' => false,
+                'sync_message' => $sessionTxn->sync_message
             ]);
 //            dd($transaction);
         }
@@ -111,7 +112,8 @@ class ApproveRequestController extends AppBaseController
                 'sent' => true,
                 'received' => true,
                 'res_field39' => '00',
-                'aml_listed' => true
+                'aml_listed' => true,
+                'sync_message' => $sessionTxn->sync_message
             ]);
 
         $approvedStep = $this->workflowStepRepository->updateOrCreate([

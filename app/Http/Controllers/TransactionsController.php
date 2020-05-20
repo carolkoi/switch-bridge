@@ -142,18 +142,10 @@ class TransactionsController extends AppBaseController
                 'orig_txn_no' => $input['res_field37'],
                 'appended_txn_no' => $appended,
                 'txn_status' => $input['res_field48'],
-                'comments' => $input['res_field44']
+                'comments' => $input['res_field44'],
+                'sync_message' => $request->has('sync_message') ? $input['sync_message'] : null,
             ]);
 //        }
-
-//
-//        $request->session()->put('txn_status', $request->get('res_field48'));
-//        $request->session()->put('aml_listed', $request->get('aml_listed'));
-//        $request->session()->put('remarks', $request->get('res_field44'));
-//        $request->session()->put('date_time_modified', time()*1000);
-//        $request->session()->put('modified_by', Auth::user()->id);
-
-//        dd(session('txn_status'), session('aml_listed'), session('remarks'));
 
         //initiating the approval request
         $approval = new Transactions();

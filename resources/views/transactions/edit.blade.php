@@ -26,22 +26,16 @@
        </div>
    </div>
 @endsection
-@section('js')
+@section('scripts')
     <script>
         jQuery(document).ready(function () {
-            let selectedStatus = $('#txn-status-id:selected').val();
-            // alert(selectedStatus)
-            $("#txn-status-id").change(function () {
-                let status = $('#txn-status-id:selected').val();
-                // alert(status)
-                $.each(this.options, function (i, item) {
-                    // alert(item.selected)
-                    if (item.selected) {
-                        $(item).prop("disabled", true);
-                    } else {
-                        $(item).prop("disabled", false);
-                    }
-                });
+            $("#res_field48_id_upload_failed").change(function () {
+                let status = $("#res_field48_id_upload_failed option:selected").data("relation-id");
+                //Hide sync message field
+                $("#sync_message_id").hide();
+                if (status) {
+                    $("#" + status).show();
+                }
             });
         });
     </script>
