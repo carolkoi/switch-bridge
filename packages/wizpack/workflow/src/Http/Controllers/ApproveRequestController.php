@@ -48,7 +48,6 @@ class ApproveRequestController extends AppBaseController
     {
         $workflow = $this->approvalsRepository->getApprovalSteps($workflowApprovalId)->get();
         $kdata = $workflow->toArray();
-//        dd($kdata[0]['approvable']['res_field37']);
 
         $transformedResult = new Collection($workflow, new ApprovalTransformer());
 

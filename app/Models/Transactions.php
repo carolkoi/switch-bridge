@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 use WizPack\Workflow\Interfaces\ApprovableInterface;
 use WizPack\Workflow\Traits\ApprovableTrait;
 
@@ -1475,6 +1476,7 @@ class Transactions extends Model implements ApprovableInterface
         'added_by',
         'date_time_modified',
         'modified_by',
+        'approved_rejected_by',
         'source_ip',
         'latest_ip',
         'prev_iso_id',
@@ -1772,6 +1774,7 @@ class Transactions extends Model implements ApprovableInterface
         'added_by' => 'integer',
         'date_time_modified' => 'float',
         'modified_by' => 'integer',
+        'approved_rejected_by' => 'integer',
         'source_ip' => 'string',
         'latest_ip' => 'string',
         'iso_id' => 'integer',
@@ -2089,6 +2092,7 @@ class Transactions extends Model implements ApprovableInterface
 //        dd($model);
         $model->maker_checker_approve_status = 1;
         $model->approved_at = time();
+        $model->approved_rejected_by = Auth::user()->id;
         $model->save();
     }
 
@@ -2101,6 +2105,7 @@ class Transactions extends Model implements ApprovableInterface
         $model = self::find($id);
         $model->maker_checker_reject_status = 1;
         $model->rejected_at = time();
+        $model->approved_rejected_by = Auth::user()->id;
         $model->save();
     }
 }
