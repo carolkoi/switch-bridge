@@ -60,12 +60,15 @@ class TransactionsDataTable extends DataTable
             ->addColumn('receiver_acc/No', function ($query){
                 return $query->req_field102;
             })
-            ->addColumn('response', function ($query){
+            ->addColumn('resps', function ($query){
                 return $query->res_field44;
+            })
+            ->addColumn('s_p', function ($query){
+                return $query->res_field129;
             })
             ->addColumn('modified_at', 'transactions.datatables_modified')
 
-            ->escapeColumns('response')
+            ->escapeColumns('resps')
             ->addColumn('receiver_bank', function ($query){
                 return $query->req_field112;
             })
@@ -147,8 +150,9 @@ class TransactionsDataTable extends DataTable
 //        'req_field105',
             'receiver'  => ['name' => 'req_field108'],
             'receiver_acc/No'  => ['name' => 'req_field102'],
-            'response'  => ['name' => 'res_field44'],
+            'resps'  => ['name' => 'res_field44'],
 //            'res_field39',
+            's_p'  => ['name' => 'req_field129'],
             'receiver_bank'  => ['name' => 'req_field112'],
 //            'aml_listed',
 //            'posted'

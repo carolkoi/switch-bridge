@@ -6,12 +6,14 @@ use App\DataTables\UserDataTable;
 use App\Http\Requests;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Mail\AccountCreated;
 use App\Models\Company;
 use App\Models\Role;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
+use Illuminate\Support\Facades\Mail;
 use Response;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Http\Request;
@@ -70,8 +72,7 @@ class UserController extends AppBaseController
         $permissions = \Spatie\Permission\Models\Permission::pluck('name');
         $user = $this->userRepository->create($input);
         $user->assignRole($role);
-
-
+        Mail::to($user->email)->send(new AccountCreated($user, $password));
         Flash::success('User saved successfully.');
 
         return redirect(route('users.index'));
