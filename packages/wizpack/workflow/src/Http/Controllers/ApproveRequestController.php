@@ -48,7 +48,6 @@ class ApproveRequestController extends AppBaseController
     {
         $workflow = $this->approvalsRepository->getApprovalSteps($workflowApprovalId)->get();
         $kdata = $workflow->toArray();
-//        dd($kdata[0]['approvable']['res_field37']);
 
         $transformedResult = new Collection($workflow, new ApprovalTransformer());
 
@@ -77,7 +76,6 @@ class ApproveRequestController extends AppBaseController
             ]);
             $transaction = Transactions::where('iso_id', $kdata[0]['model_id'])->update([
                 'res_field48' => $sessionTxn->txn_status,
-//                'aml_listed' => session('aml_listed'),
                 'res_field44' => $sessionTxn->comments,
                 'date_time_modified' => strtotime('now'),
                 'sent' => false,
@@ -92,7 +90,6 @@ class ApproveRequestController extends AppBaseController
         elseif($sessionTxn->txn_status == "AML-APPROVED") {
             $transaction = Transactions::where('iso_id', $kdata[0]['model_id'])->update([
                 'res_field48' => $sessionTxn->txn_status,
-//                'aml_listed' => session('aml_listed'),
                 'res_field44' => $sessionTxn->comments,
                 'date_time_modified' => strtotime('now'),
                 'sent' => false,
@@ -101,7 +98,6 @@ class ApproveRequestController extends AppBaseController
                 'aml_listed' => false,
                 'sync_message' => $sessionTxn->sync_message
             ]);
-//            dd($transaction);
         }
         else
             $transaction = Transactions::where('iso_id', $kdata[0]['model_id'])->update([

@@ -128,7 +128,6 @@ class TransactionsController extends AppBaseController
         $input = $request->all();
         $hyphen = "-";
         $appended = $transactions->res_field37 .= $hyphen .= substr(md5(microtime()),rand(0,26),1);
-//        dd($input, $appended);
 
         if (empty($transactions)) {
             Flash::error('Transactions not found');

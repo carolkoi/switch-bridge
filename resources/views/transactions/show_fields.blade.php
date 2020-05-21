@@ -19,8 +19,16 @@
 <!-- Modified By Field -->
 <div class="form-group">
     {!! Form::label('modified_by', 'Modified By:') !!}
-{{--    <p>{!! $transactions->modified_by !!}</p>--}}
+    {{--    <p>{!! $transactions->modified_by !!}</p>--}}
     <p>{!! \App\Models\User::where('id', $transactions->modified_by)->first()['name'] ?  \App\Models\User::where('id', $transactions->modified_by)->first()['name'] : null!!}</p>
+
+</div>
+
+<!-- Approved / Rejected By -->
+<div class="form-group">
+    {!! Form::label('approved_rejected_by', 'Approved / Rejected By:') !!}
+    {{--    <p>{!! $transactions->modified_by !!}</p>--}}
+    <p>{!! \App\Models\User::where('id', $transactions->approved_rejected_by)->first()['name'] ?  \App\Models\User::where('id', $transactions->approved_rejected_by)->first()['name'] : null!!}</p>
 
 </div>
 

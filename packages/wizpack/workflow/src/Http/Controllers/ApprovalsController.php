@@ -81,6 +81,7 @@ class ApprovalsController extends AppBaseController
         $transformedResult = new Collection($workflow, new ApprovalTransformer());
 
         $data = collect((new Manager())->createData($transformedResult)->toArray()['data']);
+//        dd($data);
 
         $currentStage = $data->pluck('currentApprovalStage')->first();
 
@@ -145,7 +146,6 @@ class ApprovalsController extends AppBaseController
      */
     public function update($id, UpdateApprovalsRequest $request)
     {
-//        dd('here');
 
         $approvals = $this->approvalsRepository->myApprovals()->find($id);
 

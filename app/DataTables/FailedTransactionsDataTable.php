@@ -23,6 +23,7 @@ class FailedTransactionsDataTable extends DataTable
                 return $query->req_field123;
             })
             ->addColumn('txn_time', 'transactions.datatables_added')
+            ->addColumn('updated_at', 'transactions.datatables_modified')
             ->addColumn('txn_status', function ($query){
                 return $query->res_field48;
             })
@@ -121,6 +122,7 @@ class FailedTransactionsDataTable extends DataTable
 //            ],
                 'partner' => ['name' => 'req_field123'],
                 'txn_time' => ['name' => 'date_time_added'],
+            'update_at',
                 'txn_status' => ['name' => 'res_field48'],
                 'txn_type'  => ['name' => 'req_field41'],
             'modified_at',

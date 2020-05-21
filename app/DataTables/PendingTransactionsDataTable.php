@@ -23,6 +23,7 @@ class PendingTransactionsDataTable extends DataTable
                 return $query->req_field123;
             })
             ->addColumn('txn_time', 'transactions.datatables_added')
+            ->addColumn('updated_at', 'transactions.datatables_modified')
             ->addColumn('txn_status', function ($query){
                 return $query->res_field48;
             })
@@ -120,6 +121,7 @@ class PendingTransactionsDataTable extends DataTable
             'partner' => ['name' => 'req_field123'],
             'txn_time' => ['name' => 'date_time_added'],
             'txn_status' => ['name' => 'res_field48'],
+            'updated_at',
             'txn_type'  => ['name' => 'req_field41'],
             'modified_at',
             'primary_txn_ref'  => ['name' => 'req_field34'],
