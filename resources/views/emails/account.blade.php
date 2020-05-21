@@ -1,10 +1,17 @@
 @component('mail::message')
-# Introduction
+# Dear {!! $user['name'] !!}
 
-The body of your message.
+Welcome to Upesi Money Transfer Limited. Your account has been successfully created.
+Use below credentials to login:
 
-@component('mail::button', ['url' => ''])
-Button Text
+@component('mail::table')
+    | ------------- |:--------------------:|
+    | Username     | {!! $user['name'] !!} |
+    | Password     | {!! $password!!}      |
+@endcomponent
+
+@component('mail::button', ['url' => url('/')])
+Login
 @endcomponent
 
 Thanks,<br>

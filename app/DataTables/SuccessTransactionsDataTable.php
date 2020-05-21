@@ -45,6 +45,9 @@ class SuccessTransactionsDataTable extends DataTable
             ->addColumn('amt_received', function ($query){
                 return $query->req_field50." ".intval($query->req_field5)/100;
             })
+            ->addColumn('s_p', function ($query){
+                return $query->res_field129;
+            })
             ->addColumn('sender', function ($query){
                 return $query->req_field105;
             })
@@ -54,9 +57,10 @@ class SuccessTransactionsDataTable extends DataTable
             ->addColumn('receiver_acc/No', function ($query){
                 return $query->req_field102;
             })
-            ->addColumn('response', function ($query){
+            ->addColumn('resps', function ($query){
                 return $query->res_field44;
             })
+            ->escapeColumns('resps')
             ->addColumn('receiver_bank', function ($query){
                 return $query->req_field112;
             })
@@ -131,8 +135,9 @@ class SuccessTransactionsDataTable extends DataTable
 ////        'req_field105',
             'receiver'  => ['name' => 'req_field108'],
             'receiver_acc/No'  => ['name' => 'req_field102'],
-            'response'  => ['name' => 'res_field44'],
+            'resps'  => ['name' => 'res_field44'],
 //            'res_field39',
+            's_p'  => ['name' => 'req_field129'],
             'receiver_bank'  => ['name' => 'req_field112'],
 //            'aml_listed',
 //            'posted'
