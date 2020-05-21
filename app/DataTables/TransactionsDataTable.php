@@ -64,7 +64,7 @@ class TransactionsDataTable extends DataTable
                 return $query->res_field44;
             })
             ->addColumn('s_p', function ($query){
-                return $query->res_field129;
+                return $query->req_field125;
             })
             ->addColumn('modified_at', 'transactions.datatables_modified')
 

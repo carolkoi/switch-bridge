@@ -46,7 +46,7 @@ class SuccessTransactionsDataTable extends DataTable
                 return $query->req_field50." ".intval($query->req_field5)/100;
             })
             ->addColumn('s_p', function ($query){
-                return $query->res_field129;
+                return $query->req_field125;
             })
             ->addColumn('sender', function ($query){
                 return $query->req_field105;

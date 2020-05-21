@@ -43,7 +43,7 @@ class FailedTransactionsDataTable extends DataTable
                 return $query->req_field49." ".intval($query->req_field4)/100;
             })
             ->addColumn('s_p', function ($query){
-                return $query->res_field129;
+                return $query->req_field125;
             })
             ->addColumn('amt_received', function ($query){
                 return $query->req_field50." ".intval($query->req_field5)/100;
