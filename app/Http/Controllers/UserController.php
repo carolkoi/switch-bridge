@@ -60,13 +60,17 @@ class UserController extends AppBaseController
     public function store(CreateUserRequest $request)
     {
         $input = $request->all();
-        $input['password'] = bcrypt('vitamins');
+        $random = str_shuffle('abcdefghjklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ234567890!$%^&!$%^&');
+        $password = substr($random, 0, 10);
+//        dd($password);
+        $input['password'] = bcrypt($password);
         $input['status'] = "ACTIVE";
 //        dd($input);
         $role = \Spatie\Permission\Models\Role::where('id', $input['role_id'])->first()->name;
         $permissions = \Spatie\Permission\Models\Permission::pluck('name');
         $user = $this->userRepository->create($input);
         $user->assignRole($role);
+
 
         Flash::success('User saved successfully.');
 
