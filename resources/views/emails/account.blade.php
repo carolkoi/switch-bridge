@@ -5,9 +5,9 @@ Welcome to Upesi Money Transfer Limited. Your account has been successfully crea
 Use below credentials to login:
 
 @component('mail::table')
-    | ------------- |:--------------------:|
-    | Username     | {!! $user['name'] !!} |
-    | Password     | {!! $password!!}      |
+    | Username              | Password             |
+    | ----------------------|:--------------------:|
+    | {!! $user['email'] !!} |  {!! $password!!}    |
 @endcomponent
 
 @component('mail::button', ['url' => url('/')])

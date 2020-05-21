@@ -64,7 +64,7 @@ class TransactionsDataTable extends DataTable
                 return $query->res_field44;
             })
             ->addColumn('s_p', function ($query){
-                return $query->res_field129;
+                return $query->req_field125;
             })
             ->addColumn('modified_at', 'transactions.datatables_modified')
 
@@ -152,7 +152,7 @@ class TransactionsDataTable extends DataTable
             'receiver_acc/No'  => ['name' => 'req_field102'],
             'resps'  => ['name' => 'res_field44'],
 //            'res_field39',
-            's_p'  => ['name' => 'req_field129'],
+            's_p'  => ['name' => 'req_field125'],
             'receiver_bank'  => ['name' => 'req_field112'],
 //            'aml_listed',
 //            'posted'

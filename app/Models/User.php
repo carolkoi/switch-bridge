@@ -135,7 +135,7 @@ class User extends Authenticatable
         'company_id' => 'required',
         'role_id' => 'required',
         'name' => 'required',
-//        'contact_person' => 'required',
+        'contact_person' => 'required',
         'email' => 'required',
 //        'password' => 'required',
         'msisdn' => 'required',
