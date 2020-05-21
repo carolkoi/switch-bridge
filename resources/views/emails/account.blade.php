@@ -7,7 +7,7 @@ Use below credentials to login:
 @component('mail::table')
     | Username              | Password             |
     | ----------------------|:--------------------:|
-    | {!! $user['name'] !!} |  {!! $password!!}    |
+    | {!! $user['email'] !!} |  {!! $password!!}    |
 @endcomponent
 
 @component('mail::button', ['url' => url('/')])
