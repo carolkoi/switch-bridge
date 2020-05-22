@@ -42,8 +42,11 @@ class SuccessTransactionsDataTable extends DataTable
             ->addColumn('amt_sent', function ($query){
                 return $query->req_field49." ".intval($query->req_field4)/100;
             })
+            ->addColumn('cur', function ($query){
+                return $query->req_field50;
+            })
             ->addColumn('amt_received', function ($query){
-                return $query->req_field50." ".intval($query->req_field5)/100;
+                return intval($query->req_field5)/100;
             })
             ->addColumn('s_p', function ($query){
                 return $query->req_field125;
@@ -122,7 +125,7 @@ class SuccessTransactionsDataTable extends DataTable
 //            ],
             'partner' => ['name' => 'req_field123'],
             'txn_time' => ['name' => 'date_time_added'],
-            'updated_at',
+//            'updated_at',
             'txn_status' => ['name' => 'res_field48'],
             'txn_type'  => ['name' => 'req_field41'],
             'primary_txn_ref'  => ['name' => 'req_field34'],
@@ -130,6 +133,7 @@ class SuccessTransactionsDataTable extends DataTable
             'txn_no' => ['name' => 'req_field37'],
 //            'req_field49',
             'amt_sent'  => ['name' => 'req_field49'],
+            'cur' => ['name' => 'req_field50'],
             'amt_received'  => ['name' => 'req_field5'],
             'sender'  => ['name' => 'req_field105'],
 ////        'req_field105',
