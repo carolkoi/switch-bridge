@@ -19,7 +19,6 @@ class TransactionsDataTable extends DataTable
         $dataTable = new EloquentDataTable($query);
 
         return $dataTable
-//            ->skipPaging()
             ->addColumn('id', function ($query){
                 return $query->iso_id;
             })
@@ -106,6 +105,7 @@ class TransactionsDataTable extends DataTable
     {
         return $this->builder()
             ->columns($this->getColumns())
+            ->ajax('')
             ->minifiedAjax()
             ->addAction(['width' => '120px', 'printable' => false])
             ->parameters([
