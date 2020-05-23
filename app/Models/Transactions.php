@@ -2079,9 +2079,9 @@ class Transactions extends Model implements ApprovableInterface
 //        $drd = date('Y-m-d',1589808224412 /1000);
 //        $drdd = date('Y-m-d',strtotime('+3 hours',strtotime(date('Y-m-d H:i:s', 1589808224412))));
 
-        $date1 = strtotime(trim($date[0]));
+        $date1 = strtotime(trim($date[0])) * 1000;
         $date11 = time(trim($date[0]));
-        $date2 = strtotime(trim($date[1]));
+        $date2 = strtotime(trim($date[1])) * 1000;
         $date21 = time(trim($date[1]));
 //        dd(strtotime($now), $date1);
         $start = date('Y-m-d',$date1);
