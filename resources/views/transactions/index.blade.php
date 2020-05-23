@@ -63,9 +63,7 @@
 @section('js')
     <script>
         $(document).ready(function() {
-            // $(document).ready(function(){
-            //     $('#reservation').daterangepicker();
-            // });
+
             let searchParams = new URLSearchParams(window.location.search)
             let dateInterval = searchParams.get('from-to');
             let start = moment().subtract(29, 'days');
