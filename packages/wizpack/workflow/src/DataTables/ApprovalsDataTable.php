@@ -2,6 +2,7 @@
 
 namespace WizPack\Workflow\DataTables;
 
+use App\Models\Transactions;
 use WizPack\Workflow\Models\Approvals;
 use Yajra\DataTables\DataTableAbstract;
 use Yajra\DataTables\Html\Builder;
@@ -21,7 +22,7 @@ class ApprovalsDataTable extends DataTable
         $dataTable = new EloquentDataTable($query);
 
         return $dataTable
-            ->addColumn('applicant', function ($query){
+            ->addColumn('requested_by', function ($query){
                return $query->user->name;
             })
             ->editColumn('status', function ($query){
@@ -30,9 +31,15 @@ class ApprovalsDataTable extends DataTable
             ->addColumn('stage', function ($query){
                 return $query->awaitingStage->workflowStageType->name;
             })
-            ->editColumn('created_at', function ($query){
+            ->editColumn('sent_at', function ($query){
 //                return $query->created_at->format('Y-m-d H:i:s');
                 return date('Y-m-d H:i:s',strtotime('+3 hours',strtotime($query->created_at->format('Y-m-d H:i:s'))));
+            })
+            ->addColumn('receiver', function ($query){
+                return $query->approvable->req_field108;
+            })
+            ->addColumn('txn_ref', function ($query){
+                return $query->approvable->req_field37;
             })
             ->addColumn('approval_type', function ($query){
                 return $query->workflow->name;
@@ -71,7 +78,7 @@ class ApprovalsDataTable extends DataTable
                     ['extend' => 'print', 'className' => 'btn btn-default btn-sm no-corner',],
                     ['extend' => 'reset', 'className' => 'btn btn-default btn-sm no-corner',],
                     ['extend' => 'reload', 'className' => 'btn btn-default btn-sm no-corner',],
-                    ['extend' => 'colvis', 'className' => 'btn btn-default btn-sm no-corner',],
+//                    ['extend' => 'colvis', 'className' => 'btn btn-default btn-sm no-corner',],
                 ],
                 'fixedHeader' => [
                     'header' => true,
@@ -90,9 +97,11 @@ class ApprovalsDataTable extends DataTable
     {
         return [
             'approval_type',
-            'applicant',
-            'created_at',
+            'requested_by',
+            'sent_at',
             'stage',
+            'receiver',
+            'txn_ref',
             'model_id' => ['visible' => false],
             'model_type' => ['visible' => false],
             'collection_name'=>['visible' => false],

@@ -19,6 +19,9 @@ class TransactionsDataTable extends DataTable
         $dataTable = new EloquentDataTable($query);
 
         return $dataTable
+            ->filter(function ($query){
+                return $query->filterDates($query);
+            })
             ->addColumn('id', function ($query){
                 return $query->iso_id;
             })
@@ -26,6 +29,9 @@ class TransactionsDataTable extends DataTable
                 return $query->req_field123;
             })
             ->addColumn('txn_time', 'transactions.datatables_added')
+            ->addColumn('txn_time2', function ($query){
+                return $query->date_time_added;
+            })
             ->addColumn('updated_at', 'transactions.datatables_modified')
 //            ->addColumn('txn_status', function ($query){
 //                return $query->res_field48;
@@ -105,7 +111,6 @@ class TransactionsDataTable extends DataTable
     {
         return $this->builder()
             ->columns($this->getColumns())
-            ->ajax('')
             ->minifiedAjax()
             ->addAction(['width' => '120px', 'printable' => false])
             ->parameters([
@@ -140,6 +145,7 @@ class TransactionsDataTable extends DataTable
 //            ],
             'partner' => ['name' => 'req_field123'],
             'txn_time' => ['name' => 'date_time_added'],
+//            'txn_time2',
 //            'updated_at',
             'txn_status' => ['name' => 'res_field48'],
             'txn_type'  => ['name' => 'req_field41'],
