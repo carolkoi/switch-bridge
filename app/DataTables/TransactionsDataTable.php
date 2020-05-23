@@ -19,7 +19,9 @@ class TransactionsDataTable extends DataTable
         $dataTable = new EloquentDataTable($query);
 
         return $dataTable
-//            ->skipPaging()
+            ->filter(function ($query){
+                return $query->filterDates($query);
+            })
             ->addColumn('id', function ($query){
                 return $query->iso_id;
             })
@@ -27,6 +29,9 @@ class TransactionsDataTable extends DataTable
                 return $query->req_field123;
             })
             ->addColumn('txn_time', 'transactions.datatables_added')
+            ->addColumn('txn_time2', function ($query){
+                return $query->date_time_added;
+            })
             ->addColumn('updated_at', 'transactions.datatables_modified')
 //            ->addColumn('txn_status', function ($query){
 //                return $query->res_field48;
@@ -48,8 +53,11 @@ class TransactionsDataTable extends DataTable
                 return $query->req_field49." ".intval($query->req_field4)/100;
             })
 //                ->addColumn('amt_sent', 'transactions.datatables_amt_sent')
+            ->addColumn('cur', function ($query){
+                return $query->req_field50;
+            })
             ->addColumn('amt_received', function ($query){
-                return $query->req_field50." ".intval($query->req_field5)/100;
+                return intval($query->req_field5)/100;
             })
             ->addColumn('sender', function ($query){
                 return $query->req_field105;
@@ -137,7 +145,8 @@ class TransactionsDataTable extends DataTable
 //            ],
             'partner' => ['name' => 'req_field123'],
             'txn_time' => ['name' => 'date_time_added'],
-            'updated_at',
+//            'txn_time2',
+//            'updated_at',
             'txn_status' => ['name' => 'res_field48'],
             'txn_type'  => ['name' => 'req_field41'],
             'primary_txn_ref'  => ['name' => 'req_field34'],
@@ -145,6 +154,7 @@ class TransactionsDataTable extends DataTable
             'txn_no' => ['name' => 'req_field37'],
 //            'req_field49',
             'amt_sent'  => ['name' => 'req_field49'],
+            'cur' => ['name' => 'req_field50'],
             'amt_received'  => ['name' => 'req_field5'],
             'sender'  => ['name' => 'req_field105'],
 //        'req_field105',

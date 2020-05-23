@@ -13,7 +13,9 @@ use App\Repositories\TransactionsRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\DataTables;
 
 class TransactionsController extends AppBaseController
 {
@@ -35,7 +37,28 @@ class TransactionsController extends AppBaseController
      */
     public function index(TransactionsDataTable $transactionsDataTable)
     {
+//        $query = Transactions::query()
+//            ->filterDates()
+//            ->select(sprintf('%s.*', (new Transactions)->table));
+//        $table = Datatables::of($query);
+//        dd($table);
         return $transactionsDataTable->render('transactions.index');
+
+    }
+
+    public function test(Request $request)
+    {
+        $test = explode('-', $request->range);
+        $date1 = strtotime(trim($test[0]));
+        $date2 = strtotime(trim($test[1]));
+
+        $start = date('Y-m-d',$date1);
+        $end = date('Y-m-d',$date2);
+
+        $transaction = Transactions::whereBetween('date_time_added',  array($start, $end))
+            ->get();
+
+        return Datatables::of($transaction)->make(true);
     }
 
     /**

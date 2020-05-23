@@ -45,8 +45,11 @@ class PendingTransactionsDataTable extends DataTable
             ->addColumn('s_p', function ($query){
                 return $query->req_field125;
             })
+            ->addColumn('cur', function ($query){
+                return $query->req_field50;
+            })
             ->addColumn('amt_received', function ($query){
-                return $query->req_field50." ".intval($query->req_field5)/100;
+                return intval($query->req_field5)/100;
             })
             ->addColumn('sender', function ($query){
                 return $query->req_field105;
@@ -124,7 +127,7 @@ class PendingTransactionsDataTable extends DataTable
             'partner' => ['name' => 'req_field123'],
             'txn_time' => ['name' => 'date_time_added'],
             'txn_status' => ['name' => 'res_field48'],
-            'updated_at',
+//            'updated_at',
             'txn_type'  => ['name' => 'req_field41'],
             'modified_at',
             'primary_txn_ref'  => ['name' => 'req_field34'],
@@ -132,6 +135,7 @@ class PendingTransactionsDataTable extends DataTable
             'txn_no' => ['name' => 'req_field37'],
 //            'req_field49',
             'amt_sent'  => ['name' => 'req_field49'],
+            'cur' => ['name' => 'req_field50'],
             'amt_received'  => ['name' => 'req_field5'],
             'sender'  => ['name' => 'req_field105'],
 ////        'req_field105',

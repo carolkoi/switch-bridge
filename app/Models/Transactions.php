@@ -2071,7 +2071,30 @@ class Transactions extends Model implements ApprovableInterface
     public static $rules = [
     ];
 
+    public function scopeFilterDates($query)
+    {
+        $date = explode(" - ", request()->input('from-to', ""));
+        $now = '2020-05-19 13:26:10';
 
+//        $drd = date('Y-m-d',1589808224412 /1000);
+//        $drdd = date('Y-m-d',strtotime('+3 hours',strtotime(date('Y-m-d H:i:s', 1589808224412))));
+
+        $date1 = strtotime(trim($date[0])) * 1000;
+        $date11 = time(trim($date[0]));
+        $date2 = strtotime(trim($date[1])) * 1000;
+        $date21 = time(trim($date[1]));
+//        dd(strtotime($now), $date1);
+        $start = date('Y-m-d',$date1);
+        $end = date('Y-m-d',$date2);
+
+
+        if(count($date) != 2)
+        {
+            $date = [now()->subDays(29)->format("Y-m-d"), now()->format("Y-m-d")];
+        }
+
+        return $query->whereBetween('date_time_added', array($date1, $date2));
+    }
     /**
      * @inheritDoc
      */
