@@ -2074,12 +2074,18 @@ class Transactions extends Model implements ApprovableInterface
     public function scopeFilterDates($query)
     {
         $date = explode(" - ", request()->input('from-to', ""));
-        $date1 = time(trim($date[0]));
-        $date2 = time(trim($date[1]));
+        $now = '2020-05-19 13:26:10';
 
+//        $drd = date('Y-m-d',1589808224412 /1000);
+//        $drdd = date('Y-m-d',strtotime('+3 hours',strtotime(date('Y-m-d H:i:s', 1589808224412))));
+
+        $date1 = strtotime(trim($date[0]));
+        $date11 = time(trim($date[0]));
+        $date2 = strtotime(trim($date[1]));
+        $date21 = time(trim($date[1]));
+//        dd(strtotime($now), $date1);
         $start = date('Y-m-d',$date1);
         $end = date('Y-m-d',$date2);
-//        dd($date1, $start, $date2, $end);
 
 
         if(count($date) != 2)
