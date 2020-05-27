@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\Scopes\TransactionDataTableScope;
 use App\DataTables\TransactionsDataTable;
 use App\Http\Requests;
 use App\Http\Requests\CreateTransactionsRequest;
@@ -37,28 +38,34 @@ class TransactionsController extends AppBaseController
      */
     public function index(TransactionsDataTable $transactionsDataTable)
     {
-//        $query = Transactions::query()
-//            ->filterDates()
-//            ->select(sprintf('%s.*', (new Transactions)->table));
-//        $table = Datatables::of($query);
-//        dd($table);
-        return $transactionsDataTable->render('transactions.index');
+        return $transactionsDataTable->addScope(new TransactionDataTableScope())->render('transactions.index');
 
     }
 
     public function test(Request $request)
     {
-        $test = explode('-', $request->range);
-        $date1 = strtotime(trim($test[0]));
-        $date2 = strtotime(trim($test[1]));
+        $date1 = strtotime(trim($request->from_date)) * 1000;
+        $date2 = strtotime(trim($request->to_date)) * 1000;
+        if (request()->ajax()){
+            if (!empty($request->from_date)){
+                $transaction = Transactions::whereBetween('date_time_added',  array($date1,
+                    $date2))
+                    ->get();
+            }
+            return Datatables::of($transaction)->make(true);
+        }
 
-        $start = date('Y-m-d',$date1);
-        $end = date('Y-m-d',$date2);
-
-        $transaction = Transactions::whereBetween('date_time_added',  array($start, $end))
-            ->get();
-
-        return Datatables::of($transaction)->make(true);
+//        $test = explode('-', $request->range);
+//        $date1 = strtotime(trim($test[0]));
+//        $date2 = strtotime(trim($test[1]));
+//
+//        $start = date('Y-m-d',$date1);
+//        $end = date('Y-m-d',$date2);
+//
+//        $transaction = Transactions::whereBetween('date_time_added',  array($start, $end))
+//            ->get();
+//
+//        return Datatables::of($transaction)->make(true);
     }
 
     /**

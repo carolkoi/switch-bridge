@@ -3,9 +3,6 @@
 @section('content')
     <section class="content-header">
         <h1 class="pull-left"> All Transactions</h1>
-{{--        <h1 class="pull-right">--}}
-{{--           <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" href="{!! route('transactions.create') !!}">Add New</a>--}}
-{{--        </h1>--}}
     </section>
     <div class="content">
         <div class="clearfix"></div>
@@ -16,30 +13,22 @@
         <div class="box box-primary">
             <div class="box-body">
 
-{{--                <div class="form-group">--}}
-{{--                    <label>Date range:</label>--}}
-
-{{--                    <div class="input-group">--}}
-{{--                        <div class="input-group-addon">--}}
-{{--                            <i class="fa fa-calendar"></i>--}}
-{{--                        </div>--}}
-{{--                        <input type="text" name="range" class="form-control pull-right" id="reservation">--}}
-
-{{--                        <span class="input-group-btn">--}}
-{{--                    <button class="btn btn-default" type="button" id="range"><i class="fa fa-search"></i></button>--}}
-{{--                             <a href="{{ route('daterange.fetch_data') }}" type="button" id="range" class='btn btn-primary'>--}}
-{{--                                     <i class="fa fa-search"></i>--}}
-{{--    </a>--}}
-{{--                </span>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
                 <div class="row">
-                    <div class="col-md-6 pull-right">
+                    <div class="col-md-4 pull-left">
+                    <label>Enter Date Range Filter (For Reporting purposes)</label>
+                    </div>
+
+                    <div class="col-md-8 pull-right">
                         <form action="" id="filtersForm">
                             <div class="input-group">
-                                <input type="text" name="from-to" class="form-control mr-2" id="date_filter">
+
+                                <div class="input-group-addon">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </div>
+                                <input type="text" name="from-to" class="form-control mr-2" id="date_filter" autocomplete="off">
                                 <span class="input-group-btn">
             <input type="submit" class="btn btn-primary" value="Filter">
+{{--                                    <input type="submit" class="btn btn-default" value="Refresh" id="refresh">--}}
         </span>
                             </div>
                         </form>
@@ -64,15 +53,15 @@
     <script>
         $(document).ready(function() {
 
-            let searchParams = new URLSearchParams(window.location.search)
+            let searchParams = new URLSearchParams(window.location.search);
             let dateInterval = searchParams.get('from-to');
-            let start = moment().subtract(29, 'days');
+            let start = moment().startOf('month');
             let end = moment();
 
             if (dateInterval) {
                 dateInterval = dateInterval.split(' - ');
-                start = dateInterval[0];
-                end = dateInterval[1];
+                  start = dateInterval[0];
+                  end = dateInterval[1];
             }
             $('#date_filter').daterangepicker({
                 "showDropdowns": true,
@@ -85,8 +74,8 @@
                     firstDay: 1,
                 },
                 ranges: {
-                    'Today': [moment(), moment()],
-                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    'Today': [moment(), moment().add(1, 'days')],
+                    'Yesterday': [moment().subtract(1, 'days'), moment()],
                     'Last 7 Days': [moment().subtract(6, 'days'), moment()],
                     'Last 30 Days': [moment().subtract(29, 'days'), moment()],
                     'This Month': [moment().startOf('month'), moment().endOf('month')],
@@ -96,8 +85,7 @@
                     'All time': [moment().subtract(30, 'year').startOf('month'), moment().endOf('month')],
                 }
             });
-        });
-
+        })
 </script>
 
 @endsection

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\Scopes\TransactionDataTableScope;
 use App\DataTables\SuccessTransactionsDataTable;
 use App\Http\Requests\CreateTransactionsRequest;
 use App\Http\Requests\UpdateTransactionsRequest;
@@ -27,7 +28,7 @@ class SuccessTransactionsController extends AppBaseController
      */
     public function index(SuccessTransactionsDataTable $successTransactionsDataTable)
     {
-        return $successTransactionsDataTable->render('transactions.success_index');
+        return $successTransactionsDataTable->addScope(new TransactionDataTableScope())->render('transactions.success_index');
     }
 
     /**

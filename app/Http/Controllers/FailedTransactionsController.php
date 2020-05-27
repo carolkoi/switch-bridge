@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\FailedTransactionsDataTable;
+use App\DataTables\Scopes\TransactionDataTableScope;
 use App\Repositories\TransactionsRepository;
 use Illuminate\Http\Request;
 
@@ -25,6 +26,6 @@ class FailedTransactionsController extends Controller
      */
     public function index(FailedTransactionsDataTable $failedTransactionsDataTable)
     {
-        return $failedTransactionsDataTable->render('transactions.failed_index');
+        return $failedTransactionsDataTable->addScope(new TransactionDataTableScope())->render('transactions.failed_index');
     }
 }
