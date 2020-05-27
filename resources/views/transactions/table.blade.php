@@ -12,6 +12,7 @@
         let table = $('#dataTableBuilder').DataTable({
             retrieve: true,
             ajax: "data.json",
+
         });
             setInterval( function () {
             table.ajax.reload(); // user paging is not reset on reload

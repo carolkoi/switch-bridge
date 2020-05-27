@@ -85,6 +85,7 @@
                     'All time': [moment().subtract(30, 'year').startOf('month'), moment().endOf('month')],
                 }
             });
+        //
         })
 </script>
 

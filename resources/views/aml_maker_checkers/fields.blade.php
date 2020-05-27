@@ -33,12 +33,12 @@
 </div>
 
 
-<!-- Blacklist Source Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('blacklist_source', 'Blacklist Source:') !!}
+{{--<!-- Blacklist Source Field -->--}}
+{{--<div class="form-group col-sm-6">--}}
+{{--    {!! Form::label('blacklist_source', 'Blacklist Source:') !!}--}}
 {{--        {!! Form::file('blacklist_source', null, ['class' => 'form-control']) !!}--}}
-    <div class="needsclick dropzone" id="document-dropzone"></div>
-</div>
+{{--    <div class="needsclick dropzone" id="document-dropzone"></div>--}}
+{{--</div>--}}
 
 
 <!-- Response Field -->
@@ -48,7 +48,7 @@
 </div>
 
 <!-- Submit Field -->
-<div class="form-group col-sm-12">
+<div class="form-group col-sm-6 pull-right">
     {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}
     <a href="{!! route('aml-listing.index') !!}" class="btn btn-default">Cancel</a>
 </div>
