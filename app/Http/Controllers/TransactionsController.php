@@ -129,11 +129,6 @@ class TransactionsController extends AppBaseController
     {
         $transactions = Transactions::where('iso_id', $iso_id)->first();
         $txnExist = SessionTxn::where('txn_id', $iso_id)->exists();
-//        if ($txnExist){
-//            dd($txnExist);
-//
-//        }else
-//            dd('tehre');
 
         if (empty($transactions)) {
             Flash::error('Transactions not found');
@@ -166,7 +161,10 @@ class TransactionsController extends AppBaseController
         }
         Transactions::where('iso_id', $iso_id)->update(['modified_by' => Auth::user()->id]);
 //        if ($request->get('res_field48') == "AML-APPROVED" || $request->get('res_field48') == "COMPLETED" || $request->get('res_field48') == "FAILED"){
-            $sessionTxn = $this->sessionTxnRepository->create([
+            $sessionTxn = SessionTxn::updateOrCreate([
+                'txn_id' => $transactions->iso_id,
+            ],
+                [
                 'txn_id' => $transactions->iso_id,
                 'orig_txn_no' => $input['res_field37'],
                 'appended_txn_no' => $appended,

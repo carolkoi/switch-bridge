@@ -64,7 +64,7 @@ class ApprovalsController extends AppBaseController
 
         Flash::success('Approvals saved successfully.');
 
-        return redirect(route('wizpack::workflow.approvals.index'));
+        return redirect(route('upesi::approvals.index'));
     }
 
     /**
@@ -81,19 +81,16 @@ class ApprovalsController extends AppBaseController
         $transformedResult = new Collection($workflow, new ApprovalTransformer());
 
         $data = collect((new Manager())->createData($transformedResult)->toArray()['data']);
-//        dd($data);
 
         $currentStage = $data->pluck('currentApprovalStage')->first();
 
         $approvers = $data->pluck('currentStageApprovers')->flatten(2);
 
         $approvals = $data->pluck('approvalStagesStepsAndApprovers')->flatten(1);
-//        dd($approvals);
 
         $workflow = $data->pluck('workflowDetails')->first();
 
         $transaction = $data->pluck('workflowInfo')->first();
-//        dd($transaction->iso_id);
 
         $approvalHasBeenRejected = $data->pluck('approvalRejected')->first();
         $sessionTxn = SessionTxn::where('txn_id', $transaction->iso_id)->first();
