@@ -60,11 +60,10 @@ class AmlMakerCheckerController extends AppBaseController
     public function store(CreateAmlMakerCheckerRequest $request)
     {
         $input = $request->all();
+//        $input['csv_header'] = 1;
         if ($request->has('blacklist_source')) {
             $path = $request->file('blacklist_source')->getRealPath();
             if ($request->has('csv_header')) {
-//                $data = Excel::load($path, function ($reader) {
-//                })->get()->toArray();
                 $data = Excel::toArray(new BlacklistImport(),$request->file('blacklist_source'))[0];
             } else {
                 $data = array_map('str_getcsv', file($path));
@@ -242,13 +241,10 @@ class AmlMakerCheckerController extends AppBaseController
         foreach ($csv_data as $row) {
             $record = new AmlMakerChecker();
             foreach (config('app.db_fields') as $index => $field) {
-                if ($data->csv_header) {
-//                    dd($row[$field]);
-//                    dd($request->fields[$index]);
-                    $record->$field = $row[$index];
-//                    dd($record->$field);
+                if (isset($data->csv_header)) {
+                        $record->$field = $row[$index];
                 } else {
-                    $record->$field = $row[$field];
+                    $record->$field = $row[$request->fields[$field]];
                 }
             }
             $record->save();
