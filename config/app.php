@@ -140,7 +140,8 @@ return [
     'db_fields' => [
         'customer_name',
         'mobile_number',
-        'customer_idnumber'
+        'customer_idnumber',
+        'remarks'
     ],
 
     'providers' => [

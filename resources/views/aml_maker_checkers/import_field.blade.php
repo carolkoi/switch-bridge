@@ -5,8 +5,8 @@
 {{--    <div class="needsclick dropzone" id="document-dropzone"></div>--}}
 </div>
 <div class="form-group">
-    {!! Form::checkbox('csv_header', null) !!}
-    {!! Form::label('csv_header', 'File contains header row?') !!}
+    {!! Form::checkbox('csv_header', null, true, ['id' => 'csv_header_id']) !!}
+    {!! Form::label('csv_header','File contains header row?') !!}
 
 </div>
 <!-- Submit Field -->

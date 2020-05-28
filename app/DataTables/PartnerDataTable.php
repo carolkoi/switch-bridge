@@ -2,11 +2,11 @@
 
 namespace App\DataTables;
 
-use App\Models\AmlMakerChecker;
+use App\Models\Partner;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
 
-class AmlMakerCheckerDataTable extends DataTable
+class PartnerDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -18,27 +18,16 @@ class AmlMakerCheckerDataTable extends DataTable
     {
         $dataTable = new EloquentDataTable($query);
 
-        return $dataTable
-        ->addColumn('id', function($query){
-        return $query->blacklist_id;
-        })
-        ->addColumn('customer_id_number', function($query){
-        return $query->customer_idnumber;
-        })
-        ->addColumn('reason', function($query){
-        return $query->response;
-        })
-        ->escapeColumns('reason')
-        ->addColumn('action', 'aml_maker_checkers.datatables_actions');
+        return $dataTable->addColumn('action', 'partners.datatables_actions');
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\AmlMakerChecker $model
+     * @param \App\Models\Partner $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(AmlMakerChecker $model)
+    public function query(Partner $model)
     {
         return $model->newQuery();
     }
@@ -55,19 +44,14 @@ class AmlMakerCheckerDataTable extends DataTable
             ->minifiedAjax()
             ->addAction(['width' => '120px', 'printable' => false])
             ->parameters([
-                'lengthMenu' => [
-                    [ 10, 25, 50, -1 ],
-                    [ '10 rows', '25 rows', '50 rows', 'Show all' ]
-                ],
                 'dom'       => 'Bfrtip',
                 'stateSave' => true,
                 'order'     => [[0, 'desc']],
                 'buttons'   => [
-                    ['extend' => 'pageLength', 'className' => 'btn btn-default btn-sm no-corner',],
                     ['extend' => 'create', 'className' => 'btn btn-default btn-sm no-corner',],
                     ['extend' => 'export', 'className' => 'btn btn-default btn-sm no-corner',],
                     ['extend' => 'print', 'className' => 'btn btn-default btn-sm no-corner',],
-                   // ['extend' => 'reset', 'className' => 'btn btn-default btn-sm no-corner',],
+                    ['extend' => 'reset', 'className' => 'btn btn-default btn-sm no-corner',],
                     ['extend' => 'reload', 'className' => 'btn btn-default btn-sm no-corner',],
                 ],
             ]);
@@ -81,29 +65,22 @@ class AmlMakerCheckerDataTable extends DataTable
     protected function getColumns()
     {
         return [
-        'id' => [
-        'visible' => false
-        ],
-            //'date_time_added',
-           // 'added_by',
-            //'date_time_modified',
-           // 'modified_by',
-           // 'source_ip',
-            //'latest_ip',
-            //'partner_id',
-           'customer_id_number' => [
-           'name' => 'customer_idnumber'
-           ],
-            //'transaction_number',
-            'customer_name',
-            'mobile_number',
-            'blacklist_status',
-            'reason' => [
-            'name' => 'response'],
-//            'blacklist_source',
-           // 'remarks',
-            //'blacklisted',
-            //'blacklist_version'
+            'date_time_added',
+            'added_by',
+            'date_time_modified',
+            'modified_by',
+            'partner_idx',
+            'setting_profile',
+            'partner_name',
+            'partner_type',
+            'partner_username',
+            'partner_password',
+            'partner_api_endpoint',
+            'allowed_transaction_types',
+            'unlock_time',
+            'lock_status',
+            'partner_status',
+            'record_version'
         ];
     }
 
@@ -114,6 +91,6 @@ class AmlMakerCheckerDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'aml_maker_checkersdatatable_' . time();
+        return '$MODEL_NAME_PLURAL_SNAKE_$datatable_' . time();
     }
 }

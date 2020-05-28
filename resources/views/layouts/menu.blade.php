@@ -123,3 +123,7 @@
 
 
 
+<li class="{{ Request::is('partners*') ? 'active' : '' }}">
+    <a href="{{ route('partners.index') }}"><i class="fa fa-edit"></i><span>Partners</span></a>
+</li>
+

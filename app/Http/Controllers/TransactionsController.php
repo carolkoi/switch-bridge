@@ -7,6 +7,7 @@ use App\DataTables\TransactionsDataTable;
 use App\Http\Requests;
 use App\Http\Requests\CreateTransactionsRequest;
 use App\Http\Requests\UpdateTransactionsRequest;
+use App\Models\Partner;
 use App\Models\SessionTxn;
 use App\Models\Transactions;
 use App\Repositories\SessionTxnRepository;
@@ -38,7 +39,11 @@ class TransactionsController extends AppBaseController
      */
     public function index(TransactionsDataTable $transactionsDataTable)
     {
-        return $transactionsDataTable->addScope(new TransactionDataTableScope())->render('transactions.index');
+//        $partners = Partner::pluck('partner_name', 'partner_name');
+        $partners = Partner::get();
+//        dd($partners);
+        return $transactionsDataTable->addScope(new TransactionDataTableScope())
+            ->render('transactions.index', ['partners' => $partners]);
 
     }
 

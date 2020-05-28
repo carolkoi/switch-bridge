@@ -14,13 +14,19 @@
             <div class="box-body">
 
                 <div class="row">
-                    <div class="col-md-4 pull-left">
-                    <label>Enter Date Range Filter (For Reporting purposes)</label>
-                    </div>
 
-                    <div class="col-md-8 pull-right">
+
+                    <div class="col-md-12">
                         <form action="" id="filtersForm">
+
                             <div class="input-group">
+                                <select name="filter_partner" id="filter_partner" class="form-control mr-2">
+                                    @foreach($parners as $partner)
+                                        <option disabled>Filter By Partner</option>
+                                        <option value="{{$partner->partner_name}}">{{$partner->partner_name}}</option>
+                                    @endforeach
+                                </select>
+{{--                                {{Form::select('filter_partner', $partners, null, ['class' => 'form-control mr-2'])}}--}}
 
                                 <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
@@ -33,6 +39,7 @@
                             </div>
                         </form>
                     </div>
+
                 </div>
 {{--                <div class="row my-2" id="chart">--}}
 {{--                    <div class="{{ $chart->options['column_class'] }}">--}}
@@ -40,6 +47,7 @@
 {{--                        {!! $chart->renderHtml() !!}--}}
 {{--                    </div>--}}
 {{--                </div>--}}
+                <br/>
 
                     @include('transactions.table')
             </div>
