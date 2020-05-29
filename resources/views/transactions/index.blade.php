@@ -21,7 +21,7 @@
 
                             <div class="input-group">
                                 <select name="filter_partner" id="filter_partner" class="form-control mr-2">
-                                    @foreach($parners as $partner)
+                                    @foreach($partners as $partner)
                                         <option disabled>Filter By Partner</option>
                                         <option value="{{$partner->partner_name}}">{{$partner->partner_name}}</option>
                                     @endforeach
