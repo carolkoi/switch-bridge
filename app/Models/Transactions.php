@@ -2071,21 +2071,15 @@ class Transactions extends Model implements ApprovableInterface
     public static $rules = [
     ];
 
-    public function scopeFilterDates($query)
+    public function scopeFilterPartner($query)
     {
-        if (request()->has('from-to')) {
-            $date = explode(" - ", request()->input('from-to', ""));
-            $date1 = strtotime(trim($date[0])) * 1000;
-            $date2 = strtotime(trim($date[1])) * 1000;
-            $start = date('Y-m-d', $date1);
-            $end = date('Y-m-d', $date2);
+        if (request()->has('filter-partner')) {
 
-            if (count($date) != 2) {
-                $date = [now()->subDays(29)->format("Y-m-d"), now()->format("Y-m-d")];
-            }
+            return $query->where('req_field123', '=', request()->input('filter-partner'));
+//            return $query->where('req_field123', 'like', "%{$request->get('filter_partner')}%");
 
-            return $query->whereBetween('date_time_added', array($date1, $date2));
-        }
+        }else
+            return $query->get();
     }
     /**
      * @inheritDoc

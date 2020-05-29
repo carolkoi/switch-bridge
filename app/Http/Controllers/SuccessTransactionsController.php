@@ -6,6 +6,7 @@ use App\DataTables\Scopes\TransactionDataTableScope;
 use App\DataTables\SuccessTransactionsDataTable;
 use App\Http\Requests\CreateTransactionsRequest;
 use App\Http\Requests\UpdateTransactionsRequest;
+use App\Models\Partner;
 use App\Models\Transactions;
 use App\Repositories\TransactionsRepository;
 use Illuminate\Http\Request;
@@ -28,7 +29,9 @@ class SuccessTransactionsController extends AppBaseController
      */
     public function index(SuccessTransactionsDataTable $successTransactionsDataTable)
     {
-        return $successTransactionsDataTable->addScope(new TransactionDataTableScope())->render('transactions.success_index');
+        $partners = Partner::pluck('partner_name', 'partner_name');
+        return $successTransactionsDataTable->addScope(new TransactionDataTableScope())
+            ->render('transactions.index', ['partners' => $partners]);
     }
 
     /**

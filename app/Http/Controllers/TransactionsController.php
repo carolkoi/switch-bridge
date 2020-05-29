@@ -39,38 +39,20 @@ class TransactionsController extends AppBaseController
      */
     public function index(TransactionsDataTable $transactionsDataTable)
     {
-//        $partners = Partner::pluck('partner_name', 'partner_name');
-        $partners = Partner::get();
-//        dd($partners);
+        $partners = Partner::pluck('partner_name', 'partner_name');
         return $transactionsDataTable->addScope(new TransactionDataTableScope())
             ->render('transactions.index', ['partners' => $partners]);
 
     }
 
-    public function test(Request $request)
+    public function filterPartner(Request $request, $query)
     {
-        $date1 = strtotime(trim($request->from_date)) * 1000;
-        $date2 = strtotime(trim($request->to_date)) * 1000;
-        if (request()->ajax()){
-            if (!empty($request->from_date)){
-                $transaction = Transactions::whereBetween('date_time_added',  array($date1,
-                    $date2))
-                    ->get();
-            }
-            return Datatables::of($transaction)->make(true);
-        }
+        if (request()->has('filter-partner')) {
 
-//        $test = explode('-', $request->range);
-//        $date1 = strtotime(trim($test[0]));
-//        $date2 = strtotime(trim($test[1]));
-//
-//        $start = date('Y-m-d',$date1);
-//        $end = date('Y-m-d',$date2);
-//
-//        $transaction = Transactions::whereBetween('date_time_added',  array($start, $end))
-//            ->get();
-//
-//        return Datatables::of($transaction)->make(true);
+            return $query->where('req_field123', '=', request()->input('filter-partner'));
+//            return $query->where('req_field123', 'like', "%{$request->get('filter_partner')}%");
+        }else
+            return $query->get();
     }
 
     /**
