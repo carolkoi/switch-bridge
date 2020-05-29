@@ -31,7 +31,7 @@ class ApprovalsDataTable extends DataTable
             ->addColumn('stage', function ($query){
                 return $query->awaitingStage->workflowStageType->name;
             })
-            ->editColumn('sent_at', function ($query){
+            ->addColumn('sent_at', function ($query){
 //                return $query->created_at->format('Y-m-d H:i:s');
                 return date('Y-m-d H:i:s',strtotime('+3 hours',strtotime($query->created_at->format('Y-m-d H:i:s'))));
             })
@@ -56,7 +56,9 @@ class ApprovalsDataTable extends DataTable
      */
     public function query(Approvals $model)
     {
-        return $model->with(['user','awaitingStage.workflowStageType'])->orderBy('created_at', 'desc')->MyApprovals()->newQuery();
+        return $model->with(['user','awaitingStage.workflowStageType'])
+            ->whereHasMorph('approvable', '*')
+            ->orderBy('created_at', 'desc')->MyApprovals()->newQuery();
     }
 
     /**
@@ -102,11 +104,17 @@ class ApprovalsDataTable extends DataTable
     {
         return [
             'approval_type',
-            'requested_by',
+            'requested_by' => [
+                'name' => 'user.name'
+            ],
             'sent_at',
             'stage',
-            'receiver',
-            'txn_ref',
+            'receiver' => [
+                'name' => 'approvable.req_field108'
+            ],
+            'txn_ref' => [
+                'name' => 'approvable.req_field37'
+            ],
             'model_id' => ['visible' => false],
             'model_type' => ['visible' => false],
             'collection_name'=>['visible' => false],
