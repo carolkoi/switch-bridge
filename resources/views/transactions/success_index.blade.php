@@ -16,12 +16,23 @@
         <div class="box box-primary">
             <div class="box-body">
                 <div class="row">
-                    <div class="col-md-4 pull-left">
-                        <label>Enter Date Range Filter (For Reporting purposes)</label>
-                    </div>
-                    <div class="col-md-6 pull-right">
+
+
+                    <div class="col-md-12">
+
                         <form action="" id="filtersForm">
                             <div class="input-group">
+                                {{--                                <select name="filter-partner" id="filter_partner" class="form-control mr-2">--}}
+                                {{--                                    <option value=" ">FILTER BY PARTNER</option>--}}
+                                {{--                                @foreach($partners as $partner)--}}
+                                {{--                                        <option value="{{$partner->partner_name}}">{{$partner->partner_name}}</option>--}}
+                                {{--                                    @endforeach--}}
+                                {{--                                </select>--}}
+                                {{--                                <span class="input-group-btn">--}}
+                                {{--            <input type="submit" class="btn btn-primary" value="Filter">--}}
+                                {{--        </span>--}}
+                                {{Form::select('filter-partner', $partners, null, ['class' => 'form-control mr-2'])}}
+
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </div>
@@ -33,7 +44,9 @@
                             </div>
                         </form>
                     </div>
+
                 </div>
+
 
                 @include('transactions.table')
             </div>
@@ -49,8 +62,13 @@
 
             let searchParams = new URLSearchParams(window.location.search);
             let dateInterval = searchParams.get('from-to');
+            let filterPartner = searchParams.get('filter-partner');
+            let selectedPartner = null;
             let start = moment().startOf('month');
             let end = moment();
+            if (filterPartner){
+                selectedPartner = filterPartner;
+            }
 
             if (dateInterval) {
                 dateInterval = dateInterval.split(' - ');
@@ -68,8 +86,8 @@
                     firstDay: 1,
                 },
                 ranges: {
-                    'Today': [moment(), moment()],
-                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    'Today': [moment(), moment().add(1, 'days')],
+                    'Yesterday': [moment().subtract(1, 'days'), moment()],
                     'Last 7 Days': [moment().subtract(6, 'days'), moment()],
                     'Last 30 Days': [moment().subtract(29, 'days'), moment()],
                     'This Month': [moment().startOf('month'), moment().endOf('month')],
@@ -79,6 +97,29 @@
                     'All time': [moment().subtract(30, 'year').startOf('month'), moment().endOf('month')],
                 }
             });
+            {{--fetch_data();--}}
+
+            {{--function fetch_data(partners = '')--}}
+            {{--{--}}
+            {{--    $('#dataTableBuilder').DataTable({--}}
+            {{--        retrieve:true,--}}
+            {{--        processing: true,--}}
+            {{--        serverSide: true,--}}
+            {{--        ajax: {--}}
+            {{--            url:"{{ route('transactions.index') }}",--}}
+            {{--            data: {'filter-partner':"filter-partner"}--}}
+            {{--        },--}}
+            {{--    });--}}
+            {{--}--}}
+
+            // $('#filter_partner').change(function () {
+            //     var partner = $('#filter_partner').val();
+            //     $('#dataTableBuilder').DataTable().destroy();
+            //
+            //     fetch_data(partner);
+            //
+            // })
+            //
         })
     </script>
 

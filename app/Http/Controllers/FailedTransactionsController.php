@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\DataTables\FailedTransactionsDataTable;
 use App\DataTables\Scopes\TransactionDataTableScope;
+use App\Models\Partner;
 use App\Repositories\TransactionsRepository;
 use Illuminate\Http\Request;
 
@@ -26,6 +27,8 @@ class FailedTransactionsController extends Controller
      */
     public function index(FailedTransactionsDataTable $failedTransactionsDataTable)
     {
-        return $failedTransactionsDataTable->addScope(new TransactionDataTableScope())->render('transactions.failed_index');
+        $partners = Partner::pluck('partner_name', 'partner_name');
+        return $failedTransactionsDataTable->addScope(new TransactionDataTableScope())
+            ->render('transactions.index', ['partners' => $partners]);
     }
 }

@@ -20,8 +20,11 @@ class TransactionDataTableScope implements DataTableScope
             $date2 = strtotime(trim($date[1])) * 1000;
             return $query->whereBetween('date_time_added', array($date1, $date2));
             // return $query->where('id', 1);
-        }elseif(request()->has('filter_partner')){
-            dd('here');
+        }
+        elseif(request()->ajax()){
+           if (request()->has('filter-partner')){
+            return $query->where('req_field123', '=', request()->input('filter-partner'));
+        }
 
         }else
             return $query->get();

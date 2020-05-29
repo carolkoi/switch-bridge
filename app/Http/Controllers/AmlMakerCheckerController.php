@@ -167,15 +167,6 @@ class AmlMakerCheckerController extends AppBaseController
 
 
         $amlMakerChecker = AmlMakerChecker::where('blacklist_id', $blacklist_id)->update($input);
-        $amlMakerCheckerData = AmlMakerChecker::where('blacklist_id', $blacklist_id)->first();
-//        dd($amlMakerCheckerData);
-        if ($request->has('blacklist_source')) {
-
-            foreach ($request->input('blacklist_source', []) as $file) {
-//            dd($file, $amlMakerChecker);
-                $amlMakerCheckerData->addMedia(storage_path('tmp/uploads/' . $file))->toMediaCollection('document');
-            }
-        }
 
         Flash::success('Member blacklist record updated successfully.');
 
