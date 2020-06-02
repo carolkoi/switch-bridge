@@ -31,7 +31,7 @@ class SuccessTransactionsController extends AppBaseController
     {
         $partners = Partner::pluck('partner_name', 'partner_name');
         return $successTransactionsDataTable->addScope(new TransactionDataTableScope())
-            ->render('transactions.index', ['partners' => $partners]);
+            ->render('transactions.success_index', ['partners' => $partners]);
     }
 
     /**

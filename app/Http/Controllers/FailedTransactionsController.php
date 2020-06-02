@@ -29,6 +29,6 @@ class FailedTransactionsController extends Controller
     {
         $partners = Partner::pluck('partner_name', 'partner_name');
         return $failedTransactionsDataTable->addScope(new TransactionDataTableScope())
-            ->render('transactions.index', ['partners' => $partners]);
+            ->render('transactions.failed_index', ['partners' => $partners]);
     }
 }

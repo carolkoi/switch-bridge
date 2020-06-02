@@ -21,7 +21,7 @@
                         <form action="" id="filtersForm">
                             <div class="input-group">
 {{--                                <select name="filter-partner" id="filter_partner" class="form-control mr-2">--}}
-{{--                                    <option value=" ">FILTER BY PARTNER</option>--}}
+{{--                                    <option>FILTER BY PARTNER</option>--}}
 {{--                                @foreach($partners as $partner)--}}
 {{--                                        <option value="{{$partner->partner_name}}">{{$partner->partner_name}}</option>--}}
 {{--                                    @endforeach--}}
@@ -101,29 +101,6 @@
                     'All time': [moment().subtract(30, 'year').startOf('month'), moment().endOf('month')],
                 }
             });
-            {{--fetch_data();--}}
-
-            {{--function fetch_data(partners = '')--}}
-            {{--{--}}
-            {{--    $('#dataTableBuilder').DataTable({--}}
-            {{--        retrieve:true,--}}
-            {{--        processing: true,--}}
-            {{--        serverSide: true,--}}
-            {{--        ajax: {--}}
-            {{--            url:"{{ route('transactions.index') }}",--}}
-            {{--            data: {'filter-partner':"filter-partner"}--}}
-            {{--        },--}}
-            {{--    });--}}
-            {{--}--}}
-
-            // $('#filter_partner').change(function () {
-            //     var partner = $('#filter_partner').val();
-            //     $('#dataTableBuilder').DataTable().destroy();
-            //
-            //     fetch_data(partner);
-            //
-            // })
-        //
         })
 </script>
 

@@ -21,6 +21,6 @@ class PendingTransactionsController extends Controller
     {
         $partners = Partner::pluck('partner_name', 'partner_name');
         return $pendingTransactionsDataTable->addScope(new TransactionDataTableScope())
-            ->render('transactions.index', ['partners' => $partners]);
+            ->render('transactions.pending_index', ['partners' => $partners]);
     }
 }

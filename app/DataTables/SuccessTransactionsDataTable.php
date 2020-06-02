@@ -19,9 +19,6 @@ class SuccessTransactionsDataTable extends DataTable
         $dataTable = new EloquentDataTable($query);
 
         return $dataTable
-            ->filter(function ($query){
-                return $query->filterPartner($query);
-            })
             ->addColumn('partner', function ($query){
                 return $query->req_field123;
             })

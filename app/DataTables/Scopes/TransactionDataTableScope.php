@@ -14,19 +14,13 @@ class TransactionDataTableScope implements DataTableScope
      */
     public function apply($query)
     {
-        if (request()->has('from-to')) {
+        if (request()->has('from-to') || request()->input('filter-partner')) {
+            $partner = request()->input('filter-partner');
             $date = explode(" - ", request()->input('from-to', ""));
             $date1 = strtotime(trim($date[0])) * 1000;
             $date2 = strtotime(trim($date[1])) * 1000;
-            return $query->whereBetween('date_time_added', array($date1, $date2));
-            // return $query->where('id', 1);
-        }
-        elseif(request()->ajax()){
-           if (request()->has('filter-partner')){
-            return $query->where('req_field123', '=', request()->input('filter-partner'));
-        }
-
+            return $query->whereBetween('date_time_added', array($date1, $date2))->where('req_field123', $partner);
         }else
-            return $query->get();
+            return $query;
     }
 }

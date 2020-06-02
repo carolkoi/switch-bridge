@@ -40,6 +40,7 @@ class TransactionsController extends AppBaseController
     public function index(TransactionsDataTable $transactionsDataTable)
     {
         $partners = Partner::pluck('partner_name', 'partner_name');
+//        $partners = Partner::get();
         return $transactionsDataTable->addScope(new TransactionDataTableScope())
             ->render('transactions.index', ['partners' => $partners]);
 
