@@ -68,7 +68,7 @@ RUN printf '[PHP]\ndate.timezone = "Africa/Nairobi"\n' > /usr/local/etc/php/conf
 
 RUN apt-get update -qq \
 # wkhtmltopdf
-    && apt install -y wget xz-utils libxrender1 libssl1.0-dev fontconfig libjpeg62-turbo libxext6  xfonts-base xfonts-75dpi \
+    && apt-get install -y wget xz-utils libxrender1 libssl1.0-dev fontconfig libjpeg62-turbo libxext6  xfonts-base xfonts-75dpi \
     && wget --quiet https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.3/wkhtmltox-0.12.3_linux-generic-amd64.tar.xz \
     && tar vxf wkhtmltox-0.12.3_linux-generic-amd64.tar.xz \
     && cp wkhtmltox/bin/wk* /usr/bin/ \
