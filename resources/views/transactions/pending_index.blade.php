@@ -46,6 +46,7 @@
                     </div>
 
                 </div>
+                <br/>
 
                 @include('transactions.table')
             </div>

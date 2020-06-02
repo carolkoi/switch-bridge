@@ -3,9 +3,6 @@
 @section('content')
     <section class="content-header">
         <h1 class="pull-left"> Successful Transactions</h1>
-        {{--        <h1 class="pull-right">--}}
-        {{--           <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" href="{!! route('transactions.create') !!}">Add New</a>--}}
-        {{--        </h1>--}}
     </section>
     <div class="content">
         <div class="clearfix"></div>
@@ -46,6 +43,7 @@
                     </div>
 
                 </div>
+                <br/>
 
 
                 @include('transactions.table')
@@ -97,29 +95,6 @@
                     'All time': [moment().subtract(30, 'year').startOf('month'), moment().endOf('month')],
                 }
             });
-            {{--fetch_data();--}}
-
-            {{--function fetch_data(partners = '')--}}
-            {{--{--}}
-            {{--    $('#dataTableBuilder').DataTable({--}}
-            {{--        retrieve:true,--}}
-            {{--        processing: true,--}}
-            {{--        serverSide: true,--}}
-            {{--        ajax: {--}}
-            {{--            url:"{{ route('transactions.index') }}",--}}
-            {{--            data: {'filter-partner':"filter-partner"}--}}
-            {{--        },--}}
-            {{--    });--}}
-            {{--}--}}
-
-            // $('#filter_partner').change(function () {
-            //     var partner = $('#filter_partner').val();
-            //     $('#dataTableBuilder').DataTable().destroy();
-            //
-            //     fetch_data(partner);
-            //
-            // })
-            //
         })
     </script>
 

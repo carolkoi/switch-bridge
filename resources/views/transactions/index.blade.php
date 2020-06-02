@@ -101,29 +101,6 @@
                     'All time': [moment().subtract(30, 'year').startOf('month'), moment().endOf('month')],
                 }
             });
-            {{--fetch_data();--}}
-
-            {{--function fetch_data(partners = '')--}}
-            {{--{--}}
-            {{--    $('#dataTableBuilder').DataTable({--}}
-            {{--        retrieve:true,--}}
-            {{--        processing: true,--}}
-            {{--        serverSide: true,--}}
-            {{--        ajax: {--}}
-            {{--            url:"{{ route('transactions.index') }}",--}}
-            {{--            data: {'filter-partner':"filter-partner"}--}}
-            {{--        },--}}
-            {{--    });--}}
-            {{--}--}}
-
-            // $('#filter_partner').change(function () {
-            //     var partner = $('#filter_partner').val();
-            //     $('#dataTableBuilder').DataTable().destroy();
-            //
-            //     fetch_data(partner);
-            //
-            // })
-        //
         })
 </script>
 

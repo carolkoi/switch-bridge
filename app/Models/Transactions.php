@@ -2078,8 +2078,9 @@ class Transactions extends Model implements ApprovableInterface
             return $query->where('req_field123', '=', request()->input('filter-partner'));
 //            return $query->where('req_field123', 'like', "%{$request->get('filter_partner')}%");
 
-        }else
-            return $query->get();
+        }
+//        else
+            return $query->orderBy('date_time_added', 'desc');
     }
     /**
      * @inheritDoc
