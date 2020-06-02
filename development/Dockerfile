@@ -66,19 +66,6 @@ ENV TZ=Africa/Nairobi
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN printf '[PHP]\ndate.timezone = "Africa/Nairobi"\n' > /usr/local/etc/php/conf.d/tzone.ini
 
-#### Install all dependencies
-RUN apt-get install -y \
-libxrender1 \
-libfontconfig1 \
-libx11-dev \
-libjpeg62 \
-libxtst6 \
-wget \
-&& wget https://github.com/h4cc/wkhtmltopdf-amd64/blob/master/bin/wkhtmltopdf-amd64?raw=true -O /usr/local/bin/wkhtmltopdf \
-&& chmod +x /usr/local/bin/wkhtmltopdf \
-
-RUN apt-get install libssl-dev=1.0.2g-1ubuntu4.8
-RUN apt-mark hold libssl-dev
 
 
 
