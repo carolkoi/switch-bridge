@@ -1,6 +1,9 @@
-<li class="{{ Request::is('upesi/approvals*') ? 'active' : '' }}">
-    <a href="{!! route('upesi::approvals.index') !!}"><i class="fa fa-check-square-o"></i><span>Approvals Requests</span></a>
+@if(Auth::check() && auth()->user()->can('Can Authorize Transaction Update'))
+    <li class="{{ Request::is('upesi/approvals*') ? 'active' : '' }}">
+    <a href="{!! route('upesi::approvals.index') !!}"><i class="fa fa-check-square-o"></i><span>Approval Requests</span></a>
 </li>
+    @endif
+@if(Auth::check() && auth()->user()->can('Can Edit Approval Flow'))
 
 <li class="{{ Request::is('upesi*') ? 'active' : '' }} treeview">
     <a href="#">
@@ -34,3 +37,4 @@
 
     </ul>
 </li>
+@endif
