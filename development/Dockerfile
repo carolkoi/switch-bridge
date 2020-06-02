@@ -66,20 +66,17 @@ ENV TZ=Africa/Nairobi
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN printf '[PHP]\ndate.timezone = "Africa/Nairobi"\n' > /usr/local/etc/php/conf.d/tzone.ini
 
-RUN apt-get update -qq \
-# wkhtmltopdf
-    && apt-get install -y wget xz-utils libxrender1 libssl1.0-dev fontconfig libjpeg62-turbo libxext6  xfonts-base xfonts-75dpi \
-    && wget --quiet https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.3/wkhtmltox-0.12.3_linux-generic-amd64.tar.xz \
-    && tar vxf wkhtmltox-0.12.3_linux-generic-amd64.tar.xz \
-    && cp wkhtmltox/bin/wk* /usr/bin/ \
-# cleanup
-    && rm wkhtmltox-0.12.3_linux-generic-amd64.tar.xz \
-    && rm -rf wkhtmltox \
-    && apt-get remove -y wget xz-utils \
-    && apt-get autoremove -y \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* \
-    && truncate -s 0 /var/log/*log
+#### Install all dependencies
+RUN apt-get install -y \
+libxrender1 \
+libfontconfig1 \
+libx11-dev \
+libjpeg62 \
+libxtst6 \
+wget \
+&& wget https://github.com/h4cc/wkhtmltopdf-amd64/blob/master/bin/wkhtmltopdf-amd64?raw=true -O /usr/local/bin/wkhtmltopdf \
+&& chmod +x /usr/local/bin/wkhtmltopdf \
+RUN apt install libssl1.1
 
 
 
