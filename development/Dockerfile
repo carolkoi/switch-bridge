@@ -67,7 +67,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN printf '[PHP]\ndate.timezone = "Africa/Nairobi"\n' > /usr/local/etc/php/conf.d/tzone.ini
 
 #### Install all dependencies
-apt-get install -y \
+RUN apt-get install -y \
 libxrender1 \
 libfontconfig1 \
 libx11-dev \
@@ -77,7 +77,7 @@ wget \
 && wget https://github.com/h4cc/wkhtmltopdf-amd64/blob/master/bin/wkhtmltopdf-amd64?raw=true -O /usr/local/bin/wkhtmltopdf \
 && chmod +x /usr/local/bin/wkhtmltopdf \
 
-apt-get install -y \
+RUN apt-get install -y \
 libxrender1 \
 libfontconfig1 \
 libx11-dev \
