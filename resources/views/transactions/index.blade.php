@@ -21,7 +21,7 @@
                         <form action="" id="filtersForm">
                             <div class="input-group">
 {{--                                <select name="filter-partner" id="filter_partner" class="form-control mr-2">--}}
-{{--                                    <option value=" ">FILTER BY PARTNER</option>--}}
+{{--                                    <option>FILTER BY PARTNER</option>--}}
 {{--                                @foreach($partners as $partner)--}}
 {{--                                        <option value="{{$partner->partner_name}}">{{$partner->partner_name}}</option>--}}
 {{--                                    @endforeach--}}
