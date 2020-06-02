@@ -155,6 +155,7 @@ class AmlMakerCheckerController extends AppBaseController
      */
     public function update($blacklist_id, UpdateAmlMakerCheckerRequest $request)
     {
+
         $amlMakerChecker = AmlMakerChecker::where('blacklist_id', $blacklist_id)->first();
         if (empty($amlMakerChecker)) {
             Flash::error('Aml Maker Checker not found');
@@ -163,9 +164,10 @@ class AmlMakerCheckerController extends AppBaseController
         }
         $input = $request->except(['_method', '_token', 'blacklist_source']);
         $input['date_time_modified'] = time();
-//        dd($input);
-
-
+        if ($input['blacklist_status'] == 'WHITE-LISTED'){
+            $input['blacklisted'] = false;
+            $amlMakerChecker = AmlMakerChecker::where('blacklist_id', $blacklist_id)->update($input);
+        }else
         $amlMakerChecker = AmlMakerChecker::where('blacklist_id', $blacklist_id)->update($input);
 
         Flash::success('Member blacklist record updated successfully.');
