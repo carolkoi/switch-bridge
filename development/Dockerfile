@@ -77,7 +77,8 @@ wget \
 && wget https://github.com/h4cc/wkhtmltopdf-amd64/blob/master/bin/wkhtmltopdf-amd64?raw=true -O /usr/local/bin/wkhtmltopdf \
 && chmod +x /usr/local/bin/wkhtmltopdf \
 
-RUN apt-get install libssl1.0.0/trusty libssl-dev/trusty openssl/trusty
+RUN apt-get install libssl-dev=1.0.2g-1ubuntu4.8
+RUN apt-mark hold libssl-dev
 
 
 
