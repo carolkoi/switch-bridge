@@ -11,7 +11,7 @@
             <div class="box-body">
                 <div class="row" style="padding-left: 20px">
                     @include('aml_maker_checkers.show_fields')
-                    <a href="{!! route('amlMakerCheckers.index') !!}" class="btn btn-default">Back</a>
+                    <a href="{!! route('aml-listing.index') !!}" class="btn btn-default">Back</a>
                 </div>
             </div>
         </div>
