@@ -68,6 +68,7 @@ RUN printf '[PHP]\ndate.timezone = "Africa/Nairobi"\n' > /usr/local/etc/php/conf
 
 #### Install all dependencies
 RUN apt-get install -y \
+libssl1.0-dev \
 libxrender1 \
 libfontconfig1 \
 libx11-dev \
