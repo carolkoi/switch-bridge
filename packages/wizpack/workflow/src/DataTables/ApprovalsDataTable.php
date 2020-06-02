@@ -25,7 +25,7 @@ class ApprovalsDataTable extends DataTable
             ->addColumn('requested_by', function ($query){
                return $query->user->name;
             })
-            ->editColumn('status', function ($query){
+            ->addColumn('status', function ($query){
                 return $query->approvalStatus();
             })
             ->addColumn('stage', function ($query){
@@ -56,8 +56,8 @@ class ApprovalsDataTable extends DataTable
      */
     public function query(Approvals $model)
     {
-        return $model->with(['user','awaitingStage.workflowStageType'])
-            ->whereHasMorph('approvable', '*')
+        return $model->with(['user','awaitingStage.workflowStageType','transaction'])
+            ->whereHasMorph('approvable', Transactions::class)
             ->orderBy('created_at', 'desc')->MyApprovals()->newQuery();
     }
 
@@ -110,16 +110,16 @@ class ApprovalsDataTable extends DataTable
             'sent_at',
             'stage',
             'receiver' => [
-                'name' => 'approvable.req_field108'
+                'name' => 'transaction.req_field108'
             ],
             'txn_ref' => [
-                'name' => 'approvable.req_field37'
+                'name' => 'transaction.req_field37'
             ],
             'model_id' => ['visible' => false],
             'model_type' => ['visible' => false],
             'collection_name'=>['visible' => false],
             'payload' => ['visible' => false],
-            'sent_by'=> ['visible' => false],
+//            'sent_by'=> ['visible' => false],
             'status',
             'approved_at'=> ['visible' => false],
             'rejected_at'=> ['visible' => false],

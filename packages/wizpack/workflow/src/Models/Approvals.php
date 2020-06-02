@@ -2,6 +2,7 @@
 
 namespace WizPack\Workflow\Models;
 
+use App\Models\Transactions;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -190,6 +191,10 @@ class Approvals extends Model
     public function approvable()
     {
         return $this->morphTo('approvable', 'model_type', 'model_id', 'iso_id');
+    }
+
+    public function transaction(){
+        return $this->belongsTo(Transactions::class, 'model_id', 'iso_id');
     }
 
     public function workflow()

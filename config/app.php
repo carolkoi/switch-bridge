@@ -251,6 +251,8 @@ return [
         'Flash'     => Laracasts\Flash\Flash::class,
         'Datatables' => Yajra\Datatables\Facades\Datatables::class,
         'Uuid' => Webpatser\Uuid\Uuid::class,
+        'WkPdf'    => Barryvdh\Snappy\Facades\SnappyPdf::class,
+        'WkImage'  => Barryvdh\Snappy\Facades\SnappyImage::class,
     ],
 
 ];
