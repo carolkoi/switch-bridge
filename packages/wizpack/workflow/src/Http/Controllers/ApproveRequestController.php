@@ -100,6 +100,13 @@ class ApproveRequestController extends AppBaseController
                 'sync_message' => $sessionTxn->sync_message
             ]);
         }
+        elseif($sessionTxn->txn_status == "COMPLETED") {
+            $transaction = Transactions::where('iso_id', $kdata[0]['model_id'])->update([
+                'res_field48' => $sessionTxn->txn_status,
+                'res_field44' => $sessionTxn->comments,
+                'date_time_modified' => strtotime('now'),
+            ]);
+        }
         else
             $transaction = Transactions::where('iso_id', $kdata[0]['model_id'])->update([
                 'res_field48' => $sessionTxn->txn_status,
