@@ -12,6 +12,18 @@
 {{--        <option value="INIT-FAILED" {{$transactions->res_field48 ==="INIT-FAILED" ? 'selected="selected"' : ''}} disabled>INIT-FAILED</option>--}}
     </select>
 </div>
+@elseif($transactions->res_field48 == "COMPLETED")
+    <div class="form-group">
+        {!! Form::label('res_field48', 'Transaction Status:') !!}
+        {{--    {!!Form::select('res_field48', [],--}}
+        {{--    isset($transactions) ? $transactions->res_field48 : null, ['class' => 'form-control select2', 'id' => "res_field48_id"])!!}--}}
+        <select name="res_field48" id="res_field48_id" class="form-control select2">
+            {{--        <option value="AML-APPROVED" {{$transactions->res_field48 ==="AML-APPROVED" ? 'selected="selected"' : ''}}>AML-APPROVED</option>--}}
+            <option value="COMPLETED" {{$transactions->res_field48 ==="COMPLETED" ? 'selected="selected"' : ''}} disabled>COMPLETED</option>
+            <option value="FAILED" {{$transactions->res_field48 ==="FAILED" ? 'selected="selected"' : ''}}>FAILED</option>
+            {{--        <option value="INIT-FAILED" {{$transactions->res_field48 ==="INIT-FAILED" ? 'selected="selected"' : ''}} disabled>INIT-FAILED</option>--}}
+        </select>
+    </div>
 @elseif($transactions->res_field48 == "UPLOADED")
 <div class="form-group">
     {!! Form::label('res_field48', 'Transaction Status:') !!}

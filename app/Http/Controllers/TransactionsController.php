@@ -148,7 +148,6 @@ class TransactionsController extends AppBaseController
             return redirect(route('transactions.index'));
         }
         Transactions::where('iso_id', $iso_id)->update(['modified_by' => Auth::user()->id]);
-//        if ($request->get('res_field48') == "AML-APPROVED" || $request->get('res_field48') == "COMPLETED" || $request->get('res_field48') == "FAILED"){
             $sessionTxn = SessionTxn::updateOrCreate([
                 'txn_id' => $transactions->iso_id,
             ],
@@ -160,7 +159,6 @@ class TransactionsController extends AppBaseController
                 'comments' => $input['res_field44'],
                 'sync_message' => $request->has('sync_message') ? $input['sync_message'] : null,
             ]);
-//        }
 
         //initiating the approval request
         $approval = new Transactions();
