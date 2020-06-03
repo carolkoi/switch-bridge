@@ -73,6 +73,7 @@ class ApproveRequestController extends AppBaseController
         if($txn->res_field48 == "UPLOAD-FAILED" && $sessionTxn->txn_status == "AML-APPROVED"){
             $api_txn = ApiTransaction::where('transaction_number', $txn->req_field37)->update([
                 'transaction_number' => $sessionTxn->appended_txn_no,
+                'synced' => false,
             ]);
             $transaction = Transactions::where('iso_id', $kdata[0]['model_id'])->update([
                 'res_field48' => $sessionTxn->txn_status,
