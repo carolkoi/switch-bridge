@@ -12,11 +12,6 @@
         <div class="clearfix"></div>
         <div class="box box-primary">
             <div class="box-body">
-
-                <div class="row">
-
-                </div>
-                <br/>
                 <div class="row">
 
                     <div class="col-md-12">
@@ -34,43 +29,37 @@
 
                         <form action="" id="filtersForm">
 
-{{--                            <div class="col-xs-4 form-inline">--}}
+                            {{--                            <div class="col-xs-4 form-inline">--}}
                             <div class="">
                                 <div class="form-group col-md-6" id="filter-partner-id" style="display:none">
-                                {{Form::select('filter-partner', $partners, null, ['class' => 'form-control select2',
-                            'id' => 'filter-partner'])}}
+                                    {{Form::select('filter-partner', $partners, null, ['class' => 'form-control select2',
+                                'id' => 'filter-partner'])}}
                                 </div>
 
                                 <div class="form-group col-md-6" id="txn_type_id" style="display: none">
-                                <select name="txn-type" id="txn_type" class="form-control select2">
-                                    <option value="BANK">BANK</option>
-                                    <option value="CASH">CASH</option>
-                                    <option value="MOBILE">MOBILE</option>
-                                </select>
+                                    <select name="txn-type" id="txn_type" class="form-control select2">
+                                        <option value="BANK">BANK</option>
+                                        <option value="CASH">CASH</option>
+                                        <option value="MOBILE">MOBILE</option>
+                                    </select>
                                 </div>
                                 <div class="form-group col-md-6" id="date_filter_id" style="display: none">
 
-{{--                                <div class="input-group-addon">--}}
-{{--                                    <i class="fa fa-calendar"></i>--}}
-{{--                                </div>--}}
-                                <input type="text" name="from-to" class="form-control" id="date_filter"
-                                       autocomplete="off">
+                                    {{--                                <div class="input-group-addon">--}}
+                                    {{--                                    <i class="fa fa-calendar"></i>--}}
+                                    {{--                                </div>--}}
+                                    <input type="text" name="from-to" class="form-control" id="date_filter"
+                                           autocomplete="off">
                                 </div>
                                 <span class="pull-right">
                                     <input type="submit" class="btn btn-primary" value="Filter">
                                 </span>
                             </div>
-{{--                            </div>--}}
+                            {{--                            </div>--}}
                         </form>
                     </div>
 
                 </div>
-                {{--                <div class="row my-2" id="chart">--}}
-                {{--                    <div class="{{ $chart->options['column_class'] }}">--}}
-                {{--                        <h3>{!! $chart->options['chart_title'] !!}</h3>--}}
-                {{--                        {!! $chart->renderHtml() !!}--}}
-                {{--                    </div>--}}
-                {{--                </div>--}}
                 <br/>
 
                 @include('transactions.table')
@@ -93,25 +82,22 @@
                 if (status) {
                     $("#" + status).show();
                 }
-                    if ($("#filter-parameter-id").val() === 'PARTNER') {
-                        $("#filter-partner").removeAttr('disabled');
-                    }
-                    else {
-                        $("#filter-partner").attr('disabled', 'disabled').val('');
-                    }
+                if ($("#filter-parameter-id").val() === 'PARTNER') {
+                    $("#filter-partner").removeAttr('disabled');
+                } else {
+                    $("#filter-partner").attr('disabled', 'disabled').val('');
+                }
                 if ($("#filter-parameter-id").val() === 'TXN_TYPE') {
                     $("#txn_type").removeAttr('disabled');
-                }
-                else {
+                } else {
                     $("#txn_type").attr('disabled', 'disabled').val('');
                 }
                 if ($("#filter-parameter-id").val() === 'DATE') {
                     $("#date_filter").removeAttr('disabled');
-                }
-                else {
+                } else {
                     $("#date_filter").attr('disabled', 'disabled').val('');
                 }
-                }).trigger('change');
+            }).trigger('change');
 
 
             let searchParams = new URLSearchParams(window.location.search);

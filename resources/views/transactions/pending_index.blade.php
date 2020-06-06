@@ -3,9 +3,7 @@
 @section('content')
     <section class="content-header">
         <h1 class="pull-left"> Pending Transactions</h1>
-        {{--        <h1 class="pull-right">--}}
-        {{--           <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" href="{!! route('transactions.create') !!}">Add New</a>--}}
-        {{--        </h1>--}}
+
     </section>
     <div class="content">
         <div class="clearfix"></div>
@@ -17,31 +15,48 @@
             <div class="box-body">
                 <div class="row">
 
-
                     <div class="col-md-12">
+                        <form>
+
+                            <div class="form-group col-md-4">
+                                <select name="filter-parameter" id="filter-parameter-id" class="form-control select2">
+                                    <option>SELECT FILTER PARAMETER</option>
+                                    <option value="PARTNER" data-relation-id="filter-partner-id">PARTNER</option>
+                                    <option value="TXN_TYPE" data-relation-id="txn_type_id">TRANSACTION TYPE</option>
+                                    <option value="DATE" data-relation-id="date_filter_id">DATE</option>
+                                </select>
+                            </div>
+                        </form>
 
                         <form action="" id="filtersForm">
-                            <div class="input-group">
-                                {{--                                <select name="filter-partner" id="filter_partner" class="form-control mr-2">--}}
-                                {{--                                    <option value=" ">FILTER BY PARTNER</option>--}}
-                                {{--                                @foreach($partners as $partner)--}}
-                                {{--                                        <option value="{{$partner->partner_name}}">{{$partner->partner_name}}</option>--}}
-                                {{--                                    @endforeach--}}
-                                {{--                                </select>--}}
-                                {{--                                <span class="input-group-btn">--}}
-                                {{--            <input type="submit" class="btn btn-primary" value="Filter">--}}
-                                {{--        </span>--}}
-                                {{Form::select('filter-partner', $partners, null, ['class' => 'form-control mr-2'])}}
 
-                                <div class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
+                            {{--                            <div class="col-xs-4 form-inline">--}}
+                            <div class="">
+                                <div class="form-group col-md-6" id="filter-partner-id" style="display:none">
+                                    {{Form::select('filter-partner', $partners, null, ['class' => 'form-control select2',
+                                'id' => 'filter-partner'])}}
                                 </div>
-                                <input type="text" name="from-to" class="form-control mr-2" id="date_filter" autocomplete="off">
-                                <span class="input-group-btn">
-            <input type="submit" class="btn btn-primary" value="Filter">
-{{--                                    <input type="submit" class="btn btn-default" value="Refresh" id="refresh">--}}
-        </span>
+
+                                <div class="form-group col-md-6" id="txn_type_id" style="display: none">
+                                    <select name="txn-type" id="txn_type" class="form-control select2">
+                                        <option value="BANK">BANK</option>
+                                        <option value="CASH">CASH</option>
+                                        <option value="MOBILE">MOBILE</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6" id="date_filter_id" style="display: none">
+
+                                    {{--                                <div class="input-group-addon">--}}
+                                    {{--                                    <i class="fa fa-calendar"></i>--}}
+                                    {{--                                </div>--}}
+                                    <input type="text" name="from-to" class="form-control" id="date_filter"
+                                           autocomplete="off">
+                                </div>
+                                <span class="pull-right">
+                                    <input type="submit" class="btn btn-primary" value="Filter">
+                                </span>
                             </div>
+                            {{--                            </div>--}}
                         </form>
                     </div>
 
@@ -58,15 +73,42 @@
 @endsection
 @section('js')
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
+            $("#filter-parameter-id").change(function () {
+                let status = $("#filter-parameter-id option:selected").data("relation-id");
+
+                //Hide sync message field
+                $("#filter-partner-id, #txn_type_id, #date_filter_id").hide();
+                // $("#filter-partner, #txn_type, #date_filter").attr('disabled', 'disabled').val('');
+                if (status) {
+                    $("#" + status).show();
+                }
+                if ($("#filter-parameter-id").val() === 'PARTNER') {
+                    $("#filter-partner").removeAttr('disabled');
+                } else {
+                    $("#filter-partner").attr('disabled', 'disabled').val('');
+                }
+                if ($("#filter-parameter-id").val() === 'TXN_TYPE') {
+                    $("#txn_type").removeAttr('disabled');
+                } else {
+                    $("#txn_type").attr('disabled', 'disabled').val('');
+                }
+                if ($("#filter-parameter-id").val() === 'DATE') {
+                    $("#date_filter").removeAttr('disabled');
+                } else {
+                    $("#date_filter").attr('disabled', 'disabled').val('');
+                }
+            }).trigger('change');
+
 
             let searchParams = new URLSearchParams(window.location.search);
             let dateInterval = searchParams.get('from-to');
             let filterPartner = searchParams.get('filter-partner');
+            let filterTxnType = searchParams.get('txn-type');
             let selectedPartner = null;
             let start = moment().startOf('month');
             let end = moment();
-            if (filterPartner){
+            if (filterPartner) {
                 selectedPartner = filterPartner;
             }
 
@@ -97,31 +139,10 @@
                     'All time': [moment().subtract(30, 'year').startOf('month'), moment().endOf('month')],
                 }
             });
-            {{--fetch_data();--}}
-
-            {{--function fetch_data(partners = '')--}}
-            {{--{--}}
-            {{--    $('#dataTableBuilder').DataTable({--}}
-            {{--        retrieve:true,--}}
-            {{--        processing: true,--}}
-            {{--        serverSide: true,--}}
-            {{--        ajax: {--}}
-            {{--            url:"{{ route('transactions.index') }}",--}}
-            {{--            data: {'filter-partner':"filter-partner"}--}}
-            {{--        },--}}
-            {{--    });--}}
-            {{--}--}}
-
-            // $('#filter_partner').change(function () {
-            //     var partner = $('#filter_partner').val();
-            //     $('#dataTableBuilder').DataTable().destroy();
-            //
-            //     fetch_data(partner);
-            //
-            // })
-            //
         })
+
     </script>
 
 @endsection
+
 
