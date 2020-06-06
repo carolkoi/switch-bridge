@@ -19,9 +19,6 @@ class TransactionsDataTable extends DataTable
         $dataTable = new EloquentDataTable($query);
 
         return $dataTable
-            ->filter(function ($query){
-                return $query->dateRange();
-            })
             ->addColumn('id', function ($query){
                 return $query->iso_id;
             })
