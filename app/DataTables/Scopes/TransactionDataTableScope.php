@@ -25,7 +25,7 @@ class TransactionDataTableScope implements DataTableScope
             $date1 =strtotime(date('Y-m-d H:i:s', strtotime($date[0])))*1000;
             $date2 =strtotime(date('Y-m-d H:i:s', strtotime($date[1])))*1000;
 
-            return $query->whereBetween('date_time_added', array($date1, $date2));
+            return $query->whereBetween('date_time_modified', array($date1, $date2));
         }else
             return $query;
     }
