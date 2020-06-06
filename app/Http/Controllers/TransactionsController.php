@@ -46,14 +46,19 @@ class TransactionsController extends AppBaseController
 
     }
 
-    public function filterPartner(Request $request, $query)
+    public function filterDate($query, Request $request)
     {
-        if (request()->has('filter-partner')) {
+        $arrStart = explode("/", $request->get('start'));
+        $arrEnd = explode("/", $request->get('end'));
+        $start = Carbon::create($arrStart[2], $arrStart[0], $arrStart[1], 0, 0, 0);
+        $end = Carbon::create($arrEnd[2], $arrEnd[0], $arrEnd[1], 23, 59, 59);
+        dd($start, $end);
+        return $query->whereBetween('date_time_added', array($start, $end));
 
-            return $query->where('req_field123', '=', request()->input('filter-partner'));
-//            return $query->where('req_field123', 'like', "%{$request->get('filter_partner')}%");
-        }else
-            return $query->get();
+//            return $query->where('req_field123', '=', request()->input('filter-partner'));
+////            return $query->where('req_field123', 'like', "%{$request->get('filter_partner')}%");
+//        }else
+//            return $query->get();
     }
 
     /**

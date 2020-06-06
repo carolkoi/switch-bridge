@@ -31,7 +31,7 @@ Route::prefix('all')->group(function () {
     Route::get('failed-transactions', 'FailedTransactionsController@index')->name('failed-transactions.index');
     Route::get('pending-transactions', 'PendingTransactionsController@index')->name('pending-transactions.index');
 });
-Route::get('partner-filter', 'TransactionsController@filterPartner')->name('transactions.partnerfilter');
+Route::get('filter-date', 'TransactionsController@filterDate')->name('transactions.filterdate');
 Route::prefix('charts')->group(function () {
     Route::get('failed-vs-successful', 'ChartsController@index')->name('charts.index');
 });

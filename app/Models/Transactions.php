@@ -2082,6 +2082,19 @@ class Transactions extends Model implements ApprovableInterface
 //        else
             return $query->orderBy('date_time_added', 'desc');
     }
+    public function scopeDateRange($query)
+    {
+        if (request()->has('start') && request()->has('end')) {
+            $arrStart = explode("/", request()->input('start'));
+            $arrEnd = explode("/", request()->input('end'));
+            $start = Carbon::create($arrStart[2], $arrStart[0], $arrStart[1], 0, 0, 0);
+            $end = Carbon::create($arrEnd[2], $arrEnd[0], $arrEnd[1], 23, 59, 59);
+            dd($start, $end);
+            return $query->whereBetween('date_time_added', array($start, $end));
+        }else
+            return $query;
+
+    }
     /**
      * @inheritDoc
      */
