@@ -28,8 +28,6 @@
                         </form>
 
                         <form action="" id="filtersForm">
-
-                            {{--                            <div class="col-xs-4 form-inline">--}}
                             <div class="">
                                 <div class="form-group col-md-6" id="filter-partner-id" style="display:none">
                                     {{Form::select('filter-partner', $partners, null, ['class' => 'form-control select2',
@@ -105,8 +103,8 @@
             let filterPartner = searchParams.get('filter-partner');
             let filterTxnType = searchParams.get('txn-type');
             let selectedPartner = null;
-            let start = moment().startOf('month');
-            let end = moment();
+            let start = moment().startOf('day');
+            let end = moment().endOf('day');
             if (filterPartner) {
                 selectedPartner = filterPartner;
             }
@@ -127,10 +125,10 @@
                     firstDay: 1,
                 },
                 ranges: {
-                    'Today': [moment(), moment().add(1, 'days')],
-                    'Yesterday': [moment().subtract(1, 'days'), moment()],
-                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                    'Today': [moment().startOf('day'), moment().endOf('day')],
+                    'Yesterday': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
+                    'Last 7 Days': [moment().subtract(6, 'days'), moment().startOf('day')],
+                    'Last 30 Days': [moment().subtract(29, 'days'), moment().startOf('day')],
                     'This Month': [moment().startOf('month'), moment().endOf('month')],
                     'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
                     'This Year': [moment().startOf('year'), moment().endOf('year')],
