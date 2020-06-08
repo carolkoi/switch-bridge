@@ -371,7 +371,7 @@ class ApiTransaction extends Model
     use SoftDeletes;
 
     public $table = 'tbl_trn_transactions';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -532,8 +532,12 @@ class ApiTransaction extends Model
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
-    
+    public static function unique(string $string)
+    {
+    }
+
+
 }
