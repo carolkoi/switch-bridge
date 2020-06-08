@@ -23,18 +23,10 @@ class TransactionDataTableScope implements DataTableScope
         }elseif (request()->has('from-to')) {
             $date = explode(" - ", request()->input('from-to', ""));
 //            dd(date('Y-m-d H:i:s', strtotime($date[0])));
-            $time = time();
-            $date = strtotime('+3 hours', $time);
-//            dd(date('d-m-y H:i', $time), date('d-m-y H:i', $date));
-//            dd(time(), date('d-m-y H:i', time()), strtotime(now()), date('d-m-y H:i', strtotime(now())));
-
-            $date1 = strtotime($date[0]);
-            $date2 = strtotime($date[1]);
-//            dd(date('d-m-y H:i:s', $date1), date('d-m-y H:i:s', $date2));
-            $start = strtotime('+3 hours', $date1);
-            $end = strtotime('+3 hours', $date2);
-//            dd(date('d-m-y H:i', $date1), date('d-m-y H:i', $start), date('d-m-y H:i', $date2),  date('d-m-y H:i', $end));
-            return $query->whereBetween('date_time_modified', array($start, $end));
+            $date1 =strtotime(date('Y-m-d H:i:s', strtotime('+3',strtotime($date[0]))))*1000;
+            $date2 =strtotime(date('Y-m-d H:i:s', strtotime('+3',strtotime($date[1]))))*1000;
+//            dd($date1, $date2 );
+            return $query->whereBetween('date_time_modified', array($date1, $date2));
         }else
             return $query;
     }
