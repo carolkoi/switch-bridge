@@ -104,7 +104,7 @@ class ApproveRequestController extends AppBaseController
             $transaction = Transactions::where('iso_id', $kdata[0]['model_id'])->update([
                 'res_field48' => $sessionTxn->txn_status,
                 'res_field44' => $sessionTxn->comments,
-//                'date_time_modified' => strtotime('now'),
+                'date_time_modified' => strtotime(now())*1000,
             ]);
         }
         else

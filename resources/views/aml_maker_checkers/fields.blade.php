@@ -1,7 +1,7 @@
 
 <!-- Customer Idnumber Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('customer_idnumber', 'Customer Id Number:') !!}
+    {!! Form::label('customer_idnumber', 'Customer ID / Account Number:') !!}
     {!! Form::text('customer_idnumber', null, ['class' => 'form-control']) !!}
 </div>
 

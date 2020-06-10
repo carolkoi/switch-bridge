@@ -145,6 +145,8 @@ class TransactionsController extends AppBaseController
     public function update($iso_id, UpdateTransactionsRequest $request)
     {
         $transactions = Transactions::where('iso_id', $iso_id)->first();
+//        dd(strtotime(now())*1000, date('Y-m-d H:i', strtotime(now())), $transactions->date_time_modified, date('Y-m-d H:i', $transactions->date_time_modified/1000));
+
         $input = $request->all();
         $hyphen = "-";
         $appended = $transactions->res_field37 .= $hyphen .= substr(md5(microtime()),rand(0,26),1);
