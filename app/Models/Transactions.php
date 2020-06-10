@@ -2082,6 +2082,7 @@ class Transactions extends Model implements ApprovableInterface
 //        else
             return $query->orderBy('date_time_added', 'desc');
     }
+
     /**
      * @inheritDoc
      */

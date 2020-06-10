@@ -19,57 +19,57 @@ class FailedTransactionsDataTable extends DataTable
         $dataTable = new EloquentDataTable($query);
 
         return $dataTable
-            ->addColumn('partner', function ($query){
+            ->addColumn('partner', function ($query) {
                 return $query->req_field123;
             })
             ->addColumn('txn_time', 'transactions.datatables_added')
-            ->addColumn('updated_at', 'transactions.datatables_modified')
-            ->addColumn('txn_status', function ($query){
+            ->addColumn('mod_time', 'transactions.datatables_modified')
+            ->addColumn('txn_status', function ($query) {
                 return $query->res_field48;
             })
-            ->addColumn('txn_type', function ($query){
+            ->addColumn('txn_type', function ($query) {
                 return $query->req_field41;
             })
-            ->addColumn('sync_msg_ref', function ($query){
+            ->addColumn('sync_msg_ref', function ($query) {
                 return $query->sync_message ? $query->sync_message : "N/A";
             })
-            ->addColumn('primary_txn_ref', function ($query){
+            ->addColumn('primary_txn_ref', function ($query) {
                 return $query->req_field34;
             })
-            ->addColumn('txn_no', function ($query){
+            ->addColumn('txn_no', function ($query) {
                 return $query->req_field37;
             })
-            ->addColumn('amt_sent', function ($query){
-                return $query->req_field49." ".intval($query->req_field4)/100;
+            ->addColumn('amt_sent', function ($query) {
+                return $query->req_field49 . " " . intval($query->req_field4) / 100;
             })
-            ->addColumn('s_p', function ($query){
+            ->addColumn('s_p', function ($query) {
                 return $query->req_field125;
             })
-            ->addColumn('cur', function ($query){
+            ->addColumn('cur', function ($query) {
                 return $query->req_field50;
             })
-            ->addColumn('amt_received', function ($query){
-                return intval($query->req_field5)/100;
+            ->addColumn('amt_received', function ($query) {
+                return intval($query->req_field5) / 100;
             })
-            ->addColumn('sender', function ($query){
-               return $query->req_field105;
+            ->addColumn('sender', function ($query) {
+                return $query->req_field105;
             })
-            ->addColumn('receiver', function ($query){
+            ->addColumn('receiver', function ($query) {
                 return $query->req_field108;
             })
-            ->addColumn('receiver_acc/No', function ($query){
+            ->addColumn('receiver_acc/No', function ($query) {
                 return $query->req_field102;
             })
-            ->addColumn('resps', function ($query){
+            ->addColumn('resps', function ($query) {
                 return $query->res_field44;
             })
             ->escapeColumns('resps')
-            ->addColumn('receiver_bank', function ($query){
+            ->addColumn('receiver_bank', function ($query) {
                 return $query->req_field112;
             })
             ->addColumn('modified_at', 'transactions.datatables_modified')
             ->addColumn('action', 'transactions.datatables_actions')
-            ->rawColumns(['modified_at', 'txn_time','action']);
+            ->rawColumns(['modified_at', 'txn_time', 'action']);
 
     }
 
@@ -97,13 +97,13 @@ class FailedTransactionsDataTable extends DataTable
             ->addAction(['width' => '120px', 'printable' => false])
             ->parameters([
                 'lengthMenu' => [
-                    [ 10, 25, 50, -1 ],
-                    [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+                    [10, 25, 50, -1],
+                    ['10 rows', '25 rows', '50 rows', 'Show all']
                 ],
-                'dom'       => 'Bfrtip',
+                'dom' => 'Bfrtip',
                 'stateSave' => true,
-                'order'     => [[0, 'desc']],
-                'buttons'   => [
+                'order' => [[0, 'desc']],
+                'buttons' => [
                     ['extend' => 'pageLength', 'className' => 'btn btn-default btn-sm no-corner',],
 
 //                    ['extend' => 'create', 'className' => 'btn btn-default btn-sm no-corner',],
@@ -111,6 +111,8 @@ class FailedTransactionsDataTable extends DataTable
                     ['extend' => 'print', 'className' => 'btn btn-default btn-sm no-corner',],
 //                    ['extend' => 'reset', 'className' => 'btn btn-default btn-sm no-corner',],
                     ['extend' => 'reload', 'className' => 'btn btn-default btn-sm no-corner',],
+                    ['extend' => 'colvis', 'className' => 'btn btn-default btn-sm no-corner',],
+
                 ],
             ]);
     }
@@ -123,33 +125,24 @@ class FailedTransactionsDataTable extends DataTable
     protected function getColumns()
     {
         return [
-//            'id' => [
-//                'visible' => false
-//            ],
-                'partner' => ['name' => 'req_field123'],
-                'txn_time' => ['name' => 'date_time_added'],
-//                'update_at',
-                'txn_status' => ['name' => 'res_field48'],
-                'txn_type'  => ['name' => 'req_field41'],
+            'partner' => ['name' => 'req_field123'],
+            'txn_time' => ['name' => 'date_time_added'],
+            'mod_time' => ['name' => 'date_time_modified'],
+            'txn_status' => ['name' => 'res_field48'],
+            'txn_type' => ['name' => 'req_field41'],
             'modified_at',
-            'primary_txn_ref'  => ['name' => 'req_field34'],
+            'primary_txn_ref' => ['name' => 'req_field34'],
             'sync_msg_ref' => ['name' => 'sync_message'],
             'txn_no' => ['name' => 'req_field37'],
-//            'req_field49',
-                'amt_sent'  => ['name' => 'req_field49'],
+            'amt_sent' => ['name' => 'req_field49'],
             'cur' => ['name' => 'req_field50'],
-            'amt_received'  => ['name' => 'req_field5'],
-                'sender'  => ['name' => 'req_field105'],
-////        'req_field105',
-                'receiver'  => ['name' => 'req_field108'],
-                'receiver_acc/No'  => ['name' => 'req_field102'],
-                'resps'  => ['name' => 'res_field44'],
-//            'res_field39',
-                's_p'  => ['name' => 'req_field125'],
-                'receiver_bank'  => ['name' => 'req_field112'],
-//            'aml_listed',
-//            'posted'
-
+            'amt_received' => ['name' => 'req_field5'],
+            'sender' => ['name' => 'req_field105'],
+            'receiver' => ['name' => 'req_field108'],
+            'receiver_acc/No' => ['name' => 'req_field102'],
+            'resps' => ['name' => 'res_field44'],
+            's_p' => ['name' => 'req_field125'],
+            'receiver_bank' => ['name' => 'req_field112'],
         ];
     }
 

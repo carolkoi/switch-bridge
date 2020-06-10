@@ -23,7 +23,7 @@ class PendingTransactionsDataTable extends DataTable
                 return $query->req_field123;
             })
             ->addColumn('txn_time', 'transactions.datatables_added')
-            ->addColumn('updated_at', 'transactions.datatables_modified')
+            ->addColumn('mod_time', 'transactions.datatables_modified')
             ->addColumn('txn_status', function ($query){
                 return $query->res_field48;
             })
@@ -109,6 +109,8 @@ class PendingTransactionsDataTable extends DataTable
                     ['extend' => 'print', 'className' => 'btn btn-default btn-sm no-corner',],
 //                    ['extend' => 'reset', 'className' => 'btn btn-default btn-sm no-corner',],
                     ['extend' => 'reload', 'className' => 'btn btn-default btn-sm no-corner',],
+                    ['extend' => 'colvis', 'className' => 'btn btn-default btn-sm no-corner',],
+
                 ],
             ]);
     }
@@ -121,33 +123,26 @@ class PendingTransactionsDataTable extends DataTable
     protected function getColumns()
     {
         return [
-//            'id' => [
-//                'visible' => false
-//            ],
+
             'partner' => ['name' => 'req_field123'],
             'txn_time' => ['name' => 'date_time_added'],
+            'mod_time' => ['name' => 'date_time_modified'],
             'txn_status' => ['name' => 'res_field48'],
-//            'updated_at',
             'txn_type'  => ['name' => 'req_field41'],
             'modified_at',
             'primary_txn_ref'  => ['name' => 'req_field34'],
             'sync_msg_ref' => ['name' => 'sync_message'],
             'txn_no' => ['name' => 'req_field37'],
-//            'req_field49',
             'amt_sent'  => ['name' => 'req_field49'],
             'cur' => ['name' => 'req_field50'],
             'amt_received'  => ['name' => 'req_field5'],
             'sender'  => ['name' => 'req_field105'],
-////        'req_field105',
             'receiver'  => ['name' => 'req_field108'],
             'receiver_acc/No'  => ['name' => 'req_field102'],
             'resps'  => ['name' => 'res_field44'],
 //            'res_field39',
             's_p'  => ['name' => 'req_field125'],
             'receiver_bank'  => ['name' => 'req_field112'],
-//            'aml_listed',
-//            'posted'
-
         ];
 
     }

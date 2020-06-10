@@ -41,6 +41,9 @@ class ApprovalsDataTable extends DataTable
             ->addColumn('txn_ref', function ($query){
                 return $query->approvable->req_field37;
             })
+            ->addColumn('primary_txn_ref', function ($query){
+                return $query->approvable->req_field34;
+            })
             ->addColumn('approval_type', function ($query){
                 return $query->workflow->name;
             })
@@ -103,18 +106,22 @@ class ApprovalsDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'approval_type',
+            'approval_type' => ['visible' => false],
             'requested_by' => [
                 'name' => 'user.name'
             ],
             'sent_at',
-            'stage',
+//            'stage',
             'receiver' => [
                 'name' => 'transaction.req_field108'
             ],
             'txn_ref' => [
                 'name' => 'transaction.req_field37'
             ],
+            'primary_txn_ref' => [
+                'name' => 'transaction.req_field34'
+            ],
+
             'model_id' => ['visible' => false],
             'model_type' => ['visible' => false],
             'collection_name'=>['visible' => false],

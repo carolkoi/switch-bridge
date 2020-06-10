@@ -90,13 +90,8 @@ class AmlMakerCheckerController extends AppBaseController
             $input['added_by'] = Auth::user()->id;
             $input['modified_by'] = Auth::user()->id;
 
-            $input['date_time_added'] = time();
-//        dd($input);
+            $input['date_time_added'] = strtotime(now())*1000;
             $amlMakerChecker = $this->amlMakerCheckerRepository->create($input);
-//        dd($amlMakerChecker);
-            foreach ($request->input('blacklist_source', []) as $file) {
-                $amlMakerChecker->addMedia(storage_path('tmp/uploads/' . $file))->toMediaCollection('document');
-            }
 
             Flash::success('Member blacklist record saved successfully.');
 
@@ -163,7 +158,7 @@ class AmlMakerCheckerController extends AppBaseController
             return redirect(route('aml-listing.index'));
         }
         $input = $request->except(['_method', '_token', 'blacklist_source']);
-        $input['date_time_modified'] = time();
+        $input['date_time_modified'] = strtotime(now())*1000;
         if ($input['blacklist_status'] == 'WHITE-LISTED'){
             $input['blacklisted'] = false;
             $amlMakerChecker = AmlMakerChecker::where('blacklist_id', $blacklist_id)->update($input);

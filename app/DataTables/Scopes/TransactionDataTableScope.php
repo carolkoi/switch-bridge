@@ -14,13 +14,48 @@ class TransactionDataTableScope implements DataTableScope
      */
     public function apply($query)
     {
-        if (request()->has('from-to') || request()->input('filter-partner')) {
+         if (request()->has('filter-partner') && request()->has('txn-type')) {
+            $txnType = request()->input('txn-type');
+            $partner = request()->input('filter-partner');
+            return $query->where('req_field123', $partner)->where('req_field41', 'LIKE', "%$txnType%");
+        } elseif (request()->has('filter-partner') && request()->has('from-to')) {
             $partner = request()->input('filter-partner');
             $date = explode(" - ", request()->input('from-to', ""));
-            $date1 = strtotime(trim($date[0])) * 1000;
-            $date2 = strtotime(trim($date[1])) * 1000;
-            return $query->whereBetween('date_time_added', array($date1, $date2))->where('req_field123', $partner);
-        }else
+            $date1 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[0])))) * 1000;
+            $date2 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[1])))) * 1000;
+            return $query->where('req_field123', $partner)->whereBetween('date_time_modified', array($date1, $date2));
+        }
+        elseif (request()->has('filter-partner')) {
+//            $txnType = request()->input('txn-type');
+            $partner = request()->input('filter-partner');
+            return $query->where('req_field123', $partner);
+        }elseif (request()->has('txn-type')) {
+            $txnType = request()->input('txn-type');
+            return $query->where('req_field41', 'LIKE', "%$txnType%");
+        }
+        elseif (request()->has('txn-type') && request()->has('from-to')) {
+            $txnType = request()->input('txn-type');
+
+            $date = explode(" - ", request()->input('from-to', ""));
+            $date1 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[0])))) * 1000;
+            $date2 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[1])))) * 1000;
+            return $query->where('req_field41', 'LIKE', "%$txnType%")->whereBetween('date_time_modified', array($date1, $date2));
+        }
+        elseif (request()->has('from-to')) {
+            $date = explode(" - ", request()->input('from-to', ""));
+            $date1 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[0])))) * 1000;
+            $date2 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[1])))) * 1000;
+            return $query->whereBetween('date_time_modified', array($date1, $date2));
+        } elseif (request()->has('filter-partner') && request()->has('from-to') && request()->has('txn-type')) {
+            $partner = request()->input('filter-partner');
+            $txnType = request()->input('txn-type');
+            $date = explode(" - ", request()->input('from-to', ""));
+            $date1 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[0])))) * 1000;
+            $date2 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[1])))) * 1000;
+            return $query->where('req_field123', $partner)
+                ->where('req_field41', 'LIKE', "%$txnType%")
+                ->whereBetween('date_time_modified', array($date1, $date2));
+        } else
             return $query;
     }
 }
