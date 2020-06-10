@@ -22,7 +22,7 @@ class AmlMakerCheckerDataTable extends DataTable
         ->addColumn('id', function($query){
         return $query->blacklist_id;
         })
-        ->addColumn('customer_id_number', function($query){
+        ->addColumn('customer_id_/_account_no', function($query){
         return $query->customer_idnumber;
         })
         ->addColumn('reason', function($query){
@@ -91,7 +91,7 @@ class AmlMakerCheckerDataTable extends DataTable
            // 'source_ip',
             //'latest_ip',
             //'partner_id',
-           'customer_id_number' => [
+           'customer_id_/_account_no' => [
            'name' => 'customer_idnumber'
            ],
             //'transaction_number',
