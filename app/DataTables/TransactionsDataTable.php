@@ -73,9 +73,9 @@ class TransactionsDataTable extends DataTable
             ->rawColumns(['modified_at', 'txn_time', 'action'])
         ->setRowAttr([
                 'style' => function($query){
-//                dd($query->res_field48);
                     return $query->res_field48 == "FAILED" ? 'color: #ff0000;' :
-                        ( $query->res_field48 == "COMPLETED" ? 'color: #2E8B57;' : null);
+                        ( $query->res_field48 == "COMPLETED" ? 'color: #2E8B57;' :
+                            $query->res_field48 == "UPLOAD-FAILED" ? 'color: #ff0000;' : null);
                 }
             ]);
     }
@@ -117,6 +117,8 @@ class TransactionsDataTable extends DataTable
                     ['extend' => 'print', 'className' => 'btn btn-default btn-sm no-corner',],
 //                    ['extend' => 'reset', 'className' => 'btn btn-default btn-sm no-corner',],
                     ['extend' => 'reload', 'className' => 'btn btn-default btn-sm no-corner',],
+                    ['extend' => 'colvis', 'className' => 'btn btn-default btn-sm no-corner',],
+
                 ],
             ]);
     }
