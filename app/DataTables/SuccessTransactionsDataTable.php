@@ -23,7 +23,7 @@ class SuccessTransactionsDataTable extends DataTable
                 return $query->req_field123;
             })
             ->addColumn('txn_time', 'transactions.datatables_added')
-            ->addColumn('mod_time', 'transactions.datatables_modified')
+            ->addColumn('txn_proc_time', 'transactions.datatables_modified')
             ->addColumn('txn_status', function ($query){
                 return $query->res_field48;
             })
@@ -81,7 +81,7 @@ class SuccessTransactionsDataTable extends DataTable
      */
     public function query(Transactions $model)
     {
-        return $model->orderBy('date_time_added', 'desc')->where('res_field48', 'COMPLETED')->newQuery();
+        return $model->orderBy('date_time_modified', 'desc')->where('res_field48', 'COMPLETED')->newQuery();
     }
 
     /**
@@ -126,8 +126,8 @@ class SuccessTransactionsDataTable extends DataTable
 //                'visible' => false
 //            ],
             'partner' => ['name' => 'req_field123'],
-            'txn_time' => ['name' => 'date_time_added'],
-            'mod_time' => ['name' => 'date_time_modified'],
+//            'txn_time' => ['name' => 'date_time_added'],
+            'txn_proc_time' => ['name' => 'date_time_modified'],
             'txn_status' => ['name' => 'res_field48'],
             'txn_type'  => ['name' => 'req_field41'],
             'primary_txn_ref'  => ['name' => 'req_field34'],
