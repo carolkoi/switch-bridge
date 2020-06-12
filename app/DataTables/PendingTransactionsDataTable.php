@@ -69,7 +69,12 @@ class PendingTransactionsDataTable extends DataTable
             })
             ->addColumn('modified_at', 'transactions.datatables_modified')
             ->addColumn('action', 'transactions.datatables_actions')
-            ->rawColumns(['modified_at', 'txn_time', 'action']);
+            ->rawColumns(['modified_at', 'txn_time', 'action'])
+            ->setRowAttr([
+                'style' => function($query){
+                    return $query->res_field48 == "UPLOAD-FAILED" ? 'color: #ff0000;' : null;
+                }
+            ]);
     }
 
     /**
