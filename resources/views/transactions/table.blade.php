@@ -15,7 +15,7 @@
         });
             setInterval( function () {
             table.ajax.reload(); // user paging is not reset on reload
-        }, 60000 );
+        }, 60000);
         });
     </script>
 

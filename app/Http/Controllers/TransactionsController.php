@@ -142,6 +142,7 @@ class TransactionsController extends AppBaseController
             return redirect(route('transactions.index'));
         }
         Transactions::where('iso_id', $iso_id)->update(['modified_by' => Auth::user()->id]);
+
             $sessionTxn = SessionTxn::updateOrCreate([
                 'txn_id' => $transactions->iso_id,
             ],

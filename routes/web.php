@@ -111,3 +111,12 @@ Route::resource('sessionTxns', 'SessionTxnController');
 
 
 Route::resource('partners', 'PartnerController');
+
+
+Route::resource('messageTemplates', 'messageTemplateController');
+
+Route::resource('messageTemplates', 'MessageTemplateController');
+
+Route::resource('messages', 'MessageController');
+
+Route::resource('outboxes', 'OutboxController');

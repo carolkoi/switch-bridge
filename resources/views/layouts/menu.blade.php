@@ -122,3 +122,15 @@
 {{--    <a href="{{ route('partners.index') }}"><i class="fa fa-edit"></i><span>Partners</span></a>--}}
 {{--</li>--}}
 
+<li class="{{ Request::is('messageTemplates*') ? 'active' : '' }}">
+    <a href="{{ route('messageTemplates.index') }}"><i class="fa fa-edit"></i><span>Message Templates</span></a>
+</li>
+
+<li class="{{ Request::is('messages*') ? 'active' : '' }}">
+    <a href="{{ route('messages.index') }}"><i class="fa fa-edit"></i><span>Messages</span></a>
+</li>
+
+<li class="{{ Request::is('outboxes*') ? 'active' : '' }}">
+    <a href="{{ route('outboxes.index') }}"><i class="fa fa-edit"></i><span>Outboxes</span></a>
+</li>
+
