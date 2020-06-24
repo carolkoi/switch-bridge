@@ -94,7 +94,9 @@ class MessageTemplateDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'message_type',
+            'message_type' => [
+                'name' => 'messagetype'
+            ],
             'english_msg',
             'kiswahili_msg',
             'priority',

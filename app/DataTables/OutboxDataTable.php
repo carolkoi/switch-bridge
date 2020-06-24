@@ -28,6 +28,15 @@ class OutboxDataTable extends DataTable
             ->addColumn('message', function ($query){
                 return $query->message['message'];
             })
+            ->addColumn('sent_to', function ($query){
+                return $query->message['mobilenumber'];
+            })
+            ->editColumn('datetimeadded', function ($query){
+                return date('Y-m-d H:i:s', strtotime($query->datetimeadded));
+            })
+            ->editColumn('datetimesent', function ($query){
+                return date('Y-m-d H:i:s', strtotime($query->datetimesent));
+            })
             ->addColumn('action', 'outboxes.datatables_actions');
     }
 
@@ -75,17 +84,20 @@ class OutboxDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'id',
-            'messagetype',
+//            'id',
+            'messagetype' => [
+                'name' => 'messageType.messagetype'
+            ],
             'message',
+            'sent_to',
             'messagestatus',
             'messagepriority',
-            'datetimesent',
             'datetimeadded',
-            'addedby',
-            'ipaddress',
+            'datetimesent',
+//            'addedby',
+//            'ipaddress',
             'attempts',
-            'record_version'
+//            'record_version'
         ];
     }
 

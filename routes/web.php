@@ -120,3 +120,4 @@ Route::resource('messageTemplates', 'MessageTemplateController');
 Route::resource('messages', 'MessageController');
 
 Route::resource('outboxes', 'OutboxController');
+Route::get('customer-messages/{phone_no}', 'MessageController@customerMessages')->name('messages.customer');

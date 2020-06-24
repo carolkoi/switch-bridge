@@ -28,6 +28,9 @@ class MessageDataTable extends DataTable
             ->editColumn('messagestatus', function ($query){
                 return $query->outbox['messagestatus'];
             })
+            ->editColumn('datetimeadded', function ($query){
+                return date('Y-m-d H:i:s', strtotime($query->datetimeadded));
+            })
             ->addColumn('action', 'messages.datatables_actions');
     }
 
@@ -75,18 +78,20 @@ class MessageDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'messagetype',
-            'messageoutboxid',
+            'messagetype' => [
+                'name' => 'messageType.messagetype'
+            ],
+//            'messageoutboxid',
             'mobilenumber',
             'messagelanguage',
             'message',
 //            'contents',
             'messagestatus',
             'datetimeadded',
-            'addedby',
-            'ipaddress',
+//            'addedby',
+//            'ipaddress',
             'source',
-            'record_version'
+//            'record_version'
         ];
     }
 

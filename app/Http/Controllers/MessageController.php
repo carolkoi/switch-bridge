@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\MessageDataTable;
+use App\DataTables\Scopes\CustMessageScope;
 use App\Http\Requests;
 use App\Http\Requests\CreateMessageRequest;
 use App\Http\Requests\UpdateMessageRequest;
+use App\Models\Message;
 use App\Repositories\MessageRepository;
 use App\Http\Controllers\AppBaseController;
 use Flash;
@@ -14,6 +16,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 use Response;
+use DataTables;
 
 class MessageController extends AppBaseController
 {
@@ -151,5 +154,19 @@ class MessageController extends AppBaseController
         Flash::success('Message deleted successfully.');
 
         return redirect(route('messages.index'));
+    }
+
+    public function customerMessages(MessageDataTable $messageDataTable, $phone_no)
+    {
+//        dd($phone_no);
+        return $messageDataTable->addScope(new CustMessageScope($phone_no))->render('messages.customer-index', ['receiver_no' => $phone_no]);
+
+    }
+    public function getCustomerMessages($phone_no)
+    {
+//        $custMessages = Message::where('mobilenumber', $phone_no)->get();
+//        dd($custMessages);
+//        return view('messages.customer-index');
+        return DataTables::of(Message::query())->make(true);
     }
 }

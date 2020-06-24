@@ -2,9 +2,12 @@
 @if($res_field48 === "FAILED"
 OR (\App\Models\SessionTxn::where('txn_id', $iso_id)->exists() == true && (\WizPack\Workflow\Models\Approvals::where('model_id', $iso_id)->first()['approved']) == false)
 OR Auth::check() && auth()->user()->cannot('Can Update Transaction'))
+    <div class='btn-group'>
     <a href="{{ route('transactions.show', $iso_id) }}" class='btn btn-primary btn-sm'>
         <i class="glyphicon glyphicon-eye-open"></i>
     </a>
+    <a href="" class="btn btn-warning btn-sm"> <i class="glyphicon glyphicon-envelope"></i></a>
+    </div>
 @elseif(Auth::check() && auth()->user()->can('Can Update Transaction') OR ($req_field41 === "CASH" && $res_field48 === "AML-APPROVED") OR  $res_field48 === "AML-LISTED")
 
     <div class='btn-group'>
@@ -14,5 +17,6 @@ OR Auth::check() && auth()->user()->cannot('Can Update Transaction'))
     <a href="{{ route('transactions.edit', $iso_id) }}" class='btn btn-default btn-sm'>
         <i class="glyphicon glyphicon-edit"></i>
     </a>
-</div>
+        <a href="{{route('messages.customer', $req_field102)}}" class="btn btn-warning btn-sm"> <i class="glyphicon glyphicon-envelope"></i></a>
+    </div>
 @endif
