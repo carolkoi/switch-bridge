@@ -107,7 +107,7 @@ class SessionTxn extends Model
     public static $rules = [
         'txn_id' => 'required',
         'orig_txn_no' => 'required',
-        'appended_txn_no' => 'required|unique:txn_session',
+//        'appended_txn_no' => 'required|unique:txn_session',
         'txn_status' => 'required',
         'comments' => 'required'
     ];

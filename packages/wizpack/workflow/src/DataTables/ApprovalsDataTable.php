@@ -38,7 +38,7 @@ class ApprovalsDataTable extends DataTable
             ->addColumn('receiver', function ($query){
                 return $query->approvable->req_field108;
             })
-            ->addColumn('txn_ref', function ($query){
+            ->addColumn('txn_no', function ($query){
                 return $query->approvable->req_field37;
             })
             ->addColumn('primary_txn_ref', function ($query){
@@ -115,7 +115,7 @@ class ApprovalsDataTable extends DataTable
             'receiver' => [
                 'name' => 'transaction.req_field108'
             ],
-            'txn_ref' => [
+            'txn_no' => [
                 'name' => 'transaction.req_field37'
             ],
             'primary_txn_ref' => [

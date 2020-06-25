@@ -19,6 +19,7 @@ use Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
+use DB;
 
 class TransactionsController extends AppBaseController
 {
@@ -133,8 +134,9 @@ class TransactionsController extends AppBaseController
 //        dd(strtotime(now())*1000, date('Y-m-d H:i', strtotime(now())), $transactions->date_time_modified, date('Y-m-d H:i', $transactions->date_time_modified/1000));
 
         $input = $request->all();
-        $hyphen = "-";
-        $appended = $transactions->res_field37 .= $hyphen .= substr(md5(microtime()),rand(0,26),1);
+//        $hyphen = "-";
+//        $plus = "+";
+//        $appended = $transactions->res_field37 .= $hyphen .= substr(md5(microtime()),rand(0,26),1);
 
         if (empty($transactions)) {
             Flash::error('Transactions not found');
@@ -142,14 +144,16 @@ class TransactionsController extends AppBaseController
             return redirect(route('transactions.index'));
         }
         Transactions::where('iso_id', $iso_id)->update(['modified_by' => Auth::user()->id]);
-
+//        if ($transactions->res_field37 == $appended){
+//            $appended = $transactions->res_field37 .= $plus .= substr(md5(microtime()),rand(0,26),1);
+//        }
             $sessionTxn = SessionTxn::updateOrCreate([
                 'txn_id' => $transactions->iso_id,
             ],
                 [
                 'txn_id' => $transactions->iso_id,
                 'orig_txn_no' => $input['res_field37'],
-                'appended_txn_no' => $appended,
+//                'appended_txn_no' => $appended,
                 'txn_status' => $input['res_field48'],
                 'comments' => $input['res_field44'],
                 'sync_message' => $request->has('sync_message') ? $input['sync_message'] : null,

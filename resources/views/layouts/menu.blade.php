@@ -121,16 +121,27 @@
 {{--<li class="{{ Request::is('partners*') ? 'active' : '' }}">--}}
 {{--    <a href="{{ route('partners.index') }}"><i class="fa fa-edit"></i><span>Partners</span></a>--}}
 {{--</li>--}}
+<li class="divider" style="color:white; padding: 15px"><span><b>Notifications / Alerts</b></span></li>
+<li class="treeview {{ Request::is('notifications*') ? 'active menu-open' : '' }}">
+    <a class="dropdown-toggle" href="#">
+        <span class="glyphicon glyphicon-alert"></span><span>Notifications</span>
+        <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+    </a>
+    <ul class="treeview-menu">
+        <li class="{{ Request::is('notifications/messageTemplates*') ? 'active' : '' }}">
+            <a href="{{ route('messageTemplates.index') }}"><i class="fa fa-envelope-square"></i><span>Message Templates</span></a>
+        </li>
 
-<li class="{{ Request::is('messageTemplates*') ? 'active' : '' }}">
-    <a href="{{ route('messageTemplates.index') }}"><i class="fa fa-edit"></i><span>Message Templates</span></a>
-</li>
+        <li class="{{ Request::is('notifications/messages*') ? 'active' : '' }}">
+            <a href="{{ route('messages.index') }}"><i class="fa fa-envelope"></i><span>Messages</span></a>
+        </li>
 
-<li class="{{ Request::is('messages*') ? 'active' : '' }}">
-    <a href="{{ route('messages.index') }}"><i class="fa fa-edit"></i><span>Messages</span></a>
-</li>
+        <li class="{{ Request::is('notifications/outboxes*') ? 'active' : '' }}">
+            <a href="{{ route('outboxes.index') }}"><i class="fa fa-envelope-open-o"></i><span>Outboxes</span></a>
+        </li>
+    </ul>
 
-<li class="{{ Request::is('outboxes*') ? 'active' : '' }}">
-    <a href="{{ route('outboxes.index') }}"><i class="fa fa-edit"></i><span>Outboxes</span></a>
-</li>
+
 

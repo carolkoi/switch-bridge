@@ -12,7 +12,7 @@
 {{--</div>--}}
 <div class="form-group col-sm-6" style="padding-top: 50px">
     {!! Form::label('messagepriority', 'Message Priority:') !!}
-    {!! Form::select('messagepriority',array('0'=>'NEVER SENT','1'=>'ALWAYS SENT', '2'=>'SENT BEFORE'), null, ['class' => 'form-control select2']) !!}
+    {!! Form::select('messagepriority',array('0'=>'0','1'=>'1', '2'=>'2'), null, ['class' => 'form-control select2']) !!}
 </div>
 
 <!-- Eng Message Field -->

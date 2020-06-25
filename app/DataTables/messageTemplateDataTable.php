@@ -24,7 +24,7 @@ class MessageTemplateDataTable extends DataTable
             ->addColumn('id', function ($query){
                 return $query->messagetypeid;
             })
-            ->addColumn('message_type', function($query){
+            ->addColumn('messagetype', function($query){
                 return $query->messagetype;
             })
             ->addColumn('english_msg', function ($query){
@@ -94,7 +94,7 @@ class MessageTemplateDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'message_type' => [
+            'messagetype' => [
                 'name' => 'messagetype'
             ],
             'english_msg',

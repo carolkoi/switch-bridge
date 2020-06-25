@@ -113,11 +113,15 @@ Route::resource('sessionTxns', 'SessionTxnController');
 Route::resource('partners', 'PartnerController');
 
 
-Route::resource('messageTemplates', 'messageTemplateController');
+//Route::resource('messageTemplates', 'messageTemplateController');
+Route::prefix('notifications')->group(function () {
+    Route::resource('messageTemplates', 'MessageTemplateController');
 
-Route::resource('messageTemplates', 'MessageTemplateController');
+    Route::resource('messages', 'MessageController');
 
-Route::resource('messages', 'MessageController');
+    Route::resource('outboxes', 'OutboxController');
 
-Route::resource('outboxes', 'OutboxController');
+});
+
+
 Route::get('customer-messages/{phone_no}', 'MessageController@customerMessages')->name('messages.customer');

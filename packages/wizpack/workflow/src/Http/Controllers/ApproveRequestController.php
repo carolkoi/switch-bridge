@@ -17,6 +17,7 @@ use League\Fractal\Resource\Collection;
 use Laracasts\Flash\Flash;
 use League\Fractal\Manager;
 use Prettus\Validator\Exceptions\ValidatorException;
+use DB;
 
 class ApproveRequestController extends AppBaseController
 {
@@ -70,9 +71,11 @@ class ApproveRequestController extends AppBaseController
         $stageId = $workflowStageToBeApproved['workflow_stage_type_id'] ?: $stageId;
         $txn = Transactions::where('iso_id', $kdata[0]['model_id'])->first();
         $sessionTxn = SessionTxn::where('txn_id', $kdata[0]['model_id'])->first();
+        $uniqRef= DB::select('SELECT fn_generate_ref(?)', [$txn->res_field37]);
+//        dd($uniqRef[0]->fn_generate_ref);
         if($txn->res_field48 == "UPLOAD-FAILED" && $sessionTxn->txn_status == "AML-APPROVED"){
             $api_txn = ApiTransaction::where('transaction_number', $txn->req_field37)->update([
-                'transaction_number' => $sessionTxn->appended_txn_no,
+                'transaction_number' => $uniqRef[0]->fn_generate_ref,
                 'synced' => false,
             ]);
             $transaction = Transactions::where('iso_id', $kdata[0]['model_id'])->update([
@@ -83,7 +86,7 @@ class ApproveRequestController extends AppBaseController
                 'received' => false,
                 'res_field39' => '10',
                 'aml_listed' => false,
-                'req_field37' => $sessionTxn->appended_txn_no,
+                'req_field37' => $uniqRef[0]->fn_generate_ref,
                 'sync_message' => $sessionTxn->sync_message
             ]);
 
@@ -104,6 +107,7 @@ class ApproveRequestController extends AppBaseController
             $transaction = Transactions::where('iso_id', $kdata[0]['model_id'])->update([
                 'res_field48' => $sessionTxn->txn_status,
                 'res_field44' => $sessionTxn->comments,
+                'sync_message' => $sessionTxn->sync_message,
                 'date_time_modified' => strtotime(now())*1000,
             ]);
         }
