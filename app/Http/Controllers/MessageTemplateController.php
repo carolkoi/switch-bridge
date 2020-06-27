@@ -55,6 +55,7 @@ class MessageTemplateController extends AppBaseController
      */
     public function store(CreateMessageTemplateRequest $request)
     {
+//        dd('here is me trying');
         $input = $request->all();
 
         $messageTemplate = $this->messageTemplateRepository->create($input);
@@ -114,6 +115,7 @@ class MessageTemplateController extends AppBaseController
      */
     public function update($id, UpdateMessageTemplateRequest $request)
     {
+//        dd('here');
         $messageTemplate = $this->messageTemplateRepository->find($id);
 
         if (empty($messageTemplate)) {

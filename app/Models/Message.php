@@ -86,8 +86,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Message extends Model
 {
     use SoftDeletes;
-
+    public $primaryKey = 'messageid';
     public $table = 'tbl_sms_messages';
+
 
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';

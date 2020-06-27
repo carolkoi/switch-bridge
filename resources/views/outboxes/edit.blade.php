@@ -11,7 +11,7 @@
        <div class="box box-primary">
            <div class="box-body">
                <div class="row">
-                   {!! Form::model($outbox, ['route' => ['outboxes.update', $outbox->id], 'method' => 'patch']) !!}
+                   {!! Form::model($outbox, ['route' => ['outboxes.update', $outbox->messageoutboxid], 'method' => 'patch']) !!}
 
                         @include('outboxes.fields')
 

@@ -42,6 +42,8 @@ class MessageTemplateDataTable extends DataTable
             ->addColumn('priority', function ($query){
                 return $query->messagepriority;
             })
+            ->escapeColumns('english_msg')
+            ->escapeColumns('kiswahili_msg')
             ->addColumn('action', 'message_templates.datatables_actions');
     }
 

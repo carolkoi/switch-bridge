@@ -20,8 +20,9 @@
                <br/>
                <br/>
                <div class="row">
+{{--                   {{dd($messageTemplate)}}--}}
 
-                   {!! Form::model($messageTemplate, ['route' => ['messageTemplates.update', $messageTemplate->id], 'method' => 'patch']) !!}
+                   {!! Form::model($messageTemplate, ['route' => ['messageTemplates.update', $messageTemplate->messagetypeid], 'method' => 'patch']) !!}
 
                         @include('message_templates.fields')
 

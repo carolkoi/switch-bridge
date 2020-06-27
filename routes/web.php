@@ -116,6 +116,7 @@ Route::resource('partners', 'PartnerController');
 //Route::resource('messageTemplates', 'messageTemplateController');
 Route::prefix('notifications')->group(function () {
     Route::resource('messageTemplates', 'MessageTemplateController');
+//    Route::patch('messageTemplates/{id}', 'MessageTemplateController@update')->name('messageTemplates.update');
 
     Route::resource('messages', 'MessageController');
 
