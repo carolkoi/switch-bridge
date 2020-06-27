@@ -15,7 +15,7 @@
         <div class="clearfix"></div>
         <div class="box box-primary">
             <div class="box-body">
-                    <div class="col-sm-12" style="background-color: grey;padding: 0px 10px 20px 10px;">
+                    <div class="col-sm-12" style="background-color: white;padding: 0px 10px 20px 10px;">
                         <h4 style="text-align: center"><b>Message Parameter Declaration</b></h4>
                         <hr>
                         <div class="col-sm-6"><p><b>${receiver_amount} </b>replaces the amount received.</p>

@@ -8,10 +8,12 @@ use App\Http\Requests\CreateMessageTemplateRequest;
 use App\Http\Requests\UpdateMessageTemplateRequest;
 use App\Repositories\MessageTemplateRepository;
 use App\Http\Controllers\AppBaseController;
+use Carbon\Carbon;
 use Flash;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Response;
 
@@ -55,8 +57,12 @@ class MessageTemplateController extends AppBaseController
      */
     public function store(CreateMessageTemplateRequest $request)
     {
-//        dd('here is me trying');
         $input = $request->all();
+        $input['datetimeadded'] = Carbon::now('Africa/Nairobi')->format('Y-m-d H:m:s.u');
+        $input['addedby'] = Auth::id();
+        $input['ipaddress'] = '::1';
+        $input['partnerid'] = 0;
+        $input['record_version'] = 0;
 
         $messageTemplate = $this->messageTemplateRepository->create($input);
 
