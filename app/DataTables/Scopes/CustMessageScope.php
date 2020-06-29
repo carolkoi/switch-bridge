@@ -20,6 +20,6 @@ class CustMessageScope implements DataTableScope
      */
     public function apply($query)
     {
-         return $query->where('mobilenumber', $this->phone_number);
+         return $query->where('mobilenumber', 'LIKE', "%$this->phone_number%");
     }
 }
