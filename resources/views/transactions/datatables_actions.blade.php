@@ -17,6 +17,6 @@ OR Auth::check() && auth()->user()->cannot('Can Update Transaction'))
     <a href="{{ route('transactions.edit', $iso_id) }}" class='btn btn-default btn-sm'>
         <i class="glyphicon glyphicon-edit"></i>
     </a>
-        <a href="{{route('messages.customer', $req_field124)}}" class="btn btn-warning btn-sm"> <i class="glyphicon glyphicon-envelope"></i></a>
+        <a href="{{url('customer-messages/'. $req_field124)}}" class="btn btn-warning btn-sm"> <i class="glyphicon glyphicon-envelope"></i></a>
     </div>
 @endif
