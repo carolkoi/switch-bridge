@@ -124,5 +124,4 @@ Route::prefix('notifications')->group(function () {
 
 });
 
-
-Route::get('customer-messages/{phone_no}', 'MessageController@customerMessages')->name('messages.customer');
+Route::get('/customer-messages/{phone_no}', 'MessageController@customerMessages')->name('messages.customer');
