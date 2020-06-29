@@ -22,6 +22,9 @@ class TransactionsDataTable extends DataTable
             ->addColumn('id', function ($query){
                 return $query->iso_id;
             })
+            ->addColumn('req_field124', function ($query){
+                return $query->req_field124;
+            })
             ->addColumn('partner', function ($query){
                 return $query->req_field123;
             })
