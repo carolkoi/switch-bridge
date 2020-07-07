@@ -56,7 +56,7 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'admin@switchlinkafrica.co.ke'),
+        'address' => env('MAIL_FROM_ADDRESS', 'caroline.gitonga@switchlinkafrica.co.ke'),
         'name' => env('MAIL_FROM_NAME', 'Upesi Account Creation'),
     ],
     'reply_to' => ['address' => 'example@example.com', 'name' => 'App Name'],

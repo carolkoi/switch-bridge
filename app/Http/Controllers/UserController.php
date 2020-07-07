@@ -131,6 +131,11 @@ class UserController extends AppBaseController
     public function update($id, Request $request)
     {
         $user = $this->userRepository->find($id);
+        $input = $request->all();
+        $random = str_shuffle('abcdefghjklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ234567890!$%^&!$%^&');
+        $password = substr($random, 0, 10);
+//        dd($password);
+        $input['password'] = bcrypt($password);
 //        dd($user->role_id);
 
         if (empty($user)) {
@@ -140,8 +145,10 @@ class UserController extends AppBaseController
         }
         $role = \Spatie\Permission\Models\Role::where('id', $user->role_id)->first()['name'];
 
-        $user = $this->userRepository->update($request->all(), $id);
+        $user = $this->userRepository->update($input, $id);
         $user->syncRoles($role);
+        Mail::to($user->email)->send(new AccountCreated($user, $password));
+//        Flash::success('User saved successfully.');
 
         Flash::success('User updated successfully.');
 

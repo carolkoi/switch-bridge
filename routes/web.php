@@ -1,5 +1,7 @@
 <?php
 use App\Http\Resources\Permission;
+//URL::forceScheme('https');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -12,9 +14,11 @@ use App\Http\Resources\Permission;
 |
 */
 
+//Route::group(['scheme' => 'https'], function () {
+//    // Route::get(...)->name(...);
+//});
 
 Route::get('/','Auth\LoginController@showLoginForm');
-
 //Auth::routes(['register' => false]);
 Auth::routes();
 
@@ -125,3 +129,4 @@ Route::prefix('notifications')->group(function () {
 });
 
 Route::get('/customer-messages/{phone_no}', 'MessageController@customerMessages')->name('messages.customer');
+//URL::forceScheme('https');
