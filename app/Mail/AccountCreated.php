@@ -24,7 +24,7 @@ class AccountCreated extends Mailable
         $this->user = $user;
         $this->password = $password;
     }
-.
+
     /**
      * Build the message.
      *
