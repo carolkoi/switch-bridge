@@ -136,34 +136,13 @@ class User extends Authenticatable
         'role_id' => 'required',
         'name' => 'required',
         'contact_person' => 'required',
-        'email' => 'required',
-//        'password' => 'required',
+        'email' => 'required|unique:users',
+        'password' => 'required|confirmed|min:8',
         'msisdn' => 'required',
     ];
 
     public function company(){
     return $this->belongsTo(Company::class, 'company_id', 'companyid');
     }
-
-//    public function roles(): BelongsToMany
-//    {
-//        return $this->belongsToMany(
-//            config('permission.models.permission'),
-//            config('permission.table_names.role_has_permissions'),
-//            'role_id',
-//            'permission_id'
-//        );
-//    }
-//    public function roles(): MorphToMany
-//    {
-//        return $this->morphedByMany(
-////            getModelForGuard($this->attributes['guard_name']),
-//            '\Spatie\Permission\Models\Role',
-//            config('permission.table_names.model_has_roles'),
-//            'model_id',
-//            config('permission.column_names.model_morph_key')
-//        );
-//    }
-
 
 }

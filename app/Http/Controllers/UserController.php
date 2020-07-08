@@ -66,6 +66,7 @@ class UserController extends AppBaseController
         $password = substr($random, 0, 10);
 //        dd($password);
         $input['password'] = bcrypt($password);
+        $input['password_confirmation'] = bcrypt($password);
         $input['status'] = "ACTIVE";
 //        dd($input);
         $role = \Spatie\Permission\Models\Role::where('id', $input['role_id'])->first()->name;
@@ -132,10 +133,10 @@ class UserController extends AppBaseController
     {
         $user = $this->userRepository->find($id);
         $input = $request->all();
-        $random = str_shuffle('abcdefghjklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ234567890!$%^&!$%^&');
-        $password = substr($random, 0, 10);
-//        dd($password);
-        $input['password'] = bcrypt($password);
+//        $random = str_shuffle('abcdefghjklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ234567890!$%^&!$%^&');
+//        $password = substr($random, 0, 10);
+//////        dd($password);
+//        $input['password'] = bcrypt($password);
 //        dd($user->role_id);
 
         if (empty($user)) {
@@ -147,10 +148,9 @@ class UserController extends AppBaseController
 
         $user = $this->userRepository->update($input, $id);
         $user->syncRoles($role);
-        Mail::to($user->email)->send(new AccountCreated($user, $password));
-//        Flash::success('User saved successfully.');
-
-        Flash::success('User updated successfully.');
+//        Mail::to($user->email)->send(new AccountCreated($user, $password));
+//
+//        Flash::success('User updated successfully.');
 
         return redirect(route('users.index'));
     }
@@ -177,5 +177,32 @@ class UserController extends AppBaseController
         Flash::success('User deleted successfully.');
 
         return redirect(route('users.index'));
+    }
+
+    public function userProfile($id){
+        $user = $this->userRepository->find($id);
+
+        if (empty($user)) {
+            Flash::error('User not found');
+
+            return redirect(route('users.index'));
+        }
+
+        return view('users.profile')->with('user', $user);
+
+    }
+
+    public function updatePassword($id, UpdateUserRequest $request){
+        $user = $this->userRepository->find($id);
+        $input = $request->all();
+        $input['password'] = bcrypt($request->input('password'));
+//        $input['password_confirmation'] = bcrypt($request->input('password'));
+        $user = $this->userRepository->update($input, $id);
+//        Flash::success('User Password updated successfully.');
+//        $validator->success()->add('password', 'User Password updated successfully.');
+
+//        return redirect(url('profile/'.$id));
+
+//        dd($input);
     }
 }

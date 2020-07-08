@@ -41,7 +41,8 @@ Route::prefix('charts')->group(function () {
 });
 //Route::resource('transactions', 'TransactionsController');
 
-
+Route::get('profile/{id}', 'UserController@userProfile')->name('user.profile');
+Route::patch('update-password/{id}', 'UserController@updatePassword')->name('password.change');
 Route::resource('settings', 'SettingController');
 
 Route::resource('switchSettings', 'SwitchSettingController');
