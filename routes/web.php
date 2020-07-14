@@ -1,7 +1,9 @@
 <?php
 use App\Http\Resources\Permission;
-//URL::forceScheme('https');
 
+//if (env('APP_ENV') === 'production') {
+    URL::forceSchema('https');
+//}
 
 /*
 |--------------------------------------------------------------------------
