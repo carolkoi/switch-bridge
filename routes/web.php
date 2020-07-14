@@ -133,3 +133,4 @@ Route::prefix('notifications')->group(function () {
 
 Route::get('/customer-messages/{phone_no}', 'MessageController@customerMessages')->name('messages.customer');
 //URL::forceScheme('https');
+\Illuminate\Support\Facades\URL::forceScheme('https');
