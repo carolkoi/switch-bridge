@@ -19,7 +19,7 @@
             <div class="splash-container">
                 <div class="card card-border-color card-border-color-primary">
                     <div class="card-header">
-                        <img class="logo-img" src="{{secure_asset("/assets/img/logo-xx.png") }}" alt="logo" width="102" height="27">
+{{--                        <img class="logo-img" src="{{secure_asset("/assets/img/logo-xx.png") }}" alt="logo" width="102" height="27">--}}
                         <span class="splash-description">Please enter your user information.</span>
                     </div>
                     <div class="card-body">
