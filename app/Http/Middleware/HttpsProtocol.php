@@ -16,7 +16,8 @@ class HttpsProtocol
      */
     public function handle($request, Closure $next)
     {
-        if (!$request->secure() && App::environment() === 'local') {
+//        dd($request->secure());
+        if (!$request->secure()) {
             return redirect()->secure($request->getRequestUri());
         }
 

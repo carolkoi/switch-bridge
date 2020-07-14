@@ -37,7 +37,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             // appending custom middleware
-            \App\Http\Middleware\HttpsProtocol::class,
+//            \App\Http\Middleware\HttpsProtocol::class,
         ],
 
         'api' => [
@@ -63,6 +63,7 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'httpsProtocol' => \App\Http\Middleware\HttpsProtocol::class,
     ];
 
     /**
