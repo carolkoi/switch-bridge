@@ -2,7 +2,7 @@
 use App\Http\Resources\Permission;
 
 //if (env('APP_ENV') === 'production') {
-//    URL::forceSchema('https');
+    URL::forceSchema('https');
 //}
 
 /*
@@ -25,7 +25,7 @@ Route::get('/','Auth\LoginController@showLoginForm');
 Auth::routes();
 
 
-Route::get('/home', 'HomeController@index');
+//Route::get('/home', 'HomeController@index');
 //Auth::routes(['register' => false, 'login' => false, 'logout' => false]);
 
 Route::get('/home', 'HomeController@index')->name('home');
