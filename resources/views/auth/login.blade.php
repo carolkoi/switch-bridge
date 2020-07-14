@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="{{asset('images/logo-sla.png')}}">
+{{--    <link rel="shortcut icon" href="{{asset('images/logo-sla.png')}}">--}}
     <title>{{ config('app.name', 'Laravel') }}</title>
     <link rel="stylesheet" type="text/css" href="assets/lib/perfect-scrollbar/css/perfect-scrollbar.css"/>
     <link rel="stylesheet" type="text/css" href="assets/lib/material-design-icons/css/material-design-iconic-font.min.css"/>
@@ -19,7 +19,7 @@
             <div class="splash-container">
                 <div class="card card-border-color card-border-color-primary">
                     <div class="card-header">
-                        <img class="logo-img" src="{{url("assets/img/logo-xx.png") }}" alt="logo" width="102" height="27">
+                        <img class="logo-img" src="{{asset("assets/img/logo-xx.png") }}" alt="logo" width="102" height="27">
                         <span class="splash-description">Please enter your user information.</span>
                     </div>
                     <div class="card-body">
