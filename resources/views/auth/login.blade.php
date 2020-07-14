@@ -8,9 +8,9 @@
     <meta name="author" content="">
 {{--    <link rel="shortcut icon" href="{{asset('images/logo-sla.png')}}">--}}
     <title>{{ config('app.name', 'Laravel') }}</title>
-    <link rel="stylesheet" type="text/css" href="{{secure_asset('assets/lib/perfect-scrollbar/css/perfect-scrollbar.css')}}"/>
-    <link rel="stylesheet" type="text/css" href="{{secure_asset('assets/lib/material-design-icons/css/material-design-iconic-font.min.css')}}"/>
-    <link rel="stylesheet" href="{{secure_asset('assets/css/app.css')}}" type="text/css"/>
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/lib/perfect-scrollbar/css/perfect-scrollbar.css')}}"/>
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/lib/material-design-icons/css/material-design-iconic-font.min.css')}}"/>
+    <link rel="stylesheet" href="{{asset('assets/css/app.css')}}" type="text/css"/>
 </head>
 <body class="be-splash-screen">
 <div class="be-wrapper be-login">
@@ -81,10 +81,10 @@
         </div>
     </div>
 </div>
-<script src="{{secure_asset('assets/lib/jquery/jquery.min.js')}}" type="text/javascript"></script>
-<script src="{{secure_asset('assets/lib/perfect-scrollbar/js/perfect-scrollbar.min.js')}}" type="text/javascript"></script>
-<script src="{{secure_asset('assets/lib/bootstrap/dist/js/bootstrap.bundle.min.js')}}" type="text/javascript"></script>
-<script src="{{secure_asset('assets/js/app.js')}}" type="text/javascript"></script>
+<script src="{{asset('assets/lib/jquery/jquery.min.js')}}" type="text/javascript"></script>
+<script src="{{asset('assets/lib/perfect-scrollbar/js/perfect-scrollbar.min.js')}}" type="text/javascript"></script>
+<script src="{{asset('assets/lib/bootstrap/dist/js/bootstrap.bundle.min.js')}}" type="text/javascript"></script>
+<script src="{{asset('assets/js/app.js')}}" type="text/javascript"></script>
 <script type="text/javascript">
     $(document).ready(function(){
         //-initialize the javascript
