@@ -23,7 +23,7 @@
                         <span class="splash-description">Please enter your user information.</span>
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('login') }}">
+                        <form method="POST" action="{{ secure_asset('login') }}">
 {{--                            <div class="form-group">--}}
 {{--                                <input class="form-control" name="email" id="email" type="text" placeholder="Username" autocomplete="off">--}}
 {{--                            </div>--}}
