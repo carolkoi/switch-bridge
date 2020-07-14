@@ -2,7 +2,7 @@
 use App\Http\Resources\Permission;
 
 //if (env('APP_ENV') === 'production') {
-    URL::forceSchema('https');
+//    URL::forceSchema('https');
 //}
 
 /*
