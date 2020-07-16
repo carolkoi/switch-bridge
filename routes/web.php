@@ -13,21 +13,11 @@ use App\Http\Resources\Permission;
 |
 */
 
-//Route::group(['scheme' => 'https'], function () {
-//    // Route::get(...)->name(...);
-//});
-
 Route::get('/','Auth\LoginController@showLoginForm');
-//Auth::routes(['register' => false]);
-Auth::routes();
-
-
-//Route::get('/home', 'HomeController@index');
-//Auth::routes(['register' => false, 'login' => false, 'logout' => false]);
+Auth::routes(['register' => false]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-//Route::resource('trans', 'TransController');
 Route::prefix('all')->group(function () {
     Route::resource('transactions', 'TransactionsController');
     Route::get('successful-transactions', 'SuccessTransactionsController@index')->name('success-transactions.index');
@@ -38,7 +28,6 @@ Route::get('filter-date', 'TransactionsController@filterDate')->name('transactio
 Route::prefix('charts')->group(function () {
     Route::get('failed-vs-successful', 'ChartsController@index')->name('charts.index');
 });
-//Route::resource('transactions', 'TransactionsController');
 
 Route::get('profile/{id}', 'UserController@userProfile')->name('user.profile');
 Route::patch('update-password/{id}', 'UserController@updatePassword')->name('password.change');
@@ -46,13 +35,7 @@ Route::resource('settings', 'SettingController');
 
 Route::resource('switchSettings', 'SwitchSettingController');
 
-//Route::resource('companies', 'CompanyController');
-
-//Route::resource('providers', 'ProviderController');
 Route::prefix('configurations')->group(function () {
-//    Route::get('failed-vs-successful', 'ChartsController@index')->name('charts.index');
-//    Route::resource('globalSettings', 'GlobalSettingsController');
-//    Route::resource('settings', 'SettingController');
     Route::resource('switchSettings', 'SwitchSettingController');
 
 });
@@ -60,18 +43,12 @@ Route::prefix('list')->group(function () {
     Route::resource('companies', 'CompanyController');
 });
 Route::prefix('services')->group(function () {
-//    Route::resource('serviceProviders', 'ServiceProvidersController');
     Route::resource('providers', 'ProviderController');
-
 });
 
-//Route::get('aMLCheckers', 'AML-CheckerController@index')->name('aMLCheckers.index');
-//Route::resource('aMLCheckers', 'AML-CheckerController');
 Route::prefix('checker')->group(function () {
-//    Route::resource('serviceProviders', 'ServiceProvidersController');
     Route::resource('aml-listing', 'AmlMakerCheckerController');
     Route::get('import-source', 'AmlMakerCheckerController@getImport')->name('source.import');
-//Route::post('/import-parse', 'AmlMakerCheckerController@parseImport')->name('import_parse');
     Route::post('/import-process', 'AmlMakerCheckerController@processImport')->name('import_process');
 });
 
@@ -116,14 +93,9 @@ Route::resource('sessionTxns', 'SessionTxnController');
 
 Route::resource('partners', 'PartnerController');
 
-
-//Route::resource('messageTemplates', 'messageTemplateController');
 Route::prefix('notifications')->group(function () {
     Route::resource('messageTemplates', 'MessageTemplateController');
-//    Route::patch('messageTemplates/{id}', 'MessageTemplateController@update')->name('messageTemplates.update');
-
     Route::resource('messages', 'MessageController');
-
     Route::resource('outboxes', 'OutboxController');
 
 });

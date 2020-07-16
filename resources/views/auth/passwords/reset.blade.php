@@ -34,9 +34,9 @@
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
-    <div class="login-logo">
-        <a href="{{ url('/home') }}"><b>InfyOm </b>Generator</a>
-    </div>
+{{--    <div class="login-logo">--}}
+{{--        <a href="{{ url('/home') }}"><b>InfyOm </b>Generator</a>--}}
+{{--    </div>--}}
 
     <!-- /.login-logo -->
     <div class="login-box-body">
@@ -58,7 +58,7 @@
             </div>
 
             <div class="form-group has-feedback{{ $errors->has('password') ? ' has-error' : '' }}">
-                <input type="password" class="form-control" name="password" placeholder="Password">
+                <input type="password" class="form-control" name="password" placeholder="New Password">
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
 
                 @if ($errors->has('password'))
