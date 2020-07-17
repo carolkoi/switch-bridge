@@ -3,15 +3,17 @@
   services:
 #    database:
 #      container_name: Bridge_db
-#      #      image: postgresql- 12.1
-#      build:
-#        context: '.'
+#      image:   postgres:11
+##      build:
+##        context: '.'
 #      volumes:
 #        - dbdata:/var/lib/postgresql/data
 #      environment:
-#        - POSTGRES_HOST=172.17.0.1
-#        - POSTGRES_PASSWORD=!QAZxsw2
-#        - POSTGRES_DATABASE=${DB_DATABASE}
+#        - DB_HOST=172.17.0.1
+#        - DB_USERNAME=postgres
+#        - DB_PASSWORD=!QAZxsw2
+#        - DB_PORT=5433
+#        - POSTGRES_DATABASE=superbridge
 #      networks:
 #        backend:
 #          aliases:
@@ -38,6 +40,11 @@
       environment:
         - APACHE_RUN_USER=#${UID}
         - APACHE_RUN_GROUP=#${UID}
+        - DB_HOST=172.17.0.1
+        - DB_DATABASE=superbridge
+        - DB_USERNAME=postgres
+        - DB_PASSWORD=admin
+        - DB_PORT=5433
       volumes:
         - .:/var/www/html
       ports:
