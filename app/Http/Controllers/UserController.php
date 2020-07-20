@@ -205,4 +205,15 @@ class UserController extends AppBaseController
 
 //        dd($input);
     }
+
+    public function uploadPic($id){
+        $user = $this->userRepository->find($id);
+        return view('users.upload')->with('user', $user);
+    }
+
+    public function uploadSuccess(Request $request, $id){
+        $user = $this->userRepository->find($id);
+        dd($user, $request->all());
+
+    }
 }

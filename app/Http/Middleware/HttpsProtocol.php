@@ -18,6 +18,7 @@ class HttpsProtocol
     {
         if (!$request->secure() && App::environment() === 'local') {
             return redirect()->secure($request->getRequestUri());
+//            return Redirect::secure($request->path());
         }
 
         return $next($request);

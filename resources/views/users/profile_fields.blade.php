@@ -7,8 +7,9 @@
         {{--        <p class="card-text">Some example text some example text. John Doe is an architect and engineer</p>--}}
         <img class="card-img-top" src="{{asset('images/blue_logo_150x150.jpg')}}" alt="Card image" style="width:300px">
 
-        <a href="#" class="btn btn-primary">Change Profile</a>
     </div>
+    <a href="{{url('/set-profile/'.$user->id)}}">Change Profile</a>
+
 </div>
 <div class="card col-md-6">
 {{--    <img class="card-img-top" src="{{asset('images/blue_logo_150x150.jpg')}}" alt="Card image" style="width:100%">--}}
