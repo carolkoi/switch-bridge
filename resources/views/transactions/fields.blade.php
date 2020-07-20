@@ -98,7 +98,7 @@
         {{--    isset($transactions) ? $transactions->res_field48 : null, ['class' => 'form-control select2', 'id' => "res_field48_id"])!!}--}}
         <select name="res_field48" id="res_field48_id" class="form-control select2">
             <option value="BLACK-LISTED" {{$transactions->res_field48 ==="BLACK-LISTED" ? 'selected="selected"' : ''}} disabled>
-                AML-LISTED</option>
+                BLACK-LISTED</option>
             <option value="AML-APPROVED" {{$transactions->res_field48 ==="AML-APPROVED" ? 'selected="selected"' : ''}}>
                 AML-APPROVED</option>
             <option value="FAILED" {{$transactions->res_field48 ==="FAILED" ? 'selected="selected"' : ''}}>FAILED</option>
