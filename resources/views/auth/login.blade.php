@@ -8,9 +8,9 @@
     <meta name="author" content="">
 {{--    <link rel="shortcut icon" href="{{asset('images/logo-sla.png')}}">--}}
     <title>{{ config('app.name', 'Laravel') }}</title>
-    <link rel="stylesheet" type="text/css" href="{{secure_asset('assets/lib/perfect-scrollbar/css/perfect-scrollbar.css')}}"/>
-    <link rel="stylesheet" type="text/css" href="{{secure_asset('assets/lib/material-design-icons/css/material-design-iconic-font.min.css')}}"/>
-    <link rel="stylesheet" href="{{secure_asset('assets/css/app.css')}}" type="text/css"/>
+    <link rel="stylesheet" type="text/css" href="{{url('assets/lib/perfect-scrollbar/css/perfect-scrollbar.css')}}"/>
+    <link rel="stylesheet" type="text/css" href="{{url('assets/lib/material-design-icons/css/material-design-iconic-font.min.css')}}"/>
+    <link rel="stylesheet" href="{{url('assets/css/app.css')}}" type="text/css"/>
 </head>
 <body class="be-splash-screen">
 <div class="be-wrapper be-login">
@@ -19,7 +19,7 @@
             <div class="splash-container">
                 <div class="card card-border-color card-border-color-primary">
                     <div class="card-header">
-                        <img class="logo-img" src="{{secure_asset('assets/img/logo-xx.png')}}" alt="logo" width="102" height="27">
+                        <img class="logo-img" src="{{url('assets/img/logo-xx.png')}}" alt="logo" width="102" height="27">
                         <span class="splash-description">Please enter your user information.</span>
                     </div>
                     <div class="card-body">
@@ -81,10 +81,10 @@
         </div>
     </div>
 </div>
-<script src="{{secure_asset('assets/lib/jquery/jquery.min.js')}}" type="text/javascript"></script>
-<script src="{{secure_asset('assets/lib/perfect-scrollbar/js/perfect-scrollbar.min.js')}}" type="text/javascript"></script>
-<script src="{{secure_asset('assets/lib/bootstrap/dist/js/bootstrap.bundle.min.js')}}" type="text/javascript"></script>
-<script src="{{secure_asset('assets/js/app.js')}}" type="text/javascript"></script>
+<script src="{{url('assets/lib/jquery/jquery.min.js')}}" type="text/javascript"></script>
+<script src="{{url('assets/lib/perfect-scrollbar/js/perfect-scrollbar.min.js')}}" type="text/javascript"></script>
+<script src="{{url('assets/lib/bootstrap/dist/js/bootstrap.bundle.min.js')}}" type="text/javascript"></script>
+<script src="{{url('assets/js/app.js')}}" type="text/javascript"></script>
 <script type="text/javascript">
     $(document).ready(function(){
         //-initialize the javascript
