@@ -59,7 +59,7 @@ class UserController extends AppBaseController
      *
      * @return Response
      */
-    public function store(CreateUserRequest $request)
+    public function store(Request $request)
     {
         $input = $request->all();
         $random = str_shuffle('abcdefghjklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ234567890!$%^&!$%^&');
