@@ -40,7 +40,7 @@ class AmlMakerCheckerDataTable extends DataTable
      */
     public function query(AmlMakerChecker $model)
     {
-        return $model->newQuery();
+        return $model->orderby('blacklist_id', 'DESC')->newQuery();
     }
 
     /**

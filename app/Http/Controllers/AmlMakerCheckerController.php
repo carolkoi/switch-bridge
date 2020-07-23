@@ -91,6 +91,7 @@ class AmlMakerCheckerController extends AppBaseController
             $input['modified_by'] = Auth::user()->id;
 
             $input['date_time_added'] = strtotime(now())*1000;
+            $input['blacklisted'] = true;
             $amlMakerChecker = $this->amlMakerCheckerRepository->create($input);
 
             Flash::success('Member blacklist record saved successfully.');
