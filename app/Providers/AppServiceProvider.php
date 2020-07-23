@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(UrlGenerator $url)
     {
-        if(App::environment('local')) {
+        if(App::environment('production')) {
 //            dd('here');
             $url->forceScheme('https');
         }
