@@ -66,7 +66,7 @@ class TransactionsDataTable extends DataTable
                 return $query->res_field44;
             })
             ->addColumn('s_p', function ($query){
-                return $query->req_field125;
+                return $query->req_field89;
             })
             ->escapeColumns('resps')
             ->addColumn('receiver_bank', function ($query){

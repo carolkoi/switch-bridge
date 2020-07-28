@@ -5,7 +5,7 @@
 {{--        <h4 class="card-title">Profile Picture</h4>--}}
 
         {{--        <p class="card-text">Some example text some example text. John Doe is an architect and engineer</p>--}}
-        <img class="card-img-top" src="{{asset('images/blue_logo_150x150.jpg')}}" alt="Card image" style="width:300px">
+        <img class="card-img-top" src="{{URL::asset('images/blue_logo_150x150.jpg')}}" alt="Card image" style="width:300px">
 
     </div>
     <a href="{{url('/set-profile/'.$user->id)}}">Change Profile</a>

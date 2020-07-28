@@ -56,9 +56,9 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'https://localhost'),
+    'url' => env('APP_URL', 'http://umtl.upesimts.com:8000/'),
 
-    'asset_url' => env('ASSET_URL', null),
+//    'asset_url' => env('ASSET_URL', null),
 
     /*
     |--------------------------------------------------------------------------
