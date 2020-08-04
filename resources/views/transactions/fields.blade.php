@@ -109,6 +109,12 @@
 
 <!-- Remarks Field -->
 <div class="form-group">
+    {!! Form::label('req_field5', 'Received Amount:') !!}
+    {!! Form::text('req_field5', intval($transactions->req_field5)/100, ['class' => 'form-control', 'disabled' => 'disabled']) !!}
+</div>
+
+<!-- Remarks Field -->
+<div class="form-group">
     {!! Form::label('res_field44', 'Transaction Remarks:') !!}
     {!! Form::textarea('res_field44', null, ['id' => 'editor']) !!}
 </div>
