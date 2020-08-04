@@ -155,16 +155,17 @@
         </div>
 <br>
 <br>
-<br>
 <div class="card">
     <div class="card-body">
 <div class="table-responsive  col-md-12">
     <table class="table table-striped table-hover table-bordered table-fw-widget table no-margin">
         <thead><tr>        <h3 class="card-title">FOR UPESI</h3>
-        </tr></thead>
+        </tr>
+        </thead>
         <tr><td>Modified By</td><td>{!! \App\Models\User::where('id', $transactions->modified_by)->first()['name'] ?  \App\Models\User::where('id', $transactions->modified_by)->first()['name'] : null!!}</td></tr>
         <tr><td>Approved / Rejected By</td><td>{!! \App\Models\User::where('id', $transactions->approved_rejected_by)->first()['name'] ?  \App\Models\User::where('id', $transactions->approved_rejected_by)->first()['name'] : null!!}
-            </td></tr>
+            </td>
+        </tr>
     </table>
 </div>
     </div>
