@@ -104,13 +104,13 @@
             <option value="FAILED" {{$transactions->res_field48 ==="FAILED" ? 'selected="selected"' : ''}}>FAILED</option>
         </select>
     </div>
-@elseif( $transactions->res_field48 == "MANUAL-RECKON")
+@elseif( $transactions->res_field48 == "MANUAL-RECON")
     <div class="form-group">
         {!! Form::label('res_field48', 'Transaction Status:') !!}
         {{--    {!!Form::select('res_field48', [],--}}
         {{--    isset($transactions) ? $transactions->res_field48 : null, ['class' => 'form-control select2', 'id' => "res_field48_id"])!!}--}}
         <select name="res_field48" id="res_field48_id" class="form-control select2">
-            <option value="MANUAL-RECKON" {{$transactions->res_field48 ==="MANUAL-RECKON" ? 'selected="selected"' : ''}} disabled>
+            <option value="MANUAL-RECON" {{$transactions->res_field48 ==="MANUAL-RECON" ? 'selected="selected"' : ''}} disabled>
                 MANUAL-RECKON</option>
             <option value="COMPLETED" {{$transactions->res_field48 ==="COMPLETED" ? 'selected="selected"' : ''}}>
                 COMPLETED</option>
