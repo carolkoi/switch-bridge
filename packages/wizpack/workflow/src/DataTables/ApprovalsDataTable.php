@@ -39,7 +39,7 @@ class ApprovalsDataTable extends DataTable
                 return $query->approvable->req_field108;
             })
             ->addColumn('received_amount', function ($query){
-                return intval($query->req_field5)/100;
+                return intval($query->approvable->req_field5)/100;
             })
             ->addColumn('txn_no', function ($query){
                 return $query->approvable->req_field37;
