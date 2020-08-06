@@ -5,9 +5,13 @@
 {{--        <h3 class="card-title">Transaction Details</h3>--}}
         <div class="table-responsive  col-md-6">
             <table class="table table-striped table-hover table-bordered table-fw-widget table no-margin">
+                <thead>
+                <th colspan="1" style="width: 100%"></th>
+                <th></th>
+                </thead>
                 {{--                <thead><tr>Transaction Details</tr></thead>--}}
                 <tbody>
-                <tr><td colspan="1" style="width: 300px">Transaction Type</td><td>{!! $transactions->req_field41 !!}</td></tr>
+                <tr><td> Transaction Type</td><td>{!! $transactions->req_field41 !!}</td></tr>
                 {{--                <tr><td>Transaction Type</td><td>{!! $transactions->req_field122 !!}</td></tr>--}}
                 <tr><td>Transaction ID</td><td>{!! $transactions->req_field42 !!}</td></tr>
                 <tr><td>Bridge Reference</td><td>{!! $transactions->req_field37 !!}</td></tr>
