@@ -93,9 +93,9 @@
                 <thead><tr>        <h3 class="card-title">Sender Details</h3>
                 </tr></thead>
                 <tbody>
-                <tr><td>Full Name</td><td>{!! $transactions->req_field105 !!}</td></tr>
-                <tr><td>City</td><td>{!! $transactions->req_field107 !!}</td></tr>
-                <tr><td>Address</td><td>{!! $transactions->req_field106 !!}</td></tr>
+                <tr><td>Sender Full Name</td><td>{!! $transactions->req_field105 !!}</td></tr>
+                <tr><td>Sender City</td><td>{!! $transactions->req_field107 !!}</td></tr>
+                <tr><td>Sender Address</td><td>{!! $transactions->req_field106 !!}</td></tr>
                 <tr><td>Sender ID Number</td><td>{!! $transactions->req_field52 !!}</td></tr>
                 <tr><td>Sender Account / Mobile</td><td>{!! $transactions->req_field2 !!}</td></tr>
                 <tr><td>Currency Code</td><td>{!! $transactions->req_field49 !!}</td></tr>
@@ -104,7 +104,7 @@
 {{--                <tr><td>Sender Account / Mobile</td><td>{!! $transactions->req_field2 !!}</td></tr>--}}
                 <tr><td>Sender ID Type</td><td>{!! $transactions->req_field118 !!}</td></tr>
                 <tr><td>Sender Amount</td><td>{!!intval($transactions->req_field4) / 100 !!}</td></tr>
-{{--                <tr><td>Address</td><td>{!! $transactions->req_field109 !!}</td></tr>--}}
+                <tr><td>Sender date of Birth</td><td>{!! $transactions->req_field86 !!}</td></tr>
 {{--                <tr><td>Address</td><td>{!! $transactions->req_field109 !!}</td></tr>--}}
 {{--                <tr><td>Address</td><td>{!! $transactions->req_field109 !!}</td></tr>--}}
 {{--                <tr><td>Address</td><td>{!! $transactions->req_field109 !!}</td></tr>--}}
@@ -127,12 +127,12 @@
                     <thead><tr>        <h3 class="card-title">Receiver Details</h3>
                     </tr></thead>
                     <tbody>
-                    <tr><td>Full Name</td><td>{!! $transactions->req_field108 !!}</td></tr>
-                    <tr><td>City</td><td>{!! $transactions->req_field110 !!}</td></tr>
-                    <tr><td>Address</td><td>{!! $transactions->req_field109 !!}</td></tr>
+                    <tr><td>Receiver Full Name</td><td>{!! $transactions->req_field108 !!}</td></tr>
+                    <tr><td>Receiver City</td><td>{!! $transactions->req_field110 !!}</td></tr>
+                    <tr><td>Receiver Address</td><td>{!! $transactions->req_field109 !!}</td></tr>
                     <tr><td>Receiver ID Number</td><td>{!! $transactions->req_field53 !!}</td></tr>
                     <tr><td>Receiver Account</td><td>{!! $transactions->req_field102 !!}</td></tr>
-                    <tr><td>Currency Code</td><td>{!! $transactions->req_field50 !!}</td></tr>
+                    <tr><td>Receiver Currency Code</td><td>{!! $transactions->req_field50 !!}</td></tr>
                     <tr><td>Receiver Country Code</td><td>{!! $transactions->req_field69 !!}</td></tr>
                     <tr><td>Receiver ID Type</td><td>{!! $transactions->req_field119 !!}</td></tr>
                     <tr><td>Receiver Amount</td><td>{!!intval($transactions->req_field5) / 100 !!}</td></tr>

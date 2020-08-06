@@ -163,9 +163,10 @@ class AmlMakerCheckerController extends AppBaseController
         if ($input['blacklist_status'] == 'WHITE-LISTED'){
             $input['blacklisted'] = false;
             $amlMakerChecker = AmlMakerChecker::where('blacklist_id', $blacklist_id)->update($input);
+        }elseif($input['blacklist_status'] == 'BLACK-LISTED') {
+            $input['blacklisted'] = true;
+            $amlMakerChecker = AmlMakerChecker::where('blacklist_id', $blacklist_id)->update($input);
         }else
-        $amlMakerChecker = AmlMakerChecker::where('blacklist_id', $blacklist_id)->update($input);
-
         Flash::success('Member blacklist record updated successfully.');
 
         return redirect(route('aml-listing.index'));

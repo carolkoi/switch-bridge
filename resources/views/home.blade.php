@@ -27,7 +27,9 @@
                     <div class="col-sm-3 col-xs-6">
                         <div class="description-block border-right">
 {{--                            <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 17%</span>--}}
-                            <h5 class="description-header">{{count($all_transactions)}}</h5>
+
+                            <span class=" badge bg-aqua"><h5 class="description-header">{{count($all_transactions)}}</h5></span>
+                            <br>
                             <span class="description-text">ALL TRANSACTIONS</span>
                         </div>
                         <!-- /.description-block -->
@@ -36,7 +38,8 @@
                     <div class="col-sm-3 col-xs-6">
                         <div class="description-block border-right">
 {{--                            <span class="description-percentage text-yellow"><i class="fa fa-caret-left"></i> 0%</span>--}}
-                            <h5 class="description-header">{{$all_transactions->where('res_field48', 'COMPLETED')->count()}}</h5>
+                            <span class=" badge bg-green"><h5 class="description-header">{{$all_transactions->where('res_field48', 'COMPLETED')->count()}}</h5></span>
+                            <br>
                             <span class="description-text">SUCCESSFUL TRANSACTIONS</span>
                         </div>
                         <!-- /.description-block -->
@@ -45,7 +48,8 @@
                     <div class="col-sm-3 col-xs-6">
                         <div class="description-block border-right">
 {{--                            <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 20%</span>--}}
-                            <h5 class="description-header">{{$all_transactions->WhereNotIn('res_field48', ['COMPLETED', 'FAILED'])->count()}}</h5>
+                            <span class=" badge bg-yellow"> <h5 class="description-header">{{$all_transactions->WhereNotIn('res_field48', ['COMPLETED', 'FAILED'])->count()}}</h5></span>
+                           <br>
                             <span class="description-text">PENDING TRANSACTIONS</span>
                         </div>
                         <!-- /.description-block -->
@@ -54,7 +58,8 @@
                     <div class="col-sm-3 col-xs-6">
                         <div class="description-block">
 {{--                            <span class="description-percentage text-red"><i class="fa fa-caret-down"></i> 18%</span>--}}
-                            <h5 class="description-header">{{$all_transactions->where('res_field48', 'FAILED')->count()}}</h5>
+                            <span class=" badge bg-red"><h5 class="description-header">{{$all_transactions->where('res_field48', 'FAILED')->count()}}</h5></span>
+                            <br>
                             <span class="description-text">FAILED TRANSACTIONS</span>
                         </div>
                         <!-- /.description-block -->
@@ -64,159 +69,42 @@
             </div>
             <!-- /.box-footer -->
         </div>
+        <br>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h1 class="box-title">Daily Report</h1>
 
-        <!-- Default box -->
-        <div class="box box-info">
-            <div class="box-header with-border">
-                <h1 class="box-title">Yesterday's Report</h1>
-
-                <div class="box-tools pull-right">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title=""
-                            data-original-title="Collapse">
-                        <i class="fa fa-minus"></i></button>
-                    <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title=""
-                            data-original-title="Remove">
-                        <i class="fa fa-times"></i></button>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title=""
+                                    data-original-title="Collapse">
+                                <i class="fa fa-minus"></i></button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title=""
+                                    data-original-title="Remove">
+                                <i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <table  class="table table-striped table-hover table-bordered table-fw-widget table no-margin">
+                            <thead>
+                            <th></th>
+                            <th>Yesterday's Report</th>
+                            <th>Today's Report</th>
+                            </thead>
+                            <tbody>
+                            <tr><td>All Transactions</td><td><span class=" badge bg-aqua">{{count($yesterday_txns)}}</span></td><td><span class="badge bg-aqua">{{count($today_transactions)}}</span></td></tr>
+                            <tr><td>Successful Transactions</td><td><span class=" badge bg-green">{{$yesterday_txns->where('res_field48', 'COMPLETED')->count()}}</span></td><td><span class="badge bg-green">{{$today_transactions->where('res_field48', 'COMPLETED')->count()}}</span></td></tr>
+                            <tr><td>Pending Transaction</td><td><span class=" badge bg-yellow">{{$yesterday_txns->WhereNotIn('res_field48', ['COMPLETED', 'FAILED'])->count()}}</span></td><td><span class="badge bg-yellow">{{$today_transactions->WhereNotIn('res_field48', ['COMPLETED', 'FAILED'])->count()}}</span></td></tr>
+                            <tr><td>Failed Transaction</td><td><span class=" badge bg-red">{{$yesterday_txns->where('res_field48', 'FAILED')->count()}}</span></td><td><span class="badge bg-red">{{$today_transactions->where('res_field48', 'FAILED')->count()}}</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-            <div class="box-body">
-                <div class="col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-aqua"><i class="fa fa-dollar"></i></span>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">All Transactions</span>
-                            <span class="info-box-number">
-                                  {{count($yesterday_txns)}}
-                                </span>
-                        </div>
-                        <!-- /.info-box-content -->
-                    </div>
-                    <!-- /.info-box -->
-                </div>
-                <div class="col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-red"><i class="fa fa-dollar"></i></span>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">Failed Transactions</span>
-                            <span class="info-box-number">
-                                       {{$yesterday_txns->where('res_field48', 'FAILED')->count()}}
-                                </span>
-                        </div>
-                        <!-- /.info-box-content -->
-                    </div>
-                    <!-- /.info-box -->
-                </div>
-                <div class="col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-green"><i class="fa fa-dollar"></i></span>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">Successful Transactions</span>
-                            <span class="info-box-number">
-                            {{$yesterday_txns->where('res_field48', 'COMPLETED')->count()}}
-                            </span>
-                        </div>
-                        <!-- /.info-box-content -->
-                    </div>
-                    <!-- /.info-box -->
-                </div>
-                <div class="col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-yellow"><i class="fa fa-dollar"></i></span>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">Pending Transactions</span>
-                            <span class="info-box-number">
-                                {{$yesterday_txns->WhereNotIn('res_field48', ['COMPLETED', 'FAILED'])->count()}}
-                            </span>
-                        </div>
-                        <!-- /.info-box-content -->
-                    </div>
-                    <!-- /.info-box -->
                 </div>
 
-
-
-            </div>
-        </div>
-        <!-- Default box -->
-        <div class="box box-info">
-            <div class="box-header with-border">
-                <h1 class="box-title">Today's Report</h1>
-
-                <div class="box-tools pull-right">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title=""
-                            data-original-title="Collapse">
-                        <i class="fa fa-minus"></i></button>
-                    <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title=""
-                            data-original-title="Remove">
-                        <i class="fa fa-times"></i></button>
-                </div>
-            </div>
-            <div class="box-body">
-                <div class="col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-aqua"><i class="fa fa-dollar"></i></span>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">All Transactions</span>
-                            <span class="info-box-number">
-                                  {{count($today_transactions)}}
-                                </span>
-                        </div>
-                        <!-- /.info-box-content -->
-                    </div>
-                    <!-- /.info-box -->
-                </div>
-                <div class="col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-red"><i class="fa fa-dollar"></i></span>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">Failed Transactions</span>
-                            <span class="info-box-number">
-                                       {{$today_transactions->where('res_field48', 'FAILED')->count()}}
-                                </span>
-                        </div>
-                        <!-- /.info-box-content -->
-                    </div>
-                    <!-- /.info-box -->
-                </div>
-                <div class="col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-green"><i class="fa fa-dollar"></i></span>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">Successful Transactions</span>
-                            <span class="info-box-number">
-                            {{$today_transactions->where('res_field48', 'COMPLETED')->count()}}
-                            </span>
-                        </div>
-                        <!-- /.info-box-content -->
-                    </div>
-                    <!-- /.info-box -->
-                </div>
-                <div class="col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-yellow"><i class="fa fa-dollar"></i></span>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">Pending Transactions</span>
-                            <span class="info-box-number">
-                                {{$today_transactions->WhereNotIn('res_field48', ['COMPLETED', 'FAILED'])->count()}}
-                            </span>
-                        </div>
-                        <!-- /.info-box-content -->
-                    </div>
-                    <!-- /.info-box -->
-                </div>
-
-                <!-- /.box -->
-                    </div>
-                    <!-- /.col -->
-                </div>
+{{--        </div>--}}
 
 
             <div class="box box-info">
