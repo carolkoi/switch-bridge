@@ -91,7 +91,7 @@
 </li>
     </ul>
 </li>
-@if(Auth::check() && auth()->user()->can('Can Create User'))
+{{--@if(Auth::check() && auth()->user()->can('Can Create User'))--}}
 <li class="divider" style="color:white; padding: 15px"><span><b>Administration</b></span></li>
 <li class="treeview {{ Request::is('members*') ? 'active menu-open' : '' }}">
     <a class="dropdown-toggle" href="#">
@@ -113,7 +113,7 @@
         </li>
             @endif
     </ul>
-@endif
+{{--@endif--}}
 
     <li class="divider" style="color:white; padding: 15px"><span><b>Approval Settings</b></span></li>
     @include("wizpack::layouts.menu")
