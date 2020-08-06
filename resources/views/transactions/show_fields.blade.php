@@ -75,16 +75,16 @@
                 <tr><td>Sender ID Type</td><td>{!! $transactions->req_field118 !!}</td><td>Receiver ID Type</td><td>{!! $transactions->req_field119 !!}</td></tr>
                 <tr><td>Sender Amount</td><td>{!!intval($transactions->req_field4) / 100 !!}</td><td>Receiver Amount</td><td>{!!intval($transactions->req_field5) / 100 !!}</td></tr>
                 <tr><td>Sender date of Birth</td><td>{!! $transactions->req_field86 !!}</td><td>Receiver Date of Birth</td><td>{!! $transactions->req_field80 !!}</td></tr>
-                <tr><td>N/A</td><td>{!! $transactions->req_field109 !!}</td><td>Receiver Branch</td><td>{!! $transactions->req_field115 !!}</td></tr>
-                <tr><td>N/A</td><td>{!! $transactions->req_field109 !!}</td><td>Receiver Collection Branch</td><td>{!! $transactions->req_field111 !!}</td></tr>
-                <tr><td>N/A</td><td>{!! $transactions->req_field109 !!}</td><td>Receiver Bank Code</td><td>{!! $transactions->req_field113 !!}</td></tr>
-                <tr><td>N/A</td><td>{!! $transactions->req_field109 !!}</td><td>Receiver Bank</td><td>{!! $transactions->req_field112 !!}</td></tr>
-                <tr><td>N/A</td><td>{!! $transactions->req_field109 !!}</td><td>Receiver Type</td><td>{!! $transactions->req_field121 !!}</td></tr>
-                <tr><td>N/A</td><td>{!! $transactions->req_field109 !!}</td><td>Receiver Form of Payment</td><td>{!! $transactions->req_field83 !!}</td></tr>
-                <tr><td>N/A</td><td>{!! $transactions->req_field109 !!}</td><td>Receiver proof of address</td><td>{!! $transactions->req_field84 !!}</td></tr>
-                <tr><td>N/A</td><td>{!! $transactions->req_field109 !!}</td><td>Receiver KYC Verified</td><td>{!! $transactions->req_field85 !!}</td></tr>
-                <tr><td>N/A</td><td>{!! $transactions->req_field109 !!}</td><td>Receiver Mobile Number</td><td>{!! $transactions->req_field124 !!}</td></tr>
-                <tr><td>N/A</td><td>{!! $transactions->req_field109 !!}</td><td>Receiver Gender</td><td>{!! $transactions->req_field81 !!}</td></tr>
+                <tr><td></td><td></td><td>Receiver Branch</td><td>{!! $transactions->req_field115 !!}</td></tr>
+                <tr><td></td><td></td><td>Receiver Collection Branch</td><td>{!! $transactions->req_field111 !!}</td></tr>
+                <tr><td></td><td></td><td>Receiver Bank Code</td><td>{!! $transactions->req_field113 !!}</td></tr>
+                <tr><td></td><td></td><td>Receiver Bank</td><td>{!! $transactions->req_field112 !!}</td></tr>
+                <tr><td></td><td></td><td>Receiver Type</td><td>{!! $transactions->req_field121 !!}</td></tr>
+                <tr><td></td><td></td><td>Receiver Form of Payment</td><td>{!! $transactions->req_field83 !!}</td></tr>
+                <tr><td></td><td></td><td>Receiver proof of address</td><td>{!! $transactions->req_field84 !!}</td></tr>
+                <tr><td></td><td></td><td>Receiver KYC Verified</td><td>{!! $transactions->req_field85 !!}</td></tr>
+                <tr><td></td><td></td><td>Receiver Mobile Number</td><td>{!! $transactions->req_field124 !!}</td></tr>
+                <tr><td></td><td></td><td>Receiver Gender</td><td>{!! $transactions->req_field81 !!}</td></tr>
 
                 </tbody>
             </table>

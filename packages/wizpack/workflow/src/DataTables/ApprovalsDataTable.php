@@ -38,6 +38,9 @@ class ApprovalsDataTable extends DataTable
             ->addColumn('receiver', function ($query){
                 return $query->approvable->req_field108;
             })
+            ->addColumn('received_amount', function ($query){
+                return intval($query->req_field5)/100;
+            })
             ->addColumn('txn_no', function ($query){
                 return $query->approvable->req_field37;
             })
@@ -114,6 +117,9 @@ class ApprovalsDataTable extends DataTable
 //            'stage',
             'receiver' => [
                 'name' => 'transaction.req_field108'
+            ],
+            'received_amount' => [
+                'name' => 'transaction.req_field5'
             ],
             'txn_no' => [
                 'name' => 'transaction.req_field37'
