@@ -16,9 +16,11 @@
                 <tr><td> Transaction Type</td><td>{!! $transactions->req_field41 !!}</td><td>Partner ID</td><td>{!! $transactions->req_field32 !!}</td></tr>
                 {{--                <tr><td>Transaction Type</td><td>{!! $transactions->req_field122 !!}</td></tr>--}}
                 <tr><td>Transaction ID</td><td>{!! $transactions->req_field42 !!}</td><td>Partner Name</td><td>{!! $transactions->req_field123 !!}</td></tr>
-                <tr><td>Bridge Reference</td><td>{!! $transactions->req_field37 !!}</td><td>Partner Reference</td><td>{!! $transactions->req_field34 !!}</td></tr>
-                <tr><td>Request Number</td><td>{!! $transactions->req_field33 !!}</td><td>Partner Status</td><td>{!! $transactions->req_field78 !!}</td></tr>
-                <tr><td>Iso Source</td><td>{!! $transactions->iso_source !!}</td><td>Partner Status Name</td><td>{!! $transactions->req_field79 !!}</td></tr>
+                <tr><td>Transaction Status</td><td>{!! $transactions->req_field44 !!}</td><td>Partner Reference</td><td>{!! $transactions->req_field34 !!}</td></tr>
+
+                <tr><td>Bridge Reference</td><td>{!! $transactions->req_field37 !!}</td><td>Partner Status</td><td>{!! $transactions->req_field78 !!}</td></tr>
+                <tr><td>Request Number</td><td>{!! $transactions->req_field33 !!}</td><td>Partner Status Name</td><td>{!! $transactions->req_field79 !!}</td></tr>
+                <tr><td>Iso Source</td><td>{!! $transactions->iso_source !!}</td><td>Channel</td><td>{!! $transactions->req_field77 !!}</td></tr>
                 <tr><td>Iso Type</td><td>{!! $transactions->iso_type !!}</td><td>Transmission date & time</td><td>{!! $transactions->req_field7 !!}</td></tr>
                 <tr><td>Date Time Added</td>
                     <td>{!!  date('Y-m-d H:i:s',strtotime('+3 hours',strtotime(date('Y-m-d H:i:s', $transactions->date_time_added / 1000)))) !!}</td>
@@ -29,7 +31,7 @@
                 </tr>
 
                 <tr><td>Service Provider</td><td>{!! $transactions->req_field89 !!}</td><td>Expiration date</td><td>{!! $transactions->req_field14 !!}</td></tr>
-                <tr><td>Channel</td><td>{!! $transactions->req_field77 !!}</td><td>Settlement date</td><td>{!! $transactions->req_field15 !!}</td></tr>
+                <tr><td>Response Code</td><td>{!! $transactions->req_field39 !!}</td><td>Settlement date</td><td>{!! $transactions->req_field15 !!}</td></tr>
                 <tr><td>Processing Code</td><td>{!! $transactions->req_field3 !!}</td><td>Transaction Fee</td><td>{!! intval($transactions->req_field28) / 100 !!}</td></tr>
                 <tr><td>Merchant Type</td><td>{!! $transactions->req_field18 !!}</td><td>Settlement Fee</td><td>{!! intval($transactions->req_field29) / 100 !!}</td></tr>
 
