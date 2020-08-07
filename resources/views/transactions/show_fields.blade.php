@@ -16,7 +16,7 @@
                 <tr><td> Transaction Type</td><td>{!! $transactions->req_field41 !!}</td><td>Partner ID</td><td>{!! $transactions->req_field32 !!}</td></tr>
                 {{--                <tr><td>Transaction Type</td><td>{!! $transactions->req_field122 !!}</td></tr>--}}
                 <tr><td>Transaction ID</td><td>{!! $transactions->req_field42 !!}</td><td>Partner Name</td><td>{!! $transactions->req_field123 !!}</td></tr>
-                <tr><td>Transaction Status</td><td>{!! $transactions->req_field44 !!}</td><td>Partner Reference</td><td>{!! $transactions->req_field34 !!}</td></tr>
+                <tr><td>Transaction Status</td><td>{!! $transactions->res_field48 !!}</td><td>Partner Reference</td><td>{!! $transactions->req_field34 !!}</td></tr>
 
                 <tr><td>Bridge Reference</td><td>{!! $transactions->req_field37 !!}</td><td>Partner Status</td><td>{!! $transactions->req_field78 !!}</td></tr>
                 <tr><td>Request Number</td><td>{!! $transactions->req_field33 !!}</td><td>Partner Status Name</td><td>{!! $transactions->req_field79 !!}</td></tr>
@@ -31,7 +31,7 @@
                 </tr>
 
                 <tr><td>Service Provider</td><td>{!! $transactions->req_field89 !!}</td><td>Expiration date</td><td>{!! $transactions->req_field14 !!}</td></tr>
-                <tr><td>Response Code</td><td>{!! $transactions->req_field39 !!}</td><td>Settlement date</td><td>{!! $transactions->req_field15 !!}</td></tr>
+                <tr><td>Response Code</td><td>{!! $transactions->res_field39 !!}</td><td>Settlement date</td><td>{!! $transactions->req_field15 !!}</td></tr>
                 <tr><td>Processing Code</td><td>{!! $transactions->req_field3 !!}</td><td>Transaction Fee</td><td>{!! intval($transactions->req_field28) / 100 !!}</td></tr>
                 <tr><td>Merchant Type</td><td>{!! $transactions->req_field18 !!}</td><td>Settlement Fee</td><td>{!! intval($transactions->req_field29) / 100 !!}</td></tr>
 
@@ -40,14 +40,13 @@
                 <tr><td>Conversion rate / Settlement</td><td>{!! intval($transactions->req_field9) / 100 !!}</td><td>Sync Message</td><td>{!! $transactions->sync_message !!}</td></tr>
                 <tr><td>System Trace Audit Number (STAN)</td><td>{!! $transactions->req_field11 !!}</td><td>Payment Mode ID</td><td>{!! $transactions->req_field75 !!}</td></tr>
                 <tr><td>Forwarding Institution (country code)</td><td>{!! $transactions->req_field21 !!}</td><td>Payment Mode Name</td><td>{!! $transactions->req_field76 !!}</td></tr>
+                <tr><td>Request</td><td>{!! $transactions->request !!}</td><td>Original Message</td><td>{!! $transactions->req_field74 !!}</td></tr>
+                <tr><td>Response Code</td><td>{!! $transactions->res_field39 !!}</td><td>Response</td><td>{!! $transactions->response !!}</td></tr>
 
-
-                <tr><td>Request</td><td>{!! $transactions->request !!}</td><td>Response</td><td>{!! $transactions->response !!}</td></tr>
-                <tr><td>Original Message</td><td>{!! $transactions->req_field74 !!}</td><td>Extra Data</td><td>{!! $transactions->extra_data !!}</td></tr>
+                <tr><td>Extra Data</td><td>{!! $transactions->extra_data !!}</td><td>Need Sending</td><td>{!! $transactions->need_sending !!}</td></tr>
                 <tr><td>Sent</td><td>{!! $transactions->sent !!}</td><td>Received</td><td>{!! $transactions->received !!}</td></tr>
                 <tr><td>Aml Check</td><td>{!! $transactions->aml_check !!}</td><td>Aml Check Sent</td><td>{!! $transactions->aml_check_sent !!}</td></tr>
-                <tr><td>Need Sending</td><td>{!! $transactions->need_sending !!}</td><td>Aml Listed</td><td>{!! $transactions->aml_listed !!}</td></tr>
-                <tr><td>Posted</td><td>{!! $transactions->posted !!}</td></tr>
+                <tr><td>Aml Listed</td><td>{!! $transactions->aml_listed !!}</td><td>Posted</td><td>{!! $transactions->posted !!}</td></tr>
                 </tbody>
             </table>
         </div>
