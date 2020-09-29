@@ -108,7 +108,7 @@ class ApproveRequestController extends AppBaseController
                 'res_field48' => $sessionTxn->txn_status,
                 'res_field44' => $sessionTxn->comments,
                 'sync_message' => $sessionTxn->sync_message,
-                'date_time_modified' => strtotime(now())*1000,
+//                'date_time_modified' => strtotime(now())*1000,
             ]);
         }
         else

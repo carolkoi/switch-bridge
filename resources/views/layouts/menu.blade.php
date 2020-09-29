@@ -91,7 +91,7 @@
 </li>
     </ul>
 </li>
-@if(Auth::check() && auth()->user()->can('Can Create User'))
+{{--@if(Auth::check() && auth()->user()->can('Can Create User'))--}}
 <li class="divider" style="color:white; padding: 15px"><span><b>Administration</b></span></li>
 <li class="treeview {{ Request::is('members*') ? 'active menu-open' : '' }}">
     <a class="dropdown-toggle" href="#">
@@ -107,13 +107,13 @@
     <li class="{{ Request::is('members/roles*') ? 'active' : '' }}">
         <a href="{!! route('roles.index') !!}"><i class="fa fa-user-plus"></i><span>Roles</span></a>
     </li>
-        @if(Auth::check() && auth()->user()->can('Can Add Permissions'))
+{{--        @if(Auth::check() && auth()->user()->can('Can Add Permissions'))--}}
         <li class="{{ Request::is('members/permissions*') ? 'active' : '' }}">
             <a href="{{ route('permissions.index') }}"><i class="fa fa-check-square-o"></i><span>Permissions</span></a>
         </li>
-            @endif
+{{--            @endif--}}
     </ul>
-@endif
+{{--@endif--}}
 
     <li class="divider" style="color:white; padding: 15px"><span><b>Approval Settings</b></span></li>
     @include("wizpack::layouts.menu")
