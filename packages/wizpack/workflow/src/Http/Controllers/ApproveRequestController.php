@@ -95,7 +95,6 @@ class ApproveRequestController extends AppBaseController
             $transaction = Transactions::where('iso_id', $kdata[0]['model_id'])->update([
                 'res_field48' => $sessionTxn->txn_status,
                 'res_field44' => $sessionTxn->comments,
-//                'date_time_modified' => strtotime('now'),
                 'sent' => false,
                 'received' => false,
                 'res_field39' => '10',
@@ -108,7 +107,6 @@ class ApproveRequestController extends AppBaseController
                 'res_field48' => $sessionTxn->txn_status,
                 'res_field44' => $sessionTxn->comments,
                 'sync_message' => $sessionTxn->sync_message,
-//                'date_time_modified' => strtotime(now())*1000,
             ]);
         }
         else
@@ -116,7 +114,6 @@ class ApproveRequestController extends AppBaseController
                 'res_field48' => $sessionTxn->txn_status,
 //                'aml_listed' => session('aml_listed'),
                 'res_field44' => $sessionTxn->comments,
-//                'date_time_modified' => strtotime('now'),
                 'sent' => true,
                 'received' => true,
                 'res_field39' => '00',
