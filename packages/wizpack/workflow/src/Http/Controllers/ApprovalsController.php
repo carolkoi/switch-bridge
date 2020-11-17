@@ -87,6 +87,7 @@ class ApprovalsController extends AppBaseController
         $approvers = $data->pluck('currentStageApprovers')->flatten(2);
 
         $approvals = $data->pluck('approvalStagesStepsAndApprovers')->flatten(1);
+//        dd($approvals);
 
         $workflow = $data->pluck('workflowDetails')->first();
 

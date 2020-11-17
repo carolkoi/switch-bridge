@@ -35,6 +35,7 @@ class WhenWorkflowStageIsRejected
         $workflow = collect($event->workflow);
         $approvedStep = collect($event->approvedStep);
         $workflowPayload = $workflow->pluck('workflowDetails')->first();
+
         $currentStageApprovers = $workflow->pluck('currentStageApprovers')->flatten(1);
 
         $sentBy = $workflowPayload['sent_by'];

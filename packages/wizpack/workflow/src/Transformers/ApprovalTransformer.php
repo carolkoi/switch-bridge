@@ -2,6 +2,7 @@
 
 namespace WizPack\Workflow\Transformers;
 
+use Carbon\Carbon;
 use WizPack\Workflow\Models\Approvals;
 use Illuminate\Support\Collection;
 use League\Fractal\TransformerAbstract;
@@ -92,12 +93,12 @@ class ApprovalTransformer extends TransformerAbstract
             "workflow_type" => $model->workflow_type,
             "name" => $model->workflow->name,
             "model_id" => $model->model_id,
-            "model_type" => "App\Models\Leaves",
-            "collection_name" => "leave_approval",
+            "model_type" => "App\Models\Transactions",
+            "collection_name" => "transaction_approval",
             "sent_by" => $model->sentBy,
-            "approved" => $model->approved,
-            "approved_at" => $model->approved_at,
-            "rejected_at" => $model->rejected_at,
+            "approved" => true,
+            "approved_at" => Carbon::now(),
+            "rejected_at" => Carbon::now(),
             "awaiting_stage_id" => $model->awaiting_stage_id,
             "created_by" => $model->user->name,
             'created_at' => $model->created_at->format('d-M-Y'),

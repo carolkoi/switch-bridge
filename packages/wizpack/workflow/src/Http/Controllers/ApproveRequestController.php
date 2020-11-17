@@ -48,11 +48,15 @@ class ApproveRequestController extends AppBaseController
     public function handle($workflowApprovalId, $stageId, Request $request)
     {
         $workflow = $this->approvalsRepository->getApprovalSteps($workflowApprovalId)->get();
+
         $kdata = $workflow->toArray();
 
         $transformedResult = new Collection($workflow, new ApprovalTransformer());
 
+
         $data = collect((new Manager())->createData($transformedResult)->toArray()['data']);
+//        dd('here', $kdata, $transformedResult, $data);
+
 
         $approvers = $data->pluck('currentStageApprovers')->flatten(2);
 

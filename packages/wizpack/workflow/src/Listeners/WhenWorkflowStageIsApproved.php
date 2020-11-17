@@ -44,7 +44,8 @@ class WhenWorkflowStageIsApproved
         $nextStageId = $nextApprovalStage->first()['workflow_stage_type_id'];
 
         //set next approval stage
-        $nextStageUpdate = Approvals::find($workflowPayload['id']);
+        $nextStageUpdate = Approvals::findOrFail($workflowPayload['id']);
+
 
         if (!empty($nextStageId)) {
             $nextStageUpdate->awaiting_stage_id = $nextStageId;

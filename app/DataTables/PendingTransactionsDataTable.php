@@ -134,7 +134,7 @@ class PendingTransactionsDataTable extends DataTable
             'mod_time' => ['name' => 'date_time_modified'],
             'txn_status' => ['name' => 'res_field48'],
             'txn_type'  => ['name' => 'req_field41'],
-            'modified_at',
+//            'modified_at',
             'primary_txn_ref'  => ['name' => 'req_field34'],
             'sync_msg_ref' => ['name' => 'sync_message'],
             'txn_no' => ['name' => 'req_field37'],
