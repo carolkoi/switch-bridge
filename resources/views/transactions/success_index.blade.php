@@ -20,7 +20,7 @@
                                 <div class="form-group ">
                                     <select name="filter-parameter" id="filter-parameter-id"
                                             class="form-control select2" multiple>
-                                        <option>SELECT FILTER PARAMETER</option>
+{{--                                        <option>SELECT FILTER PARAMETER</option>--}}
                                         <option value="PARTNER" data-relation-id="filter-partner-id">PARTNER</option>
                                         <option value="TXN_TYPE" data-relation-id="txn_type_id">TRANSACTION TYPE
                                         </option>
@@ -65,11 +65,18 @@
                                         {{--                                        <div class="input-group-addon">--}}
                                         {{--                                            <i class="fa fa-calendar"></i>--}}
                                         {{--                                        </div>--}}
+                                        <select name="report_time" id="report_time_id" class="form-control param select2">
+{{--                                            <option>SELECT REPORTING DATE</option>--}}
+                                            <option value="trn_date">TRANSACTION DATE</option>
+                                            <option value="paid_date">PAID OUT DATE</option>
+
+                                        </select>
+                                        <br><br>
                                         <input type="text" name="from-to" class="form-control param" id="date_filter"
                                                autocomplete="off">
                                     </div>
                                     <span class="pull-right">
-                                    <input type="submit" class="btn btn-primary" value="Filter">
+                                    <input type="submit" class="btn btn-primary" value="Filter" id="filter-id">
                                 </span>
                                 </div>
                                 {{--                            </div>--}}
@@ -103,10 +110,12 @@
                             $("#txn_type_id").fadeIn("fast")['show']();
                             $("#txn_type").removeAttr('disabled')
                         } else if ($(this).val()[i] == "DATE") {
+                            $('#filter-id').hide();
                             $("#date_filter_id").fadeIn("fast")['show']();
-                            $("#date_filter").removeAttr('disabled');
+                            $("#report_time_id").removeAttr('disabled');
                         }
                     }
+
                 }
                 // let status = $('#filter-parameter-id option:selected[value=""]').data("relation-id");
                 //
@@ -133,6 +142,15 @@
                 //     $("#date_filter").attr('disabled', 'disabled').val('');
                 // }
             }).trigger('change');
+            $("#report_time_id").change(function () {
+                $('#date_filter').hide();
+                // $("#filter-id").attr('disabled', 'disabled').val('');
+                $("#date_filter").fadeIn("fast")['show']();
+                $("#date_filter").removeAttr('disabled');
+            }).trigger('change');
+            $('#date_filter').on('click', function () {
+                $("#filter-id").fadeIn("fast")['show']();
+            })
 
 
             let searchParams = new URLSearchParams(window.location.search);

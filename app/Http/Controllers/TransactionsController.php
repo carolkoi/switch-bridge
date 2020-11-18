@@ -133,7 +133,10 @@ class TransactionsController extends AppBaseController
         $transactions = Transactions::where('iso_id', $iso_id)->first();
 //        dd(strtotime(now())*1000, date('Y-m-d H:i', strtotime(now())), $transactions->date_time_modified, date('Y-m-d H:i', $transactions->date_time_modified/1000));
 
-        $input = $request->all();
+        $input = $request->except('paid_out_date');
+        $datePaid = strtotime($request->input('paid_out_date'))*1000;
+
+
 //        $hyphen = "-";
 //        $plus = "+";
 //        $appended = $transactions->res_field37 .= $hyphen .= substr(md5(microtime()),rand(0,26),1);
@@ -143,7 +146,10 @@ class TransactionsController extends AppBaseController
 
             return redirect(route('transactions.index'));
         }
-        Transactions::where('iso_id', $iso_id)->update(['modified_by' => Auth::user()->id]);
+        Transactions::where('iso_id', $iso_id)->update([
+            'modified_by' => Auth::user()->id,
+            'sync_message' => $input['sync_message'],
+            'paid_out_date'=> $datePaid]);
 //        if ($transactions->res_field37 == $appended){
 //            $appended = $transactions->res_field37 .= $plus .= substr(md5(microtime()),rand(0,26),1);
 //        }

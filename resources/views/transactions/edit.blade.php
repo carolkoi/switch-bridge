@@ -32,11 +32,15 @@
             $("#res_field48_id_upload_failed").change(function () {
                 let status = $("#res_field48_id_upload_failed option:selected").data("relation-id");
                 //Hide sync message field
-                $("#sync_message_id").hide();
+                $("#complete_det_id").hide();
                 if (status) {
                     $("#" + status).show();
                 }
             });
+            $('#valid_from, #valid_until').datetimepicker({
+                format: 'YYYY-MM-DD',
+                useCurrent: false
+            })
         });
     </script>
     @endsection

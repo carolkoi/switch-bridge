@@ -46,12 +46,20 @@
             <option value="AML-APPROVED" {{$transactions->res_field48 ==="AML-APPROVED" ? 'selected="selected"' : ''}}
             >AML-APPROVED</option>
             <option value="FAILED" {{$transactions->res_field48 ==="FAILED" ? 'selected="selected"' : ''}}>FAILED</option>
-            <option data-relation-id="sync_message_id" value="COMPLETED" {{$transactions->res_field48 ==="COMPLETED" ? 'selected="selected"' : ''}}>COMPLETED</option>
+            <option data-relation-id="complete_det_id" value="COMPLETED" {{$transactions->res_field48 ==="COMPLETED" ? 'selected="selected"' : ''}}>COMPLETED</option>
         </select>
     </div>
-    <div class="form-group" id="sync_message_id" style="display: none">
+    <div class="form-group" id="complete_det_id" style="display: none">
         {!! Form::label('sync_message', 'Sync Message:') !!}
         {!! Form::text('sync_message', null, ['class' => 'form-control']) !!}
+        <br><br>
+        {!! Form::label('paid_out_date', 'Paid Out Date:') !!}
+            <div class="input-group date">
+                <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                </div>
+                {!! Form::text('paid_out_date', null, ['class' => 'form-control', 'autocomplete' => 'off']) !!}
+            </div>
     </div>
 @elseif($transactions->res_field48 == "EXPIRED")
     <div class="form-group">
