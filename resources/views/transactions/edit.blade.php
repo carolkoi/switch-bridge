@@ -37,7 +37,7 @@
                     $("#" + status).show();
                 }
             });
-            $('#valid_from, #valid_until').datetimepicker({
+            $('#paid-out-id').datetimepicker({
                 format: 'YYYY-MM-DD',
                 useCurrent: false
             })

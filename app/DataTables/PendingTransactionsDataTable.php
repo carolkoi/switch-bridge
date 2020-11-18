@@ -22,8 +22,11 @@ class PendingTransactionsDataTable extends DataTable
             ->addColumn('partner', function ($query){
                 return $query->req_field123;
             })
-            ->addColumn('txn_time', 'transactions.datatables_added')
-            ->addColumn('mod_time', 'transactions.datatables_modified')
+            ->addColumn('txn_date', 'transactions.datatables_added')
+//            ->addColumn('mod_time', 'transactions.datatables_modified')
+            ->addColumn('paid_date', function ($query){
+                return $query->paid_out_date;
+            })
             ->addColumn('txn_status', function ($query){
                 return $query->res_field48;
             })
@@ -130,8 +133,8 @@ class PendingTransactionsDataTable extends DataTable
         return [
 
             'partner' => ['name' => 'req_field123'],
-            'txn_time' => ['name' => 'date_time_added'],
-            'mod_time' => ['name' => 'date_time_modified'],
+            'txn_date' => ['name' => 'date_time_added'],
+            'paid_date' => ['name' => 'paid_out_date'],
             'txn_status' => ['name' => 'res_field48'],
             'txn_type'  => ['name' => 'req_field41'],
 //            'modified_at',

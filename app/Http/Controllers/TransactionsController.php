@@ -149,7 +149,9 @@ class TransactionsController extends AppBaseController
         Transactions::where('iso_id', $iso_id)->update([
             'modified_by' => Auth::user()->id,
             'sync_message' => $input['sync_message'],
-            'paid_out_date'=> $datePaid]);
+//            'paid_out_date'=> $datePaid,
+            'paid_out_date'=> $input['paid_out_date'],
+            ]);
 //        if ($transactions->res_field37 == $appended){
 //            $appended = $transactions->res_field37 .= $plus .= substr(md5(microtime()),rand(0,26),1);
 //        }

@@ -58,7 +58,7 @@
                 <div class="input-group-addon">
                     <i class="fa fa-calendar"></i>
                 </div>
-                {!! Form::text('paid_out_date', null, ['class' => 'form-control', 'autocomplete' => 'off']) !!}
+                {!! Form::text('paid_out_date', null, ['class' => 'form-control', 'autocomplete' => 'off', 'id' => 'paid-out-id']) !!}
             </div>
     </div>
 @elseif($transactions->res_field48 == "EXPIRED")
