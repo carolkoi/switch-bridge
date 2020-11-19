@@ -9,7 +9,7 @@ OR Auth::check() && auth()->user()->cannot('Can Update Transaction'))
 {{--        <a href="{{url('customer-messages/'. $req_field124)}}" class="btn btn-warning btn-sm"> <i class="glyphicon glyphicon-envelope"></i></a>--}}
 
     </div>
-@elseif(Auth::check() && auth()->user()->can('Can Update Transaction'))
+@elseif(Auth::check() && auth()->user()->can('Can Update Transaction') OR ($req_field41 === "CASH" && $res_field48 === "AML-APPROVED") OR  $res_field48 === "AML-LISTED")
 
     <div class='btn-group'>
     <a href="{{ route('transactions.show', $iso_id) }}" class='btn btn-primary btn-sm'>
