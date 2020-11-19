@@ -14,22 +14,7 @@ class TransactionDataTableScope implements DataTableScope
      */
     public function apply($query)
     {
-        if (request()->has('report_time') && request()->has('from-to')) {
-            $reportTime = request()->input('report_time');
-            $date = explode(" - ", request()->input('from-to', ""));
-//            dd($date);
-            $date1 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[0])))) * 1000;
-            $date2 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[1])))) * 1000;
-            if ($reportTime = 'paid_date'){
-//                dd('yes here');
-                return $query->whereBetween('paid_out_date', array($date[0], $date[1]));
-            }
-            if ($reportTime = 'trn_date') {
-//                dd('here');
-                return $query->whereBetween('date_time_added', array($date1, $date2));
-            }
 
-        }
         if (request()->has('filter-partner') && request()->has('txn-type')
             && request()->has('report_time') && request()->has('from-to')){
 //            dd('yes');
@@ -39,7 +24,7 @@ class TransactionDataTableScope implements DataTableScope
             $date = explode(" - ", request()->input('from-to', ""));
             $date1 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[0])))) * 1000;
             $date2 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[1])))) * 1000;
-            if ($reportTime = 'trn_date'){
+            if ($reportTime == 'trn_date'){
                 return $query->where('req_field123', $partner)
                     ->where('req_field41', 'LIKE', "%$txnType%")->whereBetween('date_time_added', array($date1, $date2));
             }else
@@ -58,7 +43,7 @@ class TransactionDataTableScope implements DataTableScope
              $date = explode(" - ", request()->input('from-to', ""));
             $date1 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[0])))) * 1000;
             $date2 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[1])))) * 1000;
-             if ($reportTime = 'trn_date'){
+             if ($reportTime == 'trn_date'){
                  return $query->where('req_field123', $partner)->whereBetween('date_time_added', array($date1, $date2));
              }else
                  return $query->where('req_field123', $partner)->whereBetween('paid_out_date', array($date[0], $date[1]));
@@ -71,30 +56,27 @@ class TransactionDataTableScope implements DataTableScope
 
             $date1 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[0])))) * 1000;
             $date2 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[1])))) * 1000;
-            if ($reportTime = 'trn_date'){
+            if ($reportTime == 'trn_date'){
                 return $query->where('req_field41', 'LIKE', "%$txnType%")->whereBetween('date_time_added', array($date1, $date2));
             }else
                 return $query->where('req_field41', 'LIKE', "%$txnType%")->whereBetween('paid_out_date', array($date[0], $date[1]));
         }
         if (request()->has('report_time') && request()->has('from-to')) {
             $reportTime = request()->input('report_time');
-//            dd(request()->input('from-to'));
+
             $date = explode(" - ", request()->input('from-to', ""));
-//            dd($date);
+//            dd($date,  'yes', $reportTime);
             $date1 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[0])))) * 1000;
             $date2 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[1])))) * 1000;
-            if ($reportTime = 'paid_date'){
-                dd('yes here');
-                return $query->whereBetween('date_time_added', array($date1, $date2));
-            }elseif($reportTime = 'trn_date') {
-                dd('yes');
+            if ($reportTime == 'paid_date'){
                 return $query->whereBetween('paid_out_date', array($date[0], $date[1]));
-            }
-            return $query;
+            }else
+                return $query->whereBetween('date_time_added', array($date1, $date2));
 
         }
+
         if (request()->has('filter-partner')) {
-//            $txnType = request()->input('txn-type');
+            $txnType = request()->input('txn-type');
             $partner = request()->input('filter-partner');
             return $query->where('req_field123', $partner);
         }
@@ -102,12 +84,7 @@ class TransactionDataTableScope implements DataTableScope
             $txnType = request()->input('txn-type');
             return $query->where('req_field41', 'LIKE', "%$txnType%");
         }
-//        if (request()->has('from-to')) {
-//            $date = explode(" - ", request()->input('from-to', ""));
-//            $date1 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[0])))) * 1000;
-//            $date2 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[1])))) * 1000;
-//            return $query->whereBetween('date_time_modified', array($date1, $date2));
-//        }
+
             return $query;
     }
 }

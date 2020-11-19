@@ -38,7 +38,7 @@
                 }
             });
             $('#paid-out-id').datetimepicker({
-                format: 'YYYY-MM-DD',
+                format: 'YYYY-MM-DD:H:i:s',
                 useCurrent: false
             })
         });

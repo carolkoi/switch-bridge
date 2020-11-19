@@ -130,7 +130,7 @@ class FailedTransactionsDataTable extends DataTable
         return [
             'partner' => ['name' => 'req_field123'],
             'txn_date' => ['name' => 'date_time_added'],
-            'paid_date' => ['name' => 'paid_out_date'],
+//            'paid_date' => ['name' => 'paid_out_date'],
             'txn_status' => ['name' => 'res_field48'],
             'txn_type' => ['name' => 'req_field41'],
 //            'modified_at',

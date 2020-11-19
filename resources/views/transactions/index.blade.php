@@ -154,7 +154,7 @@
 
 
             let searchParams = new URLSearchParams(window.location.search);
-            let dateInterval = searchParams.get('from-to');
+            let dateInterval = searchParams.get('report_time, from-to');
             // let filterPartner = searchParams.get('filter-partner');
             // let filterTxnType = searchParams.get('txn-type');
             // let selectedPartner = null;
