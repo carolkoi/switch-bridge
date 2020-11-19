@@ -229,7 +229,7 @@ class Approvals extends Model
 
     public function approvalStatus()
     {
-        if (!empty($this->approved_at) && ($this->approved == false)) {
+        if (!empty($this->approved_at)) {
             return '<span class="label label-success">Approved</span>';
         }
 
