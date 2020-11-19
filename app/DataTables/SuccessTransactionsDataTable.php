@@ -24,8 +24,12 @@ class SuccessTransactionsDataTable extends DataTable
             })
             ->addColumn('txn_date', 'transactions.datatables_added')
 //            ->addColumn('txn_proc_time', 'transactions.datatables_modified')
+//            ->addColumn('paid_date', function ($query){
+//                return $query->paid_out_date;
+//            })
             ->addColumn('paid_date', function ($query){
-                return $query->paid_out_date;
+//                return $query->paid_out_date;
+                return date_format(date_create($query->paid_out_date),"Y-m-d H:i:s");
             })
             ->addColumn('txn_status', function ($query){
                 return $query->res_field48;
