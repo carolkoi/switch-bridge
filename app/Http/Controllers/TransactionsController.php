@@ -133,8 +133,8 @@ class TransactionsController extends AppBaseController
         $transactions = Transactions::where('iso_id', $iso_id)->first();
 //        dd(strtotime(now())*1000, date('Y-m-d H:i', strtotime(now())), $transactions->date_time_modified, date('Y-m-d H:i', $transactions->date_time_modified/1000));
 
-        $input = $request->except('paid_out_date');
-        $datePaid = strtotime($request->input('paid_out_date'))*1000;
+        $input = $request->all();
+//        $datePaid = strtotime($request->input('paid_out_date'))*1000;
 
 
 //        $hyphen = "-";
