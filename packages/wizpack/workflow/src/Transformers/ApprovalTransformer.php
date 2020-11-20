@@ -87,7 +87,7 @@ class ApprovalTransformer extends TransformerAbstract
      */
     public function getApprovalDetails($model)
     {
-        dd($model);
+//        dd($model);
         return [
             'id' => (int)$model->id,
             "user_id" => $model->user_id,
@@ -97,7 +97,7 @@ class ApprovalTransformer extends TransformerAbstract
             "model_type" => "App\Models\Transactions",
             "collection_name" => "transaction_approval",
             "sent_by" => $model->sentBy,
-            "approved" => true,
+            "approved" => 1,
             "approved_at" => Carbon::now(),
             "rejected_at" => Carbon::now(),
             "awaiting_stage_id" => $model->awaiting_stage_id,
