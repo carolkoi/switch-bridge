@@ -87,6 +87,7 @@ class ApprovalTransformer extends TransformerAbstract
      */
     public function getApprovalDetails($model)
     {
+        dd($model);
         return [
             'id' => (int)$model->id,
             "user_id" => $model->user_id,
