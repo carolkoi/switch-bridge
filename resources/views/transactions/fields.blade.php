@@ -52,14 +52,14 @@
     <div class="form-group" id="complete_det_id" style="display: none">
         {!! Form::label('sync_message', 'Sync Message:') !!}
         {!! Form::text('sync_message', null, ['class' => 'form-control']) !!}
-        <br><br>
-        {!! Form::label('paid_out_date', 'Paid Out Date:') !!}
-            <div class="input-group date">
-                <div class="input-group-addon">
-                    <i class="fa fa-calendar"></i>
-                </div>
-                {!! Form::text('paid_out_date', null, ['class' => 'form-control', 'autocomplete' => 'off', 'id' => 'paid-out-id']) !!}
-            </div>
+{{--        <br><br>--}}
+{{--        {!! Form::label('paid_out_date', 'Paid Out Date:') !!}--}}
+{{--            <div class="input-group date">--}}
+{{--                <div class="input-group-addon">--}}
+{{--                    <i class="fa fa-calendar"></i>--}}
+{{--                </div>--}}
+{{--                {!! Form::text('paid_out_date', null, ['class' => 'form-control', 'autocomplete' => 'off', 'id' => 'paid-out-id']) !!}--}}
+{{--            </div>--}}
     </div>
 @elseif($transactions->res_field48 == "EXPIRED")
     <div class="form-group">
