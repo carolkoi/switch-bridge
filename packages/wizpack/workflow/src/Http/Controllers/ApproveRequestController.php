@@ -138,6 +138,12 @@ class ApproveRequestController extends AppBaseController
             'approved_at' => Carbon::now()
 
         ]);
+        $approved = $this->approvalsRepository->update([
+            'model_id' => $kdata[0]['model_id'] ],
+            [
+            'approved' => true,
+            'approved_at' => Carbon::now()
+        ]);
         if ($approvedStep) {
 
             event(new WorkflowStageApproved($data, $approvedStep));
