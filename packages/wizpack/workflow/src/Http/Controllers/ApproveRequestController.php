@@ -30,6 +30,7 @@ class ApproveRequestController extends AppBaseController
         ApprovalsRepository $approvalsRepo,
         WorkflowStageApproversRepository $approversRepository,
         WorkflowStepRepository $workflowStepRepository
+
     )
     {
         $this->approvalsRepository = $approvalsRepo;
@@ -71,6 +72,8 @@ class ApproveRequestController extends AppBaseController
 
         $workflow = $data->pluck('workflowDetails')->first();
         $workflow['approved_at'] = Carbon::now();
+//        dd($workflow);
+
 
         $stageId = $workflowStageToBeApproved['workflow_stage_type_id'] ?: $stageId;
         $txn = Transactions::where('iso_id', $kdata[0]['model_id'])->first();
@@ -126,6 +129,7 @@ class ApproveRequestController extends AppBaseController
                 'sync_message' => $sessionTxn->sync_message
             ]);
 
+
         $approvedStep = $this->workflowStepRepository->updateOrCreate([
             'workflow_stage_id' => $stageId,
             'workflow_id' => $workflow['id'],
@@ -139,14 +143,21 @@ class ApproveRequestController extends AppBaseController
             'approved_at' => Carbon::now()
 
         ]);
+
         if ($approvedStep) {
+//            dd($data);
 
             event(new WorkflowStageApproved($data, $approvedStep));
-
+            $approval = $this->approvalsRepository->updateOrCreate(
+                [
+                    'id' => $workflow['id']
+                ],[
+                'approved' => 1,
+                'approved_at' => Carbon::now()
+            ]);
             Flash::success('Transaction Request Approved successfully');
             return redirect('/upesi/approvals/' . $workflowApprovalId);
         }
-
         Flash::success('An error occurred Transaction Request not approved ');
         return redirect()->back();
 

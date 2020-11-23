@@ -26,6 +26,7 @@ class WorkflowStageApproved
      */
     public function __construct($workflow, $approvedStep)
     {
+//        dd($workflow);
         $this->workflow = $workflow;
         $this->approvedStep = $approvedStep;
     }
