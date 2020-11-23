@@ -55,7 +55,6 @@ class ApproveRequestController extends AppBaseController
 
 
         $data = collect((new Manager())->createData($transformedResult)->toArray()['data']);
-//        dd('here', $kdata, $transformedResult, $data);
 
 
         $approvers = $data->pluck('currentStageApprovers')->flatten(2);
@@ -71,12 +70,14 @@ class ApproveRequestController extends AppBaseController
         $workflowStageToBeApproved = $data->pluck('currentApprovalStage')->flatten(1)->first();
 
         $workflow = $data->pluck('workflowDetails')->first();
+        $workflow['approved_at'] = Carbon::now();
 
         $stageId = $workflowStageToBeApproved['workflow_stage_type_id'] ?: $stageId;
         $txn = Transactions::where('iso_id', $kdata[0]['model_id'])->first();
         $sessionTxn = SessionTxn::where('txn_id', $kdata[0]['model_id'])->first();
         $uniqRef= DB::select('SELECT fn_generate_ref(?)', [$txn->res_field37]);
 //        dd($uniqRef[0]->fn_generate_ref);
+
         if($txn->res_field48 == "UPLOAD-FAILED" && $sessionTxn->txn_status == "AML-APPROVED"){
             $api_txn = ApiTransaction::where('transaction_number', $txn->req_field37)->update([
                 'transaction_number' => $uniqRef[0]->fn_generate_ref,

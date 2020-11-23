@@ -47,6 +47,8 @@ class RejectRequestController extends AppBaseController
         $transformedResult = new Collection($workflow, new ApprovalTransformer());
 
         $data = collect((new Manager())->createData($transformedResult)->toArray()['data']);
+//$workflowDets = $data->pluck('workflowDetails')->flatten();
+//        dd($workflowDets->rejected_at);
 
         $approvers = $data->pluck('currentStageApprovers')->flatten(2);
 
@@ -61,6 +63,8 @@ class RejectRequestController extends AppBaseController
         $workflowStageToBeApproved = $data->pluck('currentApprovalStage')->flatten(1)->first();
 
         $workflow = $data->pluck('workflowDetails')->first();
+        $workflow['rejected_at'] = Carbon::now();
+//        dd($workflow['rejected_at']);
 
         $stageId = $workflowStageToBeApproved['workflow_stage_type_id'] ?: $stageId;
 
