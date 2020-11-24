@@ -68,7 +68,7 @@
                                         <select name="report_time" id="report_time_id" class="form-control param select2">
 {{--                                            <option>SELECT REPORTING DATE</option>--}}
                                             <option value="trn_date">TRANSACTION DATE</option>
-                                            <option value="paid_date">PAID OUT DATE</option>
+                                            <option value="modified_date">MODIFIED DATE</option>
 
                                         </select>
                                         <br><br>
