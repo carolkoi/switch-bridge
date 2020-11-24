@@ -49,14 +49,12 @@ class ApproveRequestController extends AppBaseController
     public function handle($workflowApprovalId, $stageId, Request $request)
     {
         $workflow = $this->approvalsRepository->getApprovalSteps($workflowApprovalId)->get();
-
         $kdata = $workflow->toArray();
 
         $transformedResult = new Collection($workflow, new ApprovalTransformer());
 
 
         $data = collect((new Manager())->createData($transformedResult)->toArray()['data']);
-
 
         $approvers = $data->pluck('currentStageApprovers')->flatten(2);
 
@@ -71,9 +69,6 @@ class ApproveRequestController extends AppBaseController
         $workflowStageToBeApproved = $data->pluck('currentApprovalStage')->flatten(1)->first();
 
         $workflow = $data->pluck('workflowDetails')->first();
-        $workflow['approved_at'] = Carbon::now();
-//        dd($workflow);
-
 
         $stageId = $workflowStageToBeApproved['workflow_stage_type_id'] ?: $stageId;
         $txn = Transactions::where('iso_id', $kdata[0]['model_id'])->first();
@@ -145,7 +140,6 @@ class ApproveRequestController extends AppBaseController
         ]);
 
         if ($approvedStep) {
-//            dd($data);
 
             event(new WorkflowStageApproved($data, $approvedStep));
             $approval = $this->approvalsRepository->updateOrCreate(
@@ -155,6 +149,7 @@ class ApproveRequestController extends AppBaseController
                 'approved' => 1,
                 'approved_at' => Carbon::now()
             ]);
+
             Flash::success('Transaction Request Approved successfully');
             return redirect('/upesi/approvals/' . $workflowApprovalId);
         }

@@ -79,11 +79,13 @@ class ApprovalsRepository extends BaseRepository
      */
     public function getApprovalSteps($id)
     {
+
         $approvals = $this->myApprovals()->limit(1)
             ->where('id', $id);
-//        dd($approvals);
-
-
         return $approvals;
+    }
+
+    public function currentApproval($id){
+
     }
 }

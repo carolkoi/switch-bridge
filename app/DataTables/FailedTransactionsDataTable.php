@@ -24,6 +24,8 @@ class FailedTransactionsDataTable extends DataTable
             })
             ->addColumn('txn_date', 'transactions.datatables_added')
 //            ->addColumn('mod_time', 'transactions.datatables_modified')
+            ->addColumn('date_modified', 'transactions.datatables_modified')
+
             ->addColumn('paid_date', function ($query){
                 return $query->paid_out_date;
             })
@@ -130,7 +132,7 @@ class FailedTransactionsDataTable extends DataTable
         return [
             'partner' => ['name' => 'req_field123'],
             'txn_date' => ['name' => 'date_time_added'],
-//            'paid_date' => ['name' => 'paid_out_date'],
+            'date_modified' => ['name' => 'date_time_modified'],
             'txn_status' => ['name' => 'res_field48'],
             'txn_type' => ['name' => 'req_field41'],
 //            'modified_at',

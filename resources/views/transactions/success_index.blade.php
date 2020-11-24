@@ -72,8 +72,14 @@
 
                                         </select>
                                         <br><br>
-                                        <input type="text" name="from-to" class="form-control param" id="date_filter"
-                                               autocomplete="off">
+                                        <div class="input-group date">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <input type="text" name="from-to" class="form-control param" id="date_filter"
+                                                   autocomplete="off">
+                                            {{--                                            {!! Form::text('paid_out_date', null, ['class' => 'form-control', 'autocomplete' => 'off', 'id' => 'paid-out-id']) !!}--}}
+                                        </div>
                                     </div>
                                     <span class="pull-right">
                                     <input type="submit" class="btn btn-primary" value="Filter" id="filter-id">

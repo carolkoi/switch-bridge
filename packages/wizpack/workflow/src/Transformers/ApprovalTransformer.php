@@ -39,6 +39,7 @@ class ApprovalTransformer extends TransformerAbstract
             "currentStageApprovers" => $this->getCurrentApprovalStageApprovers($currentStage),
             "approvalRejected" =>$approvalHasRejection
         ];
+
     }
 
     /**
@@ -62,7 +63,7 @@ class ApprovalTransformer extends TransformerAbstract
         $stages = collect($stages)->unique('workflow_stage_type_id')->filter(function ($stage) {
             //filter out approved steps in a stage
             $stageApprovals = collect($stage['workflow_steps'])->map(function ($step) {
-                if (empty($step['approved_at']) || empty($step['approved_at'])) {
+                if (empty($step['approved_at']) || empty($step['rejected_at'])) {
                     return true;
                 }
                 return false;
@@ -87,7 +88,6 @@ class ApprovalTransformer extends TransformerAbstract
      */
     public function getApprovalDetails($model)
     {
-//        dd($model);
         return [
             'id' => (int)$model->id,
             "user_id" => $model->user_id,
@@ -97,7 +97,7 @@ class ApprovalTransformer extends TransformerAbstract
             "model_type" => "App\Models\Transactions",
             "collection_name" => "transaction_approval",
             "sent_by" => $model->sentBy,
-            "approved" => 1,
+            "approved" => $model->approved,
             "approved_at" => $model->approved_at,
             "rejected_at" => $model->rejected_at,
             "awaiting_stage_id" => $model->awaiting_stage_id,
@@ -105,6 +105,7 @@ class ApprovalTransformer extends TransformerAbstract
             'created_at' => $model->created_at->format('d-M-Y'),
             'updated_at' => $model->updated_at->format('d-M-Y')
         ];
+
     }
 
 
@@ -114,6 +115,7 @@ class ApprovalTransformer extends TransformerAbstract
      */
     public function getStages($model)
     {
+
         return $model->workflowSteps->unique('workflow_stage_id')->map(function ($stepStage) use ($model) {
             $stage = $stepStage->workflowStage;
             $stageApprovers = $this->getStageApprovers($stage);
