@@ -75,6 +75,19 @@ class ApproveRequestController extends AppBaseController
         $sessionTxn = SessionTxn::where('txn_id', $kdata[0]['model_id'])->first();
         $uniqRef= DB::select('SELECT fn_generate_ref(?)', [$txn->res_field37]);
 //        dd($uniqRef[0]->fn_generate_ref);
+        $approvedStep = $this->workflowStepRepository->updateOrCreate([
+            'workflow_stage_id' => $stageId,
+            'workflow_id' => $workflow['id'],
+            'weight' => $currentStage['weight'],
+            'user_id' => auth()->id()
+
+        ], [
+            'workflow_stage_id' => $stageId,
+            'workflow_id' => $workflow['id'],
+            'user_id' => auth()->id(),
+            'approved_at' => Carbon::now()
+
+        ]);
 
         if($txn->res_field48 == "UPLOAD-FAILED" && $sessionTxn->txn_status == "AML-APPROVED"){
             $api_txn = ApiTransaction::where('transaction_number', $txn->req_field37)->update([
@@ -92,6 +105,22 @@ class ApproveRequestController extends AppBaseController
                 'req_field37' => $uniqRef[0]->fn_generate_ref,
                 'sync_message' => $sessionTxn->sync_message
             ]);
+            if ($approvedStep) {
+
+                event(new WorkflowStageApproved($data, $approvedStep));
+                $approval = $this->approvalsRepository->updateOrCreate(
+                    [
+                        'id' => $workflow['id']
+                    ],[
+                    'approved' => 1,
+                    'approved_at' => Carbon::now()
+                ]);
+
+                Flash::success('Transaction Request Approved successfully');
+                return redirect('/upesi/approvals/' . $workflowApprovalId);
+            }
+            Flash::success('An error occurred Transaction Request not approved ');
+            return redirect()->back();
 
         }
         elseif($sessionTxn->txn_status == "AML-APPROVED") {
@@ -104,6 +133,22 @@ class ApproveRequestController extends AppBaseController
                 'aml_listed' => false,
                 'sync_message' => $sessionTxn->sync_message
             ]);
+            if ($approvedStep) {
+
+                event(new WorkflowStageApproved($data, $approvedStep));
+                $approval = $this->approvalsRepository->updateOrCreate(
+                    [
+                        'id' => $workflow['id']
+                    ],[
+                    'approved' => 1,
+                    'approved_at' => Carbon::now()
+                ]);
+
+                Flash::success('Transaction Request Approved successfully');
+                return redirect('/upesi/approvals/' . $workflowApprovalId);
+            }
+            Flash::success('An error occurred Transaction Request not approved ');
+            return redirect()->back();
         }
         elseif($sessionTxn->txn_status == "COMPLETED") {
             $transaction = Transactions::where('iso_id', $kdata[0]['model_id'])->update([
@@ -111,6 +156,22 @@ class ApproveRequestController extends AppBaseController
                 'res_field44' => $sessionTxn->comments,
                 'sync_message' => $sessionTxn->sync_message,
             ]);
+            if ($approvedStep) {
+
+                event(new WorkflowStageApproved($data, $approvedStep));
+                $approval = $this->approvalsRepository->updateOrCreate(
+                    [
+                        'id' => $workflow['id']
+                    ],[
+                    'approved' => 1,
+                    'approved_at' => Carbon::now()
+                ]);
+
+                Flash::success('Transaction Request Approved successfully');
+                return redirect('/upesi/approvals/' . $workflowApprovalId);
+            }
+            Flash::success('An error occurred Transaction Request not approved ');
+            return redirect()->back();
         }
         else
             $transaction = Transactions::where('iso_id', $kdata[0]['model_id'])->update([
@@ -123,22 +184,6 @@ class ApproveRequestController extends AppBaseController
                 'aml_listed' => true,
                 'sync_message' => $sessionTxn->sync_message
             ]);
-
-
-        $approvedStep = $this->workflowStepRepository->updateOrCreate([
-            'workflow_stage_id' => $stageId,
-            'workflow_id' => $workflow['id'],
-            'weight' => $currentStage['weight'],
-            'user_id' => auth()->id()
-
-        ], [
-            'workflow_stage_id' => $stageId,
-            'workflow_id' => $workflow['id'],
-            'user_id' => auth()->id(),
-            'approved_at' => Carbon::now()
-
-        ]);
-
         if ($approvedStep) {
 
             event(new WorkflowStageApproved($data, $approvedStep));
@@ -155,6 +200,11 @@ class ApproveRequestController extends AppBaseController
         }
         Flash::success('An error occurred Transaction Request not approved ');
         return redirect()->back();
+
+
+
+
+
 
     }
 }
