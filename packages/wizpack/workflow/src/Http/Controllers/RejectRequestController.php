@@ -83,12 +83,12 @@ class RejectRequestController extends AppBaseController
         ]);
         if ($approvedStep) {
 
-            event(new WorkflowStageRejected($data, $approvedStep));
+//            event(new WorkflowStageRejected($data, $approvedStep));
             $approval = $this->approvalsRepository->updateOrCreate(
                 [
                     'id' => $workflow['id']
                 ],[
-                'approved' => 1,
+//                'approved' => 1,
                 'rejected_at' => Carbon::now()
             ]);
 
