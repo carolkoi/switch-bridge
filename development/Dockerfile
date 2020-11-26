@@ -54,10 +54,10 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # 8. we need a user with the same UID/GID with host user
 # so when we execute CLI commands, all the host file's ownership remains intact
 # otherwise command from inside container will create root-owned files and directories
-#ARG uid
-#RUN useradd -G www-data,root -u $uid -d /home/devuser devuser
-#RUN mkdir -p /home/devuser/.composer && \
-#    chown -R devuser:devuser /home/devuser
+ARG uid
+RUN useradd -G www-data,root -u $uid -d /home/devuser devuser
+RUN mkdir -p /home/devuser/.composer && \
+    chown -R devuser:devuser /home/devuser
 
 ##9. Set this environment variable to true to set timezone on container start.
 #    ENV SET_CONTAINER_TIMEZONE false

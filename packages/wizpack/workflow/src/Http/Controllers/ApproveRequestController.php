@@ -90,7 +90,7 @@ class ApproveRequestController extends AppBaseController
 
         if ($approvedStep) {
 
-            event(new WorkflowStageApproved($data, $approvedStep));
+//            event(new WorkflowStageApproved($data, $approvedStep));
             $approval = $this->approvalsRepository->updateOrCreate(
                 [
                     'id' => $workflow['id']
