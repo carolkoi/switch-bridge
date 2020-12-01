@@ -135,6 +135,7 @@ class ApproveRequestController extends AppBaseController
                 'res_field48' => $sessionTxn->txn_status,
                 'res_field44' => $sessionTxn->comments,
                 'sync_message' => $sessionTxn->sync_message,
+                'res_field39' => '00',
             ]);
         }
         else
@@ -144,7 +145,7 @@ class ApproveRequestController extends AppBaseController
                 'res_field44' => $sessionTxn->comments,
                 'sent' => true,
                 'received' => true,
-                'res_field39' => '00',
+                'res_field39' => '06',
                 'aml_listed' => true,
                 'sync_message' => $sessionTxn->sync_message
             ]);
