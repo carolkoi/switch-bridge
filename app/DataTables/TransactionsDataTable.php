@@ -32,7 +32,7 @@ class TransactionsDataTable extends DataTable
             ->addColumn('txn_date', 'transactions.datatables_added')
             ->addColumn('date_modified', 'transactions.datatables_modified')
             ->addColumn('paid_date', function ($query){
-                return date("Y-m-d H:i:s", strtotime($query->paid_out_date));
+                return date("Y-m-d H:i:s", strtotime($query->paid_out_date)+10800);
             })
             ->addColumn('txn_status', 'transactions.datatables_status')
             ->addColumn('txn_type', function ($query){
