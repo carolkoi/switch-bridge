@@ -5,6 +5,7 @@ namespace App\DataTables;
 use App\Models\Transactions;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
+use Carbon;
 
 class TransactionsDataTable extends DataTable
 {
@@ -32,8 +33,10 @@ class TransactionsDataTable extends DataTable
             ->addColumn('date_modified', 'transactions.datatables_modified')
             ->addColumn('paid_date', function ($query){
 //                return $query->paid_out_date;
-                $xx = date_format(date_create($query->paid_out_date),"Y-m-d H:i:s");
-                return  $xx ? $xx : null;
+//                $xx = date_format(date_create($query->paid_out_date),"Y-m-d H:i:s");
+                $xy = Carbon\Carbon::parse($query->paid_out_date)->addHours(3)->format('Y-m-d H:i:s');
+                return  $xy ? $xy : null;
+
             })
             ->addColumn('txn_status', 'transactions.datatables_status')
             ->addColumn('txn_type', function ($query){
