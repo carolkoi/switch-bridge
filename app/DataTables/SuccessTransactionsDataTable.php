@@ -27,7 +27,7 @@ class SuccessTransactionsDataTable extends DataTable
             ->addColumn('date_modified', 'transactions.datatables_modified')
 //
             ->addColumn('paid_date', function ($query){
-//                return $query->paid_out_date;
+                return $query->paid_out_date;
 //                return date_format(date_create($query->paid_out_date),"Y-m-d H:i:s");
                 $xy = Carbon\Carbon::parse($query->paid_out_date)->addHours(3)->format('Y-m-d H:i:s');
 //                $xx = date_format(date_create($query->paid_out_date),"Y-m-d H:i:s");
