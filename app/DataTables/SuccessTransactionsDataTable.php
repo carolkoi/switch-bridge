@@ -27,7 +27,9 @@ class SuccessTransactionsDataTable extends DataTable
             ->addColumn('date_modified', 'transactions.datatables_modified')
 //
             ->addColumn('paid_date', function ($query){
-                return date("Y-m-d H:i:s", strtotime($query->paid_out_date)+10800);
+                return !empty($query->paid_out_date) ? date("Y-m-d H:i:s", strtotime($query->paid_out_date)+10800):null;
+
+//                return date("Y-m-d H:i:s", strtotime($query->paid_out_date)+10800);
             })
             ->addColumn('txn_status', function ($query){
                 return $query->res_field48;
