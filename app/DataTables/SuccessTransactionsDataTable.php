@@ -25,10 +25,10 @@ class SuccessTransactionsDataTable extends DataTable
             ->addColumn('txn_date', 'transactions.datatables_added')
             ->addColumn('date_modified', 'transactions.datatables_modified')
 //
-//            ->addColumn('paid_date', function ($query){
-////                return $query->paid_out_date;
-//                return date_format(date_create($query->paid_out_date),"Y-m-d H:i:s");
-//            })
+            ->addColumn('paid_date', function ($query){
+//                return $query->paid_out_date;
+                return date_format(date_create($query->paid_out_date),"Y-m-d H:i:s");
+            })
             ->addColumn('txn_status', function ($query){
                 return $query->res_field48;
             })
@@ -133,6 +133,7 @@ class SuccessTransactionsDataTable extends DataTable
             'partner' => ['name' => 'req_field123'],
             'txn_date' => ['name' => 'date_time_added'],
             'date_modified' => ['name' => 'date_time_modified'],
+            'paid_date' => ['name' => 'paid_out_date'],
             'txn_status' => ['name' => 'res_field48'],
             'txn_type'  => ['name' => 'req_field41'],
             'primary_txn_ref'  => ['name' => 'req_field34'],
