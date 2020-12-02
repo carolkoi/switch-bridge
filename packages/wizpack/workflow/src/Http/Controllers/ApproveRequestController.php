@@ -136,6 +136,7 @@ class ApproveRequestController extends AppBaseController
                 'res_field44' => $sessionTxn->comments,
                 'sync_message' => $sessionTxn->sync_message,
                 'res_field39' => '00',
+                'paid_out_date' => Carbon::now()
             ]);
         }
         else
