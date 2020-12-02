@@ -75,8 +75,8 @@ class TransactionDataTableScope implements DataTableScope
                 return $query->whereBetween('date_time_added', array($date1, $date2));
 
             }else
-//                return $query->whereBetween('date_time_added', array($date1, $date2));
-                return $query->whereBetween('paid_out_date', array($date[0], $date[1]));
+                return $query->whereBetween('date_time_modified', array($date1, $date2));
+//                return $query->whereBetween('paid_out_date', array($date[0], $date[1]));
 
         }
 
