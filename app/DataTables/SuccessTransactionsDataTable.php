@@ -88,7 +88,7 @@ class SuccessTransactionsDataTable extends DataTable
      */
     public function query(Transactions $model)
     {
-        return $model->orderBy('date_time_modified', 'desc')->where('res_field48', 'COMPLETED')->newQuery();
+        return $model->orderBy('date_time_modified', 'desc')->where('res_field48', 'COMPLETED')->with('company')->newQuery();
     }
 
     /**

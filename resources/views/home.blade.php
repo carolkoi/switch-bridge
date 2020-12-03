@@ -69,7 +69,7 @@
 {{--            </div>--}}
 {{--            <!-- /.box-footer -->--}}
 {{--        </div>--}}
-        <br>
+{{--        <br>--}}
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-info">
@@ -137,31 +137,10 @@
                                 <th>Receiver Acc/No </th>
                                 <th>Response</th>
                                 <th>Receiver Bank </th>
-                                {{--                                <th>Remarks</th>--}}
-                                {{--                                <th>Sync Message </th>--}}
-                                {{--                                <th>Sync Message Response </th>--}}
-                                {{--                                <th>AML Status</th>--}}
-                                {{--                                <th>BO Status</th>--}}
-
-
-                                {{--                                <th>TrackingNumber</th>--}}
-                                {{--                                <th>RequestType</th>--}}
-                                {{--                                <th>TransactionTime</th>--}}
-                                {{--                                <th>TransactionStatus</th>--}}
-                                {{--                                <th>Currency</th>--}}
-                                {{--                                <th>Mobile</th>--}}
-                                {{--            <th style="width:10%;">Actions</th>--}}
-
 
                             </tr>
                             </thead>
                             <tbody>
-                            {{--                        @php--}}
-                            {{--                            $txnStatus = null;--}}
-                            {{--                            $row_class = null;--}}
-                            {{--                            $completed_row_class = 'green';--}}
-                            {{--                            $failed_row_class = 'red';--}}
-                            {{--                        @endphp--}}
 
                             @foreach($transactions as $transaction)
                                 <tr class="odd gradeX">
@@ -191,8 +170,6 @@
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer clearfix">
-                    {{--                    <a href="javascript:void(0)" class="btn btn-sm btn-info btn-flat pull-left">Place New Order</a>--}}
-                    {{--                    <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">View All Orders</a>--}}
                     {{$transactions->links()}}
                 </div>
                 <!-- /.box-footer -->

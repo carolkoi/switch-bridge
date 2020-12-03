@@ -22,6 +22,7 @@ class CompanyDataTable extends DataTable
             ->addColumn('id', function ($query){
                 return $query->companyid;
             })
+
             ->addColumn('company_name', function ($query){
                 return $query->companyname;
             })

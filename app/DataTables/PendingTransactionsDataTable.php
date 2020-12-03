@@ -90,7 +90,9 @@ class PendingTransactionsDataTable extends DataTable
      */
     public function query(Transactions $model)
     {
-        return $model->orderBy('date_time_added', 'desc')->WhereNotIn('res_field48', ['COMPLETED', 'FAILED'])->newQuery();
+        return $model->orderBy('date_time_added', 'desc')
+            ->with('company')
+            ->WhereNotIn('res_field48', ['COMPLETED', 'FAILED'])->newQuery();
     }
 
     /**

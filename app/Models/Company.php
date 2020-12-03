@@ -121,5 +121,10 @@ class Company extends Model
         'ipaddress' => 'string'
     ];
 
+    public function transactions()
+    {
+        return $this->hasMany('App\Models\Transactions');
+    }
+
 
 }

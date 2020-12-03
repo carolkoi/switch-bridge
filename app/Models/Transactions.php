@@ -2071,16 +2071,10 @@ class Transactions extends Model implements ApprovableInterface
     public static $rules = [
     ];
 
-    public function scopeFilterPartner($query)
+
+    public function company()
     {
-        if (request()->has('filter-partner')) {
-
-            return $query->where('req_field123', '=', request()->input('filter-partner'));
-//            return $query->where('req_field123', 'like', "%{$request->get('filter_partner')}%");
-
-        }
-//        else
-            return $query->orderBy('date_time_added', 'desc');
+        return $this->belongsTo('App\Models\Company', 'company_id', 'companyid');
     }
 
     /**

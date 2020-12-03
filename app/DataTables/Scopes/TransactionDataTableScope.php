@@ -14,7 +14,6 @@ class TransactionDataTableScope implements DataTableScope
      */
     public function apply($query)
     {
-
         if (request()->has('filter-partner') && request()->has('txn-type')
             && request()->has('report_time') && request()->has('from-to')){
             $partner = request()->input('filter-partner');
