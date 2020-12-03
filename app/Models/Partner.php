@@ -103,12 +103,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      )
  * )
  */
-class Partner extends Model
+class
+Partner extends Model
 {
     use SoftDeletes;
 
     public $table = 'tbl_sys_partners';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -170,5 +171,5 @@ class Partner extends Model
         'partner_idx' => 'required'
     ];
 
-    
+
 }

@@ -25,7 +25,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $all_transactions = Transactions::all();
+        $all_transactions = Transactions::take(100)->get();
+//        dd($all_transactions);
+
         $today_transactions = Transactions::whereDate('created_at', Carbon::today())->get();
         $yesterday = date("Y-m-d m:h:s", strtotime( '-1 days' ) );
         $yesterday_txns = Transactions::whereDate('created_at', $yesterday )->get();
