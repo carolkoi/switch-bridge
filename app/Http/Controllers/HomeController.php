@@ -25,7 +25,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $all_transactions = Transactions::take(100)->get();
+        $all_transactions = Transactions::take(2000)->get();
 //        dd($all_transactions);
 
         $today_transactions = Transactions::whereDate('created_at', Carbon::today())->get();
