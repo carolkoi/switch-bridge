@@ -26,13 +26,14 @@ class HomeController extends Controller
     public function index()
     {
         $all_transactions = Transactions::take(2000)->get();
-//        dd($all_transactions);
+        $no_of_trns = Transactions::all()->count();
 
         $today_transactions = Transactions::whereDate('created_at', Carbon::today())->get();
         $yesterday = date("Y-m-d m:h:s", strtotime( '-1 days' ) );
         $yesterday_txns = Transactions::whereDate('created_at', $yesterday )->get();
         $transactions = Transactions::orderBy('date_time_added', 'desc')->paginate(30);
         return view('home', ['transactions' => $transactions, 'all_transactions' => $all_transactions,
-            'today_transactions' => $today_transactions, 'yesterday_txns' => $yesterday_txns] );
+            'today_transactions' => $today_transactions, 'yesterday_txns' => $yesterday_txns,
+            'txn_no' => $no_of_trns] );
     }
 }
