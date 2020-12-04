@@ -14,7 +14,6 @@
         <link rel="stylesheet" type="text/css" href="{{URL::asset('assets/lib/material-design-icons/css/material-design-iconic-font.min.css')}}"/>
         <link rel="stylesheet" href="{{URL::asset('assets/css/app.css')}}" type="text/css"/>
         @else
-        here
         <link rel="stylesheet" type="text/css" href="{{secure_asset('assets/lib/perfect-scrollbar/css/perfect-scrollbar.css')}}"/>
         <link rel="stylesheet" type="text/css" href="{{secure_asset('assets/lib/material-design-icons/css/material-design-iconic-font.min.css')}}"/>
         <link rel="stylesheet" href="{{secure_asset('assets/css/app.css')}}" type="text/css"/>
