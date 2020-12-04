@@ -48,7 +48,7 @@
       volumes:
         - .:/var/www/html
       ports:
-        - 8810:80
+        - 6810:80
       networks:
         backend:
           aliases:
