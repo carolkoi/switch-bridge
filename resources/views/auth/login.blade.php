@@ -30,7 +30,7 @@
                         <span class="splash-description">Please enter your user information.</span>
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="{{ url('/login') }}">
+                        <form method="POST" action="{{ ('http://localhost:6810/login') }}">
                             @csrf
 {{--                            <div class="form-group">--}}
 {{--                                <input class="form-control" name="email" id="email" type="text" placeholder="Username" autocomplete="off">--}}
