@@ -35,8 +35,14 @@
                         <span class="splash-description">Please enter your user information.</span>
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('login') }}">
-                            @csrf
+                        @if(\App\Helpers::getEnv() == "local")
+                            <form method="POST" action="{{ URL::asset('/login') }}">
+
+                            @else
+                                    <form method="POST" action="{{\App\Helpers::assetToggle()}}login">
+
+                                    @endif
+                            {{ csrf_field() }}
 {{--                            <div class="form-group">--}}
 {{--                                <input class="form-control" name="email" id="email" type="text" placeholder="Username" autocomplete="off">--}}
 {{--                            </div>--}}

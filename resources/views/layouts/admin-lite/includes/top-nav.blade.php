@@ -29,14 +29,14 @@
                     <!-- Menu Toggle Button -->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <!-- The user image in the navbar-->
-{{--                        @if(\App\Helpers::getEnv() == "local")--}}
-{{--                            <img src="{{URL::asset('images/blue_logo_150x150.jpg')}}">--}}
-{{--                        @else--}}
-{{--                            <img src="{{\App\Helpers::assetToggle()}}images/blue_logo_150x150.jpg">--}}
-{{--                        @endif--}}
+                        @if(\App\Helpers::getEnv() == "local")
+                            <img src="{{URL::asset('images/blue_logo_150x150.jpg')}}" width="50px" height="50px">
+                        @else
+                            <img src="{{\App\Helpers::assetToggle()}}images/blue_logo_150x150.jpg" width="50px" height="50px">
+                        @endif
 
                         <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                        {{--                        <span class="hidden-xs">{!! Auth::user()->name !!}</span>--}}
+                                                <span class="hidden-xs">{!! Auth::user()->name !!}</span>
                         <span class="hidden-xs">{!! Auth::user() ? Auth::user()->name : redirect('/') !!}</span>
                     </a>
                     <ul class="dropdown-menu">
@@ -54,44 +54,40 @@
                             </p>
                         </li>
                         <!-- Menu Footer-->
-                        @if(\App\Helpers::getEnv() == "local")
                             <li class="user-footer">
                                 <div class="pull-left">
+                                    @if(\App\Helpers::getEnv() == "local")
+
                                     <a href="{{URL::asset('profile/'. (Auth::check() && Auth::user()->id))}}" class="btn btn-default btn-flat">Profile</a>
+                                @else
+                                        <a class="btn btn-default btn-flat" href="{{\App\Helpers::assetToggle()}}profile/{{(Auth::check() && Auth::user()->id)}}" >Profile</a>
+                                @endif
                                 </div>
                                 <div class="pull-right">
+                                    @if(\App\Helpers::getEnv() == "local")
                                     <a href="{!! URL::asset('/logout') !!}" class="btn btn-default btn-flat"
                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                         Sign out
                                     </a>
-                                    <form id="logout-form" action="{{ URL::asset('/logout') }}" method="POST"
-                                          style="display: none;">
-                                        {{ csrf_field() }}
-                                    </form>
+                                        <form id="logout-form" action="{{URL::asset('/logout') }}" method="POST"
+                                              style="display: none;">
+                                            {{ csrf_field() }}
+                                        </form>
+                                    @else
+                                        <a href="{{\App\Helpers::assetToggle()}}logout" class="btn btn-default btn-flat"
+                                           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                            Sign out
+                                        </a>
+                                        <form id="logout-form" action="{{\App\Helpers::assetToggle()}}logout" method="POST"
+                                              style="display: none;">
+                                            {{ csrf_field() }}
+                                        </form>
+
+                                        @endif
+
                                 </div>
                             </li>
 
-                        @else
-                            <li class="user-footer">
-                                <div class="pull-left">
-                                    <img src="{{\App\Helpers::assetToggle()}}images/blue_logo_150x150.jpg">
-
-                                    <a class="btn btn-default btn-flat" href="{{\App\Helpers::assetToggle()}}profile/{{(Auth::check() && Auth::user()->id)}}" >Profile</a>
-                                </div>
-                                <div class="pull-right">
-                                    <a href="{!! URL::asset('/logout') !!}" class="btn btn-default btn-flat"
-                                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                        Sign out
-                                    </a>
-{{--                                    <form id="logout-form" action="{{\App\Helpers::assetToggle()}}/logout" method="POST"--}}
-                                    <form id="logout-form" action="{{url('/logout')}}" method="POST"
-                                          style="display: none;">
-                                        {{ csrf_field() }}
-                                    </form>
-                                </div>
-                            </li>
-
-                        @endif
                     </ul>
                 </li>
             </ul>
