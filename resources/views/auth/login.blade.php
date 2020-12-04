@@ -84,7 +84,14 @@
                                         <label class="custom-control-label" for="checkbox1">Remember Me</label>
                                     </div>
                                 </div>
-                                <div class="col-6 login-forgot-password"><a href="{{ route('password.request') }}">Forgot Password?</a></div>
+                                @if(\App\Helpers::getEnv() == "local")
+
+                                    <div class="col-6 login-forgot-password"><a href="{{ action(URL::asset('/password/request') }}">Forgot Password?</a></div>
+
+                                @else
+                                    <div class="col-6 login-forgot-password"><a href="{{\App\Helpers::assetToggle()}}password/request">Forgot Password?</a></div>
+
+                                @endif
                                 <br /><br />
 {{--                                {!! $viewResponse !!}--}}
 
@@ -94,6 +101,7 @@
                                 <button type="submit" class="btn btn-primary btn-xl">Sign me in <i class="fa fa-angle-right ml5"></i></button>
                             </div>
                         </form>
+                            </form>
                     </div>
                 </div>
             </div>
