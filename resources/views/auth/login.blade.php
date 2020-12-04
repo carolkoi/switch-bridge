@@ -85,8 +85,7 @@
                                     </div>
                                 </div>
                                 @if(\App\Helpers::getEnv() == "local")
-
-                                    <div class="col-6 login-forgot-password"><a href="{{ action(URL::asset('/password/request') }}">Forgot Password?</a></div>
+                                    <div class="col-6 login-forgot-password"><a href="{{URL::asset('/password/request') }}">Forgot Password?</a></div>
 
                                 @else
                                     <div class="col-6 login-forgot-password"><a href="{{\App\Helpers::assetToggle()}}password/request">Forgot Password?</a></div>
