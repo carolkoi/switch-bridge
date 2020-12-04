@@ -8,9 +8,16 @@
     <meta name="author" content="">
 {{--    <link rel="shortcut icon" href="{{asset('images/logo-sla.png')}}">--}}
     <title>{{ config('app.name', 'Laravel') }}</title>
-    <link rel="stylesheet" type="text/css" href="{{URL::asset('assets/lib/perfect-scrollbar/css/perfect-scrollbar.css')}}"/>
-    <link rel="stylesheet" type="text/css" href="{{URL::asset('assets/lib/material-design-icons/css/material-design-iconic-font.min.css')}}"/>
-    <link rel="stylesheet" href="{{URL::asset('assets/css/app.css')}}" type="text/css"/>
+    @if(\App\Helpers::getEnv() == "local")
+        <link rel="stylesheet" type="text/css" href="{{URL::asset('assets/lib/perfect-scrollbar/css/perfect-scrollbar.css')}}"/>
+        <link rel="stylesheet" type="text/css" href="{{URL::asset('assets/lib/material-design-icons/css/material-design-iconic-font.min.css')}}"/>
+        <link rel="stylesheet" href="{{URL::asset('assets/css/app.css')}}" type="text/css"/>
+        @else
+        <link rel="stylesheet" type="text/css" href="{{\App\Helpers::assetToggle()}}assets/lib/perfect-scrollbar/css/perfect-scrollbar.css"/>
+        <link rel="stylesheet" type="text/css" href="{{\App\Helpers::assetToggle()}}assets/lib/material-design-icons/css/material-design-iconic-font.min.css"/>
+        <link rel="stylesheet" href="{{\App\Helpers::assetToggle()}}assets/css/app.css" type="text/css"/>
+        @endif
+
 </head>
 <body class="be-splash-screen">
 <div class="be-wrapper be-login">
@@ -19,7 +26,7 @@
             <div class="splash-container">
                 <div class="card card-border-color card-border-color-primary">
                     <div class="card-header">
-                        <img class="logo-img" src="{{URL::asset('assets/img/logo-xx.png')}}" alt="logo" width="102" height="27">
+                        <img class="logo-img" src="{{\App\Helpers::assetToggle()}}assets/img/logo-xx.png" alt="logo" width="102" height="27">
                         <span class="splash-description">Please enter your user information.</span>
                     </div>
                     <div class="card-body">
@@ -81,10 +88,19 @@
         </div>
     </div>
 </div>
-<script src="{{URL::asset('assets/lib/jquery/jquery.min.js')}}" type="text/javascript"></script>
-<script src="{{URL::asset('assets/lib/perfect-scrollbar/js/perfect-scrollbar.min.js')}}" type="text/javascript"></script>
-<script src="{{URL::asset('assets/lib/bootstrap/dist/js/bootstrap.bundle.min.js')}}" type="text/javascript"></script>
-<script src="{{URL::asset('assets/js/app.js')}}" type="text/javascript"></script>
+@if(\App\Helpers::getEnv() == "local")
+
+    @else
+    <link rel="stylesheet" href="{{URL::asset('assets/css/app.css')}}" type="text/css"/>
+    <script src="{{URL::asset('assets/lib/jquery/jquery.min.js')}}" type="text/javascript"></script>
+    <script src="{{URL::asset('assets/lib/perfect-scrollbar/js/perfect-scrollbar.min.js')}}" type="text/javascript"></script>
+    <script src="{{URL::asset('assets/lib/bootstrap/dist/js/bootstrap.bundle.min.js')}}" type="text/javascript"></script>
+    <script src="{{URL::asset('assets/js/app.js')}}" type="text/javascript"></script>
+    @endif
+<script src="{{\App\Helpers::assetToggle()}}assets/lib/jquery/jquery.min.js" type="text/javascript"></script>
+<script src="{{\App\Helpers::assetToggle()}}assets/lib/perfect-scrollbar/js/perfect-scrollbar.min.js" type="text/javascript"></script>
+<script src="{{\App\Helpers::assetToggle()}}assets/lib/bootstrap/dist/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+<script src="{{\App\Helpers::assetToggle()}}assets/js/app.js" type="text/javascript"></script>
 <script type="text/javascript">
     $(document).ready(function(){
         //-initialize the javascript
