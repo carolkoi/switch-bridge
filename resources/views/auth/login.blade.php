@@ -1,4 +1,3 @@
-{{ phpinfo() }}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,7 +26,12 @@
             <div class="splash-container">
                 <div class="card card-border-color card-border-color-primary">
                     <div class="card-header">
-                        <img class="logo-img" src="{{\App\Helpers::assetToggle()}}assets/img/logo-xx.png" alt="logo" width="102" height="27">
+                        @if(\App\Helpers::getEnv() == "local")
+                            <img class="logo-img" src="{{URL::asset('assets/img/logo-xx.png')}}" alt="logo" width="102" height="27">
+                        @else
+                            <img class="logo-img" src="{{\App\Helpers::assetToggle()}}assets/img/logo-xx.png" alt="logo" width="102" height="27">
+
+                        @endif
                         <span class="splash-description">Please enter your user information.</span>
                     </div>
                     <div class="card-body">
