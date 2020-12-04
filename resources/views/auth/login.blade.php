@@ -7,6 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 {{--    <link rel="shortcut icon" href="{{asset('images/logo-sla.png')}}">--}}
+
     <title>{{ config('app.name', 'Laravel') }}</title>
     @if(\App\Helpers::getEnv() == "local")
         <link rel="stylesheet" type="text/css" href="{{URL::asset('assets/lib/perfect-scrollbar/css/perfect-scrollbar.css')}}"/>
