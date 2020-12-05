@@ -41,7 +41,7 @@
     <!-- Daterange picker -->
     <link rel="stylesheet" href="{{URL::asset('admin-lte/bower_components/bootstrap-daterangepicker/daterangepicker.css')}}">
     <!-- bootstrap wysihtml5 - text editor -->
-    <link rel="stylesheet" href="{{URL::asset('admin-lte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css')}}">
+{{--    <link rel="stylesheet" href="{{URL::asset('admin-lte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css')}}">--}}
     <!-- Bootstrap time Picker -->
     <link rel="stylesheet" href="{{URL::asset('admin-lte/plugins/timepicker/bootstrap-timepicker.min.css')}}">
     <!-- Bootstrap date-time Picker -->
@@ -93,7 +93,7 @@
         <!-- Daterange picker -->
         <link rel="stylesheet" href="{{\App\Helpers::assetToggle()}}admin-lte/bower_components/bootstrap-daterangepicker/daterangepicker.css">
         <!-- bootstrap wysihtml5 - text editor -->
-        <link rel="stylesheet" href="{{\App\Helpers::assetToggle()}}admin-lte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css'">
+{{--        <link rel="stylesheet" href="{{\App\Helpers::assetToggle()}}admin-lte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css'">--}}
         <!-- Bootstrap time Picker -->
         <link rel="stylesheet" href="{{\App\Helpers::assetToggle()}}admin-lte/plugins/timepicker/bootstrap-timepicker.min.css">
         <!-- Bootstrap date-time Picker -->
