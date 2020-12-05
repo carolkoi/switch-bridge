@@ -12,8 +12,9 @@
 
 
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 
-    @if(\App\Helpers::getEnv() == "local")
+@if(\App\Helpers::getEnv() == "local")
         <link rel="shortcut icon" href="{{URL::asset('images/logo-sla.png')}}">
 
         <!-- Google Font -->
