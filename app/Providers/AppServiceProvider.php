@@ -15,6 +15,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        //        if(App::environment('production')) {
+//            $url->forceScheme('https');
+//        }
+        $app = require __DIR__.'/../bootstrap/app.php';
+
+        $app->make('url')->forceRootUrl(env('APP_URL', 'http://localhost/'));
 
     }
 
@@ -26,8 +32,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(UrlGenerator $url)
     {
-//        if(App::environment('production')) {
-//            $url->forceScheme('https');
-//        }
+        if(App::environment('dev')) {
+            $url->forceRootUrl(env('APP_URL', 'https://dev.slafrica.net:6810'));
+        }
     }
 }
