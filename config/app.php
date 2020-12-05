@@ -198,7 +198,6 @@ return [
         App\Providers\RouteServiceProvider::class,
         WorkflowApprovalEventServiceProvider::class,
         WizPackApprovalServiceProvider::class,
-        FruitCake\Cors\CorsServiceProvider::class,
 
     ],
 
