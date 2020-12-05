@@ -55,10 +55,13 @@
     @else
     <script src="{{\App\Helpers::assetToggle()}}assets/lib/jquery/jquery.min.js" type="text/javascript"></script>
 
+
     <!-- Scripts -->
     <script src="{{\App\Helpers::assetToggle()}}js/app.js" ></script>
     <!-- jQuery 3 -->
-    <script src="{{\App\Helpers::assetToggle()}}admin-lte/bower_components/jquery/dist/jquery.min.js"></script>
+{{--    <script src="{{\App\Helpers::assetToggle()}}admin-lte/bower_components/jquery/dist/jquery.min.js"></script>--}}
+    <script src="{{secure_asset('admin-lte/bower_components/jquery/dist/jquery.min.js')}}"></script>
+
     <!-- jQuery UI 1.11.4 -->
     <script src="{{\App\Helpers::assetToggle()}}admin-lte/bower_components/jquery-ui/jquery-ui.min.js"></script>
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
