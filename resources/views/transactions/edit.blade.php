@@ -40,7 +40,10 @@
             $('#paid-out-id').datetimepicker({
                 format: 'YYYY-MM-DD',
                 useCurrent: false
-            })
+            });
+            CKEDITOR.replace('editor')
+
+
         });
     </script>
     @endsection

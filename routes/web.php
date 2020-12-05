@@ -13,7 +13,10 @@ use App\Http\Resources\Permission;
 |
 */
 //Route::group(['middleware' => 'httpsProtocol'], function () {
-	URL::forceScheme('https');
+    if (\App\Helpers::getEnv() !== "local"){
+        URL::forceScheme('https');
+    }
+
     Route::get('/', 'Auth\LoginController@showLoginForm');
     Auth::routes(['register' => false]);
 

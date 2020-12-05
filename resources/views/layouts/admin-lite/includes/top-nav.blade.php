@@ -30,7 +30,8 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <!-- The user image in the navbar-->
 {{--                        @if(\App\Helpers::getEnv() == "local")--}}
-{{--                            <img src="{{URL::asset('images/blue_logo_150x150.jpg')}}" width="50px" height="50px">--}}
+{{--                            <img src="{{URL::asset('images/blue_logo_150x150.jpg')}}"--}}
+{{--                                 class="img-circle" alt="User Image"/>--}}
 {{--                        @else--}}
 {{--                            <img src="{{\App\Helpers::assetToggle()}}images/blue_logo_150x150.jpg" width="50px" height="50px">--}}
 {{--                        @endif--}}

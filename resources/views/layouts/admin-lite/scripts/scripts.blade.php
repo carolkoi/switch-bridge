@@ -116,10 +116,10 @@
         });
     });
 </script>
-<script>
-    CKEDITOR.replace('editor')
+{{--<script>--}}
+{{--    CKEDITOR.replace('editor')--}}
 
-</script>
+{{--</script>--}}
 
 @yield('scripts')
 @yield('js')
