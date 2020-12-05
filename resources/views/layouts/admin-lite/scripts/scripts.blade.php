@@ -53,7 +53,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.js"></script>
 
     @else
-{{--    <script src="{{\App\Helpers::assetToggle()}}assets/lib/jquery/jquery.min.js" type="text/javascript"></script>--}}
+    <script src="{{\App\Helpers::assetToggle()}}assets/lib/jquery/jquery.min.js" type="text/javascript"></script>
 
     <!-- Scripts -->
     <script src="{{\App\Helpers::assetToggle()}}js/app.js" ></script>
