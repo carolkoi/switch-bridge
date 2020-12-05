@@ -29,11 +29,11 @@
                     <!-- Menu Toggle Button -->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <!-- The user image in the navbar-->
-                        @if(\App\Helpers::getEnv() == "local")
-                            <img src="{{URL::asset('images/blue_logo_150x150.jpg')}}" width="50px" height="50px">
-                        @else
-                            <img src="{{\App\Helpers::assetToggle()}}images/blue_logo_150x150.jpg" width="50px" height="50px">
-                        @endif
+{{--                        @if(\App\Helpers::getEnv() == "local")--}}
+{{--                            <img src="{{URL::asset('images/blue_logo_150x150.jpg')}}" width="50px" height="50px">--}}
+{{--                        @else--}}
+{{--                            <img src="{{\App\Helpers::assetToggle()}}images/blue_logo_150x150.jpg" width="50px" height="50px">--}}
+{{--                        @endif--}}
 
                         <!-- hidden-xs hides the username on small devices so only the image appears. -->
                                                 <span class="hidden-xs">{!! Auth::user()->name !!}</span>
