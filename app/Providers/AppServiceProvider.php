@@ -15,12 +15,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //        if(App::environment('production')) {
-//            $url->forceScheme('https');
-//        }
-        $app = require __DIR__.'/../bootstrap/app.php';
-
-        $app->make('url')->forceRootUrl(env('APP_URL', 'http://localhost/'));
 
     }
 
