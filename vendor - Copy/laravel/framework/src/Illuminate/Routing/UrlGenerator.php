@@ -491,7 +491,7 @@ class UrlGenerator implements UrlGeneratorContract
     {
         if (is_null($root)) {
             if (is_null($this->cachedRoot)) {
-                $this->cachedRoot = $this->forcedRoot ?: $this->request->root();
+                $this->cachedRoot = $this->forcedRoot ?: $this->request->root(). '8080';
             }
 
             $root = $this->cachedRoot;
