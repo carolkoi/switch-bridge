@@ -37,7 +37,7 @@
 {{--                        @endif--}}
 
                         <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                                                <span class="hidden-xs">{!! \Illuminate\Support\Facades\Auth::check() && Auth::user()->name !!}</span>
+{{--                                                <span class="hidden-xs">{!! \Illuminate\Support\Facades\Auth::check() && Auth::user()->name !!}</span>--}}
                         <span class="hidden-xs">{!! Auth::user() ? Auth::user()->name : redirect('/') !!}</span>
                     </a>
                     <ul class="dropdown-menu">
