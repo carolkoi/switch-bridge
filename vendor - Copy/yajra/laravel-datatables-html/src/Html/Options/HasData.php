@@ -79,9 +79,6 @@ trait HasData
 
         $this->ajax['url'] = empty($url) ? url()->full() : $url;
         $this->ajax['type'] = 'GET';
-        $this->ajax['dataType'] = 'jsonp';
-
-        $this->ajax['crossDomain'] = true;
         if (isset($this->attributes['serverSide']) ? $this->attributes['serverSide'] : true) {
             $this->ajax['data'] = 'function(data) {
             for (var i = 0, len = data.columns.length; i < len; i++) {
