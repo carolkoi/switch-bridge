@@ -115,6 +115,8 @@ class TransactionsDataTable extends DataTable
                 ],
                 'dom'       => 'Bfrtip',
                 'stateSave' => true,
+                'dataType' => "jsonp",
+                'crossDomain' => true,
                 'order'     => [[0, 'desc']],
                 'buttons'   => [
 //                    'pageLength',

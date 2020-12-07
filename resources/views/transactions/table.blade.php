@@ -15,10 +15,10 @@
     {!! $dataTable->scripts() !!}
     <script>
         jQuery(document).ready(function () {
-            alert('here');
+            // alert('here');
+
         let table = $('#dataTableBuilder').DataTable({
             retrieve: true,
-            dataType: "jsonp",
             ajax: "data.json",
         });
             setInterval( function () {
