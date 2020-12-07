@@ -9,6 +9,7 @@ use Carbon;
 
 class TransactionsDataTable extends DataTable
 {
+
     /**
      * Build DataTable class.
      *
@@ -17,6 +18,7 @@ class TransactionsDataTable extends DataTable
      */
     public function dataTable($query)
     {
+        header('Access-Control-Allow-Origin: *');
         $dataTable = new EloquentDataTable($query);
 
         return $dataTable
@@ -115,7 +117,7 @@ class TransactionsDataTable extends DataTable
                 ],
                 'dom'       => 'Bfrtip',
                 'stateSave' => true,
-                'dataType' => "jsonp",
+                'dataType' => "json",
                 'crossDomain' => true,
                 'order'     => [[0, 'desc']],
                 'buttons'   => [
