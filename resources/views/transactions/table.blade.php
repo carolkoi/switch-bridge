@@ -15,8 +15,6 @@
     {!! $dataTable->scripts() !!}
     <script>
         jQuery(document).ready(function () {
-            // alert('here');
-
         let table = $('#dataTableBuilder').DataTable({
             retrieve: true,
             ajax: "data.json",
