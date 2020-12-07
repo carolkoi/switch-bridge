@@ -49,7 +49,7 @@
     <link rel="stylesheet" href="{{URL::asset('admin-lte/plugins/datetimepicker/bootstrap-datetimepicker.min.css')}}">
     <link rel="stylesheet" href="{{URL::asset('admin-lte/bower_components/select2/dist/css/select2.min.css')}}">
     <!---Drop Zone-->
-    <link rel="stylesheet" href="https://rawgit.com/enyo/dropzone/master/dist/dropzone.css">
+    <link rel="stylesheet" href="http://rawgit.com/enyo/dropzone/master/dist/dropzone.css">
     <!-- Select2 -->
     <link rel="stylesheet" href="{{URL::asset('admin-lte/bower_components/select2/dist/css/select2.min.css')}}">
     <!-- Pace style -->
@@ -62,7 +62,7 @@
 
     <!--Bootstrap toggle-->
     <link href="{{ URL::asset('css/bootstrap4-toggle.min.css') }}" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.css" rel="stylesheet" />
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.css" rel="stylesheet" />
 {{--    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">--}}
 
     @else
