@@ -12,6 +12,7 @@
             <div class="box-body">
                 <div class="row">
                     {!! Form::open(['route' => 'aMLCheckers.store']) !!}
+                    {{csrf_token()}}
 
                         @include('a_m_l-_checkers.fields')
 

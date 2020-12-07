@@ -1,3 +1,6 @@
+@php
+    header("Access-Control-Allow-Origin: *");
+@endphp
 @section('css')
     @include('layouts.datatables_css')
 @endsection

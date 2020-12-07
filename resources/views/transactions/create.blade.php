@@ -12,6 +12,7 @@
             <div class="box-body">
                 <div class="row">
                     {!! Form::open(['route' => 'transactions.store']) !!}
+                    {{csrf_token()}}
 
                         @include('transactions.fields')
 
