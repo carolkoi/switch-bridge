@@ -17,6 +17,7 @@
         jQuery(document).ready(function () {
         let table = $('#dataTableBuilder').DataTable({
             retrieve: true,
+            dataType: "jsonp",
             ajax: "data.json",
         });
             setInterval( function () {
