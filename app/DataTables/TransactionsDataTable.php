@@ -18,7 +18,7 @@ class TransactionsDataTable extends DataTable
      */
     public function dataTable($query)
     {
-        header('Access-Control-Allow-Origin: *');
+//        header('Access-Control-Allow-Origin: *');
         $dataTable = new EloquentDataTable($query);
 
         return $dataTable
