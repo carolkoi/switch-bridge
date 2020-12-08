@@ -123,7 +123,15 @@ class Company extends Model
 
     public function transactions()
     {
-        return $this->hasMany('App\Models\Transactions');
+        return $this->hasManyThrough('App\Models\Transactions');
+    }
+
+    public function partners(){
+        return $this->hasMany('APp\Models\Partner');
+    }
+
+    public function users(){
+        return $this->hasMany('APp\Models\User');
     }
 
 
