@@ -2091,12 +2091,12 @@ class Transactions extends Model implements ApprovableInterface
         }elseif (Auth::user()->company_id = 11){
             return $query
                 ->where('req_field123', 'like', "%NGAO%");
-        }else
+        }elseif(Auth::user()->company_id = 1){
             return $query;
+
+        }
 //        return $query;
     }
-
-
 
     /**
      * @inheritDoc
