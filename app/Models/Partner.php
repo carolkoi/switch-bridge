@@ -109,6 +109,8 @@ Partner extends Model
     use SoftDeletes;
 
     public $table = 'tbl_sys_partners';
+    public $primaryKey = 'partner_id';
+    public $incrementing = false;
 
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
@@ -170,6 +172,10 @@ Partner extends Model
     public static $rules = [
         'partner_idx' => 'required'
     ];
+
+    public function company(){
+       return $this->belongsTo(Company::class, 'company_id', 'companyid');
+    }
 
 
 }

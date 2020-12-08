@@ -170,7 +170,7 @@
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer clearfix">
-                    {{$transactions->links()}}
+                    {{$transactions->render()}}
                 </div>
                 <!-- /.box-footer -->
             </div>

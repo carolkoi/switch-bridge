@@ -25,20 +25,11 @@ class AppServiceProvider extends ServiceProvider
      * @param UrlGenerator $url
      * @return void
      */
-    public function boot(UrlGenerator $url, \Illuminate\Http\Request $request)
+    public function boot(UrlGenerator $url)
     {
-////        if(App::environment('dev')) {
-////            $url->forceRootUrl(env('APP_URL', 'https://dev.slafrica.net:6810'));
-////        }
-//        \URL::forceRootUrl(Config::get('app.url'));
-//// And this if you wanna handle https URL scheme
-//// It's not usefull for http://www.example.com, it's just to make it more independant from the constant value
-//        if (\Str::contains(Config::get('app.url'), 'https://')) {
-//            \URL::forceScheme('https');
-//            //use \URL:forceSchema('https') if you use laravel < 5.4
-//        }
-        if ($request->server->has('HTTP_X_ORIGINAL_HOST')) {
-            $this->app['url']->forceRootUrl($request->server->get('HTTP_X_FORWARDED_PROTO').'://'.$request->server->get('HTTP_X_ORIGINAL_HOST'));
+        if(App::environment('dev')) {
+            $url->forceRootUrl(env('APP_URL', 'https://dev.slafrica.net:6810/'));
         }
+
     }
 }

@@ -45,7 +45,7 @@
     <script src="{{URL::asset('admin-lte/bower_components/select2/dist/js/select2.full.min.js')}}"></script>
 
     <!-- PACE -->
-    <script src="{{URL::asset('admin-lte/bower_components/PACE/pace.min.js')}}"></script>
+    <script src="{{asset('admin-lte/bower_components/PACE/pace.min.js')}}"></script>
     <!--Star Rating-->
     <script src="{{ URL::asset('js/star-rating.min.js') }}" ></script>
     <!--Bootstrap toggle-->
