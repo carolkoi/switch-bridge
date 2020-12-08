@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(UrlGenerator $url)
     {
         if(App::environment('dev')) {
-            $url->forceRootUrl(env('APP_URL', 'https://dev.slafrica.net:6810'));
+            $url->forceRootUrl(env('APP_URL', 'http://192.168.100.6:8810'));
         }
 
     }
