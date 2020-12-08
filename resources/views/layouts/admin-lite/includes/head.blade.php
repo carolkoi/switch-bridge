@@ -14,109 +14,109 @@
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 
-{{--@if(\App\Helpers::getEnv() == "local")--}}
-        <link rel="shortcut icon" href="{{URL::asset('images/logo-sla.png')}}">
+@if(\App\Helpers::getEnv() == "local")
+        <link rel="shortcut icon" href="{{asset('images/logo-sla.png')}}">
 
         <!-- Google Font -->
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
     <!-- Bootstrap 3.3.7 -->
-    <link rel="stylesheet" href="{{URL::asset('admin-lte/bower_components/bootstrap/dist/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{asset('admin-lte/bower_components/bootstrap/dist/css/bootstrap.min.css')}}">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="{{URL::asset('admin-lte/bower_components/font-awesome/css/font-awesome.min.css')}}">
+    <link rel="stylesheet" href="{{asset('admin-lte/bower_components/font-awesome/css/font-awesome.min.css')}}">
     <!-- Ionicons -->
-    <link rel="stylesheet" href="{{URL::asset('admin-lte/bower_components/Ionicons/css/ionicons.min.css')}}">
+    <link rel="stylesheet" href="{{asset('admin-lte/bower_components/Ionicons/css/ionicons.min.css')}}">
     <!-- Theme style -->
-    <link rel="stylesheet" href="{{URL::asset('admin-lte/dist/css/AdminLTE.min.css')}}">
+    <link rel="stylesheet" href="{{asset('admin-lte/dist/css/AdminLTE.min.css')}}">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
-    <link rel="stylesheet" href="{{URL::asset('admin-lte/dist/css/skins/_all-skins.min.css')}}">
+    <link rel="stylesheet" href="{{asset('admin-lte/dist/css/skins/_all-skins.min.css')}}">
     <!-- Morris chart -->
-    <link rel="stylesheet" href="{{URL::asset('admin-lte/bower_components/morris.js/morris.css')}}">
+    <link rel="stylesheet" href="{{asset('admin-lte/bower_components/morris.js/morris.css')}}">
     <!-- jvectormap -->
-    <link rel="stylesheet" href="{{URL::asset('admin-lte/bower_components/jvectormap/jquery-jvectormap.css')}}">
+    <link rel="stylesheet" href="{{asset('admin-lte/bower_components/jvectormap/jquery-jvectormap.css')}}">
     <!-- Date Picker -->
     <link rel="stylesheet"
-          href="{{URL::asset('admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css')}}">
+          href="{{asset('admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css')}}">
     <!-- Daterange picker -->
-    <link rel="stylesheet" href="{{URL::asset('admin-lte/bower_components/bootstrap-daterangepicker/daterangepicker.css')}}">
+    <link rel="stylesheet" href="{{asset('admin-lte/bower_components/bootstrap-daterangepicker/daterangepicker.css')}}">
     <!-- bootstrap wysihtml5 - text editor -->
-{{--    <link rel="stylesheet" href="{{URL::asset('admin-lte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css')}}">--}}
+{{--    <link rel="stylesheet" href="{{asset('admin-lte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css')}}">--}}
     <!-- Bootstrap time Picker -->
-    <link rel="stylesheet" href="{{URL::asset('admin-lte/plugins/timepicker/bootstrap-timepicker.min.css')}}">
+    <link rel="stylesheet" href="{{asset('admin-lte/plugins/timepicker/bootstrap-timepicker.min.css')}}">
     <!-- Bootstrap date-time Picker -->
-    <link rel="stylesheet" href="{{URL::asset('admin-lte/plugins/datetimepicker/bootstrap-datetimepicker.min.css')}}">
-    <link rel="stylesheet" href="{{URL::asset('admin-lte/bower_components/select2/dist/css/select2.min.css')}}">
+    <link rel="stylesheet" href="{{asset('admin-lte/plugins/datetimepicker/bootstrap-datetimepicker.min.css')}}">
+    <link rel="stylesheet" href="{{asset('admin-lte/bower_components/select2/dist/css/select2.min.css')}}">
     <!---Drop Zone-->
-    <link rel="stylesheet" href="http://rawgit.com/enyo/dropzone/master/dist/dropzone.css">
+    <link rel="stylesheet" href="https://rawgit.com/enyo/dropzone/master/dist/dropzone.css">
     <!-- Select2 -->
-    <link rel="stylesheet" href="{{URL::asset('admin-lte/bower_components/select2/dist/css/select2.min.css')}}">
+    <link rel="stylesheet" href="{{asset('admin-lte/bower_components/select2/dist/css/select2.min.css')}}">
     <!-- Pace style -->
-    <link rel="stylesheet" href="{{URL::asset('admin-lte/plugins/pace/pace.min.css')}}">
+    <link rel="stylesheet" href="{{asset('admin-lte/plugins/pace/pace.min.css')}}">
     <!-- Styles -->
-    <link href="{{ URL::asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <!--Star rating -->
-    <link href="{{ URL::asset('css/star-rating.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/star-rating.min.css') }}" rel="stylesheet">
 {{--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.2/css/star-rating.min.css" />--}}
 
     <!--Bootstrap toggle-->
-    <link href="{{ URL::asset('css/bootstrap4-toggle.min.css') }}" rel="stylesheet">
-    <link href="http://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.css" rel="stylesheet" />
+    <link href="{{ asset('css/bootstrap4-toggle.min.css') }}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.css" rel="stylesheet" />
 {{--    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">--}}
 
-{{--    @else--}}
-{{--        <link rel="stylesheet" type="text/css" href="{{\App\Helpers::assetToggle()}}assets/lib/perfect-scrollbar/css/perfect-scrollbar.css"/>--}}
-{{--        <link rel="shortcut icon" href="{{URL::asset('images/logo-sla.png')}}">--}}
+    @else
+        <link rel="stylesheet" type="text/css" href="{{\App\Helpers::assetToggle()}}assets/lib/perfect-scrollbar/css/perfect-scrollbar.css"/>
+        <link rel="shortcut icon" href="{{asset('images/logo-sla.png')}}">
 
-{{--        <!-- Google Font -->--}}
-{{--        <link rel="stylesheet"--}}
-{{--              href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">--}}
+        <!-- Google Font -->
+        <link rel="stylesheet"
+              href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
-{{--        <!-- Bootstrap 3.3.7 -->--}}
-{{--        <link rel="stylesheet" href="{{\App\Helpers::assetToggle()}}admin-lte/bower_components/bootstrap/dist/css/bootstrap.min.css">--}}
-{{--        <!-- Font Awesome -->--}}
-{{--        <link rel="stylesheet" href="{{\App\Helpers::assetToggle()}}admin-lte/bower_components/font-awesome/css/font-awesome.min.css">--}}
-{{--        <!-- Ionicons -->--}}
-{{--        <link rel="stylesheet" href="{{\App\Helpers::assetToggle()}}admin-lte/bower_components/Ionicons/css/ionicons.min.css">--}}
-{{--        <!-- Theme style -->--}}
-{{--        <link rel="stylesheet" href="{{\App\Helpers::assetToggle()}}admin-lte/dist/css/AdminLTE.min.css">--}}
-{{--        <!-- AdminLTE Skins. Choose a skin from the css/skins--}}
-{{--             folder instead of downloading all of them to reduce the load. -->--}}
-{{--        <link rel="stylesheet" href="{{\App\Helpers::assetToggle()}}admin-lte/dist/css/skins/_all-skins.min.css">--}}
-{{--        <!-- Morris chart -->--}}
-{{--        <link rel="stylesheet" href="{{\App\Helpers::assetToggle()}}admin-lte/bower_components/morris.js/morris.css">--}}
-{{--        <!-- jvectormap -->--}}
-{{--        <link rel="stylesheet" href="{{\App\Helpers::assetToggle()}}admin-lte/bower_components/jvectormap/jquery-jvectormap.css">--}}
-{{--        <!-- Date Picker -->--}}
-{{--        <link rel="stylesheet"--}}
-{{--              href="{{\App\Helpers::assetToggle()}}admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">--}}
-{{--        <!-- Daterange picker -->--}}
-{{--        <link rel="stylesheet" href="{{\App\Helpers::assetToggle()}}admin-lte/bower_components/bootstrap-daterangepicker/daterangepicker.css">--}}
-{{--        <!-- bootstrap wysihtml5 - text editor -->--}}
+        <!-- Bootstrap 3.3.7 -->
+        <link rel="stylesheet" href="{{\App\Helpers::assetToggle()}}admin-lte/bower_components/bootstrap/dist/css/bootstrap.min.css">
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="{{\App\Helpers::assetToggle()}}admin-lte/bower_components/font-awesome/css/font-awesome.min.css">
+        <!-- Ionicons -->
+        <link rel="stylesheet" href="{{\App\Helpers::assetToggle()}}admin-lte/bower_components/Ionicons/css/ionicons.min.css">
+        <!-- Theme style -->
+        <link rel="stylesheet" href="{{\App\Helpers::assetToggle()}}admin-lte/dist/css/AdminLTE.min.css">
+        <!-- AdminLTE Skins. Choose a skin from the css/skins
+             folder instead of downloading all of them to reduce the load. -->
+        <link rel="stylesheet" href="{{\App\Helpers::assetToggle()}}admin-lte/dist/css/skins/_all-skins.min.css">
+        <!-- Morris chart -->
+        <link rel="stylesheet" href="{{\App\Helpers::assetToggle()}}admin-lte/bower_components/morris.js/morris.css">
+        <!-- jvectormap -->
+        <link rel="stylesheet" href="{{\App\Helpers::assetToggle()}}admin-lte/bower_components/jvectormap/jquery-jvectormap.css">
+        <!-- Date Picker -->
+        <link rel="stylesheet"
+              href="{{\App\Helpers::assetToggle()}}admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+        <!-- Daterange picker -->
+        <link rel="stylesheet" href="{{\App\Helpers::assetToggle()}}admin-lte/bower_components/bootstrap-daterangepicker/daterangepicker.css">
+        <!-- bootstrap wysihtml5 - text editor -->
 {{--        <link rel="stylesheet" href="{{\App\Helpers::assetToggle()}}admin-lte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css'">--}}
-{{--        <!-- Bootstrap time Picker -->--}}
-{{--        <link rel="stylesheet" href="{{\App\Helpers::assetToggle()}}admin-lte/plugins/timepicker/bootstrap-timepicker.min.css">--}}
-{{--        <!-- Bootstrap date-time Picker -->--}}
-{{--        <link rel="stylesheet" href="{{\App\Helpers::assetToggle()}}admin-lte/plugins/datetimepicker/bootstrap-datetimepicker.min.css">--}}
-{{--        <link rel="stylesheet" href="{{\App\Helpers::assetToggle()}}admin-lte/bower_components/select2/dist/css/select2.min.css">--}}
-{{--        <!---Drop Zone-->--}}
-{{--        <link rel="stylesheet" href="https://rawgit.com/enyo/dropzone/master/dist/dropzone.css">--}}
-{{--        <!-- Select2 -->--}}
-{{--        <link rel="stylesheet" href="{{\App\Helpers::assetToggle()}}admin-lte/bower_components/select2/dist/css/select2.min.css">--}}
-{{--        <!-- Pace style -->--}}
-{{--        <link rel="stylesheet" href="{{\App\Helpers::assetToggle()}}admin-lte/plugins/pace/pace.min.css">--}}
-{{--        <!-- Styles -->--}}
-{{--        <link href="{{\App\Helpers::assetToggle()}}css/app.css" rel="stylesheet">--}}
-{{--        <!--Star rating -->--}}
-{{--        <link href="{{\App\Helpers::assetToggle()}}css/star-rating.min.css" rel="stylesheet">--}}
-{{--        --}}{{--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.2/css/star-rating.min.css" />--}}
+        <!-- Bootstrap time Picker -->
+        <link rel="stylesheet" href="{{\App\Helpers::assetToggle()}}admin-lte/plugins/timepicker/bootstrap-timepicker.min.css">
+        <!-- Bootstrap date-time Picker -->
+        <link rel="stylesheet" href="{{\App\Helpers::assetToggle()}}admin-lte/plugins/datetimepicker/bootstrap-datetimepicker.min.css">
+        <link rel="stylesheet" href="{{\App\Helpers::assetToggle()}}admin-lte/bower_components/select2/dist/css/select2.min.css">
+        <!---Drop Zone-->
+        <link rel="stylesheet" href="https://rawgit.com/enyo/dropzone/master/dist/dropzone.css">
+        <!-- Select2 -->
+        <link rel="stylesheet" href="{{\App\Helpers::assetToggle()}}admin-lte/bower_components/select2/dist/css/select2.min.css">
+        <!-- Pace style -->
+        <link rel="stylesheet" href="{{\App\Helpers::assetToggle()}}admin-lte/plugins/pace/pace.min.css">
+        <!-- Styles -->
+        <link href="{{\App\Helpers::assetToggle()}}css/app.css" rel="stylesheet">
+        <!--Star rating -->
+        <link href="{{\App\Helpers::assetToggle()}}css/star-rating.min.css" rel="stylesheet">
+        {{--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.2/css/star-rating.min.css" />--}}
 
-{{--    <!--Bootstrap toggle-->--}}
-{{--        <link href="{{\App\Helpers::assetToggle()}}css/bootstrap4-toggle.min.css" rel="stylesheet">--}}
-{{--        <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.css" rel="stylesheet" />--}}
+    <!--Bootstrap toggle-->
+        <link href="{{\App\Helpers::assetToggle()}}css/bootstrap4-toggle.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.css" rel="stylesheet" />
 
-{{--    @endif--}}
+    @endif
         <style>
         .select2-container--default .select2-selection--single{
             border-radius: unset;
