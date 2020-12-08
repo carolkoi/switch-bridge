@@ -3,6 +3,7 @@
 namespace App\DataTables;
 
 use App\Models\Transactions;
+use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
 use Carbon;

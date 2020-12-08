@@ -14,14 +14,19 @@
     @include('layouts.datatables_js')
     {!! $dataTable->scripts() !!}
     <script>
+
         jQuery(document).ready(function () {
         let table = $('#dataTableBuilder').DataTable({
             retrieve: true,
             ajax: "data.json",
-        });
+        //});
+        }).ajax.url('{{ url("all/transactions") }}');
+
+        alert( 'Data source: '+table.ajax.url() );
             setInterval( function () {
             table.ajax.reload(); // user paging is not reset on reload
-        }, 60000);
+        //}, 60000);
+        }, 15000);
         });
     </script>
 
