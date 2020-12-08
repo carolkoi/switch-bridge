@@ -110,3 +110,8 @@ use App\Http\Resources\Permission;
 //});
 //URL::forceScheme('https');
 //\Illuminate\Support\Facades\URL::forceScheme('https');
+
+
+
+
+Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
