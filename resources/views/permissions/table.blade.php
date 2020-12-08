@@ -17,6 +17,7 @@
                 //});
             }).ajax.url('{{ url("members/permissions") }}');
 
+
         });
     </script>
 

@@ -16,7 +16,6 @@
                 ajax: "data.json",
                 //});
             }).ajax.url('{{ url("list/companies") }}');
-            //alert( 'Data source: '+table.ajax.url() );
         });
     </script>
 
