@@ -2,7 +2,6 @@
 
 namespace App\DataTables\Scopes;
 
-use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Contracts\DataTableScope;
 
 class TransactionDataTableScope implements DataTableScope
