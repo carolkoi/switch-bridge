@@ -1460,6 +1460,7 @@ class Transactions extends Model implements ApprovableInterface
 
     public $table = 'tbl_sys_iso';
     public $primaryKey = 'iso_id';
+//    public $incrementing = false;
 
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
@@ -2072,10 +2073,30 @@ class Transactions extends Model implements ApprovableInterface
     ];
 
 
-    public function company()
-    {
-        return $this->belongsTo('App\Models\Company', 'company_id', 'companyid');
+    public function partner(){
+        return $this->belongsTo(Partner::class, 'req_field123', 'partner_id');
     }
+
+    public function scopeTransactionsByCompany($query)
+    {
+//        dd(Auth::user()->company_id);
+        if (Auth::user()->company_id = 9) {
+
+            return $query
+            ->where('req_field123', 'not like', "%NGAO%" )->where('req_field123', 'not like', "%CHIPPERCASH%");
+        }elseif (Auth::user()->company_id = 10){
+            return $query
+                ->where('req_field123', 'like', "%CHIPPERCASH%");
+
+        }elseif (Auth::user()->company_id = 11){
+            return $query
+                ->where('req_field123', 'like', "%NGAO%");
+        }else
+            return $query;
+//        return $query;
+    }
+
+
 
     /**
      * @inheritDoc

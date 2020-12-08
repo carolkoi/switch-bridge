@@ -30,6 +30,7 @@ class CompanyController extends AppBaseController
      */
     public function index(CompanyDataTable $companyDataTable)
     {
+//        dd(Company::with('partners')->company()->get());
         return $companyDataTable->render('companies.index');
     }
 

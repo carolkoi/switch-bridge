@@ -41,6 +41,7 @@ class TransactionsController extends AppBaseController
      */
     public function index(TransactionsDataTable $transactionsDataTable)
     {
+//        dd(Transactions::transactionsByCompany()->get());
 //        $partners = Partner::pluck('partner_name', 'partner_name');
         $partners = Partner::get();
         $txnTypes = Transactions::pluck('req_field41', 'req_field41');

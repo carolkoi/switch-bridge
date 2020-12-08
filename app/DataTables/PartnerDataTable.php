@@ -29,7 +29,7 @@ class PartnerDataTable extends DataTable
      */
     public function query(Partner $model)
     {
-        return $model->newQuery();
+        return $model->partners()->newQuery();
     }
 
     /**
@@ -65,22 +65,22 @@ class PartnerDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'date_time_added',
-            'added_by',
-            'date_time_modified',
-            'modified_by',
-            'partner_idx',
-            'setting_profile',
+//            'date_time_added',
+//            'added_by',
+//            'date_time_modified',
+//            'modified_by',
+//            'partner_idx',
+//            'setting_profile',
             'partner_name',
             'partner_type',
-            'partner_username',
-            'partner_password',
-            'partner_api_endpoint',
-            'allowed_transaction_types',
-            'unlock_time',
-            'lock_status',
+//            'partner_username',
+//            'partner_password',
+//            'partner_api_endpoint',
+//            'allowed_transaction_types',
+//            'unlock_time',
+//            'lock_status',
             'partner_status',
-            'record_version'
+//            'record_version'
         ];
     }
 

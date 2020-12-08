@@ -49,7 +49,7 @@ class CompanyDataTable extends DataTable
      */
     public function query(Company $model)
     {
-        return $model->newQuery();
+        return $model->company()->with('partners')->newQuery();
     }
 
     /**

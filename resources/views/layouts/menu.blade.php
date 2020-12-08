@@ -58,6 +58,9 @@
         <li class="{{ Request::is('list/companies*') ? 'active' : '' }}">
             <a href="{{ route('companies.index') }}"><i class="fa fa-building"></i><span>Companies</span></a>
         </li>
+        <li class="{{ Request::is('list/partners*') ? 'active' : '' }}">
+            <a href="{{ route('partners.index') }}"><i class="fa fa-building"></i><span>Partners</span></a>
+        </li>
 
     </ul>
 </li>

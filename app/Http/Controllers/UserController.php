@@ -36,7 +36,7 @@ class UserController extends AppBaseController
      */
     public function index(UserDataTable $userDataTable)
     {
-//        dd(User::all()->toArray());
+//        dd(User::users()->get());
         return $userDataTable->render('users.index');
     }
 

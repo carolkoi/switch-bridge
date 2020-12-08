@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * @SWG\Definition(
@@ -176,6 +177,13 @@ Partner extends Model
     public function company(){
        return $this->belongsTo(Company::class, 'company_id', 'companyid');
     }
+
+    public function ScopePartners($query){
+        return $query->where('company_id', '=', Auth::user()->company_id);
+
+
+    }
+
 
 
 }

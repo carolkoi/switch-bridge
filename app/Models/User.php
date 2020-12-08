@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -144,6 +145,13 @@ class User extends Authenticatable
 
     public function company(){
     return $this->belongsTo(Company::class, 'company_id', 'companyid');
+    }
+    public function scopeUsers($query){
+        if (Auth::user()->company_id = 1){
+            return $query;
+        }else
+        return $query->where('company_id', '=', Auth::user()->company_id);
+
     }
 
 }

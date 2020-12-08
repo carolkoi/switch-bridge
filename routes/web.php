@@ -45,6 +45,8 @@ use App\Http\Resources\Permission;
     });
     Route::prefix('list')->group(function () {
         Route::resource('companies', 'CompanyController');
+        Route::resource('partners', 'PartnerController');
+
     });
     Route::prefix('services')->group(function () {
         Route::resource('providers', 'ProviderController');

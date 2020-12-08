@@ -39,7 +39,7 @@ class UserDataTable extends DataTable
      */
     public function query(User $model)
     {
-        return $model->with(['company'])->newQuery();
+        return $model->with('company')->users()->newQuery();
     }
 
     /**
