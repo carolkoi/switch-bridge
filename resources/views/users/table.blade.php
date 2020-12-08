@@ -7,5 +7,18 @@
 @section('scripts')
     @include('layouts.datatables_js')
     {!! $dataTable->scripts() !!}
+    <script>
+
+        jQuery(document).ready(function () {
+            var hasBeenSet = 0;
+            let table = $('#dataTableBuilder').DataTable({
+                retrieve: true,
+                ajax: "data.json",
+                //});
+            }).ajax.url('{{ url("members/users") }}');
+
+        });
+    </script>
+
 @endsection
 

@@ -26,7 +26,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $all_transactions = Transactions::take(2000)->get();
+        $all_transactions = Transactions::transactionsByCompany()->get();
         $no_of_trns = Transactions::all()->count();
 
         $today_transactions = Transactions::whereDate('created_at', Carbon::today())->get();
@@ -34,6 +34,10 @@ class HomeController extends Controller
         $yesterday_txns = Transactions::whereDate('created_at', $yesterday )->get();
 
         $transactions = Transactions::orderBy('date_time_added', 'desc')->paginate(30);
+        if (env('APP_ENV') !== 'local'){
+            $transactions->setPath('https://dev.slafrica.net:6810/');
+        }
+
 //        $transactions->setBaseUrl('custom/url');
         return view('home', ['transactions' => $transactions, 'all_transactions' => $all_transactions,
             'today_transactions' => $today_transactions, 'yesterday_txns' => $yesterday_txns,

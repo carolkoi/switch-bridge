@@ -199,7 +199,7 @@ return [
         WorkflowApprovalEventServiceProvider::class,
         WizPackApprovalServiceProvider::class,
 
-        Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
+//        Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
 
     ],
 

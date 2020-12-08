@@ -94,7 +94,7 @@
                 </div>
                 <br/>
 
-                @include('transactions.table')
+                @include('transactions.pending_table')
             </div>
         </div>
         <div class="text-center">

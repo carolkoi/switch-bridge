@@ -16,17 +16,17 @@
     <script>
 
         jQuery(document).ready(function () {
-        var hasBeenSet = 0;
+            var hasBeenSet = 0;
             let table = $('#dataTableBuilder').DataTable({
                 retrieve: true,
                 ajax: "data.json",
                 //});
-            }).ajax.url('{{ url("all/transactions") }}');
+            }).ajax.url('{{ url("all/failed-transactions") }}');
             //alert( 'Data source: '+table.ajax.url() );
             setInterval( function () {
                 table.ajax.reload(); // user paging is not reset on reload
                 hasBeenSet = 1;
-            }, 10000);
+            }, 15000);
             //}, 60000);
         });
     </script>
