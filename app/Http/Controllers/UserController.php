@@ -131,6 +131,8 @@ class UserController extends AppBaseController
      */
     public function update($id, Request $request)
     {
+        $random = str_shuffle('abcdefghjklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ234567890!$%^&!$%^&');
+        $password = substr($random, 0, 10);
         $user = $this->userRepository->find($id);
         $input = $request->all();
 //        $random = str_shuffle('abcdefghjklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ234567890!$%^&!$%^&');
@@ -148,7 +150,7 @@ class UserController extends AppBaseController
 
         $user = $this->userRepository->update($input, $id);
         $user->syncRoles($role);
-//        Mail::to($user->email)->send(new AccountCreated($user, $password));
+        Mail::to($user->email)->send(new AccountCreated($user, $password));
 //
 //        Flash::success('User updated successfully.');
 
