@@ -23,11 +23,6 @@
                 //});
             }).ajax.url('{{ url("all/pending-transactions") }}');
             //alert( 'Data source: '+table.ajax.url() );
-            setInterval( function () {
-                table.ajax.reload(); // user paging is not reset on reload
-                hasBeenSet = 1;
-            }, 15000);
-            //}, 60000);
         });
     </script>
 

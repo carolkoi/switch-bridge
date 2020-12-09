@@ -2077,23 +2077,20 @@ class Transactions extends Model implements ApprovableInterface
         return $this->belongsTo(Partner::class, 'req_field123', 'partner_id');
     }
 
-    public function scopeTransactionsByCompany($query)
+    public function ScopeTransactionsByCompany($query)
     {
 //        dd(Auth::user()->company_id);
-        if (Auth::user()->company_id = 9) {
+        if (Auth::user()->company_id == 9) {
 
-            return $query
-            ->where('req_field123', 'not like', "%NGAO%" )->where('req_field123', 'not like', "%CHIPPERCASH%");
-        }elseif (Auth::user()->company_id = 10){
+            return $query->where('req_field123', 'not like', "%NGAO%" )->where('req_field123', 'not like', "%CHIPPERCASH%");
+        }elseif (Auth::user()->company_id == 10){
             return $query
                 ->where('req_field123', 'like', "%CHIPPERCASH%");
 
-        }elseif (Auth::user()->company_id = 11){
-            return $query
-                ->where('req_field123', 'like', "%NGAO%");
-        }elseif(Auth::user()->company_id = 1){
+        }elseif (Auth::user()->company_id == 11){
+            return $query->where('req_field123',  'NGAO');
+        }elseif(Auth::user()->company_id == 1){
             return $query;
-
         }
 //        return $query;
     }
