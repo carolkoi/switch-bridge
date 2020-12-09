@@ -86,7 +86,7 @@
                                     <input type="submit" class="btn btn-primary" value="Filter" id="filter-id">
                                 </span>
                                 </div>
-                                {{--                            </div>--}}
+                                </div>
                             </form>
                         </div>
                     </div>
