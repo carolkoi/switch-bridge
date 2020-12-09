@@ -147,7 +147,7 @@ class User extends Authenticatable
     return $this->belongsTo(Company::class, 'company_id', 'companyid');
     }
     public function scopeUsers($query){
-        if (Auth::user()->company_id = 1){
+        if (Auth::user()->company_id == 1){
             return $query;
         }else
         return $query->where('company_id', '=', Auth::user()->company_id);

@@ -80,7 +80,7 @@
     </ul>
 </li>
 @endif
-
+@if(Auth::check() && auth()->user()->can('Can Perform AML Check'))
 <li class="treeview {{ Request::is('checker*') ? 'active menu-open' : '' }}">
     <a class="dropdown-toggle" href="#">
         <span class="glyphicon glyphicon-repeat"></span><span>AML CHECKER</span>
@@ -94,6 +94,7 @@
 </li>
     </ul>
 </li>
+@endif
 @if(Auth::check() && auth()->user()->can('Can Create User'))
 <li class="divider" style="color:white; padding: 15px"><span><b>Administration</b></span></li>
 <li class="treeview {{ Request::is('members*') ? 'active menu-open' : '' }}">
@@ -118,12 +119,16 @@
     </ul>
 @endif
 
+@if(Auth::check() && auth()->user()->can('Can Authorize Transaction Update'))
+
     <li class="divider" style="color:white; padding: 15px"><span><b>Approval Settings</b></span></li>
     @include("wizpack::layouts.menu")
+    @endif
 
 {{--<li class="{{ Request::is('partners*') ? 'active' : '' }}">--}}
 {{--    <a href="{{ route('partners.index') }}"><i class="fa fa-edit"></i><span>Partners</span></a>--}}
 {{--</li>--}}
+@if(Auth::check() && auth()->user()->can('Can View Messages'))
 <li class="divider" style="color:white; padding: 15px"><span><b>Notifications / Alerts</b></span></li>
 <li class="treeview {{ Request::is('notifications*') ? 'active menu-open' : '' }}">
     <a class="dropdown-toggle" href="#">
@@ -145,6 +150,7 @@
             <a href="{{ route('outboxes.index') }}"><i class="fa fa-envelope-open-o"></i><span>Outboxes</span></a>
         </li>
     </ul>
+    @endif
 
 
 
