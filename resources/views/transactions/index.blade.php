@@ -89,7 +89,7 @@
                                         {{--                                                                            {{Form::label('', 'Select Partner')}}--}}
                                         {{--                                                                            {{Form::select('filter-partner', $partners, null, ['class' => 'form-control param select2',--}}
                                         {{--                                                                        'id' => 'filter-partner'])}}--}}
-                                        @if(Auth::user()->company_id == 9)
+                                        @if(Auth::check() && Auth::user()->company_id == 9)
                                             <select name="filter-partner" class="form-control param select2"
                                                     id="filter-partner">
                                                 <option>SELECT PARTNER</option>
@@ -99,7 +99,7 @@
                                                 @endforeach
                                             </select>
 
-                                        @elseif(Auth::user()->company_id == 10)
+                                        @elseif(Auth::check() && Auth::user()->company_id == 10)
                                             <select name="filter-partner" class="form-control param select2"
                                                     id="filter-partner">
                                                 <option>SELECT PARTNER</option>
@@ -109,7 +109,7 @@
                                                 {{--                                                @endforeach--}}
                                             </select>
 
-                                        @elseif(Auth::user()->company_id == 11)
+                                        @elseif(Auth::check() && Auth::user()->company_id == 11)
                                             <select name="filter-partner" class="form-control param select2"
                                                     id="filter-partner">
                                                 <option>SELECT PARTNER</option>
