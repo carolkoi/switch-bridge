@@ -111,13 +111,16 @@
        <li class="{{ Request::is('members/users*') ? 'active' : '' }}">
     <a href="{!! route('users.index') !!}"><i class="fa fa-users"></i><span>Users</span></a>
     </li>
-    <li class="{{ Request::is('members/roles*') ? 'active' : '' }}">
+        @if(Auth::check() && auth()->user()->can('Can Create Roles'))
+
+        <li class="{{ Request::is('members/roles*') ? 'active' : '' }}">
         <a href="{!! route('roles.index') !!}"><i class="fa fa-user-plus"></i><span>Roles</span></a>
     </li>
         @if(Auth::check() && auth()->user()->can('Can Add Permissions'))
         <li class="{{ Request::is('members/permissions*') ? 'active' : '' }}">
             <a href="{{ route('permissions.index') }}"><i class="fa fa-check-square-o"></i><span>Permissions</span></a>
         </li>
+            @endif
             @endif
     </ul>
 {{--@endif--}}
@@ -156,4 +159,12 @@
     @endif
 
 
+
+{{--<li class="{{ Request::is('floats*') ? 'active' : '' }}">--}}
+{{--    <a href="{{ route('floats.index') }}"><i class="fa fa-edit"></i><span>Float</span></a>--}}
+{{--</li>--}}
+
+<li class="{{ Request::is('floatBalances*') ? 'active' : '' }}">
+    <a href="{{ route('floatBalances.index') }}"><i class="fa fa-money"></i><span>Float Balances</span></a>
+</li>
 

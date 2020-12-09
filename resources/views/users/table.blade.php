@@ -19,7 +19,7 @@
             setInterval( function () {
                 table.ajax.reload(); // user paging is not reset on reload
                 hasBeenSet = 1;
-            }, 1500);
+            }, 5000);
 
         });
     </script>

@@ -21,7 +21,7 @@
                 retrieve: true,
                 ajax: "data.json",
                 //});
-            }).ajax.url('{{ url("all/transactions") }}');
+            });
             //alert( 'Data source: '+table.ajax.url() );
             setInterval( function () {
                 table.ajax.reload(); // user paging is not reset on reload

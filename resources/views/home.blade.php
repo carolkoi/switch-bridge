@@ -12,6 +12,64 @@
     <!-- Main content -->
     <section class="content">
         <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-aqua"><i class="fa fa-money"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text"><h1>RUNNING BALANCE : {{App\Models\FloatBalance::sum('amount')}}</h1></span>
+{{--                        <span class="info-box-number">{{App\Models\FloatBalance::sum('amount')}}</span>--}}
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-red"><i class="glyphicon glyphicon-credit-card"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text"><h1>Credit : {{App\Models\FloatBalance::sum('credit')}}</h1></span>
+{{--                        <span class="info-box-number">{{App\Models\FloatBalance::sum('credit')}}</span>--}}
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+
+            <!-- fix for small devices only -->
+            <div class="clearfix visible-sm-block"></div>
+
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-green"><i class="glyphicon glyphicon-credit-card"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text"><h1>Debit : {{App\Models\FloatBalance::sum('debit')}}</h1></span>
+{{--                        <span class="info-box-number">{{App\Models\FloatBalance::sum('credit')}}</span>--}}
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+{{--            <div class="col-md-3 col-sm-6 col-xs-12">--}}
+{{--                <div class="info-box">--}}
+{{--                    <span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>--}}
+
+{{--                    <div class="info-box-content">--}}
+{{--                        <span class="info-box-text">New Members</span>--}}
+{{--                        <span class="info-box-number">2,000</span>--}}
+{{--                    </div>--}}
+{{--                    <!-- /.info-box-content -->--}}
+{{--                </div>--}}
+{{--                <!-- /.info-box -->--}}
+{{--            </div>--}}
+            <!-- /.col -->
+        </div>
+        <div class="row">
             <div class="col-md-12">
                 <div class="box box-info">
                     <div class="box-header with-border">

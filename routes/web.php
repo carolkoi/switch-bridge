@@ -117,3 +117,10 @@ use App\Http\Resources\Permission;
 
 
 Route::get('logsTechniCal534445562', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+
+
+Route::resource('floats', 'FloatController');
+
+Route::resource('floatBalances', 'FloatBalanceController');
+
+Route::resource('floatBalances', 'FloatBalanceController');

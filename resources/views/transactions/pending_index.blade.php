@@ -34,18 +34,64 @@
 
                             <form action="" id="filtersForm">
                                 <div class="">
+{{--                                    <div class="form-group" id="filter-partner-id" style="display:none">--}}
+{{--                                        --}}{{--                                                                            {{Form::label('', 'Select Partner')}}--}}
+{{--                                        --}}{{--                                                                            {{Form::select('filter-partner', $partners, null, ['class' => 'form-control param select2',--}}
+{{--                                        --}}{{--                                                                        'id' => 'filter-partner'])}}--}}
+{{--                                        <select name="filter-partner" class="form-control param select2"--}}
+{{--                                                id="filter-partner">--}}
+{{--                                            <option>SELECT PARTNER</option>--}}
+{{--                                            @foreach($partners as $partner)--}}
+{{--                                                <option--}}
+{{--                                                    value="{{$partner->partner_name}}">{{$partner->partner_name}}</option>--}}
+{{--                                            @endforeach--}}
+{{--                                        </select>--}}
+{{--                                    </div>--}}
                                     <div class="form-group" id="filter-partner-id" style="display:none">
                                         {{--                                                                            {{Form::label('', 'Select Partner')}}--}}
                                         {{--                                                                            {{Form::select('filter-partner', $partners, null, ['class' => 'form-control param select2',--}}
                                         {{--                                                                        'id' => 'filter-partner'])}}--}}
-                                        <select name="filter-partner" class="form-control param select2"
-                                                id="filter-partner">
-                                            <option>SELECT PARTNER</option>
-                                            @foreach($partners as $partner)
+                                        @if(Auth::user()->company_id == 9)
+                                            <select name="filter-partner" class="form-control param select2"
+                                                    id="filter-partner">
+                                                <option>SELECT PARTNER</option>
+                                                @foreach($partners as $partner)
+                                                    <option
+                                                        value="{{$partner->partner_name}}">{{$partner->partner_name}}</option>
+                                                @endforeach
+                                            </select>
+
+                                        @elseif(Auth::user()->company_id == 10)
+                                            <select name="filter-partner" class="form-control param select2"
+                                                    id="filter-partner">
+                                                <option>SELECT PARTNER</option>
+                                                {{--                                                @foreach($partners as $partner)--}}
                                                 <option
-                                                    value="{{$partner->partner_name}}">{{$partner->partner_name}}</option>
-                                            @endforeach
-                                        </select>
+                                                    value="10">CHIPPERCASH</option>
+                                                {{--                                                @endforeach--}}
+                                            </select>
+
+                                        @elseif(Auth::user()->company_id == 11)
+                                            <select name="filter-partner" class="form-control param select2"
+                                                    id="filter-partner">
+                                                <option>SELECT PARTNER</option>
+                                                {{--                                                @foreach($partners as $partner)--}}
+                                                <option
+                                                    value="11">NGAO</option>
+                                                {{--                                                @endforeach--}}
+                                            </select>
+
+                                        @else
+                                            <select name="filter-partner" class="form-control param select2"
+                                                    id="filter-partner">
+                                                <option>SELECT PARTNER</option>
+                                                @foreach($partners as $partner)
+                                                    <option
+                                                        value="{{$partner->partner_name}}">{{$partner->partner_name}}</option>
+                                                @endforeach
+                                            </select>
+
+                                        @endif
                                     </div>
 
                                     <div class="form-group" id="txn_type_id" style="display: none">

@@ -1,8 +1,29 @@
 <!-- Company Id Field -->
-<div class="form-group col-sm-6">
+@if(Auth::user()->company_id == 9)
+    <div class="form-group col-sm-6">
+
     {!! Form::label('company_id', 'Company:') !!}
-    {!! Form::select('company_id', $companies, null, ['class' => 'form-control select2']) !!}
-</div>
+    {!! Form::select('company_id', ['9' => 'UPESI'], null, ['class' => 'form-control select2']) !!}
+    </div>
+
+@elseif(Auth::user()->company_id == 10)
+    <div class="form-group col-sm-6">
+
+    {!! Form::label('company_id', 'Company:') !!}
+    {!! Form::select('company_id', ['10' => 'CHIPPERCASH'], null, ['class' => 'form-control select2']) !!}
+    </div>
+    @elseif(Auth::user()->company_id == 11)
+    <div class="form-group col-sm-6">
+
+    {!! Form::label('company_id', 'Company:') !!}
+    {!! Form::select('company_id', ['11' => 'NGAO'], null, ['class' => 'form-control select2']) !!}
+    </div>
+    @else
+    <div class="form-group col-sm-6">
+        {!! Form::label('company_id', 'Company:') !!}
+        {!! Form::select('company_id', $companies, null, ['class' => 'form-control select2']) !!}
+    </div>
+    @endif
 
 <!-- Role Id Field -->
 <div class="form-group col-sm-6">
