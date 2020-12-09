@@ -1,9 +1,11 @@
 
 <li class="divider" style="color:white; padding: 15px"><span><b>Menu</b></span></li>
 {{--<br/>--}}
+@if(Auth::check() && auth()->user()->can('Can View Switch Settings'))
 <li class="{{ Request::is('home*') ? 'active' : '' }}">
     <a href="{{ route('home') }}"><span class="glyphicon glyphicon-home"></span><span>Dashboard</span></a>
 </li>
+@endif
 
 <li class="treeview {{ Request::is('all*') ? 'active menu-open' : '' }}">
     <a class="dropdown-toggle" href="#">
@@ -19,11 +21,12 @@
         <li class="{{ Request::is('all/successful-transactions*') ? 'active' : '' }}">
             <a href="{{ route('success-transactions.index') }}"><span class="glyphicon glyphicon-check"></span><span> Successful Transactions</span></a>
         </li>
-        <li class="{{ Request::is('all/failed-transactions*') ? 'active' : '' }}">
-            <a href="{{ route('failed-transactions.index') }}"><span class="glyphicon glyphicon-ban-circle"></span><span>Failed Transactions</span></a>
-        </li>
+
         <li class="{{ Request::is('all/pending-transactions*') ? 'active' : '' }}">
             <a href="{{ route('pending-transactions.index') }}"><span class="glyphicon glyphicon-upload"></span><span>Pending Transactions</span></a>
+        </li>
+        <li class="{{ Request::is('all/failed-transactions*') ? 'active' : '' }}">
+            <a href="{{ route('failed-transactions.index') }}"><span class="glyphicon glyphicon-ban-circle"></span><span>Failed Transactions</span></a>
         </li>
     </ul>
 </li>
