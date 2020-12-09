@@ -16,6 +16,10 @@
                 ajax: "data.json",
                 //});
             }).ajax.url('{{ url("members/users") }}');
+            setInterval( function () {
+                table.ajax.reload(); // user paging is not reset on reload
+                hasBeenSet = 1;
+            }, 1500);
 
         });
     </script>
