@@ -34,8 +34,10 @@ class HomeController extends Controller
         $yesterday_txns = Transactions::whereDate('created_at', $yesterday )->get();
 
         $transactions = Transactions::transactionsByCompany()->orderBy('date_time_added', 'desc')->paginate(30);
-        if (env('APP_ENV') !== 'local'){
+        if (env('APP_ENV') == 'dev'){
             $transactions->setPath('https://dev.slafrica.net:6810/');
+        }elseif (env('APP_ENV') == 'prod'){
+            $transactions->setPath('https://asgard.slafrica.net:9810/');
         }
 
 //        $transactions->setBaseUrl('custom/url');
