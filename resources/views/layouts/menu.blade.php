@@ -1,11 +1,9 @@
 
 <li class="divider" style="color:white; padding: 15px"><span><b>Menu</b></span></li>
 {{--<br/>--}}
-@if(Auth::check() && auth()->user()->can('Can View Switch Settings'))
 <li class="{{ Request::is('home*') ? 'active' : '' }}">
     <a href="{{ route('home') }}"><span class="glyphicon glyphicon-home"></span><span>Dashboard</span></a>
 </li>
-@endif
 
 <li class="treeview {{ Request::is('all*') ? 'active menu-open' : '' }}">
     <a class="dropdown-toggle" href="#">
