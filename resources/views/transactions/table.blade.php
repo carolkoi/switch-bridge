@@ -22,13 +22,11 @@
                 ajax: "data.json",
                 processing:true,
                 serverSide:true,
-                deferLoading: 57,
                 ajax:{
-                    data: "data.json",
                     url: url('{{ url("all/transactions") }}'),
                 },
                 //});
-            });
+            }).ajax.url('{{ url("all/transactions") }}');
 
             // setTimeout(function(){
             //     $('#data-table').DataTable( {
@@ -39,7 +37,7 @@
             setInterval( function () {
                 table.ajax.reload(); // user paging is not reset on reload
                 hasBeenSet = 1;
-            }, 6000);
+            }, 15000);
             //}, 60000);
         });
     </script>
