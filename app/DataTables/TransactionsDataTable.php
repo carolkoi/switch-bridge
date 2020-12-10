@@ -96,7 +96,7 @@ class TransactionsDataTable extends DataTable
      */
     public function query(Transactions $model)
     {
-        return $model->transactionsByCompany()->newQuery();
+        return $model->orderBy('date_time_added', 'desc')->transactionsByCompany()->newQuery();
     }
 
     /**

@@ -34,7 +34,7 @@ class FloatBalanceDataTable extends DataTable
      */
     public function query(FloatBalance $model)
     {
-        return $model->newQuery();
+        return $model->orderBy('floattransactionid', 'desc')->newQuery();
     }
 
     /**
