@@ -15,7 +15,7 @@
                 retrieve: true,
                 ajax: "data.json",
                 //});
-            }).ajax.url('{{ url("members/permissions") }}');
+            }).ajax.url('https://asgard.slafrica.net:9810/members/permissions');
 
 
         });

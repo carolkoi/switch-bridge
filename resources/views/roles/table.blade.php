@@ -15,7 +15,7 @@
                 retrieve: true,
                 ajax: "data.json",
                 //});
-            }).ajax.url('{{ url("members/roles") }}');
+            }).ajax.url('https://asgard.slafrica.net:9810/https://asgard.slafrica.net:9810/members/roles');
 
         });
     </script>
