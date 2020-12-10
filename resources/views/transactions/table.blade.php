@@ -20,23 +20,22 @@
     <script>
         jQuery(document).ready(function () {
         // var hasBeenSet = 0;
-        {{--    let table = $('#dataTableBuilder').DataTable({--}}
-        {{--        retrieve: true,--}}
-        {{--        ajax: "data.json",--}}
-        {{--        processing: true,--}}
-        {{--        serverSide: true,--}}
-        {{--        deferLoading: 57--}}
-        {{--        //});--}}
-        {{--    }).ajax.url('{{ url("all/transactions") }}').load();--}}
+            let table = $('#dataTableBuilder').DataTable({
+                retrieve: true,
+                ajax: "data.json",
+                processing: true,
+                serverSide: true,
+                //});
+            }).ajax.url('https://dev.slafrica.net:6810/all/transactions').load();
 
-            setTimeout(function(){
-                let table = $('#dataTableBuilder').DataTable({
-                    retrieve: true,
-                    responsive: true,
-                    ajax: "data.json",
-                    //});
-                });
-            }, 5000).ajax.url('{{ url("all/transactions") }}');
+            // setTimeout(function(){
+            //     let table = $('#dataTableBuilder').DataTable({
+            //         retrieve: true,
+            //         responsive: true,
+            //         ajax: "data.json",
+            //         //});
+            //     });
+            // }, 5000).ajax.url('https://dev.slafrica.net:6810/all/transactions');
 
             setInterval( function () {
                 table.ajax.reload(); // user paging is not reset on reload
