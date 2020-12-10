@@ -43,7 +43,7 @@
                     <ul class="dropdown-menu">
                         <!-- The user image in the menu -->
                         <li class="user-header">
-                            <img src="{{URL::asset('images/blue_logo_150x150.jpg')}}"
+                            <img src="{{\App\Helpers::assetToggle()}}images/logo-sla.png"
                                  class="img-circle" alt="User Image"/>
                             <p>
                                 {!! Auth::user() ? Auth::user()->name : redirect('/')!!}

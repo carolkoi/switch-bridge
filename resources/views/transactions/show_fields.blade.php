@@ -128,6 +128,7 @@
         </div>
 <br>
 <br>
+@if(Auth::check() && Auth::user()->company_id !== 9)
 <div class="card">
     <div class="card-body">
 <div class="table-responsive  col-md-12">
@@ -143,4 +144,5 @@
 </div>
     </div>
 </div>
+    @endif
 

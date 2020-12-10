@@ -11,7 +11,7 @@
 
     <!-- Main content -->
     <section class="content">
-        @if(Auth::check() && Auth::user()->company_id !== 9)
+        @if(Auth::check() && Auth::user()->company_id == 10)
         <div class="row">
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="info-box">
@@ -83,48 +83,48 @@
             </div>
             <!-- ./box-body -->
             <div class="box-footer">
-                <div class="row">
-                    <div class="col-sm-3 col-xs-6">
-                        <div class="description-block border-right">
+{{--                <div class="row">--}}
+{{--                    <div class="col-sm-3 col-xs-6">--}}
+{{--                        <div class="description-block border-right">--}}
 {{--                            <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 17%</span>--}}
 
-                            <span class=" badge bg-aqua"><h5 class="description-header">{{$txn_no}}</h5></span>
-                            <br>
-                            <span class="description-text">ALL TRANSACTIONS</span>
-                        </div>
-                        <!-- /.description-block -->
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-sm-3 col-xs-6">
-                        <div class="description-block border-right">
+{{--                            <span class=" badge bg-aqua"><h5 class="description-header">{{$txn_no}}</h5></span>--}}
+{{--                            <br>--}}
+{{--                            <span class="description-text">ALL TRANSACTIONS</span>--}}
+{{--                        </div>--}}
+{{--                        <!-- /.description-block -->--}}
+{{--                    </div>--}}
+{{--                    <!-- /.col -->--}}
+{{--                    <div class="col-sm-3 col-xs-6">--}}
+{{--                        <div class="description-block border-right">--}}
 {{--                            <span class="description-percentage text-yellow"><i class="fa fa-caret-left"></i> 0%</span>--}}
-                            <span class=" badge bg-green"><h5 class="description-header">{{$all_transactions->where('res_field48', 'COMPLETED')->count()}}</h5></span>
-                            <br>
-                            <span class="description-text">SUCCESSFUL TRANSACTIONS</span>
-                        </div>
-                        <!-- /.description-block -->
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-sm-3 col-xs-6">
-                        <div class="description-block border-right">
+{{--                            <span class=" badge bg-green"><h5 class="description-header">{{$all_transactions->where('res_field48', 'COMPLETED')->count()}}</h5></span>--}}
+{{--                            <br>--}}
+{{--                            <span class="description-text">SUCCESSFUL TRANSACTIONS</span>--}}
+{{--                        </div>--}}
+{{--                        <!-- /.description-block -->--}}
+{{--                    </div>--}}
+{{--                    <!-- /.col -->--}}
+{{--                    <div class="col-sm-3 col-xs-6">--}}
+{{--                        <div class="description-block border-right">--}}
 {{--                            <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 20%</span>--}}
-                            <span class=" badge bg-yellow"> <h5 class="description-header">{{$all_transactions->WhereNotIn('res_field48', ['COMPLETED', 'FAILED'])->count()}}</h5></span>
-                           <br>
-                            <span class="description-text">PENDING TRANSACTIONS</span>
-                        </div>
-                        <!-- /.description-block -->
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-sm-3 col-xs-6">
-                        <div class="description-block">
+{{--                            <span class=" badge bg-yellow"> <h5 class="description-header">{{$all_transactions->WhereNotIn('res_field48', ['COMPLETED', 'FAILED'])->count()}}</h5></span>--}}
+{{--                           <br>--}}
+{{--                            <span class="description-text">PENDING TRANSACTIONS</span>--}}
+{{--                        </div>--}}
+{{--                        <!-- /.description-block -->--}}
+{{--                    </div>--}}
+{{--                    <!-- /.col -->--}}
+{{--                    <div class="col-sm-3 col-xs-6">--}}
+{{--                        <div class="description-block">--}}
 {{--                            <span class="description-percentage text-red"><i class="fa fa-caret-down"></i> 18%</span>--}}
-                            <span class=" badge bg-red"><h5 class="description-header">{{$all_transactions->where('res_field48', 'FAILED')->count()}}</h5></span>
-                            <br>
-                            <span class="description-text">FAILED TRANSACTIONS</span>
-                        </div>
-                        <!-- /.description-block -->
-                    </div>
-                </div>
+{{--                            <span class=" badge bg-red"><h5 class="description-header">{{$all_transactions->where('res_field48', 'FAILED')->count()}}</h5></span>--}}
+{{--                            <br>--}}
+{{--                            <span class="description-text">FAILED TRANSACTIONS</span>--}}
+{{--                        </div>--}}
+{{--                        <!-- /.description-block -->--}}
+{{--                    </div>--}}
+{{--                </div>--}}
                 <!-- /.row -->
             </div>
             <!-- /.box-footer -->

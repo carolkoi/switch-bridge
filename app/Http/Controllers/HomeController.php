@@ -26,7 +26,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $all_transactions = Transactions::transactionsByCompany()->get();
+        $all_transactions = Transactions::transactionsByCompany()->take(2000)->get();
         $no_of_trns = Transactions::transactionsByCompany()->get()->count();
 
         $today_transactions = Transactions::transactionsByCompany()->whereDate('created_at', Carbon::today())->get();

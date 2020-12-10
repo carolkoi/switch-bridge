@@ -161,8 +161,9 @@
 {{--<li class="{{ Request::is('floats*') ? 'active' : '' }}">--}}
 {{--    <a href="{{ route('floats.index') }}"><i class="fa fa-edit"></i><span>Float</span></a>--}}
 {{--</li>--}}
-
+@if(Auth::check() && auth()->user()->can('Can View Float'))
 <li class="{{ Request::is('floatBalances*') ? 'active' : '' }}">
     <a href="{{ route('floatBalances.index') }}"><i class="fa fa-money"></i><span>Float Balances</span></a>
 </li>
+    @endif
 

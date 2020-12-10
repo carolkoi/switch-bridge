@@ -69,11 +69,9 @@ class UserController extends AppBaseController
 //        $user->setRememberToken(Str::random(60));
         $random = str_shuffle('abcdefghjklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ234567890!$%^&!$%^&');
         $password = substr($random, 0, 15);
-//        dd($password);
         $input['password'] = Hash::make($password);
         $input['password_confirmation'] = Hash::make($password);
         $input['status'] = "ACTIVE";
-//        dd($input);
         $role = \Spatie\Permission\Models\Role::where('id', $input['role_id'])->first()->name;
         $permissions = \Spatie\Permission\Models\Permission::pluck('name');
         $user = $this->userRepository->create($input);
