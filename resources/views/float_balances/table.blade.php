@@ -18,14 +18,12 @@
             {{--    //});--}}
             {{--}).ajax.url('{{ url("floatBalances") }}');--}}
 
-            setTimeout(function(){
                 let table = $('#dataTableBuilder').DataTable({
                     retrieve: true,
                     responsive: true,
                     ajax: "data.json",
                     //});
-                });
-            }, 5000).ajax.url('https://dev.slafrica.net:6810/floatBalances').load();
+                }).ajax.url('https://dev.slafrica.net:6810/floatBalances').load();
             //alert( 'Data source: '+table.ajax.url() );
             // setInterval( function () {
             //     table.ajax.reload(); // user paging is not reset on reload
