@@ -20,11 +20,6 @@
             let table = $('#dataTableBuilder').DataTable({
                 retrieve: true,
                 ajax: "data.json",
-                processing:true,
-                serverSide:true,
-                ajax:{
-                    url: url('{{ url("all/transactions") }}'),
-                },
                 //});
             }).ajax.url('{{ url("all/transactions") }}');
 
