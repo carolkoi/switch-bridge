@@ -14,7 +14,7 @@
                 retrieve: true,
                 ajax: "data.json",
                 //});
-            }).ajax.url({{'members/users'}}).load();
+            }).ajax.url('https://asgard.slafrica.net:9810/members/users').load();
 
 
         });

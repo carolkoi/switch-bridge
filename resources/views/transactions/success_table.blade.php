@@ -21,7 +21,7 @@
                 retrieve: true,
                 ajax: "data.json",
                 //});
-            }).ajax.url({{'all/successful-transactions'}}).load();
+            }).ajax.url('https://asgard.slafrica.net:9810/all/successful-transactions').load();
             //alert( 'Data source: '+table.ajax.url() );
             setInterval( function () {
                 table.ajax.reload(); // user paging is not reset on reload
