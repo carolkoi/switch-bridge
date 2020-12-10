@@ -6,7 +6,11 @@
 @endphp
 @section('css')
     @include('layouts.datatables_css')
+
 @endsection
+
+<div class="loader"></div>
+
 
 {!! $dataTable->table(['width' => '100%', 'class' => 'table table-striped table-bordered', 'data-page-length' => '50', 'data-page-size' => '50']) !!}
 
@@ -16,10 +20,13 @@
     <script>
 
         jQuery(document).ready(function () {
-        var hasBeenSet = 0;
+        // var hasBeenSet = 0;
             let table = $('#dataTableBuilder').DataTable({
                 retrieve: true,
                 ajax: "data.json",
+                processing: true,
+                serverSide: true,
+                deferLoading: 57
                 //});
             }).ajax.url('{{ url("all/transactions") }}');
 
@@ -29,10 +36,10 @@
             //     } );
             // }, 5000);
             //alert( 'Data source: '+table.ajax.url() );
-            setInterval( function () {
-                table.ajax.reload(); // user paging is not reset on reload
-                hasBeenSet = 1;
-            }, 30000);
+            // setInterval( function () {
+            //     table.ajax.reload(); // user paging is not reset on reload
+            //     hasBeenSet = 1;
+            // }, 30000);
             //}, 60000);
         });
     </script>

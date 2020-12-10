@@ -180,6 +180,8 @@
 
                 </div>
                 <br/>
+{{--                <div class="loader"></div>--}}
+
 
                 @include('transactions.table')
             </div>

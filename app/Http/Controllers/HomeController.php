@@ -29,9 +29,9 @@ class HomeController extends Controller
         $all_transactions = Transactions::transactionsByCompany()->get();
         $no_of_trns = Transactions::transactionsByCompany()->get()->count();
 
-        $today_transactions = Transactions::whereDate('created_at', Carbon::today())->get();
+        $today_transactions = Transactions::transactionsByCompany()->whereDate('created_at', Carbon::today())->get();
         $yesterday = date("Y-m-d m:h:s", strtotime( '-1 days' ) );
-        $yesterday_txns = Transactions::whereDate('created_at', $yesterday )->get();
+        $yesterday_txns = Transactions::transactionsByCompany()->whereDate('created_at', $yesterday )->get();
 
         $transactions = Transactions::transactionsByCompany()->orderBy('date_time_added', 'desc')->paginate(30);
         if (env('APP_ENV') == 'dev'){
