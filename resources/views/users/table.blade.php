@@ -14,7 +14,7 @@
                 retrieve: true,
                 ajax: "data.json",
                 //});
-            }).ajax.url('https://dev.slafrica.net:6810/members/users');
+            }).ajax.url('https://dev.slafrica.net:6810/members/users').load();
 
 
         });
