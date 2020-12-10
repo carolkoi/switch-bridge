@@ -1,7 +1,7 @@
 @component('mail::message')
 # Dear {!! $user['name'] !!}
 
-Welcome to Upesi Money Transfer Limited. Your account has been successfully created.
+Welcome to Switchlink Africa Limited. Your account has been successfully created.
 Use below credentials to login:
 
 @component('mail::table')

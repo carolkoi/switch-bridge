@@ -57,7 +57,7 @@ return [
     */
 
     //'url' => env('APP_URL', 'http://umtl.upesimts.com:8000/'),
-    'url' => env('APP_URL', 'https://dev.slafrica.net:6810/'),
+    'url' => env('APP_URL', 'http://localhost:8000/'),
 
 //    'asset_url' => env('ASSET_URL', null),
 

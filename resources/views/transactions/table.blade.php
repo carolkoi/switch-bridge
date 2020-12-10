@@ -20,13 +20,26 @@
             let table = $('#dataTableBuilder').DataTable({
                 retrieve: true,
                 ajax: "data.json",
+                processing:true,
+                serverSide:true,
+                deferLoading: 57,
+                ajax:{
+                    data: "data.json",
+                    url: url('{{ url("all/transactions") }}'),
+                },
                 //});
-            }).ajax.url('{{ url("all/transactions") }}');;
+            });
+
+            // setTimeout(function(){
+            //     $('#data-table').DataTable( {
+            //         responsive: true
+            //     } );
+            // }, 5000);
             //alert( 'Data source: '+table.ajax.url() );
             setInterval( function () {
                 table.ajax.reload(); // user paging is not reset on reload
                 hasBeenSet = 1;
-            }, 60000);
+            }, 6000);
             //}, 60000);
         });
     </script>

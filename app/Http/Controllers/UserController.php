@@ -13,7 +13,9 @@ use App\Models\User;
 use App\Repositories\UserRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use Response;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Http\Request;
@@ -62,11 +64,14 @@ class UserController extends AppBaseController
     public function store(Request $request)
     {
         $input = $request->all();
+//        $user->password = Hash::make($password);
+//
+//        $user->setRememberToken(Str::random(60));
         $random = str_shuffle('abcdefghjklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ234567890!$%^&!$%^&');
-        $password = substr($random, 0, 10);
+        $password = substr($random, 0, 15);
 //        dd($password);
-        $input['password'] = bcrypt($password);
-        $input['password_confirmation'] = bcrypt($password);
+        $input['password'] = Hash::make($password);
+        $input['password_confirmation'] = Hash::make($password);
         $input['status'] = "ACTIVE";
 //        dd($input);
         $role = \Spatie\Permission\Models\Role::where('id', $input['role_id'])->first()->name;
@@ -131,10 +136,14 @@ class UserController extends AppBaseController
      */
     public function update($id, Request $request)
     {
-        $random = str_shuffle('abcdefghjklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ234567890!$%^&!$%^&');
-        $password = substr($random, 0, 10);
+//        $random = str_shuffle('abcdefghjklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ234567890!$%^&!$%^&');
+//        $password = substr($random, 0, 15);
+//        $xty = 'jRwm7PEO$z';
+//        $hashed_password = Hash::make($xty);
+//        dd($hashed_password);
         $user = $this->userRepository->find($id);
         $input = $request->all();
+//        dd($input);
 //        $random = str_shuffle('abcdefghjklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ234567890!$%^&!$%^&');
 //        $password = substr($random, 0, 10);
 //////        dd($password);
@@ -149,8 +158,11 @@ class UserController extends AppBaseController
         $role = \Spatie\Permission\Models\Role::where('id', $user->role_id)->first()['name'];
 
         $user = $this->userRepository->update($input, $id);
+//        $user->password = $hashed_password;
         $user->syncRoles($role);
-        Mail::to($user->email)->send(new AccountCreated($user, $password));
+//        dd($input, $user->password);
+
+//        Mail::to($user->email)->send(new AccountCreated($user, $password));
 //
 //        Flash::success('User updated successfully.');
 
