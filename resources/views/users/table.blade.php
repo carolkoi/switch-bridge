@@ -10,7 +10,6 @@
     <script>
 
         jQuery(document).ready(function () {
-            var hasBeenSet = 0;
             let table = $('#dataTableBuilder').DataTable({
                 retrieve: true,
                 ajax: "data.json",
