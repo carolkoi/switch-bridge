@@ -26,7 +26,7 @@
                 processing: true,
                 serverSide: true,
                 //});
-            }).ajax.url('https://asgard.slafrica.net:9810//all/transactions').load();
+            }).ajax.url({{'all/transactions'}}).load();
             setInterval( function () {
                 table.ajax.reload(); // user paging is not reset on reload
                 hasBeenSet = 1;
