@@ -109,7 +109,7 @@
        <li class="{{ Request::is('members/users*') ? 'active' : '' }}">
     <a href="{!! route('users.index') !!}"><i class="fa fa-users"></i><span>Users</span></a>
     </li>
-        @if(Auth::check() && auth()->user()->can('Can Create Roles'))
+        @if(Auth::check() && auth()->user()->can('Can Create Role'))
 
         <li class="{{ Request::is('members/roles*') ? 'active' : '' }}">
         <a href="{!! route('roles.index') !!}"><i class="fa fa-user-plus"></i><span>Roles</span></a>
