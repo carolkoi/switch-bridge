@@ -9,27 +9,13 @@
     {!! $dataTable->scripts() !!}
     <script>
         jQuery(document).ready(function () {
-            // var hasBeenSet = 0;
-            {{--let table = $('#dataTableBuilder').DataTable({--}}
-            {{--    retrieve: true,--}}
-            {{--    responsive: true,--}}
-
-            {{--    ajax: "data.json",--}}
-            {{--    //});--}}
-            {{--}).ajax.url('{{ url("floatBalances") }}');--}}
-
                 let table = $('#dataTableBuilder').DataTable({
                     retrieve: true,
                     responsive: true,
                     ajax: "data.json",
                     //});
                 }).ajax.url('https://dev.slafrica.net:6810/floatBalances').load();
-            //alert( 'Data source: '+table.ajax.url() );
-            // setInterval( function () {
-            //     table.ajax.reload(); // user paging is not reset on reload
-            //     hasBeenSet = 1;
-            // }, 15000);
-            //}, 60000);
+
         });
     </script>
 

@@ -11,6 +11,7 @@
 
     <!-- Main content -->
     <section class="content">
+        @if(Auth::check() && Auth::user()->company_id !== 9)
         <div class="row">
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="info-box">
@@ -69,6 +70,7 @@
 {{--            </div>--}}
             <!-- /.col -->
         </div>
+        @endif
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-info">

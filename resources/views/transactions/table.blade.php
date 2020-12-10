@@ -27,20 +27,10 @@
                 serverSide: true,
                 //});
             }).ajax.url('https://dev.slafrica.net:6810/all/transactions').load();
-
-            // setTimeout(function(){
-            //     let table = $('#dataTableBuilder').DataTable({
-            //         retrieve: true,
-            //         responsive: true,
-            //         ajax: "data.json",
-            //         //});
-            //     });
-            // }, 5000).ajax.url('https://dev.slafrica.net:6810/all/transactions');
-
             setInterval( function () {
                 table.ajax.reload(); // user paging is not reset on reload
                 hasBeenSet = 1;
-            }, 30000);
+            }, 60000);
             //}, 60000);
         });
     </script>
