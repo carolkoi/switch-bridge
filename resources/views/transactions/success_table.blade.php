@@ -21,7 +21,7 @@
                 retrieve: true,
                 ajax: "data.json",
                 //});
-            }).ajax.url('{{ url("all/successful-transactions") }}');
+            }).ajax.url('https://dev.slafrica.net:6810/all/successful-transactions').load();
             //alert( 'Data source: '+table.ajax.url() );
             setInterval( function () {
                 table.ajax.reload(); // user paging is not reset on reload

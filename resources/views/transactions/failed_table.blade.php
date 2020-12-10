@@ -21,7 +21,7 @@
                 retrieve: true,
                 ajax: "data.json",
                 //});
-            }).ajax.url('{{ url("all/failed-transactions") }}');
+            }).ajax.url('https://dev.slafrica.net:6810/all/failed-transactions').load();
             //alert( 'Data source: '+table.ajax.url() );
             setInterval( function () {
                 table.ajax.reload(); // user paging is not reset on reload

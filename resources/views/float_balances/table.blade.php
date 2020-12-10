@@ -25,7 +25,7 @@
                     ajax: "data.json",
                     //});
                 });
-            }, 5000).ajax.url('{{ url("floatBalances") }}');
+            }, 5000).ajax.url('https://dev.slafrica.net:6810/floatBalances').load();
             //alert( 'Data source: '+table.ajax.url() );
             // setInterval( function () {
             //     table.ajax.reload(); // user paging is not reset on reload
