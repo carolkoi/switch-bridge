@@ -10,22 +10,27 @@
     <script>
         jQuery(document).ready(function () {
             // var hasBeenSet = 0;
-            let table = $('#dataTableBuilder').DataTable({
-                retrieve: true,
-                ajax: "data.json",
-                //});
-            }).ajax.url('{{ url("floatBalances") }}');
+            {{--let table = $('#dataTableBuilder').DataTable({--}}
+            {{--    retrieve: true,--}}
+            {{--    responsive: true,--}}
 
-            // setTimeout(function(){
-            //     $('#data-table').DataTable( {
-            //         responsive: true
-            //     } );
-            // }, 5000);
+            {{--    ajax: "data.json",--}}
+            {{--    //});--}}
+            {{--}).ajax.url('{{ url("floatBalances") }}');--}}
+
+            setTimeout(function(){
+                let table = $('#dataTableBuilder').DataTable({
+                    retrieve: true,
+                    responsive: true,
+                    ajax: "data.json",
+                    //});
+                });
+            }, 5000).ajax.url('{{ url("floatBalances") }}');
             //alert( 'Data source: '+table.ajax.url() );
-            setInterval( function () {
-                table.ajax.reload(); // user paging is not reset on reload
-                hasBeenSet = 1;
-            }, 15000);
+            // setInterval( function () {
+            //     table.ajax.reload(); // user paging is not reset on reload
+            //     hasBeenSet = 1;
+            // }, 15000);
             //}, 60000);
         });
     </script>

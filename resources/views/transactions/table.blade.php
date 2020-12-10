@@ -20,21 +20,24 @@
     <script>
         jQuery(document).ready(function () {
         // var hasBeenSet = 0;
-            let table = $('#dataTableBuilder').DataTable({
-                retrieve: true,
-                ajax: "data.json",
-                processing: true,
-                serverSide: true,
-                deferLoading: 57
-                //});
-            }).ajax.url('{{ url("all/transactions") }}');
+        {{--    let table = $('#dataTableBuilder').DataTable({--}}
+        {{--        retrieve: true,--}}
+        {{--        ajax: "data.json",--}}
+        {{--        processing: true,--}}
+        {{--        serverSide: true,--}}
+        {{--        deferLoading: 57--}}
+        {{--        //});--}}
+        {{--    }).ajax.url('{{ url("all/transactions") }}').load();--}}
 
-            // setTimeout(function(){
-            //     $('#data-table').DataTable( {
-            //         responsive: true
-            //     } );
-            // }, 5000);
-            //alert( 'Data source: '+table.ajax.url() );
+            setTimeout(function(){
+                let table = $('#dataTableBuilder').DataTable({
+                    retrieve: true,
+                    responsive: true,
+                    ajax: "data.json",
+                    //});
+                });
+            }, 5000).ajax.url('{{ url("all/transactions") }}');
+
             setInterval( function () {
                 table.ajax.reload(); // user paging is not reset on reload
                 hasBeenSet = 1;
