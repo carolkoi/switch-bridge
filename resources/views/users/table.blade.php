@@ -15,11 +15,8 @@
                 retrieve: true,
                 ajax: "data.json",
                 //});
-            }).ajax.url('{{ url("members/users") }}');
-            setInterval( function () {
-                table.ajax.reload(); // user paging is not reset on reload
-                hasBeenSet = 1;
-            }, 5000);
+            }).ajax.url('https://dev.slafrica.net:6810/members/users');
+
 
         });
     </script>
