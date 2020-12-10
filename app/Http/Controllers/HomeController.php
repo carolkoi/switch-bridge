@@ -27,7 +27,7 @@ class HomeController extends Controller
     public function index()
     {
         $all_transactions = Transactions::transactionsByCompany()->take(2000)->get();
-        $no_of_trns = Transactions::transactionsByCompany()->get()->count();
+        //$no_of_trns = Transactions::transactionsByCompany()->get()->count();
 
         $today_transactions = Transactions::transactionsByCompany()->whereDate('created_at', Carbon::today())->get();
         $yesterday = date("Y-m-d m:h:s", strtotime( '-1 days' ) );
@@ -42,7 +42,6 @@ class HomeController extends Controller
 
 //        $transactions->setBaseUrl('custom/url');
         return view('home', ['transactions' => $transactions, 'all_transactions' => $all_transactions,
-            'today_transactions' => $today_transactions, 'yesterday_txns' => $yesterday_txns,
-            'txn_no' => $no_of_trns] );
+            'today_transactions' => $today_transactions, 'yesterday_txns' => $yesterday_txns] );
     }
 }
