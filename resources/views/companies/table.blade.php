@@ -7,6 +7,7 @@
 @section('scripts')
     @include('layouts.datatables_js')
     {!! $dataTable->scripts() !!}
+
     <script>
 
         jQuery(document).ready(function () {
@@ -15,7 +16,9 @@
                 retrieve: true,
                 ajax: "data.json",
                 //});
-            }).ajax.url('{{ url("list/companies") }}');
+            }).ajax.url('https://asgard.slafrica.net:9810/list/companies').load();
+
+
         });
     </script>
 
