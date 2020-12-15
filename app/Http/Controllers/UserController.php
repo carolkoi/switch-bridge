@@ -204,18 +204,12 @@ class UserController extends AppBaseController
 
     }
 
-    public function updatePassword($id, UpdateUserRequest $request){
+    public function updatePassword($id, Request $request){
         $user = $this->userRepository->find($id);
         $input = $request->all();
-        $input['password'] = bcrypt($request->input('password'));
-//        $input['password_confirmation'] = bcrypt($request->input('password'));
-        $user = $this->userRepository->update($input, $id);
-//        Flash::success('User Password updated successfully.');
-//        $validator->success()->add('password', 'User Password updated successfully.');
+        $input['password'] = Hash::make($request->input('password'));
+        $user = User::where('id', $id)->update(['password' => $input['password']]);
 
-//        return redirect(url('profile/'.$id));
-
-//        dd($input);
     }
 
     public function uploadPic($id){
@@ -225,7 +219,7 @@ class UserController extends AppBaseController
 
     public function uploadSuccess(Request $request, $id){
         $user = $this->userRepository->find($id);
-        dd($user, $request->all());
+//        dd($user, $request->all());
 
     }
 }

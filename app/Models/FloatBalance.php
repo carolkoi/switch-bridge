@@ -98,7 +98,8 @@ class FloatBalance extends Model
         'datetimeadded',
         'addedby',
         'ipaddress',
-        'partnerid'
+        'partnerid',
+        'transactionref'
     ];
 
     /**
@@ -117,7 +118,8 @@ class FloatBalance extends Model
         'datetimeadded' => 'datetime',
         'addedby' => 'integer',
         'ipaddress' => 'string',
-        'partnerid' => 'string'
+        'partnerid' => 'string',
+        'transactionref' => 'string'
     ];
 
     public function getDateFormat()

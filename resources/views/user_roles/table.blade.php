@@ -4,7 +4,7 @@
 
 {!! $dataTable->table(['width' => '100%', 'class' => 'table table-striped table-bordered']) !!}
 
-@push('scripts')
+@section('scripts')
     @include('layouts.datatables_js')
     {!! $dataTable->scripts() !!}
     <script>
@@ -15,9 +15,10 @@
                 retrieve: true,
                 ajax: "data.json",
                 //});
-            }).ajax.url('{{ url("members/roles") }}');
+            });
+                // .ajax.url('https://asgard.slafrica.net:9810/members/roles').load();
 
         });
     </script>
 
-@endpush
+@endsection

@@ -63,7 +63,7 @@ class FloatBalanceDataTable extends DataTable
     }
 
     /**
-     * Get columns.
+     * Get columns.h
      *
      * @return array
      */
@@ -73,11 +73,12 @@ class FloatBalanceDataTable extends DataTable
             'description',
             'partnerid',
             'transactionnumber',
+            'transactionref',
             'debit',
             'credit',
             'amount',
             'runningbal',
-//            'datetimeadded',
+            'datetimeadded',
 //            'addedby',
 //            'ipaddress',
         ];
