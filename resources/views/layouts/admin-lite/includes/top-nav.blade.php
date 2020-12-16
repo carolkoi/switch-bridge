@@ -59,9 +59,9 @@
                                 <div class="pull-left">
                                     @if(\App\Helpers::getEnv() == "local")
 
-                                    <a href="{{URL::asset('profile/'. (Auth::check() && Auth::user()->id))}}" class="btn btn-default btn-flat">Profile</a>
+                                    <a href="{{URL::asset('profile/'.Auth::user()->id)}}" class="btn btn-default btn-flat">Profile</a>
                                 @else
-                                        <a class="btn btn-default btn-flat" href="{{\App\Helpers::assetToggle()}}profile/{{(Auth::check() && Auth::user()->id)}}" >Profile</a>
+                                        <a class="btn btn-default btn-flat" href="{{\App\Helpers::assetToggle()}}profile/{{Auth::user()->id}}" >Profile</a>
                                 @endif
                                 </div>
                                 <div class="pull-right">

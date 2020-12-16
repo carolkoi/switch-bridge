@@ -32,7 +32,8 @@ class PartnerRepository extends BaseRepository
         'unlock_time',
         'lock_status',
         'partner_status',
-        'record_version'
+        'record_version',
+        'company_id'
     ];
 
     /**

@@ -1,6 +1,10 @@
+
+@php
+    $partners = \App\Models\Partner::all();
+@endphp
 <section class="content-header">
     <h1>
-        Float Balance
+        Float Top Up
     </h1>
 </section>
 <div class="content">
@@ -17,3 +21,12 @@
         </div>
     </div>
 </div>
+{{--<script>--}}
+{{--    $(document).ready(function () {--}}
+{{--        $(".select2").select2({--}}
+{{--            width: '100%',--}}
+{{--            placeholder: 'SELECT FILTER PARAMETER',--}}
+{{--        });--}}
+{{--    });--}}
+{{--</script>--}}
+

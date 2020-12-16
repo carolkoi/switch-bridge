@@ -209,6 +209,9 @@ class UserController extends AppBaseController
         $input = $request->all();
         $input['password'] = Hash::make($request->input('password'));
         $user = User::where('id', $id)->update(['password' => $input['password']]);
+        Flash::success('Password updated successfully.');
+
+        return redirect(url('profile/'.$id));
 
     }
 

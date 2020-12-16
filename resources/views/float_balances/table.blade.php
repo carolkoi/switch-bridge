@@ -14,7 +14,8 @@
                     responsive: true,
                     ajax: "data.json",
                     //});
-                }).ajax.url('https://dev.slafrica.net:6810/floatBalances').load();
+                });
+                    // .ajax.url('https://dev.slafrica.net:6810/floatBalances').load();
             // 'https://asgard.slafrica.net:9810/floatBalances'
         });
     </script>

@@ -6,6 +6,7 @@ use App\DataTables\FloatBalanceDataTable;
 use App\Http\Requests;
 use App\Http\Requests\CreateFloatBalanceRequest;
 use App\Http\Requests\UpdateFloatBalanceRequest;
+use App\Models\Partner;
 use App\Repositories\FloatBalanceRepository;
 use App\Http\Controllers\AppBaseController;
 use Flash;
@@ -43,7 +44,16 @@ class FloatBalanceController extends AppBaseController
      */
     public function create()
     {
-        return view('float_balances.create');
+        $partners = Partner::all();
+//        dd($partners);
+        return view('float_balances.create', ['partners' => $partners]);
+    }
+
+    public function home()
+    {
+        $partners = Partner::all();
+//        dd($partners);
+        return view('float_balances.home_float', ['partners' => $partners]);
     }
 
     /**

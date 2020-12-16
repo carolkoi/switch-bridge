@@ -137,7 +137,8 @@ Partner extends Model
         'unlock_time',
         'lock_status',
         'partner_status',
-        'record_version'
+        'record_version',
+        'company_id'
     ];
 
     /**
@@ -162,7 +163,8 @@ Partner extends Model
         'unlock_time' => 'integer',
         'lock_status' => 'string',
         'partner_status' => 'string',
-        'record_version' => 'integer'
+        'record_version' => 'integer',
+        'company_id' => 'integer'
     ];
 
     /**
@@ -178,10 +180,8 @@ Partner extends Model
        return $this->belongsTo(Company::class, 'company_id', 'companyid');
     }
 
-    public function ScopePartners($query){
-        return $query->where('company_id', '=', Auth::user()->company_id);
-
-
+    public function scopePartners($query){
+        return $query->where('company_id', Auth::user()->company_id);
     }
 
 
