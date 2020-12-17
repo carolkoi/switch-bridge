@@ -68,6 +68,16 @@ class FloatBalanceController extends AppBaseController
     public function store(CreateFloatBalanceRequest $request)
     {
         $input = $request->all();
+//        dd($input);
+
+        $amount= FloatBalance::sum('amount');
+        $prev_running_balance = FloatBalance::orderBy('floattransactionid', 'desc')->first();
+
+            $input['runningbal'] = $prev_running_balance->runningbal;
+
+
+
+
         $floatBalance = $this->floatBalanceRepository->create($input);
 
 
