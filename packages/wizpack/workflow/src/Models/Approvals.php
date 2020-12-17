@@ -2,6 +2,7 @@
 
 namespace WizPack\Workflow\Models;
 
+use App\Models\FloatBalance;
 use App\Models\Transactions;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -192,7 +193,13 @@ class Approvals extends Model
     {
         return $this->morphTo('approvable', 'model_type', 'model_id', 'iso_id');
     }
-
+    public function floatApprovable()
+    {
+        return $this->morphTo('approvable', 'model_type', 'model_id', 'floattransactionid');
+    }
+    public function floatBalance(){
+        return $this->belongsTo(FloatBalance::class, 'model_id', 'floattransactionid');
+    }
     public function transaction(){
         return $this->belongsTo(Transactions::class, 'model_id', 'iso_id');
     }

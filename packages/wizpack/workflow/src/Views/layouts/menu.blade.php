@@ -1,8 +1,33 @@
+{{--@if(Auth::check() && auth()->user()->can('Can Authorize Transaction Update'))--}}
+{{--    <li class="{{ Request::is('upesi/approvals*') ? 'active' : '' }}">--}}
+{{--    <a href="{!! route('upesi::approvals.index') !!}"><i class="fa fa-check-square-o"></i><span>Approval Requests</span></a>--}}
+{{--</li>--}}
+{{--    <li class="{{ Request::is('float/approvals*') ? 'active' : '' }}">--}}
+{{--        <a href="{!! route('upesi::float.approval') !!}"><i class="fa fa-check-square-o"></i><span>Float Approval Requests</span></a>--}}
+{{--    </li>--}}
+{{--    @endif--}}
 @if(Auth::check() && auth()->user()->can('Can Authorize Transaction Update'))
-    <li class="{{ Request::is('upesi/approvals*') ? 'active' : '' }}">
-    <a href="{!! route('upesi::approvals.index') !!}"><i class="fa fa-check-square-o"></i><span>Approval Requests</span></a>
+
+<li class="{{ Request::is('upesi/approvals*') ? 'active' : '' }} treeview">
+    <a href="#">
+        <i class="fa fa-dashboard"></i> <span>Approval Requests</span>
+        <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+    </a>
+    <ul class="treeview-menu">
+        <li class="{{ Request::is('upesi/approvals*') ? 'active' : '' }}">
+            <a href="{!! route('upesi::approvals.index') !!}"><i class="fa fa-check-square-o"></i><span>Transaction Approval Requests</span></a>
+        </li>
+        <li class="{{ Request::is('float/approvals*') ? 'active' : '' }}">
+            <a href="{!! route('upesi::float.approval') !!}"><i class="fa fa-check-square-o"></i><span>Float Approval Requests</span></a>
+        </li>
+
+
+    </ul>
 </li>
-    @endif
+@endif
+
 @if(Auth::check() && auth()->user()->can('Can Edit Approval Flow'))
 
 <li class="{{ Request::is('upesi*') ? 'active' : '' }} treeview">

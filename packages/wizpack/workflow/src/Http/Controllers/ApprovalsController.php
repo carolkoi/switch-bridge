@@ -100,6 +100,7 @@ class ApprovalsController extends AppBaseController
 
             return redirect(route('upesi::approvals.index'));
         }
+//        dd('there',$workflow['workflow_type'] );
 
         return view('wizpack::approvals.show', compact(
                 'approvals',

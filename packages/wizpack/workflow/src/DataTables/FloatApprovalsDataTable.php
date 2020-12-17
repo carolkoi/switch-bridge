@@ -2,6 +2,7 @@
 
 namespace WizPack\Workflow\DataTables;
 
+use App\Models\FloatBalance;
 use App\Models\Transactions;
 use WizPack\Workflow\Models\Approvals;
 use Yajra\DataTables\DataTableAbstract;
@@ -9,7 +10,7 @@ use Yajra\DataTables\Html\Builder;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
 
-class ApprovalsDataTable extends DataTable
+class FloatApprovalsDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -23,29 +24,13 @@ class ApprovalsDataTable extends DataTable
 
         return $dataTable
             ->addColumn('requested_by', function ($query){
-               return $query->user->name;
+                return $query->user->name;
             })
             ->addColumn('status', function ($query){
                 return $query->approvalStatus();
             })
-            ->addColumn('stage', function ($query){
+            ->addColumn('stage', function ($query) {
                 return $query->awaitingStage->workflowStageType->name;
-            })
-            ->addColumn('sent_at', function ($query){
-//                return $query->created_at->format('Y-m-d H:i:s');
-                return date('Y-m-d H:i:s',strtotime('+3 hours',strtotime($query->created_at->format('Y-m-d H:i:s'))));
-            })
-            ->addColumn('receiver', function ($query){
-                return $query->approvable->req_field108;
-            })
-            ->addColumn('received_amount', function ($query){
-                return intval($query->approvable->req_field5)/100;
-            })
-            ->addColumn('txn_no', function ($query){
-                return $query->approvable->req_field37;
-            })
-            ->addColumn('primary_txn_ref', function ($query){
-                return $query->approvable->req_field34;
             })
             ->addColumn('approval_type', function ($query){
                 return $query->workflow->name;
@@ -62,8 +47,8 @@ class ApprovalsDataTable extends DataTable
      */
     public function query(Approvals $model)
     {
-        return $model->with(['user','awaitingStage.workflowStageType','transaction'])
-            ->whereHasMorph('approvable', Transactions::class)
+        return $model->with(['user','awaitingStage.workflowStageType','transaction', 'floatBalance'])
+            ->whereHasMorph('floatApprovable', FloatBalance::class)
             ->orderBy('created_at', 'desc')->MyApprovals()->newQuery();
     }
 
@@ -113,20 +98,9 @@ class ApprovalsDataTable extends DataTable
             'requested_by' => [
                 'name' => 'user.name'
             ],
-            'sent_at',
-//            'stage',
-            'receiver' => [
-                'name' => 'transaction.req_field108'
-            ],
-            'received_amount' => [
-                'name' => 'transaction.req_field5'
-            ],
-            'txn_no' => [
-                'name' => 'transaction.req_field37'
-            ],
-            'primary_txn_ref' => [
-                'name' => 'transaction.req_field34'
-            ],
+//            'sent_at',
+            'stage',
+            'status',
 
             'model_id' => ['visible' => false],
             'model_type' => ['visible' => false],

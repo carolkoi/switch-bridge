@@ -6,12 +6,15 @@ use Carbon\Carbon;
 use WizPack\Workflow\Events\ApprovalRequestRaised;
 use Illuminate\Support\Facades\Log;
 use WizPack\Workflow\Models\Approvals;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
+
 
 trait ApprovableTrait
 {
     protected static $approvalType = __CLASS__;
-    protected static $workflowType = 'transaction_approval';
-    protected static $workflowName = 'Transaction Approval';
+    protected static $workflowType = 'float_top_up_approval';
+    protected static $workflowName = 'Float Top Up Approval';
 
     /**
      *model listener
@@ -72,7 +75,9 @@ trait ApprovableTrait
      */
     public static function addApproval($model, $workflowType = null)
     {
-        $workflowType = $workflowType ?: self::$workflowType;
+        $arr_model = collect($model)->toArray();
+        $workflowType = array_key_exists('iso_id', $arr_model) ? 'transaction_approval' : 'float_top_up_approval';
+
         return event(new ApprovalRequestRaised($model, $workflowType));
     }
 

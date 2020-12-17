@@ -6,6 +6,8 @@ use WizPack\Workflow\Models\Approvals;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Eloquent\BaseRepository;
+use Illuminate\Support\Facades\Auth;
+
 
 /**
  * Class ApprovalsRepository
@@ -51,6 +53,24 @@ class ApprovalsRepository extends BaseRepository
 
     public function myApprovals()
     {
+        if (Auth::user()->company_id == 1){
+            $with = [
+                'user',
+                'sentBy',
+                'workflowSteps.user',
+                'workflowSteps.user',
+                'workflowSteps.workflowStage.workflowApprovers.user',
+                'workflowSteps.workflowStage.workflowStageType',
+                'workflow.workflowStages.workflowApprovers',
+                'workflow.workflowStages.workflowStageType',
+                'workflow.workflowStages.workflowSteps.user',
+                'workflow.workflowStages' => function ($q) {
+                    return $q->orderBy('weight', 'asc');
+                },
+                'floatApprovable'
+
+            ];
+        }else
 
         $with = [
             'user',
@@ -68,6 +88,7 @@ class ApprovalsRepository extends BaseRepository
             'approvable'
 
         ];
+
         $approvals = $this->model->MyApprovals()->with($with);
 
         return $approvals;

@@ -51,8 +51,10 @@
                                                         @endforeach
 
                                                     </ul>
+                                                @if($workflow['workflow_type'] != 'float_top_up_approval')
                                                     <a href="{{route('transactions.show', $transaction['iso_id'])}}"
                                                        class="btn btn-primary btn-sm"> View Transaction</a>
+                                                    @endif
                                                 @endif
 
                                                 @if(!empty($stage['rejected_by']))
@@ -63,21 +65,27 @@
                                                             <li>{{formatToDateTime($approvedBy['rejected_at'])}}</li>
                                                         @endforeach
                                                     </ul>
+                                                        @if($workflow['workflow_type'] != 'float_top_up_approval')
 
                                                         <a href="{{route('transactions.show', $transaction['iso_id'])}}"
                                                            class="btn btn-primary btn-sm">Transaction</a>
+                                                            @endif
                                                 @endif
 
 
                                                 @if(empty($stage['rejected_by']) && empty($stage['approved_by']) && !$approvalHasBeenRejected)
 {{--                                                    <span class="label label-info">Approval pending</span>--}}
-                                                    <p><span>
+                                                        @if($workflow['workflow_type'] != 'float_top_up_approval')
+
+                                                        <p>
+                                                        <span>
                                                             Approval pending for <a href="{{route('transactions.show', $transaction['iso_id'])}}"
                                                                                     >Transaction</a> <br/>
                                                             from<br/>
                                                             <span class="label label-warning">{{$transaction->res_field48}}</span> to
                                                             <span class="label label-info">{{$sessionTxn['txn_status']}}</span>
                                                         </span></p>
+                                                        @endif
                                                     <br>
 
                                                 @endif

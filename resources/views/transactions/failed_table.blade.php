@@ -21,7 +21,7 @@
                 retrieve: true,
                 ajax: "data.json",
                 //});
-            }).ajax.url({{url('all/failed-transactions')}}).load();
+            }).ajax.url('https://dev.slafrica.net:6810/all/failed-transactions').load();
                 // .ajax.url('https://asgard.slafrica.net:9810/all/failed-transactions').load();
             //alert( 'Data source: '+table.ajax.url() );
             setInterval( function () {

@@ -6,6 +6,7 @@ use App\DataTables\FloatBalanceDataTable;
 use App\Http\Requests;
 use App\Http\Requests\CreateFloatBalanceRequest;
 use App\Http\Requests\UpdateFloatBalanceRequest;
+use App\Models\FloatBalance;
 use App\Models\Partner;
 use App\Repositories\FloatBalanceRepository;
 use App\Http\Controllers\AppBaseController;
@@ -15,6 +16,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 use Response;
+
 
 class FloatBalanceController extends AppBaseController
 {
@@ -66,8 +68,12 @@ class FloatBalanceController extends AppBaseController
     public function store(CreateFloatBalanceRequest $request)
     {
         $input = $request->all();
-
         $floatBalance = $this->floatBalanceRepository->create($input);
+
+
+        //initiating the approval request
+        $approval = new FloatBalance();
+        $approval->addApproval($floatBalance);
 
         Flash::success('Float Balance saved successfully.');
 

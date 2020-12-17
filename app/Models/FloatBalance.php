@@ -2,8 +2,12 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
+use WizPack\Workflow\Interfaces\ApprovableInterface;
+use WizPack\Workflow\Traits\ApprovableTrait;
 
 /**
  * @SWG\Definition(
@@ -73,11 +77,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      )
  * )
  */
-class FloatBalance extends Model
+class FloatBalance extends Model implements ApprovableInterface
 {
-    use SoftDeletes;
+    use SoftDeletes, ApprovableTrait;
 
     public $table = 'tbl_floattransactions';
+    public $primaryKey = 'floattransactionid';
 
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
@@ -99,7 +104,8 @@ class FloatBalance extends Model
         'addedby',
         'ipaddress',
         'partnerid',
-        'transactionref'
+        'transactionref',
+        'approved'
     ];
 
     /**
@@ -119,7 +125,9 @@ class FloatBalance extends Model
         'addedby' => 'integer',
         'ipaddress' => 'string',
         'partnerid' => 'string',
-        'transactionref' => 'string'
+        'transactionref' => 'string',
+        'approved' => 'boolean',
+        'approved_by' => 'integer'
     ];
 
     public function getDateFormat()
@@ -135,6 +143,40 @@ class FloatBalance extends Model
     public static $rules = [
 
     ];
+
+    public function previewLink()
+    {
+        // TODO: Implement previewLink() method.
+        return env('APP_URL')."/floatBalances";
+    }
+
+    /**
+     * @inheritDoc
+     * @noinspection PhpHierarchyChecksInspection
+     */
+    public function markApprovalComplete($id)
+    {
+        // TODO: Implement markApprovalComplete() method.
+        $model = self::find($id);
+//        dd($model);
+        $model->approved = 1;
+//        $model->updated_at = Carbon::now();
+        $model->approved_by = Auth::user()->id;
+        $model->save();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function markApprovalAsRejected($id)
+    {
+        // TODO: Implement markApprovalAsRejected() method.
+        $model = self::find($id);
+        $model->rejected = 1;
+//        $model->updated_at = Carbon::now();
+        $model->approved_by = Auth::user()->id;
+        $model->save();
+    }
 
 
 }

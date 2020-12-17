@@ -22,7 +22,6 @@ class FloatBalanceDataTable extends DataTable
             ->addColumn('id', function ($query){
                 return $query->floattransactionid;
             })
-
             ->addColumn('action', 'float_balances.datatables_actions');
     }
 
@@ -79,6 +78,7 @@ class FloatBalanceDataTable extends DataTable
             'amount',
             'runningbal',
             'datetimeadded',
+            'approved'
 //            'addedby',
 //            'ipaddress',
         ];

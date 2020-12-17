@@ -27,7 +27,8 @@ class FloatBalanceRepository extends BaseRepository
         'addedby',
         'ipaddress',
         'partnerid',
-        'transactionref'
+        'transactionref',
+        'approved'
     ];
 
     /**
