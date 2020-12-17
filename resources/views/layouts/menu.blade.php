@@ -114,20 +114,20 @@
         <li class="{{ Request::is('members/roles*') ? 'active' : '' }}">
         <a href="{!! route('roles.index') !!}"><i class="fa fa-user-plus"></i><span>Roles</span></a>
     </li>
-        @if(Auth::check() && auth()->user()->can('Can Add Permissions'))
+{{--        @if(Auth::check() && auth()->user()->can('Can Add Permissions'))--}}
         <li class="{{ Request::is('members/permissions*') ? 'active' : '' }}">
             <a href="{{ route('permissions.index') }}"><i class="fa fa-check-square-o"></i><span>Permissions</span></a>
         </li>
 {{--            @endif--}}
-            @endif
+{{--            @endif--}}
     </ul>
 {{--@endif--}}
 
-@if(Auth::check() && auth()->user()->can('Can Authorize Transaction Update'))
+{{--@if(Auth::check() && auth()->user()->can('Can Authorize Transaction Update'))--}}
 
     <li class="divider" style="color:white; padding: 15px"><span><b>Approval Settings</b></span></li>
     @include("wizpack::layouts.menu")
-    @endif
+{{--    @endif--}}
 
 {{--<li class="{{ Request::is('partners*') ? 'active' : '' }}">--}}
 {{--    <a href="{{ route('partners.index') }}"><i class="fa fa-edit"></i><span>Partners</span></a>--}}

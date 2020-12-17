@@ -6,7 +6,7 @@
 {{--        <a href="{!! route('upesi::float.approval') !!}"><i class="fa fa-check-square-o"></i><span>Float Approval Requests</span></a>--}}
 {{--    </li>--}}
 {{--    @endif--}}
-@if(Auth::check() && auth()->user()->can('Can Authorize Transaction Update'))
+{{--@if(Auth::check() && auth()->user()->can('Can Authorize Transaction Update'))--}}
 
 <li class="{{ Request::is('upesi/approvals*') ? 'active' : '' }} treeview">
     <a href="#">
@@ -26,9 +26,9 @@
 
     </ul>
 </li>
-@endif
+{{--@endif--}}
 
-@if(Auth::check() && auth()->user()->can('Can Edit Approval Flow'))
+{{--@if(Auth::check() && auth()->user()->can('Can Edit Approval Flow'))--}}
 
 <li class="{{ Request::is('upesi*') ? 'active' : '' }} treeview">
     <a href="#">
@@ -62,4 +62,4 @@
 
     </ul>
 </li>
-@endif
+{{--@endif--}}
