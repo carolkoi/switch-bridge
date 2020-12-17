@@ -13,7 +13,7 @@
         <div class="clearfix"></div>
         <div class="box box-primary">
             <div class="box-body">
-                @include('wizpack::approvals.table')
+                @include('wizpack::approvals.float_table')
             </div>
         </div>
         <div class="text-center">
