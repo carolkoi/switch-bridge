@@ -49,30 +49,40 @@ class ApproveRequestController extends AppBaseController
      */
     public function handle($workflowApprovalId, $stageId, Request $request)
     {
-        $workflow = $this->approvalsRepository->getApprovalSteps($workflowApprovalId)->get();
-        $kdata = $workflow->toArray();
+        $xyw = collect($this->approvalsRepository->where('id', $workflowApprovalId)->get())->toArray();
 
-        $transformedResult = new Collection($workflow, new ApprovalTransformer());
+        if ($xyw[0]['workflow_type'] == 'float_top_up_approval') {
+            $workflow = $this->approvalsRepository->getFloatApprovalSteps($workflowApprovalId)->get();
+//            dd($workflow);
+
+//        }
+
+//        $workflow = $this->approvalsRepository->getApprovalSteps($workflowApprovalId)->get();
+
+            $kdata = $workflow->toArray();
+
+            $transformedResult = new Collection($workflow, new ApprovalTransformer());
 
 
-        $data = collect((new Manager())->createData($transformedResult)->toArray()['data']);
+            $data = collect((new Manager())->createData($transformedResult)->toArray()['data']);
 
-        $approvers = $data->pluck('currentStageApprovers')->flatten(2);
+            $approvers = $data->pluck('currentStageApprovers')->flatten(2);
 
-        $currentStage = $data->pluck('currentApprovalStage')->flatten(1)->first();
+            $currentStage = $data->pluck('currentApprovalStage')->flatten(1)->first();
 
-        if (!$approvers->contains('user_id', auth()->id())) {
-            Flash::error('You are not authorized to approve this request');
+            if (!$approvers->contains('user_id', auth()->id())) {
+                Flash::error('You are not authorized to approve this request');
 
-            return redirect('/upesi/approvals/' . $workflowApprovalId);
-        }
+                return redirect('/upesi/approvals/' . $workflowApprovalId);
+            }
 
-        $workflowStageToBeApproved = $data->pluck('currentApprovalStage')->flatten(1)->first();
+            $workflowStageToBeApproved = $data->pluck('currentApprovalStage')->flatten(1)->first();
 
-        $workflow = $data->pluck('workflowDetails')->first();
-        $stageId = $workflowStageToBeApproved['workflow_stage_type_id'] ?: $stageId;
+            $workflow = $data->pluck('workflowDetails')->first();
+            $stageId = $workflowStageToBeApproved['workflow_stage_type_id'] ?: $stageId;
 //        dd('here', $workflow);
-        if ($workflow['workflow_type'] = 'float_top_up_approval') {
+//        if ($workflow['workflow_type'] = 'float_top_up_approval') {
+//            dd('here');
             $news2 = FloatBalance::orderBy('floattransactionid', 'desc')->skip(1)->take(1)->get();
             $latest_record = collect($news2[0])->toArray();
             $latest_run_bal = $latest_record['runningbal'];
@@ -112,95 +122,117 @@ class ApproveRequestController extends AppBaseController
                 ]);
             Flash::success('Float Top Up Request Approved successfully');
             return redirect('/upesi/approvals/' . $workflowApprovalId);
-        }
+        } elseif ($xyw[0]['workflow_type'] == 'transaction_approval') {
+//            dd('here');
+            $workflow = $this->approvalsRepository->getApprovalSteps($workflowApprovalId)->get();
+            $kdata = $workflow->toArray();
 
-        $txn = Transactions::where('iso_id', $kdata[0]['model_id'])->first();
-        $sessionTxn = SessionTxn::where('txn_id', $kdata[0]['model_id'])->first();
-        $uniqRef= DB::select('SELECT fn_generate_ref(?)', [$txn->res_field37]);
+            $transformedResult = new Collection($workflow, new ApprovalTransformer());
 
-        $approvedStep = $this->workflowStepRepository->updateOrCreate([
-            'workflow_stage_id' => $stageId,
-            'workflow_id' => $workflow['id'],
-            'weight' => $currentStage['weight'],
-            'user_id' => auth()->id()
 
-        ], [
-            'workflow_stage_id' => $stageId,
-            'workflow_id' => $workflow['id'],
-            'user_id' => auth()->id(),
-            'approved_at' => Carbon::now()
+            $data = collect((new Manager())->createData($transformedResult)->toArray()['data']);
 
-        ]);
+            $approvers = $data->pluck('currentStageApprovers')->flatten(2);
 
-        if ($approvedStep) {
+            $currentStage = $data->pluck('currentApprovalStage')->flatten(1)->first();
+
+            if (!$approvers->contains('user_id', auth()->id())) {
+                Flash::error('You are not authorized to approve this request');
+
+                return redirect('/upesi/approvals/' . $workflowApprovalId);
+            }
+
+            $workflowStageToBeApproved = $data->pluck('currentApprovalStage')->flatten(1)->first();
+
+            $workflow = $data->pluck('workflowDetails')->first();
+            $stageId = $workflowStageToBeApproved['workflow_stage_type_id'] ?: $stageId;
+
+
+            $txn = Transactions::where('iso_id', $kdata[0]['model_id'])->first();
+            $sessionTxn = SessionTxn::where('txn_id', $kdata[0]['model_id'])->first();
+            $uniqRef = DB::select('SELECT fn_generate_ref(?)', [$txn->res_field37]);
+
+            $approvedStep = $this->workflowStepRepository->updateOrCreate([
+                'workflow_stage_id' => $stageId,
+                'workflow_id' => $workflow['id'],
+                'weight' => $currentStage['weight'],
+                'user_id' => auth()->id()
+
+            ], [
+                'workflow_stage_id' => $stageId,
+                'workflow_id' => $workflow['id'],
+                'user_id' => auth()->id(),
+                'approved_at' => Carbon::now()
+
+            ]);
+
+            if ($approvedStep) {
 
 //            event(new WorkflowStageApproved($data, $approvedStep));
-            $approval = $this->approvalsRepository->updateOrCreate(
-                [
-                    'id' => $workflow['id']
-                ],[
-                'approved' => 1,
-                'approved_at' => Carbon::now()
-            ]);
+                $approval = $this->approvalsRepository->updateOrCreate(
+                    [
+                        'id' => $workflow['id']
+                    ], [
+                    'approved' => 1,
+                    'approved_at' => Carbon::now()
+                ]);
 
 //        dd($uniqRef[0]->fn_generate_ref);
 
-        if($txn->res_field48 == "UPLOAD-FAILED" && $sessionTxn->txn_status == "AML-APPROVED"){
-            $api_txn = ApiTransaction::where('transaction_number', $txn->req_field37)->update([
-                'transaction_number' => $uniqRef[0]->fn_generate_ref,
-                'synced' => false,
-            ]);
-            $transaction = Transactions::where('iso_id', $kdata[0]['model_id'])->update([
-                'res_field48' => $sessionTxn->txn_status,
-                'res_field44' => $sessionTxn->comments,
+                if ($txn->res_field48 == "UPLOAD-FAILED" && $sessionTxn->txn_status == "AML-APPROVED") {
+                    $api_txn = ApiTransaction::where('transaction_number', $txn->req_field37)->update([
+                        'transaction_number' => $uniqRef[0]->fn_generate_ref,
+                        'synced' => false,
+                    ]);
+                    $transaction = Transactions::where('iso_id', $kdata[0]['model_id'])->update([
+                        'res_field48' => $sessionTxn->txn_status,
+                        'res_field44' => $sessionTxn->comments,
 //                'date_time_modified' => strtotime('now'),
-                'sent' => false,
-                'received' => false,
-                'res_field39' => '10',
-                'aml_listed' => false,
-                'req_field37' => $uniqRef[0]->fn_generate_ref,
-                'sync_message' => $sessionTxn->sync_message
-            ]);
+                        'sent' => false,
+                        'received' => false,
+                        'res_field39' => '10',
+                        'aml_listed' => false,
+                        'req_field37' => $uniqRef[0]->fn_generate_ref,
+                        'sync_message' => $sessionTxn->sync_message
+                    ]);
 
-        }
-        elseif($sessionTxn->txn_status == "AML-APPROVED") {
-            $transaction = Transactions::where('iso_id', $kdata[0]['model_id'])->update([
-                'res_field48' => $sessionTxn->txn_status,
-                'res_field44' => $sessionTxn->comments,
-                'sent' => false,
-                'received' => false,
-                'res_field39' => '10',
-                'aml_listed' => false,
-                'sync_message' => $sessionTxn->sync_message
-            ]);
-        }
-        elseif($sessionTxn->txn_status == "COMPLETED") {
-            $transaction = Transactions::where('iso_id', $kdata[0]['model_id'])->update([
-                'res_field48' => $sessionTxn->txn_status,
-                'res_field44' => $sessionTxn->comments,
-                'sync_message' => $sessionTxn->sync_message,
-                'res_field39' => '00',
-                'paid_out_date' => Carbon::now()
-            ]);
-        }
-        else
-            $transaction = Transactions::where('iso_id', $kdata[0]['model_id'])->update([
-                'res_field48' => $sessionTxn->txn_status,
+                } elseif ($sessionTxn->txn_status == "AML-APPROVED") {
+                    $transaction = Transactions::where('iso_id', $kdata[0]['model_id'])->update([
+                        'res_field48' => $sessionTxn->txn_status,
+                        'res_field44' => $sessionTxn->comments,
+                        'sent' => false,
+                        'received' => false,
+                        'res_field39' => '10',
+                        'aml_listed' => false,
+                        'sync_message' => $sessionTxn->sync_message
+                    ]);
+                } elseif ($sessionTxn->txn_status == "COMPLETED") {
+                    $transaction = Transactions::where('iso_id', $kdata[0]['model_id'])->update([
+                        'res_field48' => $sessionTxn->txn_status,
+                        'res_field44' => $sessionTxn->comments,
+                        'sync_message' => $sessionTxn->sync_message,
+                        'res_field39' => '00',
+                        'paid_out_date' => Carbon::now()
+                    ]);
+                } else
+                    $transaction = Transactions::where('iso_id', $kdata[0]['model_id'])->update([
+                        'res_field48' => $sessionTxn->txn_status,
 //                'aml_listed' => session('aml_listed'),
-                'res_field44' => $sessionTxn->comments,
-                'sent' => true,
-                'received' => true,
-                'res_field39' => '06',
-                'aml_listed' => true,
-                'sync_message' => $sessionTxn->sync_message
-            ]);
+                        'res_field44' => $sessionTxn->comments,
+                        'sent' => true,
+                        'received' => true,
+                        'res_field39' => '06',
+                        'aml_listed' => true,
+                        'sync_message' => $sessionTxn->sync_message
+                    ]);
 
-            Flash::success('Transaction Request Approved successfully');
-            return redirect('/upesi/approvals/' . $workflowApprovalId);
+                Flash::success('Transaction Request Approved successfully');
+                return redirect('/upesi/approvals/' . $workflowApprovalId);
+            }
+            Flash::success('An error occurred Transaction Approval Request not Successful');
+            return redirect()->back();
+
+
         }
-        Flash::success('An error occurred Transaction Approval Request not Successful');
-        return redirect()->back();
-
-
     }
 }

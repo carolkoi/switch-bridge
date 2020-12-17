@@ -51,9 +51,8 @@ class ApprovalsRepository extends BaseRepository
         return Approvals::class;
     }
 
-    public function myApprovals()
+    public function myTransactionApprovals()
     {
-        if (Auth::user()->company_id == 1){
             $with = [
                 'user',
                 'sentBy',
@@ -67,11 +66,17 @@ class ApprovalsRepository extends BaseRepository
                 'workflow.workflowStages' => function ($q) {
                     return $q->orderBy('weight', 'asc');
                 },
-                'floatApprovable'
+                'approvable'
 
             ];
-        }else
 
+
+        $approvals = $this->model->myApprovals()->with($with);
+
+        return $approvals;
+    }
+    public function myFloatApprovals()
+    {
         $with = [
             'user',
             'sentBy',
@@ -85,14 +90,16 @@ class ApprovalsRepository extends BaseRepository
             'workflow.workflowStages' => function ($q) {
                 return $q->orderBy('weight', 'asc');
             },
-            'approvable'
+                'floatApprovable',
 
         ];
 
-        $approvals = $this->model->MyApprovals()->with($with);
+
+        $approvals = $this->model->myApprovals()->with($with);
 
         return $approvals;
     }
+
 
     /**
      * @param $id
@@ -100,8 +107,19 @@ class ApprovalsRepository extends BaseRepository
      */
     public function getApprovalSteps($id)
     {
+//        $xyw = collect($this->approvalsRepository->where('id', $id)->get())->toArray();
+//        dd($xyw[0]['workflow_type']);
 
-        $approvals = $this->myApprovals()->limit(1)
+        $approvals = $this->myTransactionApprovals()->limit(1)
+            ->where('id', $id);
+        return $approvals;
+    }
+    public function getFloatApprovalSteps($id)
+    {
+//        $xyw = collect($this->approvalsRepository->where('id', $id)->get())->toArray();
+//        dd($xyw[0]['workflow_type']);
+
+        $approvals = $this->myFloatApprovals()->limit(1)
             ->where('id', $id);
         return $approvals;
     }

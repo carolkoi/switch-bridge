@@ -76,43 +76,72 @@ class ApprovalsController extends AppBaseController
      */
     public function show($id)
     {
-         $workflow = $this->approvalsRepository->getApprovalSteps($id)->get();
+        $xyw = collect($this->approvalsRepository->where('id', $id)->get())->toArray();
+//        dd($xyw[0]['workflow_type']);
+        if ($xyw[0]['workflow_type'] == 'float_top_up_approval') {
+            $workflow = $this->approvalsRepository->getFloatApprovalSteps($id)->get();
+//            dd($workflow);
 
-        $transformedResult = new Collection($workflow, new ApprovalTransformer());
+            $transformedResult = new Collection($workflow, new ApprovalTransformer());
 
-        $data = collect((new Manager())->createData($transformedResult)->toArray()['data']);
+            $data = collect((new Manager())->createData($transformedResult)->toArray()['data']);
 
-        $currentStage = $data->pluck('currentApprovalStage')->first();
+            $currentStage = $data->pluck('currentApprovalStage')->first();
 
-        $approvers = $data->pluck('currentStageApprovers')->flatten(2);
+            $approvers = $data->pluck('currentStageApprovers')->flatten(2);
 
-        $approvals = $data->pluck('approvalStagesStepsAndApprovers')->flatten(1);
+            $approvals = $data->pluck('approvalStagesStepsAndApprovers')->flatten(1);
 //        dd($approvals);
 
-        $workflow = $data->pluck('workflowDetails')->first();
+            $workflow = $data->pluck('workflowDetails')->first();
 
-        $transaction = $data->pluck('workflowInfo')->first();
+            $transaction = $data->pluck('workflowInfo')->first();
 
-        $approvalHasBeenRejected = $data->pluck('approvalRejected')->first();
-        $sessionTxn = SessionTxn::where('txn_id', $transaction->iso_id)->first();
-        if (empty($approvals)) {
-            Flash::error('Approvals not found');
+            $approvalHasBeenRejected = $data->pluck('approvalRejected')->first();
 
-            return redirect(route('upesi::approvals.index'));
+        } elseif ($xyw[0]['workflow_type'] == 'transaction_approval') {
+//            dd('here');
+            $workflow = $this->approvalsRepository->getApprovalSteps($id)->get();
+
+
+//         $workflow = $this->approvalsRepository->getApprovalSteps($id)->get();
+
+            $transformedResult = new Collection($workflow, new ApprovalTransformer());
+
+            $data = collect((new Manager())->createData($transformedResult)->toArray()['data']);
+
+            $currentStage = $data->pluck('currentApprovalStage')->first();
+
+            $approvers = $data->pluck('currentStageApprovers')->flatten(2);
+
+            $approvals = $data->pluck('approvalStagesStepsAndApprovers')->flatten(1);
+//        dd($approvals);
+
+            $workflow = $data->pluck('workflowDetails')->first();
+
+            $transaction = $data->pluck('workflowInfo')->first();
+
+            $approvalHasBeenRejected = $data->pluck('approvalRejected')->first();
+            $sessionTxn = SessionTxn::where('txn_id', $transaction->iso_id)->first();
         }
+            if (empty($approvals)) {
+                Flash::error('Approvals not found');
+
+                return redirect(route('upesi::approvals.index'));
+            }
 //        dd('there',$workflow['workflow_type'] );
 
-        return view('wizpack::approvals.show', compact(
-                'approvals',
-                'workflow',
-                'approvers',
-                'currentStage',
-                'approvalHasBeenRejected',
-                'transaction',
-                'sessionTxn'
-            )
-        );
-    }
+            return view('wizpack::approvals.show', compact(
+                    'approvals',
+                    'workflow',
+                    'approvers',
+                    'currentStage',
+                    'approvalHasBeenRejected',
+                    'transaction',
+                    'sessionTxn'
+                )
+            );
+        }
 
     /**
      * Show the form for editing the specified Approvals.
