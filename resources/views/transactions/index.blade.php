@@ -82,6 +82,11 @@
 
                                     <div class="form-group" id="txn_type_id" style="display: none">
                                         <select name="txn-type" id="txn_type" class="form-control param select2">
+{{--                                            @foreach($txnTypes as $txnType)--}}
+{{--                                                <option value="$txnType">--}}
+
+{{--                                                </option>--}}
+{{--                                                @endforeach--}}
                                             <option>SELECT TRANSACTION TYPE</option>
                                             <option value="BANK">BANK</option>
                                             <option value="CASH">CASH</option>
@@ -172,9 +177,12 @@
             })
 
 
-            let searchParams = new URLSearchParams(window.location.search);
+            // let searchParams = new URLSearchParams(window.location.search);
+            let searchParams = (new URL(location)).searchParams;
+            // alert(searchParams);
             let dateInterval = searchParams.get('report_time, from-to');
-            // let filterPartner = searchParams.get('filter-partner');
+            let filterPartner = searchParams.get('filter-partner');
+            // alert(filterPartner);
             // let filterTxnType = searchParams.get('txn-type');
             // let selectedPartner = null;
             let start = moment().startOf('month');
