@@ -183,6 +183,7 @@
             //     e.preventDefault();
             // });
             let searchParams = (new URL(location)).searchParams;
+            console.log(">>>PARAM>>> "+searchParams);
             // alert(searchParams);
             let dateInterval = searchParams.get('from-to');
             let filterPartner = searchParams.get('filter-partner');

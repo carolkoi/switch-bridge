@@ -21,7 +21,7 @@
                 processing: true,
                 serverSide: true,
                 //});
-            }).ajax.url('https://dev.slafrica.net:6810/all/transactions').load();
+            }).url('{{url('')}}');
                 // .ajax.url('https://dev.slafrica.net:6810/all/transactions').load();
                 // .ajax.url('https://asgard.slafrica.net:9810/all/transactions').load();
             setInterval( function () {
