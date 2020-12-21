@@ -16,7 +16,7 @@
 
                     <div class="col-md-12">
                         <div class="col-md-4">
-                            <form>
+                            <form method="POST" id="filter-form">
                                 <div class="form-group ">
                                     <select name="filter-parameter" id="filter-parameter-id"
                                             class="form-control select2" multiple>
@@ -178,6 +178,10 @@
 
 
             // let searchParams = new URLSearchParams(window.location.search);
+            $('#filter-form').on('submit', function(e) {
+                table.draw();
+                e.preventDefault();
+            });
             let searchParams = (new URL(location)).searchParams;
             // alert(searchParams);
             let dateInterval = searchParams.get('report_time, from-to');
