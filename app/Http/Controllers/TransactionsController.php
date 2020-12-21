@@ -48,7 +48,7 @@ class TransactionsController extends AppBaseController
 //        dd($partners);
         $txnTypes = Transactions::pluck('req_field41', 'req_field41')->all();
 //        dd(collect($txnTypes));
-        return $transactionsDataTable
+        return $transactionsDataTable->addScope(new TransactionDataTableScope())
             ->render('transactions.index', ['partners' => $partners, 'txnTypes' => $txnTypes]);
 
     }

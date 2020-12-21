@@ -2097,7 +2097,6 @@ class Transactions extends Model implements ApprovableInterface
 
     public function ScopeFilter($query){
         if (request()->has('filter-partner')) {
-            dd('here');
             $txnType = request()->input('txn-type');
             $partner = request()->input('filter-partner');
             return $query->where('req_field123', $partner);

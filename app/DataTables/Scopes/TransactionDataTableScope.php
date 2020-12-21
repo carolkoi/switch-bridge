@@ -15,7 +15,7 @@ class TransactionDataTableScope implements DataTableScope
     public function apply($query)
     {
 
-        dd('here :'.json_encode(request()->all()));
+//        dd('here :'.json_encode(request()->all()));
         if (request()->has('filter-partner') && request()->has('txn-type')
             && request()->has('report_time') && request()->has('from-to')){
             $partner = request()->input('filter-partner');
@@ -82,6 +82,7 @@ class TransactionDataTableScope implements DataTableScope
         }
 
         if (request()->has('filter-partner')) {
+//            dd('here');
             $txnType = request()->input('txn-type');
             $partner = request()->input('filter-partner');
             return $query->where('req_field123', $partner);
