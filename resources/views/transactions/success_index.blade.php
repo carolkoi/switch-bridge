@@ -124,30 +124,7 @@
                     }
 
                 }
-                // let status = $('#filter-parameter-id option:selected[value=""]').data("relation-id");
-                //
-                // //Hide sync message field
-                // $(".param").attr('disabled', 'disabled').val('');
-                // if (status) {
-                //     $("#" + status).show();
-                // }
-                // $(".param").attr("disabled", status.length > 0);
-                //
-                // if ($("#filter-parameter-id").val() === 'PARTNER') {
-                //     $("#filter-partner").removeAttr('disabled');
-                // } else {
-                //     $("#filter-partner").attr('disabled', 'disabled').val('');
-                // }
-                // if ($("#filter-parameter-id").val() === 'TXN_TYPE') {
-                //     $("#txn_type").removeAttr('disabled');
-                // } else {
-                //     $("#txn_type").attr('disabled', 'disabled').val('');
-                // }
-                // if ($("#filter-parameter-id").val() === 'DATE') {
-                //     $("#date_filter").removeAttr('disabled');
-                // } else {
-                //     $("#date_filter").attr('disabled', 'disabled').val('');
-                // }
+
             }).trigger('change');
             $("#report_time_id").change(function () {
                 $('#date_filter').hide();
@@ -159,7 +136,7 @@
                 $("#filter-id").fadeIn("fast")['show']();
             })
 
-
+            let url = new URL('https://asgard.slafrica.net:9810/all/successful-transactions');
             let searchParams = new URLSearchParams(window.location.search);
             let dateInterval = searchParams.get('from-to');
             // let filterPartner = searchParams.get('filter-partner');

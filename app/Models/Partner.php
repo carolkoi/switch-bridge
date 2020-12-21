@@ -181,7 +181,8 @@ Partner extends Model
     }
 
     public function scopePartners($query){
-        return $query->where('company_id', '=', Auth::user()->company_id);
+        $company_id = Auth::check() && Auth::user()->company_id;
+        return $query->where('company_id', $company_id);
     }
 
 

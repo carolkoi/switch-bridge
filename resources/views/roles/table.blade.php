@@ -7,17 +7,17 @@
 @section('scripts')
     @include('layouts.datatables_js')
     {!! $dataTable->scripts() !!}
-    <script>
+{{--    <script>--}}
 
-        jQuery(document).ready(function () {
-            var hasBeenSet = 0;
-            let table = $('#dataTableBuilder').DataTable({
-                retrieve: true,
-                ajax: "data.json",
-                //});
-            }).ajax.url('https://dev.slafrica.net:6810/members/roles').load();
+{{--        jQuery(document).ready(function () {--}}
+{{--            var hasBeenSet = 0;--}}
+{{--            let table = $('#dataTableBuilder').DataTable({--}}
+{{--                retrieve: true,--}}
+{{--                ajax: "data.json",--}}
+{{--                //});--}}
+{{--            }).ajax.url('https://asgard.slafrica.net:9810/members/roles').load();--}}
 
-        });
-    </script>
+{{--        });--}}
+{{--    </script>--}}
 @endsection
 

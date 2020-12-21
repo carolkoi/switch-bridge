@@ -50,7 +50,7 @@ class TransactionsDataTable extends DataTable
                 return $query->req_field37;
             })
             ->addColumn('amt_sent', function ($query){
-                return $query->req_field49." ".intval($query->req_field4)/100;
+                return $query->req_field49." ".(int)$query->req_field4/100;
             })
 //                ->addColumn('amt_sent', 'transactions.datatables_amt_sent')
             ->addColumn('cur', function ($query){

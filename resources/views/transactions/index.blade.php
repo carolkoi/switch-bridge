@@ -1,9 +1,3 @@
-@php
-    header("Access-Control-Allow-Origin: *");
-    header("Access-Control-Allow-Credentials: true ");
-    header("Access-Control-Allow-Methods: OPTIONS, GET, POST");
-    header("Access-Control-Allow-Headers: Content-Type, Depth, User-Agent, X-File-Size, X-Requested-With, If-Modified-Since, X-File-Name, Cache-Control");
-@endphp
 @extends('layouts.app')
 
 @section('content')
@@ -39,63 +33,16 @@
 
                             <form action="" id="filtersForm">
                                 <div class="">
-{{--                                    <div class="form-group" id="filter-partner-id" style="display:none">--}}
-{{--                                                                            {{Form::label('', 'Select Partner')}}--}}
-{{--                                                                            {{Form::select('filter-partner', $partners, null, ['class' => 'form-control param select2',--}}
-{{--                                                                        'id' => 'filter-partner'])}}--}}
-{{--                                        @if(Auth::user()->company_id == 9)--}}
-{{--                                            <select name="filter-partner" class="form-control param select2"--}}
-{{--                                                    id="filter-partner">--}}
-{{--                                                <option>SELECT PARTNER</option>--}}
-{{--                                                @foreach($partners as $partner)--}}
-{{--                                                    <option--}}
-{{--                                                        value="{{$partner->partner_name}}">{{$partner->partner_name}}</option>--}}
-{{--                                                @endforeach--}}
-{{--                                            </select>--}}
 
-{{--                                        @elseif(Auth::user()->company_id == 10)--}}
-{{--                                            <select name="filter-partner" class="form-control param select2"--}}
-{{--                                                    id="filter-partner">--}}
-{{--                                                <option>SELECT PARTNER</option>--}}
-{{--                                                @foreach($partners as $partner)--}}
-{{--                                                    <option--}}
-{{--                                                        value="10">CHIPPERCASH</option>--}}
-{{--                                                @endforeach--}}
-{{--                                            </select>--}}
-
-{{--                                        @elseif(Auth::user()->company_id == 11)--}}
-{{--                                            <select name="filter-partner" class="form-control param select2"--}}
-{{--                                                    id="filter-partner">--}}
-{{--                                                <option>SELECT PARTNER</option>--}}
-{{--                                                @foreach($partners as $partner)--}}
-{{--                                                    <option--}}
-{{--                                                        value="11">NGAO</option>--}}
-{{--                                                @endforeach--}}
-{{--                                            </select>--}}
-
-{{--                                        @else--}}
-{{--                                            <select name="filter-partner" class="form-control param select2"--}}
-{{--                                                    id="filter-partner">--}}
-{{--                                                <option>SELECT PARTNER</option>--}}
-{{--                                                @foreach($partners as $partner)--}}
-{{--                                                    <option--}}
-{{--                                                        value="{{$partner->partner_name}}">{{$partner->partner_name}}</option>--}}
-{{--                                                @endforeach--}}
-{{--                                            </select>--}}
-
-{{--                                        @endif--}}
-{{--                                    </div>--}}
                                     <div class="form-group" id="filter-partner-id" style="display:none">
-                                        {{--                                                                            {{Form::label('', 'Select Partner')}}--}}
-                                        {{--                                                                            {{Form::select('filter-partner', $partners, null, ['class' => 'form-control param select2',--}}
-                                        {{--                                                                        'id' => 'filter-partner'])}}--}}
                                         @if(Auth::check() && Auth::user()->company_id == 9)
                                             <select name="filter-partner" class="form-control param select2"
                                                     id="filter-partner">
                                                 <option>SELECT PARTNER</option>
                                                 @foreach($partners as $partner)
                                                     <option
-                                                        value="{{$partner->partner_name}}">{{$partner->partner_name}}</option>
+                                                        value="{{$partner->partner_name}}">{{$partner->partner_name}}
+                                                    </option>
                                                 @endforeach
                                             </select>
 
@@ -103,20 +50,20 @@
                                             <select name="filter-partner" class="form-control param select2"
                                                     id="filter-partner">
                                                 <option>SELECT PARTNER</option>
-                                                {{--                                                @foreach($partners as $partner)--}}
+                                                                                                @foreach($partners as $partner)
                                                 <option
                                                     value="10">CHIPPERCASH</option>
-                                                {{--                                                @endforeach--}}
+                                                                                                @endforeach
                                             </select>
 
                                         @elseif(Auth::check() && Auth::user()->company_id == 11)
                                             <select name="filter-partner" class="form-control param select2"
                                                     id="filter-partner">
                                                 <option>SELECT PARTNER</option>
-                                                {{--                                                @foreach($partners as $partner)--}}
+                                                                                                @foreach($partners as $partner)
                                                 <option
                                                     value="11">NGAO</option>
-                                                {{--                                                @endforeach--}}
+                                                                                                @endforeach
                                             </select>
 
                                         @else
@@ -213,30 +160,6 @@
                     }
 
                 }
-                // let status = $('#filter-parameter-id option:selected[value=""]').data("relation-id");
-                //
-                // //Hide sync message field
-                // $(".param").attr('disabled', 'disabled').val('');
-                // if (status) {
-                //     $("#" + status).show();
-                // }
-                // $(".param").attr("disabled", status.length > 0);
-                //
-                // if ($("#filter-parameter-id").val() === 'PARTNER') {
-                //     $("#filter-partner").removeAttr('disabled');
-                // } else {
-                //     $("#filter-partner").attr('disabled', 'disabled').val('');
-                // }
-                // if ($("#filter-parameter-id").val() === 'TXN_TYPE') {
-                //     $("#txn_type").removeAttr('disabled');
-                // } else {
-                //     $("#txn_type").attr('disabled', 'disabled').val('');
-                // }
-                // if ($("#filter-parameter-id").val() === 'DATE') {
-                //     $("#date_filter").removeAttr('disabled');
-                // } else {
-                //     $("#date_filter").attr('disabled', 'disabled').val('');
-                // }
             }).trigger('change');
             $("#report_time_id").change(function () {
                 $('#date_filter').hide();

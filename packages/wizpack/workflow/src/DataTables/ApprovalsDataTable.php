@@ -114,7 +114,7 @@ class ApprovalsDataTable extends DataTable
                 'name' => 'user.name'
             ],
             'sent_at',
-//            'stage',
+            'stage',
             'receiver' => [
                 'name' => 'transaction.req_field108'
             ],

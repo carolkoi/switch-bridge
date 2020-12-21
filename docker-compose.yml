@@ -43,7 +43,7 @@
         - DB_HOST=172.17.0.1
         - DB_DATABASE=superbridge
         - DB_USERNAME=postgres
-        - DB_PASSWORD=admin
+        - DB_PASSWORD=!QAZxsw2
         - DB_PORT=5433
       volumes:
         - .:/var/www/html
