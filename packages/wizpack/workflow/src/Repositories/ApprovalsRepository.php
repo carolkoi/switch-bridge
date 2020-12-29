@@ -30,7 +30,8 @@ class ApprovalsRepository extends BaseRepository
         'approved',
         'approved_at',
         'rejected_at',
-        'awaiting_stage_id'
+        'awaiting_stage_id',
+        'company_id'
     ];
 
     /**

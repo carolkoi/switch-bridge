@@ -59,6 +59,7 @@ class ApprovalsController extends AppBaseController
     public function store(CreateApprovalsRequest $request)
     {
         $input = $request->all();
+        $input['company_id'] = Auth::user()->company_id;
 
         $approvals = $this->approvalsRepository->create($input);
 

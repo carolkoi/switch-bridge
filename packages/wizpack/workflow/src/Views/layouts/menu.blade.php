@@ -10,9 +10,11 @@
         <li class="{{ Request::is('upesi/approvals*') ? 'active' : '' }}">
             <a href="{!! route('upesi::approvals.index') !!}"><i class="fa fa-thumbs-up"></i><span>Transaction Approval Requests</span></a>
         </li>
+        @if(Auth::check() && auth()->user()->can('Can View Float Balance'))
         <li class="{{ Request::is('upesi/approvals/float*') ? 'active' : '' }}">
             <a href="{!! route('upesi::float.approval') !!}"><i class="fa fa-thumbs-up"></i><span>Float Approval Requests</span></a>
         </li>
+            @endif
 
 
     </ul>

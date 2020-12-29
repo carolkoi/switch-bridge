@@ -120,7 +120,8 @@ class Approvals extends Model
         'approved',
         'approved_at',
         'rejected_at',
-        'awaiting_stage_id'
+        'awaiting_stage_id',
+        'company_id'
     ];
 
     /**
@@ -140,7 +141,8 @@ class Approvals extends Model
         'approved' => 'boolean',
         'approved_at'=> 'datetime',
         'rejected_at'=> 'datetime',
-        'awaiting_stage_id' => 'integer'
+        'awaiting_stage_id' => 'integer',
+        'company_id' => 'integer'
     ];
 
     /**
@@ -154,7 +156,17 @@ class Approvals extends Model
         'sent_by' => 'required',
         'awaiting_stage_id' => 'required'
     ];
-
+    /**
+     * Set the company_id.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setCompanyIdAttribute($value)
+    {
+        $value = Auth::user()->company_id;
+        $this->attributes['company_id'] = $value;
+    }
     /**
      * @return BelongsTo
      **/

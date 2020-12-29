@@ -178,13 +178,11 @@ class FloatBalance extends Model implements ApprovableInterface
     }
 
 
-    public function ScopeFloatByPartner($query, $userCompabyId = null)
+    public function ScopeFloatByPartner($query, $userCompanyId = null)
     {
-        $userCompabyId = $userCompabyId ?: auth()->user()->company_id;
+        $userCompabyId = $userCompanyId ?: auth()->user()->company_id;
 
-//        $company_id = Auth::check() && Auth::user()->company_id;
-//        dd(Auth::user()->company_id);
-        if ($userCompabyId == 10){
+        if ($userCompanyId == 10){
             return $query
                 ->where('partnerid', 'like', "%CHIPPERCASH%");
 

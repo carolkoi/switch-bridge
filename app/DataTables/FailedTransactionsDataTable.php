@@ -147,7 +147,7 @@ class FailedTransactionsDataTable extends DataTable
             'receiver' => ['name' => 'req_field108'],
             'receiver_acc/No' => ['name' => 'req_field102'],
             'resps' => ['name' => 'res_field44'],
-            's_p' => ['name' => 'req_field125'],
+//            's_p' => ['name' => 'req_field125'],
             'receiver_bank' => ['name' => 'req_field112'],
         ];
     }

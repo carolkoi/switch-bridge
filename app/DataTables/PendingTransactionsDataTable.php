@@ -153,7 +153,7 @@ class PendingTransactionsDataTable extends DataTable
             'receiver_acc/No'  => ['name' => 'req_field102'],
             'resps'  => ['name' => 'res_field44'],
 //            'res_field39',
-            's_p'  => ['name' => 'req_field125'],
+//            's_p'  => ['name' => 'req_field125'],
             'receiver_bank'  => ['name' => 'req_field112'],
         ];
 

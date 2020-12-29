@@ -83,7 +83,7 @@ class FloatBalanceDataTable extends DataTable
             'amount',
             'runningbal',
             'datetimeadded',
-            'approved'
+//            'approved'
 //            'addedby',
 //            'ipaddress',
         ];
