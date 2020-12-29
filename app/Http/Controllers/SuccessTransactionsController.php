@@ -31,9 +31,10 @@ class SuccessTransactionsController extends AppBaseController
     {
 //        $partners = Partner::pluck('partner_name', 'partner_name');
         $partners = Partner::get();
-        $txnTypes = Transactions::pluck('req_field41', 'req_field41');
+//        $txnTypes = Transactions::pluck('req_field41', 'req_field41');
+        $txnTypes = Transactions::pluck('req_field41')->all();
         return $successTransactionsDataTable->addScope(new TransactionDataTableScope())
-            ->render('transactions.success_index', ['partners' => $partners, 'txnTypes' => $txnTypes]);
+            ->render('transactions.success_index', ['partners' => $partners, 'txnTypes' => array_unique($txnTypes)]);
     }
 
     /**

@@ -50,11 +50,10 @@
 
                                     <div class="form-group" id="txn_type_id" style="display: none">
                                         <select name="txn-type" id="txn_type" class="form-control param select2">
-                                            <option>SELECT TRANSACTION TYPE</option>
-                                            <option value="BANK">BANK</option>
-                                            <option value="CASH">CASH</option>
-                                            <option value="MOBILE">MOBILE</option>
-                                            <option value="PAYOUT">PAYOUT</option>
+                                            <option value="" selected disabled>SELECT TYPE</option>
+                                            @foreach($txnTypes as $key => $txnType)
+                                                <option value="{{ trim($txnType) }}">{{ trim($txnType) }}</option>
+                                            @endforeach
                                         </select>
                                         {{--                                        {{Form::label('', 'Select Partner')}}--}}
                                         {{--                                        {{Form::select('txn-type', $txnTypes, null, ['class' => 'form-control param select2',--}}

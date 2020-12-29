@@ -30,8 +30,9 @@ class FailedTransactionsController extends Controller
     {
 //        $partners = Partner::pluck('partner_name', 'partner_name');
         $partners = Partner::get();
-        $txnTypes = Transactions::pluck('req_field41', 'req_field41');
+//        $txnTypes = Transactions::pluck('req_field41', 'req_field41');
+        $txnTypes = Transactions::pluck('req_field41')->all();
         return $failedTransactionsDataTable->addScope(new TransactionDataTableScope())
-            ->render('transactions.failed_index', ['partners' => $partners, 'txnTypes' => $txnTypes]);
+            ->render('transactions.failed_index', ['partners' => $partners, 'txnTypes' => array_unique($txnTypes)]);
     }
 }

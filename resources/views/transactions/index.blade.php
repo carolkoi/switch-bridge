@@ -82,7 +82,7 @@
 
                                     <div class="form-group" id="txn_type_id" style="display: none">
                                         <select name="txn-type" id="txn_type" class="form-control param select2">
-                                            <option value="" selected disabled>Chooser one</option>
+                                            <option value="" selected disabled>SELECT TYPE</option>
                                             @foreach($txnTypes as $key => $txnType)
                                                 <option value="{{ trim($txnType) }}">{{ trim($txnType) }}</option>
                                                 @endforeach
