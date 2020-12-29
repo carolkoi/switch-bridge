@@ -64,7 +64,7 @@ class ApprovalsDataTable extends DataTable
     {
         return $model->with(['user','awaitingStage.workflowStageType','transaction'])
             ->whereHasMorph('approvable', Transactions::class)
-            ->orderBy('created_at', 'desc')->MyApprovals()->newQuery();
+            ->orderBy('created_at', 'desc')->MyApprovals()->filterApprovalsByCompany()->newQuery();
     }
 
     /**

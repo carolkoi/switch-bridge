@@ -15,6 +15,7 @@ use App\Repositories\SessionTxnRepository;
 use App\Repositories\TransactionsRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
+use Illuminate\Support\Facades\Log;
 use Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -46,10 +47,11 @@ class TransactionsController extends AppBaseController
         $partners = Partner::get();
 
 //        dd($partners);
-        $txnTypes = Transactions::pluck('req_field41', 'req_field41')->all();
+        $txnTypes = Transactions::pluck('req_field41')->all();
+//        Log::info(json_encode($txnTypes));
 //        dd(collect($txnTypes));
         return $transactionsDataTable->addScope(new TransactionDataTableScope())
-            ->render('transactions.index', ['partners' => $partners, 'txnTypes' => $txnTypes]);
+            ->render('transactions.index', ['partners' => $partners, 'txnTypes' => array_unique($txnTypes)]);
 
     }
 

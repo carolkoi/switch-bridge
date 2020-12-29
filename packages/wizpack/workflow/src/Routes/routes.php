@@ -22,7 +22,7 @@ Route::group([
     Route::resource('stage-approvers', 'WorkflowStageApproversController');
 
     Route::resource('approvals', 'ApprovalsController');
-    Route::get('float-approval', 'FloatApprovalsController@index')->name('float.approval');
+    Route::get('approvals-float', 'FloatApprovalsController@index')->name('float.approval');
 
 
         //approval/rejection

@@ -76,8 +76,6 @@ class FloatBalanceController extends AppBaseController
             $input['runningbal'] = $prev_running_balance->runningbal;
 
 
-
-
         $floatBalance = $this->floatBalanceRepository->create($input);
 
 
@@ -148,7 +146,15 @@ class FloatBalanceController extends AppBaseController
             return redirect(route('floatBalances.index'));
         }
 
+        $prev_running_balance = FloatBalance::orderBy('floattransactionid', 'desc')->first();
+
+        $input['runningbal'] = $prev_running_balance->runningbal;
+
         $floatBalance = $this->floatBalanceRepository->update($request->all(), $id);
+
+        //initiating the approval request
+        $approval = new FloatBalance();
+        $approval->addApproval($floatBalance);
 
         Flash::success('Float Balance updated successfully.');
 

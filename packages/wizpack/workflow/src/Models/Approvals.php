@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * @property mixed workflowSteps
@@ -246,5 +247,16 @@ class Approvals extends Model
 
         return '<span class="label label-primary">Pending</span>';
 
+    }
+    public function ScopeFilterApprovalsByCompany($query, $userCompanyId = null){
+        $userCompanyId = $userCompanyId ?: auth()->user()->company_id;
+
+//        $company_id = Auth::check() && Auth::user()->company_id;
+//        dd($userCompabyId, $company_id);
+
+        if ($userCompanyId = 1){
+            return $query;
+        }else
+        return $query->where('company_id', $userCompanyId);
     }
 }

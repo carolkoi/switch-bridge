@@ -11,21 +11,23 @@
 
     <!-- Main content -->
     <section class="content">
-{{--        @if(Auth::check() && Auth::user()->company_id == 10)--}}
+        @if(Auth::check() && auth()->user()->can('Can View Running Balance'))
         <div class="row">
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="info-box">
                     <span class="info-box-icon bg-aqua"><i class="fa fa-money"></i></span>
 
                     <div class="info-box-content">
-                        <span class="info-box-text"><h1>RUNNING BALANCE : {{App\Models\FloatBalance::all()->last()->runningbal}}</h1></span>
+                        <span class="info-box-text"><h1>RUNNING BALANCE : {{App\Models\FloatBalance::orderBy('floattransactionid', 'desc')
+->where('partnerid', 'CHIPPERCASH')->first()->runningbal}}</h1></span>
 {{--                        <span class="info-box-number">{{App\Models\FloatBalance::sum('amount')}}</span>--}}
                     </div>
                     <!-- /.info-box-content -->
                 </div>
                 <!-- /.info-box -->
             </div>
-{{--            @endif--}}
+            @endif
+            @if(Auth::check() && auth()->user()->can('Can Top Up Float'))
             <div class="col-md-6 col-sm-12 col-xs-12">
 {{--                <div class="info-box">--}}
                     <!-- Trigger/Open The Modal -->
@@ -41,6 +43,7 @@
                 </div>
                 <!-- /.info-box -->
             </div>
+        @endif
             <!-- /.col -->
 {{--        </div>--}}
         <div class="row">

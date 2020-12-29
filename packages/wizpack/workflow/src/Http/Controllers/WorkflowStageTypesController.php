@@ -2,6 +2,7 @@
 
 namespace WizPack\Workflow\Http\Controllers;
 
+use App\Models\Company;
 use Illuminate\Support\Str;
 use WizPack\Workflow\DataTables\WorkflowStageTypesDataTable;
 use WizPack\Workflow\Http\Requests\CreateWorkflowStageTypesRequest;
@@ -47,7 +48,9 @@ class WorkflowStageTypesController extends AppBaseController
      */
     public function create()
     {
-        return view('wizpack::workflow_stage_types.create');
+        $company = Company::pluck('companyname', 'companyid');
+//        dd($company);
+        return view('wizpack::workflow_stage_types.create', ['company' => $company]);
     }
 
     /**
@@ -62,7 +65,8 @@ class WorkflowStageTypesController extends AppBaseController
     {
         $input = $request->all();
         $input['slug'] = Str::lower(str_replace(' ', '_', $request->get('name')));
-//        dd($input);
+        $input['name'] = Company::find($request->company_id)->companyname;
+
 
         if (WorkflowStageType::where('slug', '=', $input['slug'] )->exists()) {
             Flash::error('Approval Stage Partner with the same Slug already exist');

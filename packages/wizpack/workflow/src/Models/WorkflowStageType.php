@@ -69,7 +69,8 @@ class WorkflowStageType extends Model
     public $fillable = [
         'name',
         'slug',
-        'weight'
+        'weight',
+        'company_id'
     ];
 
     /**
@@ -81,7 +82,8 @@ class WorkflowStageType extends Model
         'id' => 'integer',
         'name' => 'string',
         'slug' => 'string',
-        'weight' => 'integer'
+        'weight' => 'integer',
+        'company_id' => 'integer'
     ];
 
     /**
@@ -90,7 +92,7 @@ class WorkflowStageType extends Model
      * @var array
      */
     public static $rules = [
-        'name' => 'required|string',
+//        'name' => 'required|string',
 //        'weight' => 'required|integer',
 //        'slug' => 'required|bail|string|unique:workflow_stage_type,slug'
     ];

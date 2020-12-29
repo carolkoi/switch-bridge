@@ -2077,34 +2077,26 @@ class Transactions extends Model implements ApprovableInterface
         return $this->belongsTo(Partner::class, 'req_field123', 'partner_id');
     }
 
-    public function ScopeTransactionsByCompany($query)
+    public function ScopeTransactionsByCompany($query, $userCompabyId = null)
     {
+//        $company_id = Auth::check() && Auth::user()->company_id;
+        $company_id = $userCompabyId ?: auth()->user()->company_id;
+
 //        dd(Auth::user()->company_id);
-        if (Auth::check() && Auth::user()->company_id == 9) {
+        if ($company_id == 9) {
 
             return $query->where('req_field123', 'not like', "%NGAO%" )->where('req_field123', 'not like', "%CHIPPERCASH%");
-        }elseif (Auth::check() && Auth::user()->company_id == 10){
+        }elseif ($company_id == 10){
             return $query
                 ->where('req_field123', 'like', "%CHIPPERCASH%");
 
-        }elseif (Auth::check() && Auth::user()->company_id == 11){
+        }elseif ($company_id == 11){
             return $query->where('req_field123','like',  '%NGAO%');
-        }elseif(Auth::check() && Auth::user()->company_id == 1){
+        }elseif($company_id == 1){
             return $query;
         }
-//        return $query;
     }
 
-    public function ScopeFilter($query){
-        if (request()->has('filter-partner')) {
-            $txnType = request()->input('txn-type');
-            $partner = request()->input('filter-partner');
-            return $query->where('req_field123', $partner);
-        }
-               return $query;
-
-
-    }
 
 
     /**

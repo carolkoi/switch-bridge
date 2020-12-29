@@ -180,8 +180,10 @@ Partner extends Model
        return $this->belongsTo(Company::class, 'company_id', 'companyid');
     }
 
-    public function scopePartners($query){
-        $company_id = Auth::check() && Auth::user()->company_id;
+    public function scopePartners($query, $userCompabyId = null){
+//        $company_id = Auth::check() && Auth::user()->company_id;
+        $company_id = $userCompabyId ?: auth()->user()->company_id;
+
         return $query->where('company_id', $company_id);
     }
 

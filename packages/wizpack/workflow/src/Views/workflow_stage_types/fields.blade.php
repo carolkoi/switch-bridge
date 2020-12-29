@@ -1,7 +1,11 @@
 <!-- Name Field -->
+{{--<div class="form-group">--}}
+{{--    {!! Form::label('name', 'Name:') !!}--}}
+{{--    {!! Form::text('name', null, ['class' => 'form-control']) !!}--}}
+{{--</div>--}}
 <div class="form-group">
-    {!! Form::label('name', 'Name:') !!}
-    {!! Form::text('name', null, ['class' => 'form-control']) !!}
+    {!! Form::label('company_id', 'Select Company:') !!}
+    {!! Form::select('company_id', $company, null, ['class' => 'form-control select2']) !!}
 </div>
 
 <!-- Slug Field -->

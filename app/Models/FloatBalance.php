@@ -158,7 +158,6 @@ class FloatBalance extends Model implements ApprovableInterface
     {
         // TODO: Implement markApprovalComplete() method.
         $model = self::find($id);
-//        dd($model);
         $model->approved = 1;
 //        $model->updated_at = Carbon::now();
         $model->approved_by = Auth::user()->id;
@@ -177,6 +176,23 @@ class FloatBalance extends Model implements ApprovableInterface
         $model->approved_by = Auth::user()->id;
         $model->save();
     }
+
+
+    public function ScopeFloatByPartner($query, $userCompabyId = null)
+    {
+        $userCompabyId = $userCompabyId ?: auth()->user()->company_id;
+
+//        $company_id = Auth::check() && Auth::user()->company_id;
+//        dd(Auth::user()->company_id);
+        if ($userCompabyId == 10){
+            return $query
+                ->where('partnerid', 'like', "%CHIPPERCASH%");
+
+        }else
+            return $query;
+        }
+
+
 
 
 }
