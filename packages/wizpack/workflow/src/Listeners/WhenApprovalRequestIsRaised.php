@@ -55,7 +55,8 @@ class WhenApprovalRequestIsRaised
             'workflow_type' => $event->workflowType,
             'collection_name' => $event->workflowType,
             'model_id' => $event->model->model_id,
-            'awaiting_stage_id' => $firstApprovalStage->id
+            'awaiting_stage_id' => $firstApprovalStage->id,
+            'company_id' => Auth::user()->company_id
         ]);
 
         $workflowAdded = $event->model->approvals()->save($data);
