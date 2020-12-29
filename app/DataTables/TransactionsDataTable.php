@@ -73,7 +73,7 @@ class TransactionsDataTable extends DataTable
                 return $query->res_field44;
             })
             ->addColumn('s_p', function ($query){
-                return Auth::user()->company_id == 9 ? $query->req_field89 : null;
+                return$query->req_field89;
             })
             ->escapeColumns('resps')
             ->addColumn('receiver_bank', function ($query){
