@@ -64,10 +64,9 @@ class WorkflowStageTypesController extends AppBaseController
     public function store(CreateWorkflowStageTypesRequest $request)
     {
         $input = $request->all();
-        $input['slug'] = Str::lower(str_replace(' ', '_', $request->get('name')));
-        $input['name'] = Company::find($request->company_id)->companyname;
-
-
+        $input['name'] = Company::find($request->get('company_id'))->companyname;
+        $input['slug'] = Str::lower(str_replace(' ', '_', $input['name']));
+//        $input['weight'] = 1;
         if (WorkflowStageType::where('slug', '=', $input['slug'] )->exists()) {
             Flash::error('Approval Stage Partner with the same Slug already exist');
             return redirect(route('upesi::approval-partners.index'));
