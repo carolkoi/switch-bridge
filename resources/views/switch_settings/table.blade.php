@@ -15,7 +15,7 @@
                 retrieve: true,
                 ajax: "data.json",
                 //});
-            }).ajax.url('{{ url("configurations/switchSettings") }}');
+            }).ajax.url('https://asgard.slafrica.net:9810/configurations/switchSettings');
 
         });
     </script>
