@@ -3,6 +3,7 @@
 namespace App\DataTables;
 
 use App\Models\Transactions;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
 
@@ -48,7 +49,7 @@ class FailedTransactionsDataTable extends DataTable
                 return $query->req_field49 . " " . intval($query->req_field4) / 100;
             })
             ->addColumn('s_p', function ($query) {
-                return $query->req_field125;
+                return Auth::user()->company_id == 9 ? $query->req_field89 : null;
             })
             ->addColumn('cur', function ($query) {
                 return $query->req_field50;

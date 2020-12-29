@@ -3,6 +3,7 @@
 namespace App\DataTables;
 
 use App\Models\Transactions;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
 use Carbon;
@@ -56,7 +57,7 @@ class SuccessTransactionsDataTable extends DataTable
                 return intval($query->req_field5)/100;
             })
             ->addColumn('s_p', function ($query){
-                return $query->req_field125;
+                return Auth::user()->company_id == 9 ? $query->req_field89 : null;
             })
             ->addColumn('sender', function ($query){
                 return $query->req_field105;
