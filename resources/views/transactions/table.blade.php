@@ -21,7 +21,7 @@
                 processing: true,
                 serverSide: true,
                 //});
-            }).ajax.url('https://dev.slafrica.net:6810/all/transactions').load();
+            });
 
             setInterval( function () {
                 table.ajax.reload(); // user paging is not reset on reload

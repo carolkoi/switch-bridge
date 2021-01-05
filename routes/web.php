@@ -68,6 +68,9 @@ use App\Http\Resources\Permission;
     Route::get('/assign-permission', function () {
         return Permission::collection(\Spatie\Permission\Models\Permission::get());
     });
+Route::get('/view-all-transactions', function () {
+    return \App\Http\Resources\Transaction::collection(\App\Models\Transactions::get());
+});
 
     Route::get('role-permissions/{id}', 'RoleController@permission')->name('role.permission');
     Route::post('/assign-permissions/{id}', 'RoleController@assign');
