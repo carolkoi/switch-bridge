@@ -4,6 +4,7 @@ namespace WizPack\Workflow\DataTables;
 
 use App\Models\Transactions;
 use WizPack\Workflow\Models\Approvals;
+use WizPack\Workflow\Models\WorkflowStageType;
 use Yajra\DataTables\DataTableAbstract;
 use Yajra\DataTables\Html\Builder;
 use Yajra\DataTables\Services\DataTable;
@@ -29,7 +30,8 @@ class ApprovalsDataTable extends DataTable
                 return $query->approvalStatus();
             })
             ->addColumn('stage', function ($query){
-                return $query->awaitingStage->workflowStageType->name;
+                return WorkflowStageType::where('company_id', $query->awaitingStage->workflowStageType->company_id)->first()->name;
+//                return WorkF($query->awaitingStage->workflowStageType->company_id);
             })
             ->addColumn('sent_at', function ($query){
 //                return $query->created_at->format('Y-m-d H:i:s');

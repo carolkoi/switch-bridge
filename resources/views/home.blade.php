@@ -178,7 +178,20 @@
                             <tbody>
 
                             @foreach($transactions as $transaction)
-                                <tr class="odd gradeX">
+
+                                @if ($transaction->res_field48 == 'COMPLETED')
+                                    <tr class="odd gradeX" style="color: #2E8B57;">
+                                @elseif ($transaction->res_field48 == 'FAILED')
+                                    <tr class="odd gradeX" style="color: #ff0000;">
+                                @elseif ($transaction->res_field48 == 'AML-APPROVED')
+                                    <tr class="odd gradeX" style="color: blue;">
+                                @elseif ($transaction->res_field48 == 'UPLOAD-FAILED')
+                                    <tr class="odd gradeX" style="color: #ff0000;">
+                                @else
+                                    <tr class="odd gradeX">
+                                @endif
+{{--                                <tr class="odd gradeX">--}}
+
                                     <td>{{ $transaction->req_field123  }}</td>
                                     {{--                                    <td>{{ $transaction->req_field7  }}</td>--}}
                                     <td>{{date('Y-m-d H:i:s',strtotime('+3 hours',strtotime(date('Y-m-d H:i:s', ($transaction->date_time_added / 1000)))))}}</td>

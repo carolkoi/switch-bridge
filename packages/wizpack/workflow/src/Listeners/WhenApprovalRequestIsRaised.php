@@ -33,28 +33,33 @@ class WhenApprovalRequestIsRaised
     public function handle($event)
     {
         //getting all the approval stages and their approvers
+
         $workflow = WorkflowType::Where([
             'slug' => $event->workflowType
-        ])->latest()->first()->with(
+        ])->first()->with(
             [
                 'workflowStages' => function ($q) {
                     return $q->orderBy('weight', 'asc');
                 },
+                'workflowStages.workflowStageType' => function($wt){
+                return $wt->filterByUserCompanyId();
+                },
                 'workflowStages.workflowApprovers',
                  'workflowStages.workflowApprovers.user'
             ]
-        )->latest()->first();
-
+        )->first();
+        dd($workflow);
+dd($workflow->workflowStages->pluck('workflowStageType'));
         //first approval stage
         $firstApprovalStage = $workflow->workflowStages->first();
-
+        dd();
         //saving the approval
         $data = new Approvals([
             'user_id' => Auth::id(),
             'sent_by' => Auth::id(),
             'workflow_type' => $event->workflowType,
             'collection_name' => $event->workflowType,
-            'model_id' => $event->model->model_id,
+            'model_id' => $event->workflowType == 'transaction_approval' ? $event->model->iso_id : $event->model->floattransactionid,
             'awaiting_stage_id' => $firstApprovalStage->id,
             'company_id' => Auth::user()->company_id
         ]);

@@ -50,8 +50,13 @@ class TransactionsController extends AppBaseController
         $txnTypes = Transactions::pluck('req_field41')->all();
 //        Log::info(json_encode($txnTypes));
 //        dd(collect($txnTypes));
-        return $transactionsDataTable->addScope(new TransactionDataTableScope())
-            ->render('transactions.index', ['partners' => $partners, 'txnTypes' => array_unique($txnTypes)]);
+        $transactions = Transactions::transactionsByCompany()->take(2000)->orderBy('date_time_added', 'desc')->paginate(30);
+        if (env('APP_ENV') == 'dev'){
+            $transactions->setPath('https://dev.slafrica.net:6810/');
+        }elseif (env('APP_ENV') == 'prod'){
+            $transactions->setPath('https://asgard.slafrica.net:9810/');
+        }
+        return view('transactions.index', ['transactions' => $transactions,'partners' => $partners, 'txnTypes' => array_unique($txnTypes)]);
 
     }
 

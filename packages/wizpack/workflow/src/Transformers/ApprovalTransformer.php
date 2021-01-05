@@ -123,6 +123,7 @@ class ApprovalTransformer extends TransformerAbstract
             $approvedBy =  $this->getApprovedBy($steps);
             $rejectedBy =  $this->getRejectedBy($steps);
 
+
             return [
                 "id" => $stage->id,
                 "workflow_stage_type_id" => $stage->workflowStageType->id,
@@ -210,6 +211,7 @@ class ApprovalTransformer extends TransformerAbstract
      */
     public function getStageApprovers($stage)
     {
+
         return $stage->workflowApprovers->map(function ($approver) {
 
             return [

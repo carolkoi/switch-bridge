@@ -2,6 +2,7 @@
 
 namespace WizPack\Workflow\Models;
 
+use Illuminate\Support\Facades\Auth;
 use WizPack\Workflow\Models\Scopes\WeightScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -125,5 +126,9 @@ class WorkflowStageType extends Model
     public function workflowStages()
     {
         return $this->hasMany(WorkflowStage::class, 'workflow_stage_type_id');
+    }
+
+    public function ScopeFilterByUserCompanyId($query){
+        return $query->where('company_id', Auth::user()->company_id);
     }
 }

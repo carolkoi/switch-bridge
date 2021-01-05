@@ -63,7 +63,8 @@ class WorkflowType extends Model
 
     public $fillable = [
         'name',
-        'slug'
+        'slug',
+        'company_id'
     ];
 
     /**
@@ -74,7 +75,8 @@ class WorkflowType extends Model
     protected $casts = [
         'id' => 'integer',
         'name' => 'string',
-        'slug' => 'string'
+        'slug' => 'string',
+        'company_id' => 'integer'
     ];
 
     /**
@@ -95,4 +97,6 @@ class WorkflowType extends Model
     {
         return $this->hasMany(WorkflowStage::class, 'workflow_type_id');
     }
+
+
 }

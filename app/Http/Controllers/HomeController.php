@@ -33,7 +33,7 @@ class HomeController extends Controller
         $yesterday = date("Y-m-d m:h:s", strtotime( '-1 days' ) );
         $yesterday_txns = Transactions::transactionsByCompany()->whereDate('created_at', $yesterday )->get();
 
-        $transactions = Transactions::transactionsByCompany()->orderBy('date_time_added', 'desc')->paginate(30);
+        $transactions = Transactions::transactionsByCompany()->orderBy('date_time_added', 'desc')->take(2000)->paginate(30);
         if (env('APP_ENV') == 'dev'){
             $transactions->setPath('https://dev.slafrica.net:6810/');
         }elseif (env('APP_ENV') == 'prod'){

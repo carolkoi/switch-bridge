@@ -2085,13 +2085,13 @@ class Transactions extends Model implements ApprovableInterface
 //        dd(Auth::user()->company_id);
         if ($company_id == 9) {
 
-            return $query->where('req_field123', 'not like', "%NGAO%" )->where('req_field123', 'not like', "%CHIPPERCASH%");
+//            return $query->where('req_field123', 'not like', "%NGAO%" )->where('req_field123', 'not like', "%CHIPPERCASH%");
+            return $query->WhereNotIn('req_field123', ['NGAO', 'CHIPPERCASH']);
         }elseif ($company_id == 10){
-            return $query
-                ->where('req_field123', 'like', "%CHIPPERCASH%");
+            return $query->where('req_field123','CHIPPERCASH');
 
         }elseif ($company_id == 11){
-            return $query->where('req_field123','like',  '%NGAO%');
+            return $query->where('req_field123','NGAO');
         }elseif($company_id == 1){
             return $query;
         }

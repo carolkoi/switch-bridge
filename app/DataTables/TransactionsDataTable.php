@@ -79,6 +79,7 @@ class TransactionsDataTable extends DataTable
             ->addColumn('receiver_bank', function ($query){
                 return $query->req_field112;
             })
+
             ->addColumn('action', 'transactions.datatables_actions')
             ->rawColumns(['modified_at', 'txn_time', 'action'])
         ->setRowAttr([

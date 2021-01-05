@@ -18,7 +18,8 @@ class WorkflowTypesRepository extends BaseRepository
      */
     protected $fieldSearchable = [
         'name',
-        'slug'
+        'slug',
+        'company_id'
     ];
 
     /**

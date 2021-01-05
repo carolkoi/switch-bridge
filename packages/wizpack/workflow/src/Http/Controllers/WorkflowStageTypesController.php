@@ -3,6 +3,7 @@
 namespace WizPack\Workflow\Http\Controllers;
 
 use App\Models\Company;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use WizPack\Workflow\DataTables\WorkflowStageTypesDataTable;
 use WizPack\Workflow\Http\Requests\CreateWorkflowStageTypesRequest;
@@ -66,6 +67,7 @@ class WorkflowStageTypesController extends AppBaseController
         $input = $request->all();
         $input['name'] = Company::find($request->get('company_id'))->companyname;
         $input['slug'] = Str::lower(str_replace(' ', '_', $input['name']));
+//        dd($input);
 //        $input['weight'] = 1;
         if (WorkflowStageType::where('slug', '=', $input['slug'] )->exists()) {
             Flash::error('Approval Stage Partner with the same Slug already exist');
@@ -109,6 +111,7 @@ class WorkflowStageTypesController extends AppBaseController
     public function edit($id)
     {
         $workflowStageTypes = $this->workflowStageTypesRepository->find($id);
+        $company = Company::pluck('companyname', 'companyid');
 
         if (empty($workflowStageTypes)) {
             Flash::error('Workflow Stage Types not found');
@@ -116,7 +119,8 @@ class WorkflowStageTypesController extends AppBaseController
             return redirect(route('upesi::approval-partners.index'));
         }
 
-        return view('wizpack::workflow_stage_types.edit')->with('workflowStageTypes', $workflowStageTypes);
+        return view('wizpack::workflow_stage_types.edit',
+            ['workflowStageTypes' => $workflowStageTypes,'company' => $company]);
     }
 
     /**
@@ -132,7 +136,9 @@ class WorkflowStageTypesController extends AppBaseController
     {
         $workflowStageTypes = $this->workflowStageTypesRepository->find($id);
         $input = $request->all();
-        $input['slug'] = Str::lower(str_replace(' ', '_', $request->get('name')));
+//        $input['slug'] = Str::lower(str_replace(' ', '_', $request->get('name')));
+        $input['name'] = Company::find($request->get('company_id'))->companyname;
+        $input['slug'] = Str::lower(str_replace(' ', '_', $input['name']));
 
         if (empty($workflowStageTypes)) {
             Flash::error('Approval Stage Partner not found');
