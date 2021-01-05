@@ -98,7 +98,7 @@ class TransactionDataTableScope implements DataTableScope
             $txnType = request()->input('txn-type');
             return $query->where('req_field41', 'LIKE', "%$txnType%");
         }
-            return $query->whereBetween('paid_out_date', array($day['start'], $day['end']));
-//        return $query;
+//            return $query->whereBetween('paid_out_date', array($day['start'], $day['end']));
+        return $query;
     }
 }
