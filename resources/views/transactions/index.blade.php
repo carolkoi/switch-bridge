@@ -134,7 +134,7 @@
 {{--                <div class="loader"></div>--}}
 
 
-                @include('transactions.raw_table')
+                @include('transactions.table')
             </div>
         </div>
         <div class="text-center">

@@ -36,7 +36,7 @@ class WhenApprovalRequestIsRaised
 
         $workflow = WorkflowType::Where([
             'slug' => $event->workflowType
-        ])->first()->with(
+        ])->latest()->first()->with(
             [
                 'workflowStages' => function ($q) {
                     return $q->orderBy('weight', 'asc');
@@ -47,12 +47,10 @@ class WhenApprovalRequestIsRaised
                 'workflowStages.workflowApprovers',
                  'workflowStages.workflowApprovers.user'
             ]
-        )->first();
-        dd($workflow);
-dd($workflow->workflowStages->pluck('workflowStageType'));
+        )->latest()->first();
+
         //first approval stage
         $firstApprovalStage = $workflow->workflowStages->first();
-        dd();
         //saving the approval
         $data = new Approvals([
             'user_id' => Auth::id(),
@@ -71,13 +69,13 @@ dd($workflow->workflowStages->pluck('workflowStageType'));
 
         //send mail to first approvers
 
-
-        if($response){
-            $approvers = $workflow->workflowStages->pluck('workflowApprovers')->first()->pluck('user')->toArray();
-            Mail::to($approvers)
-                ->cc(Auth::user())
-                ->send(new WorkflowApprovalRequestMail($workflow, $workflow->workflowStages, $event->model,  $response->first()));
-        }
+//
+//        if($response){
+//            $approvers = $workflow->workflowStages->pluck('workflowApprovers')->first()->pluck('user')->toArray();
+//            Mail::to($approvers)
+//                ->cc(Auth::user())
+//                ->send(new WorkflowApprovalRequestMail($workflow, $workflow->workflowStages, $event->model,  $response->first()));
+//        }
 
     }
 
