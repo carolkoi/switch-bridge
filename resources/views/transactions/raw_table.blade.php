@@ -1,3 +1,9 @@
+@section('css')
+    @include('layouts.datatables_css')
+
+@endsection
+
+<div class="loader"></div>
 <div class="box box-info">
     <div class="box-header with-border">
         <h3 class="box-title">Latest Transactions</h3>
@@ -12,7 +18,7 @@
     <div class="box-body">
 
         <div class="table-responsive">
-            <table class="table table-striped table-hover table-bordered table-fw-widget table no-margin" id="table1">
+            <table class="table table-striped table-hover table-bordered table-fw-widget table no-margin" id="txn-table">
                 <thead>
                 <tr>
                     <th>Partner</th>
@@ -36,55 +42,84 @@
 
                 </tr>
                 </thead>
-                <tbody>
 
-                @foreach($transactions as $transaction)
+{{--                <tbody>--}}
 
-                    @if ($transaction->res_field48 == 'COMPLETED')
-                        <tr class="odd gradeX" style="color: #2E8B57;">
-                    @elseif ($transaction->res_field48 == 'FAILED')
-                        <tr class="odd gradeX" style="color: #ff0000;">
-                    @elseif ($transaction->res_field48 == 'AML-APPROVED')
-                        <tr class="odd gradeX" style="color: blue;">
-                    @elseif ($transaction->res_field48 == 'UPLOAD-FAILED')
-                        <tr class="odd gradeX" style="color: #ff0000;">
-                    @else
-                        <tr class="odd gradeX">
-                            @endif
-                            {{--                                <tr class="odd gradeX">--}}
+{{--                @foreach($transactions as $transaction)--}}
 
-                            <td>{{ $transaction->req_field123  }}</td>
-                            {{--                                    <td>{{ $transaction->req_field7  }}</td>--}}
-                            <td>{{date('Y-m-d H:i:s',strtotime('+3 hours',strtotime(date('Y-m-d H:i:s', ($transaction->date_time_added / 1000)))))}}</td>
-                            <td>{{!empty($transaction->paid_out_date) ? date("Y-m-d H:i:s", strtotime($transaction->paid_out_date)+10800):null}}</td>
-                            <td>{{ $transaction->res_field48 }}</td>
-                            <td>{{ $transaction->req_field41 }}</td>
-                            <td>{{ $transaction->req_field34 }}</td>
-                            <td>{{$transaction->sync_message ? $transaction->sync_message : "N/A" }}</td>
+{{--                    @if ($transaction->res_field48 == 'COMPLETED')--}}
+{{--                        <tr class="odd gradeX" style="color: #2E8B57;">--}}
+{{--                    @elseif ($transaction->res_field48 == 'FAILED')--}}
+{{--                        <tr class="odd gradeX" style="color: #ff0000;">--}}
+{{--                    @elseif ($transaction->res_field48 == 'AML-APPROVED')--}}
+{{--                        <tr class="odd gradeX" style="color: blue;">--}}
+{{--                    @elseif ($transaction->res_field48 == 'UPLOAD-FAILED')--}}
+{{--                        <tr class="odd gradeX" style="color: #ff0000;">--}}
+{{--                    @else--}}
+{{--                        <tr class="odd gradeX">--}}
+{{--                            @endif--}}
+{{--                            --}}{{--                                <tr class="odd gradeX">--}}
 
-                            <td>{{ $transaction->req_field37 }}</td>
-                            <td>{{ $transaction->req_field49. " ".intval($transaction->req_field4)/100 }}</td>
-                            <td>{{$transaction->req_field50}}</td>
-                            <td>{{intval($transaction->req_field5)/100  }}</td>
-                            {{--                                <td>{{ $transaction->req_field3 }}</td>--}}
-                            <td>{{ $transaction->req_field105  }}</td>
-                            <td>{{ $transaction->req_field108   }}</td>
-                            <td>{{ $transaction->req_field102  }}</td>
-                            <td>{!! $transaction->res_field44 !!} </td>
-                            <td>{{ $transaction->req_field112 }}</td>
-                            <td>@include('transactions.datatables_actions')</td>
+{{--                            <td>{{ $transaction->req_field123  }}</td>--}}
+{{--                            --}}{{--                                    <td>{{ $transaction->req_field7  }}</td>--}}
+{{--                            <td>{{date('Y-m-d H:i:s',strtotime('+3 hours',strtotime(date('Y-m-d H:i:s', ($transaction->date_time_added / 1000)))))}}</td>--}}
+{{--                            <td>{{!empty($transaction->paid_out_date) ? date("Y-m-d H:i:s", strtotime($transaction->paid_out_date)+10800):null}}</td>--}}
+{{--                            <td>{{ $transaction->res_field48 }}</td>--}}
+{{--                            <td>{{ $transaction->req_field41 }}</td>--}}
+{{--                            <td>{{ $transaction->req_field34 }}</td>--}}
+{{--                            <td>{{$transaction->sync_message ? $transaction->sync_message : "N/A" }}</td>--}}
+
+{{--                            <td>{{ $transaction->req_field37 }}</td>--}}
+{{--                            <td>{{ $transaction->req_field49. " ".intval($transaction->req_field4)/100 }}</td>--}}
+{{--                            <td>{{$transaction->req_field50}}</td>--}}
+{{--                            <td>{{intval($transaction->req_field5)/100  }}</td>--}}
+{{--                            --}}{{--                                <td>{{ $transaction->req_field3 }}</td>--}}
+{{--                            <td>{{ $transaction->req_field105  }}</td>--}}
+{{--                            <td>{{ $transaction->req_field108   }}</td>--}}
+{{--                            <td>{{ $transaction->req_field102  }}</td>--}}
+{{--                            <td>{!! $transaction->res_field44 !!} </td>--}}
+{{--                            <td>{{ $transaction->req_field112 }}</td>--}}
+{{--                            <td>@include('transactions.datatables_actions')</td>--}}
 
 
-                        </tr>
-                        @endforeach
+{{--                        </tr>--}}
+{{--                        @endforeach--}}
 
-                </tbody>
+{{--                </tbody>--}}
             </table>
+
         </div>
     </div>
     <!-- /.box-body -->
-    <div class="box-footer clearfix">
-        {{$transactions->render()}}
-    </div>
+{{--    <div class="box-footer clearfix">--}}
+{{--        {{$transactions->render()}}--}}
+{{--    </div>--}}
     <!-- /.box-footer -->
 </div>
+@section('scripts')
+    @include('layouts.datatables_js')
+<script>
+    $(document).ready(function() {
+        $('#txn-table').DataTable( {
+            serverSide: true,
+            ordering: false,
+            searching: true,
+            processing: true,
+            ajax: 'https://datatables.yajrabox.com/eloquent/basic-columns-data',
+            columns: [
+                {data: 0, name: 'req_field123'},
+                {data: 1, name: 'name'},
+                {data: 2, name: 'email'},
+                {data: 3, name: 'created_at'},
+                {data: 4, name: 'updated_at'}
+            ],
+            scrollY: 200,
+            scroller: {
+                loadingIndicator: true
+            },
+        } );
+    } );
+</script>
+    @endsection
+
+

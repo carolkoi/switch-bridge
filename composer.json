@@ -36,7 +36,7 @@
         "webpatser/laravel-uuid": "^3.0",
         "yajra/laravel-datatables-buttons": "^4.6",
         "yajra/laravel-datatables-html": "^4.4",
-        "yajra/laravel-datatables-oracle": "~9.0"
+        "yajra/laravel-datatables-oracle": "^9.15"
     },
     "require-dev": {
         "appointer/swaggervel": "^2.5",
@@ -50,7 +50,10 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "platform": {
+            "php": "7.3"
+        }
     },
     "extra": {
         "laravel": {

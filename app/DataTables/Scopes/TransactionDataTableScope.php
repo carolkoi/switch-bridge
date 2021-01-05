@@ -16,20 +16,12 @@ class TransactionDataTableScope implements DataTableScope
      */
     public function apply($query)
     {
-//        $ddate = "2017-1-31";
-//        $date = new DateTime();
-//        $week = $date->format("W");
-//        $year = $date->format("o");
-//        function etStartAndEndDate($week, $year) {
-//            $dto = new DateTime();
-//            $dto->setISODate($year, $week);
-//            $ret['week_start'] = $dto->format('Y-m-d');
-//            $dto->modify('+6 days');
-//            $ret['week_end'] = Carbon::now()->format('Y-m-d');
-//            return $ret;
-//        }
-//        $day=etStartAndEndDate($week-1,$year);
-////        dd($day);
+
+        $from = Carbon::now()->subDays(2)->format('Y-m-d');
+        $to = Carbon::now()->format('Y-m-d');
+        $day = array('start' => $from, 'end' => $to);
+
+//        dd($day);
 
         if (request()->has('filter-partner') && request()->has('txn-type')
             && request()->has('report_time') && request()->has('from-to')){
@@ -106,6 +98,7 @@ class TransactionDataTableScope implements DataTableScope
             $txnType = request()->input('txn-type');
             return $query->where('req_field41', 'LIKE', "%$txnType%");
         }
-            return $query->take(1000);
+            return $query->whereBetween('paid_out_date', array($day['start'], $day['end']));
+//        return $query;
     }
 }

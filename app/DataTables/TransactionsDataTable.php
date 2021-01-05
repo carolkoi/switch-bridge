@@ -10,16 +10,19 @@ use Carbon;
 
 class TransactionsDataTable extends DataTable
 {
+    /**
+     * @var mixed|null
+     */
+    private $datatables;
 
     /**
      * Build DataTable class.
      *
      * @param mixed $query Results from query() method.
-     * @return \Yajra\DataTables\DataTableAbstract
+     * @return \Yajra\DataTables\DataTableAbstractc
      */
     public function dataTable($query)
     {
-//        header('Access-Control-Allow-Origin: *');
         $dataTable = new EloquentDataTable($query);
 
         return $dataTable
@@ -90,15 +93,32 @@ class TransactionsDataTable extends DataTable
             ]);
     }
 
+//    public function ajax()
+//    {
+//        return datatables()->eloquent($this->query())->make(true);
+//    }
     /**
      * Get query source of dataTable.
      *
      * @param \App\Models\Transactions $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
+//    public function query(Transactions $model)
+//    {
+//        return $model->orderBy('date_time_added', 'desc')->transactionsByCompany()->newQuery();
+//    }
+//    public function query()
+//    {
+//        $transactions = Transactions::select();
+//
+//        return $this->applyScopes($transactions);
+//    }
     public function query(Transactions $model)
     {
-        return $model->orderBy('date_time_added', 'desc')->transactionsByCompany()->newQuery();
+        $query = Transactions::query()->select()->transactionsByCompany()
+            ->orderBy('iso_id', 'desc');
+
+        return $this->applyScopes($query);
     }
 
     /**

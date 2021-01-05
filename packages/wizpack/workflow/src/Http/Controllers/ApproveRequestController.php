@@ -122,6 +122,7 @@ class ApproveRequestController extends AppBaseController
                 ]);
             Flash::success('Float Top Up Request Approved successfully');
             return redirect('/upesi/approvals/' . $workflowApprovalId);
+
         } elseif ($xyw[0]['workflow_type'] == 'transaction_approval') {
 //            dd('here');
             $workflow = $this->approvalsRepository->getApprovalSteps($workflowApprovalId)->get();
@@ -146,6 +147,7 @@ class ApproveRequestController extends AppBaseController
 
             $workflow = $data->pluck('workflowDetails')->first();
             $stageId = $workflowStageToBeApproved['workflow_stage_type_id'] ?: $stageId;
+
 
 
             $txn = Transactions::where('iso_id', $kdata[0]['model_id'])->first();

@@ -41,9 +41,6 @@ class WhenApprovalRequestIsRaised
                 'workflowStages' => function ($q) {
                     return $q->orderBy('weight', 'asc');
                 },
-                'workflowStages.workflowStageType' => function($wt){
-                return $wt->filterByUserCompanyId();
-                },
                 'workflowStages.workflowApprovers',
                  'workflowStages.workflowApprovers.user'
             ]

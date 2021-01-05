@@ -198,6 +198,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         WorkflowApprovalEventServiceProvider::class,
         WizPackApprovalServiceProvider::class,
+        Yajra\Datatables\DatatablesServiceProvider::class,
 
 //        Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
 

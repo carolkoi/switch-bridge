@@ -21,6 +21,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
 use DB;
+use Yajra\Datatables\Facades\Datatables as AjaxDataTables;
+
 
 class TransactionsController extends AppBaseController
 {
@@ -54,6 +56,21 @@ class TransactionsController extends AppBaseController
         return $transactionsDataTable->addScope(new TransactionDataTableScope())
             ->render('transactions.index', ['partners' => $partners, 'txnTypes' => array_unique($txnTypes)]);
 
+    }
+    public function ajaxIndex(){
+        // Using Eloquent
+        return Datatables::eloquent(Transactions::query())->make(true);
+
+// Using Query Builder
+//        return Datatables::queryBuilder(DB::table('users'))->make(true);
+
+// Using Collection
+//        return Datatables::collection(User::all())->make(true);
+
+// Using the Engine Factory
+//        return Datatables::of(User::query())->make(true);
+//        return Datatables::of(DB::table('users'))->make(true);
+//        return Datatables::of(User::all())->make(true);
     }
 
     /**
