@@ -17,7 +17,7 @@ class TransactionDataTableScope implements DataTableScope
     public function apply($query)
     {
 
-        $from = Carbon::now()->subDays(2)->format('Y-m-d');
+        $from = Carbon::now()->subDays(60)->format('Y-m-d');
         $to = Carbon::now()->format('Y-m-d');
         $day = array('start' => $from, 'end' => $to);
 
