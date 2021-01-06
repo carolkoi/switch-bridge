@@ -64,7 +64,7 @@ class TransactionsController extends AppBaseController
         $all_partners = Partner::get();
         $txnTypes = Transactions::pluck('req_field41')->all();
         if ($request->ajax()) {
-            $data = Transactions::select()->transactionsByCompany()->filterByInputString()->orderBy('iso_id', 'desc');
+            $data = Transactions::select()->transactionsByCompany()->orderBy('iso_id', 'desc');
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->editColumn('date_time_added', function ($transaction){
