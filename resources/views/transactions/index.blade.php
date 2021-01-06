@@ -31,7 +31,7 @@
                         </div>
                         <div class="col-md-8">
 
-                            <form action="" id="filtersForm">
+{{--                            <form action="" id="filtersForm">--}}
                                 <div class="">
 
                                     <div class="form-group" id="filter-partner-id" style="display:none">
@@ -55,7 +55,7 @@
                                             </select>
 
                                         @elseif(Auth::check() && Auth::user()->company_id == 11)
-                                            <select name="filter-partner" class="form-control param select2"
+                                            <select name="partner" class="form-control param select2"
                                                     id="filter-partner">
                                                 <option>SELECT PARTNER</option>
 
@@ -79,7 +79,7 @@
 
 
                                     <div class="form-group" id="txn_type_id" style="display: none">
-                                        <select name="txn-type" id="txn_type" class="form-control param select2">
+                                        <select name="type" id="txn_type" class="form-control param select2">
                                             <option value="" selected disabled>SELECT TYPE</option>
                                             @foreach($txnTypes as $key => $txnType)
                                                 <option value="{{ trim($txnType) }}">{{ trim($txnType) }}</option>
@@ -113,17 +113,21 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <input type="text" name="from-to" class="form-control param" id="date_filter"
+                                            <input type="text" name="fromto" class="form-control param" id="date_filter"
                                                    autocomplete="off">
 {{--                                            {!! Form::text('paid_out_date', null, ['class' => 'form-control', 'autocomplete' => 'off', 'id' => 'paid-out-id']) !!}--}}
                                         </div>
                                     </div>
                                     <span class="pull-right">
-                                    <input type="submit" class="btn btn-primary" value="Filter" id="filter-id">
+                                        <div class="btn-group">
+                    <button type="button" name="filter" id="filter-id" class=" btn btn-primary">Filter</button>
+                    <button type="button" name="refresh" id="refresh" class="btn btn-default">Refresh</button>
+                </div>
+{{--                                    <input type="submit" class="btn btn-primary" value="Filter" id="filter-id">--}}
                                 </span>
                                 </div>
                                 {{--                            </div>--}}
-                            </form>
+{{--                            </form>--}}
                         </div>
                     </div>
 
@@ -155,7 +159,7 @@
                             $("#txn_type_id").fadeIn("fast")['show']();
                             $("#txn_type").removeAttr('disabled')
                         } else if ($(this).val()[i] == "DATE") {
-                            $('#filter-id').hide();
+                            // $('#filter-id').hide();
                             $("#date_filter_id").fadeIn("fast")['show']();
                             $("#report_time_id").removeAttr('disabled');
                         }
@@ -174,31 +178,25 @@
             })
 
 
-            let searchParams = new URLSearchParams(window.location.search);
-            // $('#filter-form').on('submit', function(e) {
-            //     table.draw();
-            //     e.preventDefault();
-            // });
-            // let searchParams = (new URL(location)).searchParams;
-            // alert(searchParams);
-            console.log(">>>PARAM>>> "+searchParams);
-            // alert(searchParams);
-            let dateInterval = searchParams.get('from-to');
-            let filterPartner = searchParams.get('filter-partner');
-            // alert(filterPartner);
-            // let filterTxnType = searchParams.get('txn-type');
-            // let selectedPartner = null;
-            let start = moment().startOf('month');
-            let end = moment();
-            // if (filterPartner) {
-            //     selectedPartner = filterPartner;
+            // let searchParams = new URLSearchParams(window.location.search);
+            //
+            // // alert(searchParams);
+            // let dateInterval = searchParams.get('from-to');
+            // let filterPartner = searchParams.get('filter-partner');
+            // // alert(filterPartner);
+            // // let filterTxnType = searchParams.get('txn-type');
+            // // let selectedPartner = null;
+            // let start = moment().startOf('month');
+            // let end = moment();
+            // // if (filterPartner) {
+            // //     selectedPartner = filterPartner;
+            // // }
+            //
+            // if (dateInterval) {
+            //     dateInterval = dateInterval.split(' - ');
+            //     start = dateInterval[0];
+            //     end = dateInterval[1];
             // }
-
-            if (dateInterval) {
-                dateInterval = dateInterval.split(' - ');
-                start = dateInterval[0];
-                end = dateInterval[1];
-            }
             $('#date_filter').daterangepicker({
                 "showDropdowns": true,
                 "showWeekNumbers": true,

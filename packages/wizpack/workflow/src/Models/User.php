@@ -2,6 +2,7 @@
 
 namespace WizPack\Workflow\Models;
 
+use App\Models\Company;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -22,7 +23,7 @@ class User extends Model
     use SoftDeletes;
 
     public $table = 'users';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -69,5 +70,9 @@ class User extends Model
         return "<a href='/users/$this->id'> $this->name</a>";
     }
 
-    
+    public function company(){
+        return $this->belongsTo(Company::class, 'id', 'companyid');
+    }
+
+
 }

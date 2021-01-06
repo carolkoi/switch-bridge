@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\Schema;
 trait ApprovableTrait
 {
     protected static $approvalType = __CLASS__;
-    protected static $workflowType = 'float_top_up_approval';
-    protected static $workflowName = 'Float Top Up Approval';
+    protected static $workflowType = 'transaction_approval';
+    protected static $workflowName = 'Transaction Approval';
 
     /**
      *model listener
@@ -75,9 +75,6 @@ trait ApprovableTrait
      */
     public static function addApproval($model, $workflowType = null)
     {
-        $arr_model = collect($model)->toArray();
-        $workflowType = array_key_exists('iso_id', $arr_model) ? 'transaction_approval' : 'float_top_up_approval';
-
         return event(new ApprovalRequestRaised($model, $workflowType));
     }
 

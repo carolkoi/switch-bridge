@@ -2137,7 +2137,7 @@ class Transactions extends Model implements ApprovableInterface
     }
 
     public function ScopeFilterByInputString($query){
-        $from = Carbon::now()->subDays(60)->format('Y-m-d');
+        $from = Carbon::now()->subDays(7)->format('Y-m-d');
         $to = Carbon::now()->addDay()->format('Y-m-d');
         $day = array('start' => $from, 'end' => $to);
 
@@ -2219,7 +2219,7 @@ class Transactions extends Model implements ApprovableInterface
             $txnType = request()->input('txn-type');
             return $query->where('req_field41', 'LIKE', "%$txnType%");
         }
-//        return $query->whereBetween('paid_out_date', array($day['start'], $day['end']));
-        return $query;
+        return $query->whereBetween('paid_out_date', array($day['start'], $day['end']));
+//        return $query;
     }
 }

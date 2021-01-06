@@ -93,7 +93,8 @@
 <script>
     $(document).ready(function() {
         fetch_data();
-        function fetch_data(partner = '') {
+
+        function fetch_data(partner = '', type = '', fromto = '') {
             let table = $('#txn-table').DataTable({
                 processing: true,
                 serverSide: true,
@@ -104,7 +105,7 @@
                 bStateSave: true,
                 ajax:{
                     url: "{{ route('transactions.index') }}",
-                    data: {partner:partner}
+                    data: {partner:partner, type:type, fromto:fromto}
                 },
 
                 // buttons:['excel'],
@@ -174,20 +175,57 @@
                 // },
             });
         }
-        // $('#filter-partner, #txn_type').change("change", function(event){
-        //     var partner = $('#filter-partner').val();
-        //     var type = $('#txn_type').val();
-        //     console.log(category);
-        //     oTable.fnFilter("^"+ $(this).val() +"$", 2, false, false)
-        //
-        // });
-        $('#filter-partner, #txn_type').change(function(){
-            // alert($('#filter-partner').val());
-                table.draw();
-        });
         setInterval( function () {
-            table.ajax.reload(); // user paging is not reset on reload
-        }, 180000);
+            $('#txn-table').ajax.reload(); // user paging is not reset on reload
+        }, 120000);
+
+        // $('#filter-id').click(function(){
+        //    let partner = $('#filter-partner').val();
+        //     let type = $('#txn_type').val();
+        //     let range = $('#date_filter').val();
+        //     if(partner !== '' &&  type !== '' && range !== '')
+        //     {
+        //         $('#txn-table').DataTable().destroy();
+        //         fetch_data(partner, type, range);
+        //     }
+        //     if(partner !== '' &&  type === '' && range === '')
+        //     {
+        //         $('#txn-table').DataTable().destroy();
+        //         fetch_data(partner, '', '');
+        //     }
+        //     if(partner === '' &&  type !== '' && range === '')
+        //     {
+        //         $('#txn-table').DataTable().destroy();
+        //         fetch_data('', type, '');
+        //     }
+        //     if(partner === '' &&  type === '' && range !== '')
+        //     {
+        //         $('#txn-table').DataTable().destroy();
+        //         fetch_data('', '', range);
+        //     }
+        //     if(partner !== '' &&  type !== '' && range === '')
+        //     {
+        //         $('#txn-table').DataTable().destroy();
+        //         fetch_data(partner, type, '');
+        //     }
+        //     if(partner === '' &&  type !== '' && range !== '')
+        //     {
+        //         $('#txn-table').DataTable().destroy();
+        //         fetch_data('', type, range);
+        //     }
+        //     if(partner !== '' &&  type === '' && range !== '')
+        //     {
+        //         $('#txn-table').DataTable().destroy();
+        //         fetch_data(partner, '', range);
+        //     }
+        // });
+        // $('#refresh').click(function(){
+        //      $('#filter-partner').val();
+        //      $('#txn_type').val();
+        //     $('#date_filter').val();
+        //     fetch_data();
+        // });
+
     } );
 </script>
     @endsection

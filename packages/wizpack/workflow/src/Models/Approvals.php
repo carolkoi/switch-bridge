@@ -154,7 +154,7 @@ class Approvals extends Model
         'user_id' => 'required|exists:users,id',
         'workflow_type' => 'required',
         'sent_by' => 'required',
-        'awaiting_stage_id' => 'required'
+//        'awaiting_stage_id' => 'required'
     ];
     /**
      * Set the company_id.
@@ -249,7 +249,7 @@ class Approvals extends Model
 
     public function approvalStatus()
     {
-        if (!empty($this->approved_at) || $this->approved == true) {
+        if (!empty($this->approved_at)) {
             return '<span class="label label-success">Approved</span>';
         }
 

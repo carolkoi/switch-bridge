@@ -2,8 +2,8 @@
 
 @section('content')
     <section class="content-header">
-        <h3>{{$workflow['name']}}
-            <small>sent by {{$workflow['sent_by']->name}}</small>
+        <h3>{{$workflow['worklflow_type']}}
+            <small>sent by {{\App\Models\User::find($workflow['sent_by'])->name}}</small>
         </h3>
     </section>
 {{--    {{dd($transaction)}}--}}
@@ -15,24 +15,24 @@
                         <thead>
                         <tr class="thead-dark">
                             <th>#</th>
-                            <th>Approval stage Partner</th>
-                            <th class="text-center">Order</th>
+                            <th>Approval Type</th>
+{{--                            <th class="text-center">Order</th>--}}
                             <th class="text-center">Approvers</th>
                             <th class="text-center" colspan="2">Approval Status</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($approvals as $key=>$stage)
+{{--                        @foreach($approvers as $key=>$stage)--}}
                             <tr>
-                                <td>{{$key+1}}</td>
-                                <td>{{$stage['workflow_stage_type_name']}}</td>
-                                <td class="text-center">{{$stage['weight']}} </td>
+                                <td>#</td>
+                                <td>Transaction Approval</td>
+{{--                                <td class="text-center">{{$stage['weight']}} </td>--}}
                                 <td>
                                     <table class="table">
-                                        @foreach($stage['workflow_approvers'] as $key=>$approver)
+                                        @foreach($approvers as $key=>$approver)
                                             <tr>
                                                 <td>{{$key+1}}</td>
-                                                <td>{{$approver['approver_name']}}</td>
+                                                <td>{{\App\Models\User::find($approver['user_id'])->name}}</td>
                                             </tr>
 
                                         @endforeach
@@ -73,7 +73,7 @@
                                                 @endif
 
 
-                                                @if(empty($stage['rejected_by']) && empty($stage['approved_by']) && !$approvalHasBeenRejected)
+                                                @if(empty($stage['rejected_by']) && empty($stage['approved_by']) )
 {{--                                                    <span class="label label-info">Approval pending</span>--}}
                                                         @if($workflow['workflow_type'] != 'float_top_up_approval')
 
@@ -90,25 +90,32 @@
 
                                                 @endif
 
-                                                @if(empty($stage['rejected_by']) && empty($stage['approved_by']) && $approvalHasBeenRejected)
-                                                    <span class="label label-default text-center"></span>
+                                                @if(empty($workflow['rejected_by']) && empty($workflow['approved_by']))
+{{--                                                    {{dd($workflow)}}--}}
+{{--                                                    <span class="label label-default text-center">Approved By:--}}
+{{--                                                    {{\App\Models\User::find(Auth::id())->name}}</span>--}}
                                                 @endif
                                             </td>
                                         </tr>
                                     </table>
                                 </td>
-                                <td class="text-center" style="vertical-align: center">
-                                    @if($stage['is_current_stage'] && $stage['canApproveStage'] && !$stage['is_stage_complete'])
+                                <td class="text-center" id="approve-col" style="vertical-align: center">
+                                    @if(Auth::check() && auth()->user()->can('Can Update Transaction')
+&& \WizPack\Workflow\Models\Approvals::find($workflow['id'])->approved_at == null && \WizPack\Workflow\Models\Approvals::find($workflow['id'])->rejected_at == null)
 {{--                                        <a href="{{url('/wizpack/workflowApproveRequest/'.$workflow['id'].'/'.$stage['id'])}}"--}}
 {{--                                           class="btn btn-primary btn-sm"> CheckList</a>--}}
-                                        <a href="{{url('/upesi/transaction-approve-request/'.$workflow['id'].'/'.$stage['id'])}}"
-                                           class="btn btn-success btn-sm">Approve</a>
-                                        <a href="{{url('/upesi/transaction-Reject-request/'.$workflow['id'].'/'.$stage['id'])}}"
+                                        <a href="{{url('/upesi/transaction-approve-request/'.$workflow['id'])}}"
+                                           class="btn btn-success btn-sm" id="approve">Approve</a>
+                                        <a href="" id="reject-id"
                                            class="btn btn-danger btn-sm">Reject</a>
+                                    @else
+                                        <span class="label label-primary text-center" id="label">Approved By:
+                                                    {{\App\Models\User::find(Auth::id())->name}}
+                                        at {{\Carbon\Carbon::now()->format('Y-m-d H:i:s')}}</span>
                                     @endif
                                 </td>
                             </tr>
-                        @endforeach
+{{--                        @endforeach--}}
                         </tbody>
                     </table>
                 </div>
@@ -116,4 +123,16 @@
             </div>
         </div>
     </section>
+@endsection
+{{--{{url('/upesi/transaction-Reject-request/'.$workflow['id'].'/'.$stage['id'])}}--}}
+@section('scripts')
+{{--    <script>--}}
+{{--        $('#label').hide();--}}
+{{--        $('#approve').on('click', function () {--}}
+{{--            $('#approve, #reject-id').hide()--}}
+{{--            $('#label').show();--}}
+
+{{--        })--}}
+
+{{--    </script>--}}
 @endsection

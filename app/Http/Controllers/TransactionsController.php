@@ -21,6 +21,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 //use Yajra\DataTables\DataTables;
 use DB;
+use WizPack\Workflow\Models\Approvals;
 use Yajra\Datatables\Facades\Datatables as AjaxDataTables;
 use DataTables;
 
@@ -64,7 +65,7 @@ class TransactionsController extends AppBaseController
         $all_partners = Partner::get();
         $txnTypes = Transactions::pluck('req_field41')->all();
         if ($request->ajax()) {
-            $data = Transactions::select()->transactionsByCompany()->orderBy('iso_id', 'desc');
+            $data = Transactions::select()->transactionsByCompany()->filterByInputString()->orderBy('iso_id', 'desc');
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->editColumn('date_time_added', function ($transaction){
@@ -80,25 +81,12 @@ class TransactionsController extends AppBaseController
                 ->editColumn('req_field5', function ($transaction){
                     return  intval($transaction->req_field5)/100;
                 })
-                ->addColumn('action', function($transaction){
-                    return $this->getActionColumn($transaction);
-                })
-//                ->filter(function ($instance) use ($request) {
-//                    if ($request->has('filter-partner')) {
-////                        dd($request);
-//
-//                        $instance->where('req_field123', $request->get('filter-partner'));
-//                    }elseif ($request->has('txn-type')){
-//                        $txnType = $request->input('txn-type');
-//                        $instance ->where('req_field41', 'LIKE', "%$txnType%");
-//                    }elseif ($request->has('filter-partner') && $request->has('txn-type')){
-//                        $partner =$request->input('filter-partner');
-//                        $txnType = $request->input('txn-type');
-//                        $instance->where('req_field123', $partner)
-//                            ->where('req_field41', 'LIKE', "%$txnType%");
-//                    }
+                ->editColumn('res_field48', 'transactions.datatables_status')
+                ->addColumn('action', 'transactions.datatables_actions')
+//                ->addColumn('action', function($transaction){
+//                    return $this->getActionColumn($transaction);
 //                })
-                ->rawColumns(['action', 'res_field44'])
+                ->rawColumns(['action', 'res_field44','res_field48'])
                 ->setRowAttr([
                     'style' => function($query){
                         return $query->res_field48 == "FAILED" || $query->res_field48 == "UPLOAD-FAILED" ? 'color: #ff0000;' :
@@ -238,10 +226,24 @@ class TransactionsController extends AppBaseController
                 'comments' => $input['res_field44'],
                 'sync_message' => $request->has('sync_message') ? $input['sync_message'] : null,
             ]);
+        $approval = Approvals::updateOrCreate([
+            'model_id' => $transactions->iso_id,
+        ],
+            [
+                'user_id' => Auth::id(),
+                'sent_by' => Auth::id(),
+                'workflow_type' => 'transaction_approval',
+                'collection_name' => 'transaction_approval',
+                'model_id' =>  $transactions->iso_id,
+                'model_type' => 'App\Models\Transactions',
+                'awaiting_stage_id' => null,
+                'company_id' => Auth::user()->company_id
+            ]);
 
         //initiating the approval request
-        $approval = new Transactions();
-        $approval->addApproval($transactions);
+//        $approval = new Transactions();
+//        $approval->addApproval($transactions);
+
 
         Flash::success('Approval Request to Update the Transaction sent successfully.');
 

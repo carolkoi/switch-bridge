@@ -139,7 +139,7 @@
                 </div>
                 <br/>
 
-                @include('transactions.pending_table')
+                @include('transactions.pending_raw_table')
             </div>
         </div>
         <div class="text-center">

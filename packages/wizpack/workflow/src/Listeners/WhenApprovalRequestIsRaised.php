@@ -54,7 +54,7 @@ class WhenApprovalRequestIsRaised
             'sent_by' => Auth::id(),
             'workflow_type' => $event->workflowType,
             'collection_name' => $event->workflowType,
-            'model_id' => $event->workflowType == 'transaction_approval' ? $event->model->iso_id : $event->model->floattransactionid,
+            'model_id' =>  $event->model->model_id,
             'awaiting_stage_id' => $firstApprovalStage->id,
             'company_id' => Auth::user()->company_id
         ]);

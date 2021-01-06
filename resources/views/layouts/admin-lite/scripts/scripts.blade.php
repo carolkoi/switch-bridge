@@ -52,6 +52,15 @@
     <script src="{{ URL::asset('js/bootstrap4-toggle.min.js') }}" ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.js"></script>
 
+    <script>
+        $(document).ready(function () {
+            $(".select2").select2({
+                width: '100%',
+                placeholder: 'SELECT FILTER PARAMETER',
+            });
+        });
+    </script>
+
     @else
     <script src="{{\App\Helpers::assetToggle()}}assets/lib/jquery/jquery.min.js" type="text/javascript"></script>
 
@@ -110,15 +119,15 @@
     <script src="{{\App\Helpers::assetToggle()}}js/bootstrap4-toggle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.js"></script>
 
-@endif
-<script>
-    $(document).ready(function () {
-        $(".select2").select2({
-            width: '100%',
-            placeholder: 'SELECT FILTER PARAMETER',
+    <script>
+        $(document).ready(function () {
+            $(".select2").select2({
+                width: '100%',
+                placeholder: 'SELECT FILTER PARAMETER',
+            });
         });
-    });
-</script>
+    </script>
+@endif
 {{--<script>--}}
 {{--    CKEDITOR.replace('editor')--}}
 

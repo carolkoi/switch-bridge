@@ -57,16 +57,6 @@ class ApprovalsRepository extends BaseRepository
             $with = [
                 'user',
                 'sentBy',
-                'workflowSteps.user',
-                'workflowSteps.user',
-                'workflowSteps.workflowStage.workflowApprovers.user',
-                'workflowSteps.workflowStage.workflowStageType',
-                'workflow.workflowStages.workflowApprovers',
-                'workflow.workflowStages.workflowStageType',
-                'workflow.workflowStages.workflowSteps.user',
-                'workflow.workflowStages' => function ($q) {
-                    return $q->orderBy('weight', 'asc');
-                },
                 'approvable'
 
             ];

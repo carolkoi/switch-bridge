@@ -93,7 +93,7 @@
                 </div>
                 <br/>
 
-                @include('transactions.success_table')
+                @include('transactions.success_raw_table')
             </div>
         </div>
         <div class="text-center">

@@ -3,10 +3,12 @@
 namespace WizPack\Workflow\Http\Controllers;
 
 use App\Models\SessionTxn;
+use App\Models\Transactions;
 use Illuminate\Support\Facades\Auth;
 use WizPack\Workflow\DataTables\ApprovalsDataTable;
 use WizPack\Workflow\Http\Requests\CreateApprovalsRequest;
 use WizPack\Workflow\Http\Requests\UpdateApprovalsRequest;
+use WizPack\Workflow\Models\WorkflowStageApprovers;
 use WizPack\Workflow\Repositories\ApprovalsRepository;
 use WizPack\Workflow\Transformers\ApprovalTransformer;
 use Exception;
@@ -77,42 +79,25 @@ class ApprovalsController extends AppBaseController
      */
     public function show($id)
     {
-            $workflow = $this->approvalsRepository->getApprovalSteps($id)->get();
+            $workflow = $this->approvalsRepository->find($id);
+            $approvers = WorkflowStageApprovers::with(['user', 'user.company'])->
+                where('user_id', Auth::id())->get()->toArray();
+//            dd($approvers);
 
 
-//         $workflow = $this->approvalsRepository->getApprovalSteps($id)->get();
-
-            $transformedResult = new Collection($workflow, new ApprovalTransformer());
-
-            $data = collect((new Manager())->createData($transformedResult)->toArray());
-
-            $currentStage = $data->pluck('currentApprovalStage')->first();
-
-            $approvers = $data->pluck('currentStageApprovers')->flatten(2);
-
-            $approvals = $data->pluck('approvalStagesStepsAndApprovers')->flatten(1);
-//        dd($approvals);
-
-            $workflow = $data->pluck('workflowDetails')->first();
-
-            $transaction = $data->pluck('workflowInfo')->first();
-
-            $approvalHasBeenRejected = $data->pluck('approvalRejected')->first();
-            $sessionTxn = SessionTxn::where('txn_id', $transaction->iso_id)->first();
-            if (empty($approvals)) {
+            $sessionTxn = SessionTxn::where('txn_id', $workflow->model_id)->first();
+            $transaction = Transactions::find($workflow->model_id);
+            if (empty($workflow)) {
                 Flash::error('Approvals not found');
 
                 return redirect(route('upesi::approvals.index'));
             }
 
             return view('wizpack::approvals.show', compact(
-                    'approvals',
-                    'workflow',
                     'approvers',
-                    'currentStage',
-                    'approvalHasBeenRejected',
-                    'transaction',
-                    'sessionTxn'
+                    'workflow',
+                    'sessionTxn',
+                    'transaction'
                 )
             );
         }

@@ -139,7 +139,7 @@
                 </div>
                 <br/>
 
-                @include('transactions.failed_table')
+                @include('transactions.failed_raw_table')
             </div>
         </div>
         <div class="text-center">

@@ -134,19 +134,17 @@ class UserController extends AppBaseController
      */
     public function update($id, Request $request)
     {
-//        $random = str_shuffle('abcdefghjklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ234567890!$%^&!$%^&');
-//        $password = substr($random, 0, 15);
-//        $xty = 'jRwm7PEO$z';
-//        $hashed_password = Hash::make($xty);
+        $random = str_shuffle('abcdefghjklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ234567890!$%^&!$%^&');
+        $password = substr($random, 0, 15);
+
+        $hashed_password = Hash::make($password);
 //        dd($hashed_password);
         $user = $this->userRepository->find($id);
         $input = $request->all();
-//        dd($input);
-//        $random = str_shuffle('abcdefghjklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ234567890!$%^&!$%^&');
-//        $password = substr($random, 0, 10);
-//////        dd($password);
-//        $input['password'] = bcrypt($password);
-//        dd($user->role_id);
+
+        $input['password'] = $hashed_password;
+        $input['password_confirmation'] = $hashed_password;
+
 
         if (empty($user)) {
             Flash::error('User not found');
@@ -156,13 +154,9 @@ class UserController extends AppBaseController
         $role = \Spatie\Permission\Models\Role::where('id', $user->role_id)->first()['name'];
 
         $user = $this->userRepository->update($input, $id);
-//        $user->password = $hashed_password;
         $user->syncRoles($role);
-//        dd($input, $user->password);
-
-//        Mail::to($user->email)->send(new AccountCreated($user, $password));
-//
-//        Flash::success('User updated successfully.');
+        Mail::to($user->email)->send(new AccountCreated($user, $password));
+        Flash::success('User updated successfully.');
 
         return redirect(route('users.index'));
     }

@@ -29,10 +29,10 @@ class ApprovalsDataTable extends DataTable
             ->addColumn('status', function ($query){
                 return $query->approvalStatus();
             })
-            ->addColumn('stage', function ($query){
-                return WorkflowStageType::where('company_id', $query->awaitingStage->workflowStageType->company_id)->first()->name;
-//                return WorkF($query->awaitingStage->workflowStageType->company_id);
-            })
+//            ->addColumn('stage', function ($query){
+//                return WorkflowStageType::where('company_id', $query->awaitingStage->workflowStageType->company_id)->first()->name;
+////                return WorkF($query->awaitingStage->workflowStageType->company_id);
+//            })
             ->addColumn('sent_at', function ($query){
 //                return $query->created_at->format('Y-m-d H:i:s');
                 return date('Y-m-d H:i:s',strtotime('+3 hours',strtotime($query->created_at->format('Y-m-d H:i:s'))));
@@ -116,7 +116,7 @@ class ApprovalsDataTable extends DataTable
                 'name' => 'user.name'
             ],
             'sent_at',
-            'stage',
+//            'stage',
             'receiver' => [
                 'name' => 'transaction.req_field108'
             ],

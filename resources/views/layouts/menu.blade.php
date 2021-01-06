@@ -96,7 +96,7 @@
     </ul>
 </li>
 @endif
-@if(Auth::check() && auth()->user()->can('Can View All User Roles'))
+{{--@if(Auth::check() && auth()->user()->can('Can View All User Roles'))--}}
 <li class="divider" style="color:white; padding: 15px"><span><b>Administration</b></span></li>
 <li class="treeview {{ Request::is('members*') ? 'active menu-open' : '' }}">
     <a class="dropdown-toggle" href="#">
@@ -121,7 +121,7 @@
 {{--            @endif--}}
 {{--            @endif--}}
     </ul>
-@endif
+{{--@endif--}}
 
 {{--@if(Auth::check() && auth()->user()->can('Can Authorize Transaction Update'))--}}
 
