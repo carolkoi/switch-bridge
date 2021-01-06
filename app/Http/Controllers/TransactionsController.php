@@ -97,14 +97,14 @@ class TransactionsController extends AppBaseController
         return view('transactions.index', ['partners' => $partners, 'txnTypes' => array_unique($txnTypes)]);
     }
 
-    protected function getActionColumn($data): string
+    protected function getActionColumn($data)
     {
         $showUrl = route('transactions.show', $data->iso_id);
         $editUrl = route('transactions.edit', $data->iso_id);
         if (Auth::check() && auth()->user()->can('Can Update Transaction')) {
             return "<a class='btn btn-primary btn-sm' data-value='$data->id' href='$showUrl'><i class='glyphicon glyphicon-eye-open'></i></a>
                         <a class='btn btn-default btn-sm' data-value='$data->id' href='$editUrl'><i class='glyphicon glyphicon-edit'></i></a>
-                        ";
+ ";
         }
     }
 
