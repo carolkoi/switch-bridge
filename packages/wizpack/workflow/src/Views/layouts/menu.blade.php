@@ -1,4 +1,4 @@
-
+@if(Auth::check() && auth()->user()->can('Can Update Transaction'))
 <li class="{{ Request::is('upesi/approvals*') ? 'active' : '' }} treeview">
     <a href="#">
         <i class="fa fa-clipboard"></i> <span>Approval Requests</span>
@@ -19,7 +19,7 @@
 
     </ul>
 </li>
-{{--@endif--}}
+@endif
 
 @if(Auth::check() && auth()->user()->can('Can Edit Approval Flow'))
 
