@@ -77,31 +77,6 @@ class ApprovalsController extends AppBaseController
      */
     public function show($id)
     {
-        $xyw = collect($this->approvalsRepository->where('id', $id)->get())->toArray();
-//        dd($xyw[0]['workflow_type']);
-        if ($xyw[0]['workflow_type'] == 'float_top_up_approval') {
-            $workflow = $this->approvalsRepository->getFloatApprovalSteps($id)->get();
-//            dd($workflow);
-
-            $transformedResult = new Collection($workflow, new ApprovalTransformer());
-
-            $data = collect((new Manager())->createData($transformedResult)->toArray()['data']);
-
-            $currentStage = $data->pluck('currentApprovalStage')->first();
-
-            $approvers = $data->pluck('currentStageApprovers')->flatten(2);
-
-            $approvals = $data->pluck('approvalStagesStepsAndApprovers')->flatten(1);
-//        dd($approvals);
-
-            $workflow = $data->pluck('workflowDetails')->first();
-
-            $transaction = $data->pluck('workflowInfo')->first();
-
-            $approvalHasBeenRejected = $data->pluck('approvalRejected')->first();
-
-        } elseif ($xyw[0]['workflow_type'] == 'transaction_approval') {
-//            dd('here');
             $workflow = $this->approvalsRepository->getApprovalSteps($id)->get();
 
 
@@ -110,7 +85,6 @@ class ApprovalsController extends AppBaseController
             $transformedResult = new Collection($workflow, new ApprovalTransformer());
 
             $data = collect((new Manager())->createData($transformedResult)->toArray());
-            dd('here433111',$data);
 
             $currentStage = $data->pluck('currentApprovalStage')->first();
 
@@ -125,13 +99,11 @@ class ApprovalsController extends AppBaseController
 
             $approvalHasBeenRejected = $data->pluck('approvalRejected')->first();
             $sessionTxn = SessionTxn::where('txn_id', $transaction->iso_id)->first();
-        }
             if (empty($approvals)) {
                 Flash::error('Approvals not found');
 
                 return redirect(route('upesi::approvals.index'));
             }
-//        dd('there',$workflow['workflow_type'] );
 
             return view('wizpack::approvals.show', compact(
                     'approvals',
