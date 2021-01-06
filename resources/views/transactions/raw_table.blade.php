@@ -29,10 +29,11 @@
                     <th>Primary Txn Ref</th>
                     <th>Sync Msg Ref</th>
                     <th>TXN No</th>
+                    <th>Sender Cur</th>
                     <th>Amount Sent</th>
                     <th>Rcver Cur</th>
                     <th>Amount Received</th>
-                    <th>Sender Cur</th>
+{{--                    <th>Sender Cur</th>--}}
                     <th>Sender</th>
                     <th>Receiver</th>
                     <th>Receiver Acc/No </th>
@@ -109,7 +110,7 @@
             columns: [
                 // {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                 {data: 'req_field123', name: 'req_field123'},
-                {data: 'req_field7', name: 'req_field7'},
+                // {data: 'req_field7', name: 'req_field7'},
                 {data: 'date_time_added', name: 'date_time_added'},
                 {data: 'paid_out_date', name: 'paid_out_date'},
                 {data: 'res_field48', name: 'res_field48'},
@@ -121,7 +122,7 @@
                 {data: 'req_field4', name: 'req_field4'},
                 {data: 'req_field50', name: 'req_field50'},
                 {data: 'req_field5', name: 'req_field5'},
-                {data: 'req_field3', name: 'req_field3'},
+                // {data: 'req_field3', name: 'req_field3'},
                 {data: 'req_field105', name: 'req_field105'},
                 {data: 'req_field108', name: 'req_field108'},
                 {data: 'req_field102', name: 'req_field102'},

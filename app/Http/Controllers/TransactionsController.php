@@ -43,42 +43,70 @@ class TransactionsController extends AppBaseController
      * @param TransactionsDataTable $transactionsDataTable
      * @return Response
      */
-    public function index(TransactionsDataTable $transactionsDataTable)
-    {
-
-        $partners = Partner::get();
-
-//        dd($partners);
-        $txnTypes = Transactions::pluck('req_field41')->all();
-//        Log::info(json_encode($txnTypes));
-//        dd(collect($txnTypes));
-        //$transactions = Transactions::transactionsByCompany()->orderBy('date_time_added', 'desc')->paginate(30);
-        return $transactionsDataTable->addScope(new TransactionDataTableScope())
-            ->render('transactions.index', ['partners' => $partners, 'txnTypes' => array_unique($txnTypes)]);
-
-    }
-
-//    public function index(Request $request)
+//    public function index(TransactionsDataTable $transactionsDataTable)
 //    {
+//
 //        $partners = Partner::get();
+//
+////        dd($partners);
 //        $txnTypes = Transactions::pluck('req_field41')->all();
-//        if ($request->ajax()) {
-//            $data = Transactions::select()->transactionsByCompany()->orderBy('iso_id', 'desc');
-//            return Datatables::of($data)
-//                ->addIndexColumn()
-//                ->addColumn('action', function($row){
+////        Log::info(json_encode($txnTypes));
+////        dd(collect($txnTypes));
+//        //$transactions = Transactions::transactionsByCompany()->orderBy('date_time_added', 'desc')->paginate(30);
+//        return $transactionsDataTable->addScope(new TransactionDataTableScope())
+//            ->render('transactions.index', ['partners' => $partners, 'txnTypes' => array_unique($txnTypes)]);
 //
-//                    $btn = '<a href="javascript:void(0)" class="edit btn btn-primary btn-sm">View</a>';
-//
-//                    return $btn;
-//                })
-//                ->rawColumns(['action'])
-//                ->make(true);
-//        }
-//
-//        return view('transactions.index', ['partners' => $partners, 'txnTypes' => array_unique($txnTypes)]);
 //    }
 
+    public function index(Request $request)
+    {
+        $partners = Partner::get();
+        $txnTypes = Transactions::pluck('req_field41')->all();
+        if ($request->ajax()) {
+            $data = Transactions::select()->transactionsByCompany()->orderBy('iso_id', 'desc');
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->editColumn('date_time_added', function ($transaction){
+                   return date('Y-m-d H:i:s',strtotime('+3 hours',strtotime(date('Y-m-d H:i:s', ($transaction->date_time_added / 1000)))));
+                })
+                ->editColumn('paid_out_date', function ($transaction){
+                  return  !empty($transaction->paid_out_date) ? date("Y-m-d H:i:s", strtotime($transaction->paid_out_date)+10800):null;
+//                    date('Y-m-d H:i:s',strtotime('+3 hours',strtotime(date('Y-m-d H:i:s', ($transaction->date_time_added / 1000)))));
+                })
+                ->editColumn('req_field4', function ($transaction){
+                    return intval($transaction->req_field4)/100;
+                   })
+                ->editColumn('req_field5', function ($transaction){
+                    return  intval($transaction->req_field4)/100;
+                })
+                ->addColumn('action', function($transaction){
+                    return $this->getActionColumn($transaction);
+                    $route = route('transactions.edit', $transaction->iso_id);
+
+//                    $btn = '<a href=$route class="edit btn btn-primary btn-sm">View</a> <a href="" class="edit btn btn-primary btn-sm">View</a>';
+//                  $btnn =  '<a href="{{ route('transactions.edit', $iso_id) }}" class='btn btn-default btn-sm'>
+//        <i class="glyphicon glyphicon-edit"></i>
+//    </a>';
+
+                    return $btn;
+                })
+                ->rawColumns(['action', 'res_field44'])
+                ->make(true);
+        }
+
+        return view('transactions.index', ['partners' => $partners, 'txnTypes' => array_unique($txnTypes)]);
+    }
+
+    protected function getActionColumn($data): string
+    {
+        $showUrl = route('transactions.show', $data->iso_id);
+        $editUrl = route('transactions.edit', $data->iso_id);
+        if (Auth::check() && auth()->user()->can('Can Update Transaction')) {
+            return "<a class='btn btn-primary btn-sm' data-value='$data->id' href='$showUrl'><i class='glyphicon glyphicon-eye-open'></i></a>
+                        <a class='btn btn-default btn-sm' data-value='$data->id' href='$editUrl'><i class='glyphicon glyphicon-edit'></i></a>
+                        ";
+        }
+    }
 
 
 
