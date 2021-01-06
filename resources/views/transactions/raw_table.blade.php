@@ -92,10 +92,14 @@
 
 <script>
     $(document).ready(function() {
-        $('#txn-table').DataTable( {
+        let table = $('#txn-table').DataTable( {
             processing: true,
             serverSide: true,
             pageLength:30,
+            retrieve: true,
+            paginate: true,
+            bPaginate: true,
+            bStateSave: true,
             ajax: "{{ route('transactions.index') }}",
             // buttons:['excel'],
             buttons : ['csv', 'excel', 'pdf', 'print', 'reset', 'reload'],
@@ -134,8 +138,8 @@
             "dom": "<'row'<'col-md-4 col-sm-12'<'pull-left'f>><'col-md-8 col-sm-12'<'table-group-actions pull-right'B>>r><'table-container't><'row'<'col-md-12 col-sm-12'pli>>", // datatable layout
             // "pagingType": "bootstrap_extended",
             "renderer": "bootstrap",
-            "searchDelay": 1500,
-            "deferRender": true,
+            "searchDelay": 800,
+            "bDeferRender": true,
             "autoWidth": false, // disable fixed width and enable fluid table
             "language": { // language settings
                 "lengthMenu": "<span class='dt-length-style'><i class='fa fa-bars'></i> &nbsp;View &nbsp;&nbsp;_MENU_ &nbsp;records&nbsp;&nbsp; </span>",
@@ -163,6 +167,9 @@
             //     loadingIndicator: true
             // },
         } );
+        setInterval( function () {
+            table.ajax.reload(); // user paging is not reset on reload
+        }, 180000);
     } );
 </script>
     @endsection

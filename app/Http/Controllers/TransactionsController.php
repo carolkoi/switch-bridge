@@ -60,7 +60,8 @@ class TransactionsController extends AppBaseController
 
     public function index(Request $request)
     {
-        $partners = Partner::get();
+        $upesi_partners = Partner::WhereNotIn('partner_id', ['NGAO', 'CHIPPERCASH'])->get();
+        $all_partners = Partner::get();
         $txnTypes = Transactions::pluck('req_field41')->all();
         if ($request->ajax()) {
             $data = Transactions::select()->transactionsByCompany()->filterByInputString()->orderBy('iso_id', 'desc');
@@ -77,7 +78,7 @@ class TransactionsController extends AppBaseController
                     return intval($transaction->req_field4)/100;
                    })
                 ->editColumn('req_field5', function ($transaction){
-                    return  intval($transaction->req_field4)/100;
+                    return  intval($transaction->req_field5)/100;
                 })
                 ->addColumn('action', function($transaction){
                     return $this->getActionColumn($transaction);
@@ -92,7 +93,7 @@ class TransactionsController extends AppBaseController
                 ->make(true);
         }
 
-        return view('transactions.index', ['partners' => $partners, 'txnTypes' => array_unique($txnTypes)]);
+        return view('transactions.index', ['partners' => $all_partners, 'upesi_partners' => $upesi_partners, 'txnTypes' => array_unique($txnTypes)]);
     }
 
     protected function getActionColumn($data)

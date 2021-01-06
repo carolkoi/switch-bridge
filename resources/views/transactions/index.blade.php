@@ -39,7 +39,7 @@
                                             <select name="filter-partner" class="form-control param select2"
                                                     id="filter-partner">
                                                 <option>SELECT PARTNER</option>
-                                                @foreach($partners as $partner)
+                                                @foreach($upesi_partners as $partner)
                                                     <option
                                                         value="{{$partner->partner_name}}">{{$partner->partner_name}}
                                                     </option>
@@ -50,26 +50,24 @@
                                             <select name="filter-partner" class="form-control param select2"
                                                     id="filter-partner">
                                                 <option>SELECT PARTNER</option>
-                                                                                                @foreach($partners as $partner)
                                                 <option
                                                     value="10">CHIPPERCASH</option>
-                                                                                                @endforeach
                                             </select>
 
                                         @elseif(Auth::check() && Auth::user()->company_id == 11)
                                             <select name="filter-partner" class="form-control param select2"
                                                     id="filter-partner">
                                                 <option>SELECT PARTNER</option>
-                                                                                                @foreach($partners as $partner)
+
                                                 <option
                                                     value="11">NGAO</option>
-                                                                                                @endforeach
                                             </select>
 
                                         @else
                                             <select name="filter-partner" class="form-control param select2"
                                                     id="filter-partner">
                                                 <option>SELECT PARTNER</option>
+                                                <option value="" selected disabled>SELECT PARTNER</option>
                                                 @foreach($partners as $partner)
                                                     <option
                                                         value="{{$partner->partner_name}}">{{$partner->partner_name}}</option>
@@ -176,13 +174,13 @@
             })
 
 
-            // let searchParams = new URLSearchParams(window.location.search);
+            let searchParams = new URLSearchParams(window.location.search);
             // $('#filter-form').on('submit', function(e) {
             //     table.draw();
             //     e.preventDefault();
             // });
-            let searchParams = (new URL(location)).searchParams;
-            // alert(searchParams);
+            // let searchParams = (new URL(location)).searchParams;
+            alert(searchParams);
             console.log(">>>PARAM>>> "+searchParams);
             // alert(searchParams);
             let dateInterval = searchParams.get('from-to');
