@@ -43,41 +43,41 @@ class TransactionsController extends AppBaseController
      * @param TransactionsDataTable $transactionsDataTable
      * @return Response
      */
-//    public function index(TransactionsDataTable $transactionsDataTable)
-//    {
-//
-//        $partners = Partner::get();
-//
-////        dd($partners);
-//        $txnTypes = Transactions::pluck('req_field41')->all();
-////        Log::info(json_encode($txnTypes));
-////        dd(collect($txnTypes));
-//        //$transactions = Transactions::transactionsByCompany()->orderBy('date_time_added', 'desc')->paginate(30);
-//        return $transactionsDataTable->addScope(new TransactionDataTableScope())
-//            ->render('transactions.index', ['partners' => $partners, 'txnTypes' => array_unique($txnTypes)]);
-//
-//    }
-
-    public function index(Request $request)
+    public function index(TransactionsDataTable $transactionsDataTable)
     {
+
         $partners = Partner::get();
+
+//        dd($partners);
         $txnTypes = Transactions::pluck('req_field41')->all();
-        if ($request->ajax()) {
-            $data = Transactions::select()->transactionsByCompany()->orderBy('iso_id', 'desc');
-            return Datatables::of($data)
-                ->addIndexColumn()
-                ->addColumn('action', function($row){
+//        Log::info(json_encode($txnTypes));
+//        dd(collect($txnTypes));
+        //$transactions = Transactions::transactionsByCompany()->orderBy('date_time_added', 'desc')->paginate(30);
+        return $transactionsDataTable->addScope(new TransactionDataTableScope())
+            ->render('transactions.index', ['partners' => $partners, 'txnTypes' => array_unique($txnTypes)]);
 
-                    $btn = '<a href="javascript:void(0)" class="edit btn btn-primary btn-sm">View</a>';
-
-                    return $btn;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
-        }
-
-        return view('transactions.index', ['partners' => $partners, 'txnTypes' => array_unique($txnTypes)]);
     }
+
+//    public function index(Request $request)
+//    {
+//        $partners = Partner::get();
+//        $txnTypes = Transactions::pluck('req_field41')->all();
+//        if ($request->ajax()) {
+//            $data = Transactions::select()->transactionsByCompany()->orderBy('iso_id', 'desc');
+//            return Datatables::of($data)
+//                ->addIndexColumn()
+//                ->addColumn('action', function($row){
+//
+//                    $btn = '<a href="javascript:void(0)" class="edit btn btn-primary btn-sm">View</a>';
+//
+//                    return $btn;
+//                })
+//                ->rawColumns(['action'])
+//                ->make(true);
+//        }
+//
+//        return view('transactions.index', ['partners' => $partners, 'txnTypes' => array_unique($txnTypes)]);
+//    }
 
 
 
