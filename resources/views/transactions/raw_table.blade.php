@@ -174,16 +174,16 @@
                 // },
             });
         }
-        $('#filter-partner').change(function(){
-            var partner_id = $('#filter-partner').val();
-            alert(partner_id)
-            var txn_type = $('#txn_type').val();
-
-            $('#txn-table').DataTable().destroy();
-
-            fetch_data(partner_id);
-            // fetch_data(txn_type);
-            // fetch_data(partner_id, txn_type);
+        // $('#filter-partner, #txn_type').change("change", function(event){
+        //     var partner = $('#filter-partner').val();
+        //     var type = $('#txn_type').val();
+        //     console.log(category);
+        //     oTable.fnFilter("^"+ $(this).val() +"$", 2, false, false)
+        //
+        // });
+        $('#filter-partner, #txn_type').change(function(){
+            // alert($('#filter-partner').val());
+                table.draw();
         });
         setInterval( function () {
             table.ajax.reload(); // user paging is not reset on reload

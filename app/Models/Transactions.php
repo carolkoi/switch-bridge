@@ -2085,7 +2085,6 @@ class Transactions extends Model implements ApprovableInterface
 
 //        dd(Auth::user()->company_id);
         if ($company_id == 9) {
-
 //            return $query->where('req_field123', 'not like', "%NGAO%" )->where('req_field123', 'not like', "%CHIPPERCASH%");
             return $query->WhereNotIn('req_field123', ['NGAO', 'CHIPPERCASH']);
         }elseif ($company_id == 10){
@@ -2143,6 +2142,7 @@ class Transactions extends Model implements ApprovableInterface
         $day = array('start' => $from, 'end' => $to);
 
 //        dd($day);
+
 
         if (request()->has('filter-partner') && request()->has('txn-type')
             && request()->has('report_time') && request()->has('from-to')){

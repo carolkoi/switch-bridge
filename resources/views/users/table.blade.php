@@ -16,8 +16,6 @@
                 //});
             }).ajax.url('https://asgard.slafrica.net:9810/members/users').load();
                 // .ajax.url('https://asgard.slafrica.net:9810/members/users').load();
-
-
         });
     </script>
 

@@ -146,6 +146,7 @@ class User extends Authenticatable
     public function company(){
     return $this->belongsTo(Company::class, 'company_id', 'companyid');
     }
+
     public function scopeUsers($query, $userCompanyId = null){
         $company_id = $userCompanyId ?: auth()->user()->company_id;
         if ($company_id == 1){

@@ -83,6 +83,21 @@ class TransactionsController extends AppBaseController
                 ->addColumn('action', function($transaction){
                     return $this->getActionColumn($transaction);
                 })
+//                ->filter(function ($instance) use ($request) {
+//                    if ($request->has('filter-partner')) {
+////                        dd($request);
+//
+//                        $instance->where('req_field123', $request->get('filter-partner'));
+//                    }elseif ($request->has('txn-type')){
+//                        $txnType = $request->input('txn-type');
+//                        $instance ->where('req_field41', 'LIKE', "%$txnType%");
+//                    }elseif ($request->has('filter-partner') && $request->has('txn-type')){
+//                        $partner =$request->input('filter-partner');
+//                        $txnType = $request->input('txn-type');
+//                        $instance->where('req_field123', $partner)
+//                            ->where('req_field41', 'LIKE', "%$txnType%");
+//                    }
+//                })
                 ->rawColumns(['action', 'res_field44'])
                 ->setRowAttr([
                     'style' => function($query){
