@@ -180,7 +180,7 @@
             //     e.preventDefault();
             // });
             // let searchParams = (new URL(location)).searchParams;
-            alert(searchParams);
+            // alert(searchParams);
             console.log(">>>PARAM>>> "+searchParams);
             // alert(searchParams);
             let dateInterval = searchParams.get('from-to');
