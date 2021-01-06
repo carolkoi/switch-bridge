@@ -63,7 +63,7 @@ class TransactionsController extends AppBaseController
         $partners = Partner::get();
         $txnTypes = Transactions::pluck('req_field41')->all();
         if ($request->ajax()) {
-            $data = Transactions::select()->transactionsByCompany()->orderBy('iso_id', 'desc');
+            $data = Transactions::select()->transactionsByCompany()->filterByInputString()->orderBy('iso_id', 'desc');
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->editColumn('date_time_added', function ($transaction){
@@ -81,16 +81,14 @@ class TransactionsController extends AppBaseController
                 })
                 ->addColumn('action', function($transaction){
                     return $this->getActionColumn($transaction);
-                    $route = route('transactions.edit', $transaction->iso_id);
-
-//                    $btn = '<a href=$route class="edit btn btn-primary btn-sm">View</a> <a href="" class="edit btn btn-primary btn-sm">View</a>';
-//                  $btnn =  '<a href="{{ route('transactions.edit', $iso_id) }}" class='btn btn-default btn-sm'>
-//        <i class="glyphicon glyphicon-edit"></i>
-//    </a>';
-
-                    return $btn;
                 })
                 ->rawColumns(['action', 'res_field44'])
+                ->setRowAttr([
+                    'style' => function($query){
+                        return $query->res_field48 == "FAILED" || $query->res_field48 == "UPLOAD-FAILED" ? 'color: #ff0000;' :
+                            ( $query->res_field48 == "COMPLETED" ? 'color: #2E8B57;' : null);
+                    }
+                ])
                 ->make(true);
         }
 

@@ -4,17 +4,7 @@
 @endsection
 
 <div class="loader"></div>
-{{--<div class="box box-info">--}}
-    <div class="box-header with-border">
-        <h3 class="box-title">Latest Transactions</h3>
 
-{{--        <div class="box-tools pull-right">--}}
-{{--            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>--}}
-{{--            </button>--}}
-{{--            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>--}}
-{{--        </div>--}}
-    </div>
-    <!-- /.box-header -->
 {{--    <div class="box-body">--}}
 
         <div class="table-responsive">
@@ -99,11 +89,13 @@
 {{--</div>--}}
 @section('scripts')
     @include('layouts.datatables_js')
+
 <script>
     $(document).ready(function() {
         $('#txn-table').DataTable( {
             processing: true,
             serverSide: true,
+            pageLength:30,
             ajax: "{{ route('transactions.index') }}",
             // buttons:['excel'],
             buttons : ['csv', 'excel', 'pdf', 'print', 'reset', 'reload'],
@@ -131,18 +123,35 @@
 
                 {data: 'action', name: 'action', orderable: false, searchable: false},
                 ],
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
+            'lengthMenu' : [
+            [ 10, 25, 50, -1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+            "language": { // language settings
+                "lengthMenu": "<span class='dt-length-style'><i class='fa fa-bars'></i> &nbsp;View &nbsp;&nbsp;_MENU_ &nbsp;records&nbsp;&nbsp; </span>",
+                "info": "<span class='dt-length-records'><i class='fa fa-globe'></i> &nbsp;Found&nbsp;<span class='badge bold badge-dt'>_TOTAL_</span>&nbsp;total records </span>",
+                "infoEmpty": "<span class='dt-length-records'>No records found to show</span>",
+                "emptyTable": "No data available in table",
+                "infoFiltered": "<span class=' '>(filtered from <span class='badge bold badge-dt'>_MAX_</span> total records)</span>",
+                "zeroRecords": "No matching records found",
+                "search": "<i class='fa fa-search'></i>",
+                "paginate": {
+                    "previous": "Prev",
+                    "next": "Next",
+                    "last": "Last",
+                    "first": "First",
+                    "page": "<span class=' '><i class='fa fa-eye'></i> &nbsp;Page&nbsp;&nbsp;</span>",
+                    "pageOf": "<span class=' '>&nbsp;of&nbsp;</span>"
+                },
+                "sProcessing": "Please wait..."
+            }
 
             // "deferRender": true,
-            // initComplete: function () {
-            //     this.api().columns().every(function () {
-            //         var column = this;
-            //         var input = document.createElement("input");
-            //         $(input).appendTo($(column.footer()).empty())
-            //             .on('change', function () {
-            //                 column.search($(this).val(), false, false, true).draw();
-            //             });
-            //     });
-            // }
+
             // scrollY: 200,
             // scroller: {
             //     loadingIndicator: true
