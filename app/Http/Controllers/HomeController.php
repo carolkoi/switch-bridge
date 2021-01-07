@@ -26,13 +26,13 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $from = Carbon::now()->subDays(2)->format('Y-m-d');
-        $to = Carbon::now()->addDays(1)->format('Y-m-d');
-        $day = array('start' => $from, 'end' => $to);
-        $all_transactions = Transactions::transactionsByCompany()->take(2000)->get();
-        //$no_of_trns = Transactions::transactionsByCompany()->get()->count();
-
-        $today_transactions = Transactions::transactionsByCompany()->whereDate('created_at', Carbon::today())->get();
+//        $from = Carbon::now()->subDays(2)->format('Y-m-d');
+//        $to = Carbon::now()->addDays(1)->format('Y-m-d');
+//        $day = array('start' => $from, 'end' => $to);
+//        $all_transactions = Transactions::transactionsByCompany()->take(2000)->get();
+//        //$no_of_trns = Transactions::transactionsByCompany()->get()->count();
+//
+//        $today_transactions = Transactions::transactionsByCompany()->whereDate('created_at', Carbon::today())->get();
 //        $yesterday = date("Y-m-d m:h:s", strtotime( '-1 days' ) );
 //        $yesterday_txns = Transactions::transactionsByCompany()
 //            ->whereDate('created_at', $yesterday )->get();
@@ -45,7 +45,6 @@ class HomeController extends Controller
         }
 
 //        $transactions->setBaseUrl('custom/url');
-        return view('home', ['transactions' => $transactions, 'all_transactions' => $all_transactions,
-            'today_transactions' => $today_transactions] );
+        return view('home', ['transactions' => $transactions] );
     }
 }
