@@ -120,21 +120,21 @@
                                 <i class="fa fa-times"></i></button>
                         </div>
                     </div>
-                    <div class="box-body">
-                        <table  class="table table-striped table-hover table-bordered table-fw-widget table no-margin">
-                            <thead>
-                            <th></th>
-                            <th>Yesterday's Report</th>
-                            <th>Today's Report</th>
-                            </thead>
-                            <tbody>
-                            <tr><td>All Transactions</td><td><span class=" badge bg-aqua">{{count($yesterday_txns)}}</span></td><td><span class="badge bg-aqua">{{count($today_transactions)}}</span></td></tr>
-                            <tr><td>Successful Transactions</td><td><span class=" badge bg-green">{{$yesterday_txns->where('res_field48', 'COMPLETED')->count()}}</span></td><td><span class="badge bg-green">{{$today_transactions->where('res_field48', 'COMPLETED')->count()}}</span></td></tr>
-                            <tr><td>Pending Transaction</td><td><span class=" badge bg-yellow">{{$yesterday_txns->WhereNotIn('res_field48', ['COMPLETED', 'FAILED'])->count()}}</span></td><td><span class="badge bg-yellow">{{$today_transactions->WhereNotIn('res_field48', ['COMPLETED', 'FAILED'])->count()}}</span></td></tr>
-                            <tr><td>Failed Transaction</td><td><span class=" badge bg-red">{{$yesterday_txns->where('res_field48', 'FAILED')->count()}}</span></td><td><span class="badge bg-red">{{$today_transactions->where('res_field48', 'FAILED')->count()}}</span></td></tr>
-                            </tbody>
-                        </table>
-                    </div>
+{{--                    <div class="box-body">--}}
+{{--                        <table  class="table table-striped table-hover table-bordered table-fw-widget table no-margin">--}}
+{{--                            <thead>--}}
+{{--                            <th></th>--}}
+{{--                            <th>Yesterday's Report</th>--}}
+{{--                            <th>Today's Report</th>--}}
+{{--                            </thead>--}}
+{{--                            <tbody>--}}
+{{--                            <tr><td>All Transactions</td><td><span class=" badge bg-aqua">{{count($yesterday_txns)}}</span></td><td><span class="badge bg-aqua">{{count($today_transactions)}}</span></td></tr>--}}
+{{--                            <tr><td>Successful Transactions</td><td><span class=" badge bg-green">{{$yesterday_txns->where('res_field48', 'COMPLETED')->count()}}</span></td><td><span class="badge bg-green">{{$today_transactions->where('res_field48', 'COMPLETED')->count()}}</span></td></tr>--}}
+{{--                            <tr><td>Pending Transaction</td><td><span class=" badge bg-yellow">{{$yesterday_txns->WhereNotIn('res_field48', ['COMPLETED', 'FAILED'])->count()}}</span></td><td><span class="badge bg-yellow">{{$today_transactions->WhereNotIn('res_field48', ['COMPLETED', 'FAILED'])->count()}}</span></td></tr>--}}
+{{--                            <tr><td>Failed Transaction</td><td><span class=" badge bg-red">{{$yesterday_txns->where('res_field48', 'FAILED')->count()}}</span></td><td><span class="badge bg-red">{{$today_transactions->where('res_field48', 'FAILED')->count()}}</span></td></tr>--}}
+{{--                            </tbody>--}}
+{{--                        </table>--}}
+{{--                    </div>--}}
                 </div>
             </div>
                 </div>

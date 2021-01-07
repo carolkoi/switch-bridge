@@ -26,14 +26,18 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $from = Carbon::now()->subDays(2)->format('Y-m-d');
+        $to = Carbon::now()->addDays(1)->format('Y-m-d');
+        $day = array('start' => $from, 'end' => $to);
         $all_transactions = Transactions::transactionsByCompany()->take(2000)->get();
         //$no_of_trns = Transactions::transactionsByCompany()->get()->count();
 
         $today_transactions = Transactions::transactionsByCompany()->whereDate('created_at', Carbon::today())->get();
-        $yesterday = date("Y-m-d m:h:s", strtotime( '-1 days' ) );
-        $yesterday_txns = Transactions::transactionsByCompany()->whereDate('created_at', $yesterday )->get();
+//        $yesterday = date("Y-m-d m:h:s", strtotime( '-1 days' ) );
+//        $yesterday_txns = Transactions::transactionsByCompany()
+//            ->whereDate('created_at', $yesterday )->get();
 
-        $transactions = Transactions::transactionsByCompany()->orderBy('date_time_added', 'desc')->take(2000)->paginate(30);
+        $transactions = Transactions::transactionsByCompany()->orderBy('iso_id', 'desc')->take(2000)->paginate(30);
         if (env('APP_ENV') == 'dev'){
             $transactions->setPath('https://dev.slafrica.net:6810/');
         }elseif (env('APP_ENV') == 'prod'){
@@ -42,6 +46,6 @@ class HomeController extends Controller
 
 //        $transactions->setBaseUrl('custom/url');
         return view('home', ['transactions' => $transactions, 'all_transactions' => $all_transactions,
-            'today_transactions' => $today_transactions, 'yesterday_txns' => $yesterday_txns] );
+            'today_transactions' => $today_transactions] );
     }
 }
