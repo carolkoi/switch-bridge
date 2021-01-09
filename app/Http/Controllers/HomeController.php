@@ -60,11 +60,11 @@ class HomeController extends Controller
 //        $transactions->paginate(2);
 //        dd($transactions);
 
-        if (env('APP_ENV') == 'dev'){
-            $transactions->setPath('https://dev.slafrica.net:6810/');
-        }elseif (env('APP_ENV') == 'prod'){
-            $transactions->setPath('https://asgard.slafrica.net:9810/');
-        }
+//        if (env('APP_ENV') == 'dev'){
+//            $transactions->setPath('https://dev.slafrica.net:6810/');
+//        }elseif (env('APP_ENV') == 'prod'){
+//            $transactions->setPath('https://asgard.slafrica.net:9810/');
+//        }
 
 //        $transactions->setBaseUrl('custom/url');
         return view('home', ['transactions' => $transactions,
