@@ -228,7 +228,7 @@
             $.ajax({
                 type : 'get',
                 url : '{{URL::to('search')}}',
-                data:{'search':$value, partner:partner},
+                data:{'search':$value},
                 success:function(response){
                     console.log(response);
                     // response = JSON.parse(response);
