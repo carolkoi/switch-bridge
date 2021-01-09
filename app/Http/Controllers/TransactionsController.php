@@ -411,12 +411,12 @@ class TransactionsController extends AppBaseController
             }
             elseif (!empty($partner)){
 //                dd('here');
-                $transactions = Transactions::transactionsByCompany()->orderBy('iso_id', 'desc')
+                $transactions = Transactions::orderBy('iso_id', 'desc')->transactionsByCompany()
                     ->where('req_field123', 'LIKE', "%$partner%");
             }
             else
 //                return redirect(route('transactions.index'));
-                $transactions = Transactions::transactionsByCompany()->orderBy('iso_id', 'desc')->get();
+                $transactions = Transactions::orderBy('iso_id', 'desc')->transactionsByCompany()->get();
 
             $total_transactions = $transactions->count();
             if($total_transactions > 0)

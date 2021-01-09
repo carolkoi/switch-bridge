@@ -131,7 +131,7 @@
     <div class="box-body">
 {{--        <form>--}}
             <div class="input-group custom-search-form">
-                <input type="text" name="search" id="search" class="form-control" style="width: 500px" placeholder="Search Customer Data" />
+                <input type="text" name="search" id="search" class="form-control" style="width: 500px" placeholder="Search Transaction Data" />
 {{--                <input type="text" class="form-control" name="search" id="search" style="width: 500px" placeholder="Search...">--}}
 {{--                <span class="input-group-btn">--}}
     <button class="btn btn-default-sm" id="search-id" type="submit">
