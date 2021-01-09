@@ -75,7 +75,7 @@ class TransactionsController extends AppBaseController
             ->skip($skip + (($currentPage - 1) * $take))
             ->orderBy('iso_id','desc')->get();
 
-        $transactions = Transactions::orderBy('iso_id', 'desc')->transactionsByCompany()->whereBetween('paid_out_date', array($date['start'], $date['end']))->paginate(30);
+        $transactions = Transactions::orderBy('iso_id', 'desc')->transactionsByCompany()->paginate(30);
 
 
         return view('transactions.index', ['transactions' =>$transactions, 'partners' => $all_partners,
