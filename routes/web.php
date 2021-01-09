@@ -127,3 +127,6 @@ Route::resource('floats', 'FloatController');
 Route::resource('floatBalances', 'FloatBalanceController');
 
 Route::resource('floatBalances', 'FloatBalanceController');
+Route::get('recent-transactions', 'TransactionsController@vueIndex')->name('transaction.index');
+Route::get('/search', 'TransactionsController@search')->name('transaction.search');
+

@@ -41,6 +41,26 @@ class UserController extends AppBaseController
 //        dd(User::users()->get());
         return $userDataTable->render('users.index');
     }
+//    public function index(Request $request)
+//    {
+////        dd(User::users()->get());
+//        if ($request->ajax()) {
+//            $data = User::select()->with('company')->orderBy('id', 'desc');
+//            return Datatables::of($data)
+//                ->addIndexColumn()
+//                ->addColumn('role', function ($query){
+//                    return \Spatie\Permission\Models\Role::where('id', $query->role_id)->first()['name'];
+//                })
+//                ->addColumn('company', function ($query){
+//                    return $query->company['companyname'];
+//                })
+//                ->addColumn('action', 'users.datatables_actions')
+//                ->rawColumns(['action'])
+//                ->make(true);
+//        }
+//
+//        return view('users.index');
+//    }
 
     /**
      * Show the form for creating a new User.

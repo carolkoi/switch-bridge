@@ -20,10 +20,11 @@
                             <th>Primary Txn Ref</th>
                             <th>Sync Msg Ref</th>
                             <th>TXN No</th>
+                            <th>Sender Cur</th>
                             <th>Amount Sent</th>
                             <th>Rcver Cur</th>
                             <th>Amount Received</th>
-<!--                            <th>Sender Currency Code</th>-->
+<!--                             <th>Sender Cur</th>-->
                             <th>Sender</th>
                             <th>Receiver</th>
                             <th>Receiver Acc/No </th>
@@ -35,26 +36,28 @@
                         </thead>
                         <tbody>
                         <tr v-for="item in resultQuery">
+
                             <td>{{ item.req_field123  }}</td>
-                            <td>{{ item.req_field7  }}</td>
+<!--                            <td>{{ item.req_field7  }}</td>-->
                             <td>{{item.date_time_added}}</td>
-                            <td>item.paid_out_date</td>
+                            <td>{{item.paid_out_date}}</td>
                             <td>{{ item.res_field48 }}</td>
                             <td>{{ item.req_field41 }}</td>
                             <td>{{ item.req_field34 }}</td>
                             <td>{{item.sync_message ? item.sync_message : "N/A" }}</td>
 
                             <td>{{ item.req_field37 }}</td>
-                            <td>{{ item.req_field49}}{{intval(item.req_field4)/100 }}</td>
+                            <td>{{ item.req_field49}}</td>
+                            <td>{{item.req_field4 }}</td>
                             <td>{{item.req_field50}}</td>
-                            <td>{{intval(item.req_field5)/100  }}</td>
+                            <td>{{item.req_field5  }}</td>
                             <td>{{ item.req_field3 }}</td>
                             <td>{{ item.req_field105  }}</td>
                             <td>{{ item.req_field108   }}</td>
                             <td>{{ item.req_field102  }}</td>
-                            <td>{!! item.res_field44 !!} </td>
+                            <td><span v-html='item.res_field44'></span></td>
                             <td>{{ item.req_field112 }}</td>
-                            <td>@include('transactions.datatables_actions')</td>
+                            <td></td>
 
                         </tr>
                         </tbody>
@@ -67,18 +70,18 @@
                     <!--            <pre>{{qtyOrderedArr}}</pre>-->
 
 
-                    <div class="dataTables_paginate paging_simple_numbers" id="dataTableBuilder_paginate">
-                        <ul class="pagination">
-                            <li class="paginate_button previous pointed" id="dataTableBuilder_previous"><a
-                                @click="getReorderItems(links.prev)">Previous</a>
-                            </li>
-                            <li class="paginate_button active"><a href="#" aria-controls="dataTableBuilder" data-dt-idx="1"
-                                                                  tabindex="0">{{meta.current_page}}</a></li>
-                            <li class="paginate_button next pointed" id="dataTableBuilder_next"><a
-                                @click="getReorderItems(links.next)">Next</a>
-                            </li>
-                        </ul>
-                    </div>
+<!--                    <div class="dataTables_paginate paging_simple_numbers" id="dataTableBuilder_paginate">-->
+<!--                        <ul class="pagination">-->
+<!--                            <li class="paginate_button previous pointed" id="dataTableBuilder_previous"><a-->
+<!--                                @click="getReorderItems(links.prev)">Previous</a>-->
+<!--                            </li>-->
+<!--                            <li class="paginate_button active"><a href="#" aria-controls="dataTableBuilder" data-dt-idx="1"-->
+<!--                                                                  tabindex="0">{{meta.current_page}}</a></li>-->
+<!--                            <li class="paginate_button next pointed" id="dataTableBuilder_next"><a-->
+<!--                                @click="getReorderItems(links.next)">Next</a>-->
+<!--                            </li>-->
+<!--                        </ul>-->
+<!--                    </div>-->
                 </div>
 
             </div>
@@ -119,7 +122,8 @@
         },
 
         methods: {
-            getReorderItems(api) {
+            getAllTransactions(api) {
+                console.log('here');
 
                 axios.get(api).then(response => {
                     this.items = response.data.data;
@@ -130,7 +134,7 @@
                 })
             },
             fetchItems() {
-                this.getReorderItems(this.api);
+                this.getAllTransactions(this.api);
             },
             addReorderItem(item) {
                 this.selectedItems.push(item)

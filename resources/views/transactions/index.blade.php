@@ -12,128 +12,135 @@
         <div class="clearfix"></div>
         <div class="box box-primary">
             <div class="box-body">
-                <div class="row">
+{{--                <form id="date-form">--}}
+{{--                <div class="row">--}}
+{{--                    <div class="col-md-12">--}}
 
-                    <div class="col-md-12">
-                        <div class="col-md-4">
-                            <form method="POST" id="filter-form-a" action="">
-                                <div class="form-group ">
-                                    <select name="filter-parameter" id="filter-parameter-id"
-                                            class="form-control select2" multiple>
-                                        <option>SELECT FILTER PARAMETER</option>
-                                        <option value="PARTNER" data-relation-id="filter-partner-id">PARTNER</option>
-                                        <option value="TXN_TYPE" data-relation-id="txn_type_id">TRANSACTION TYPE
-                                        </option>
-                                        <option value="DATE" data-relation-id="date_filter_id">DATE</option>
-                                    </select>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="col-md-8">
+{{--                    <form id="date-form">--}}
+{{--                            <div class="col-md-4">--}}
+{{--                                                                            <label>SELECT DATE</label>--}}
 
-{{--                            <form action="" id="filtersForm">--}}
-                                <div class="">
+{{--                                <select name="reportdate" id="report_time_id" class="form-control param select2">--}}
+{{--                                    <option>SELECT REPORTING DATE</option>--}}
+{{--                                    <option value="trn-date">TRANSACTION DATE</option>--}}
+{{--                                    <option value="paid-date">PAID OUT DATE</option>--}}
 
-                                    <div class="form-group" id="filter-partner-id" style="display:none">
-                                        @if(Auth::check() && Auth::user()->company_id == 9)
-                                            <select name="filter-partner" class="form-control param select2"
-                                                    id="filter-partner">
-                                                <option>SELECT PARTNER</option>
-                                                @foreach($upesi_partners as $partner)
-                                                    <option
-                                                        value="{{$partner->partner_name}}">{{$partner->partner_name}}
-                                                    </option>
-                                                @endforeach
-                                            </select>
+{{--                                </select>--}}
+{{--                            </div>--}}
+{{--                          <div class="col-md-6" style="" id="date_range">--}}
+{{--                                <div class="input-group date">--}}
+{{--                                    <div class="input-group-addon">--}}
+{{--                                        <i class="fa fa-calendar"></i>--}}
+{{--                                    </div>--}}
 
-                                        @elseif(Auth::check() && Auth::user()->company_id == 10)
-                                            <select name="filter-partner" class="form-control param select2"
-                                                    id="filter-partner">
-                                                <option>SELECT PARTNER</option>
-                                                <option
-                                                    value="10">CHIPPERCASH</option>
-                                            </select>
+{{--                                    <input type="text" name="fromto" class="form-control param" id="date_filter"--}}
+{{--                                           autocomplete="off">--}}
+{{--                                                                                {!! Form::text('paid_out_date', null, ['class' => 'form-control', 'autocomplete' => 'off', 'id' => 'paid-out-id']) !!}--}}
+{{--                                </div>--}}
 
-                                        @elseif(Auth::check() && Auth::user()->company_id == 11)
-                                            <select name="partner" class="form-control param select2"
-                                                    id="filter-partner">
-                                                <option>SELECT PARTNER</option>
+{{--                          </div>--}}
 
-                                                <option
-                                                    value="11">NGAO</option>
-                                            </select>
-
-                                        @else
-                                            <select name="filter-partner" class="form-control param select2"
-                                                    id="filter-partner">
-                                                <option>SELECT PARTNER</option>
-                                                <option value="" selected disabled>SELECT PARTNER</option>
-                                                @foreach($partners as $partner)
-                                                    <option
-                                                        value="{{$partner->partner_name}}">{{$partner->partner_name}}</option>
-                                                @endforeach
-                                            </select>
-
-                                        @endif
-                                    </div>
+{{--                        <span class="pull-right">--}}
+{{--                                        <div class="btn-group" id="button_filter" style="display: none">--}}
+{{--                                                <button type="button" name="filter" id="filter-id" class=" btn btn-primary">Filter</button>--}}
+{{--                                                <button type="button" name="refresh" id="refresh" class="btn btn-default">Refresh</button>--}}
+{{--                                            </div>--}}
+{{--                                    <input type="submit" class="btn btn-primary" value="Filter" id="filter-id">--}}
+{{--                                </span>--}}
 
 
-                                    <div class="form-group" id="txn_type_id" style="display: none">
-                                        <select name="type" id="txn_type" class="form-control param select2">
-                                            <option value="" selected disabled>SELECT TYPE</option>
-                                            @foreach($txnTypes as $key => $txnType)
-                                                <option value="{{ trim($txnType) }}">{{ trim($txnType) }}</option>
-                                                @endforeach
-{{--                                            <option>SELECT TRANSACTION TYPE</option>--}}
-{{--                                            <option value="BANK">BANK</option>--}}
-{{--                                            <option value="CASH">CASH</option>--}}
-{{--                                            <option value="MOBILE">MOBILE</option>--}}
-{{--                                            <option value="PAYOUT">PAYOUT</option>--}}
-                                        </select>
+{{--                    </form>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--                <div class="row">--}}
+
+{{--                    <div class="col-md-12">--}}
+
+
+{{--                    <div class="">--}}
+{{--                                    <div class="col-md-4">--}}
+{{--                                        <label>SELECT PARTNER</label>--}}
+{{--                                    <div class="form-group" id="filter-partner-id" style="">--}}
+{{--                                        @if(Auth::check() && Auth::user()->company_id == 9)--}}
+{{--                                            <select name="partner" class="form-control param select2"--}}
+{{--                                                    id="filter-partner">--}}
+{{--                                                <option>SELECT PARTNER</option>--}}
+{{--                                                @foreach($upesi_partners as $partner)--}}
+{{--                                                    <option--}}
+{{--                                                        value="{{$partner->partner_name}}">{{$partner->partner_name}}--}}
+{{--                                                    </option>--}}
+{{--                                                @endforeach--}}
+{{--                                            </select>--}}
+
+{{--                                        @elseif(Auth::check() && Auth::user()->company_id == 10)--}}
+{{--                                            <select name="partner" class="form-control param select2"--}}
+{{--                                                    id="filter-partner">--}}
+{{--                                                <option>SELECT PARTNER</option>--}}
+{{--                                                <option--}}
+{{--                                                    value="10">CHIPPERCASH</option>--}}
+{{--                                            </select>--}}
+
+{{--                                        @elseif(Auth::check() && Auth::user()->company_id == 11)--}}
+{{--                                            <select name="partner" class="form-control param select2"--}}
+{{--                                                    id="filter-partner">--}}
+{{--                                                <option>SELECT PARTNER</option>--}}
+
+{{--                                                <option--}}
+{{--                                                    value="11">NGAO</option>--}}
+{{--                                            </select>--}}
+
+{{--                                        @else--}}
+{{--                                            <select name="partner" class="form-control param select2"--}}
+{{--                                                    id="filter-partner">--}}
+{{--                                                <option>SELECT PARTNER</option>--}}
+{{--                                                <option value="" selected disabled>SELECT PARTNER</option>--}}
+{{--                                                @foreach($partners as $partner)--}}
+{{--                                                    <option--}}
+{{--                                                        value="{{$partner->partner_name}}">{{$partner->partner_name}}</option>--}}
+{{--                                                @endforeach--}}
+{{--                                            </select>--}}
+
+{{--                                        @endif--}}
+{{--                                    </div>--}}
+{{--                                    </div>--}}
+{{--                                    <div class="col-md-4">--}}
+
+{{--                                    <div class="form-group" id="txn_type_id" style="">--}}
+{{--                                        <select name="txn-type" id="txn_type" class="form-control param select2">--}}
+{{--                                            <option value="" selected disabled>SELECT TYPE</option>--}}
+{{--                                            @foreach($txnTypes as $key => $txnType)--}}
+{{--                                                <option value="{{ trim($txnType) }}">{{ trim($txnType) }}</option>--}}
+{{--                                                @endforeach--}}
+{{--                                        </select>--}}
 {{--                                        {{Form::label('', 'Select Partner')}}--}}
 {{--                                        {{Form::select('txn-type', $txnTypes, null, ['class' => 'form-control param select2',--}}
 {{--                                    'id' => 'txn_type'])}}--}}
 
-                                    </div>
-                                    <div class="form-group" id="date_filter_id" style="display: none">
+{{--                                    </div>--}}
+{{--                                    </div>--}}
+{{--                                    <div class="form-group" id="date_filter_id" style="">--}}
 
-                                        {{--                                        <div class="input-group-addon">--}}
-                                        {{--                                            <i class="fa fa-calendar"></i>--}}
-                                        {{--                                        </div>--}}
-                                        <select name="report_time" id="report_time_id" class="form-control param select2">
-                                            {{--                                            <option>SELECT REPORTING DATE</option>--}}
-                                            <option value="trn_date">TRANSACTION DATE</option>
-                                            <option value="paid_date">PAID OUT DATE</option>
+{{--                                    </div>--}}
 
-                                        </select>
-                                        <br><br>
-{{--                                        <input type="text" name="from-to" class="form-control param" id="date_filter" autocomplete="off">--}}
-{{--                                        {!! Form::label('paid_out_date', 'Paid Out Date:') !!}--}}
-                                        <div class="input-group date">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                            <input type="text" name="fromto" class="form-control param" id="date_filter"
-                                                   autocomplete="off">
-{{--                                            {!! Form::text('paid_out_date', null, ['class' => 'form-control', 'autocomplete' => 'off', 'id' => 'paid-out-id']) !!}--}}
-                                        </div>
-                                    </div>
-                                    <span class="pull-right">
-                                        <div class="btn-group">
-                    <button type="button" name="filter" id="filter-id" class=" btn btn-primary">Filter</button>
-                    <button type="button" name="refresh" id="refresh" class="btn btn-default">Refresh</button>
-                </div>
-{{--                                    <input type="submit" class="btn btn-primary" value="Filter" id="filter-id">--}}
-                                </span>
-                                </div>
-                                {{--                            </div>--}}
-{{--                            </form>--}}
-                        </div>
-                    </div>
 
-                </div>
-                <br/>
-{{--                <div class="loader"></div>--}}
+{{--                                </div>--}}
+{{--                        </div>--}}
+
+
+{{--                </div>--}}
+{{--                    <span class="pull-right">--}}
+{{--                                        <div class="btn-group" id="button_filter" style="display: none">--}}
+{{--                                                <button type="button" name="filter" id="filter-id" class=" btn btn-primary">Filter</button>--}}
+{{--                                                <button type="button" name="refresh" id="refresh" class="btn btn-default">Refresh</button>--}}
+{{--                                        </div>--}}
+{{--                                                            <input type="submit" class="btn btn-primary" value="Filter" id="filter-id">--}}
+{{--                                </span>--}}
+
+{{--                </form>--}}
+
+            </div>
+                <br>
+
 
 
                 @include('transactions.raw_table')
@@ -143,60 +150,51 @@
 
         </div>
     </div>
+
 @endsection
-@section('js')
+@section('scripts')
     <script>
         $(document).ready(function () {
-            $("#filter-parameter-id").change(function () {
-                $("#filter-partner-id, #txn_type_id, #date_filter_id").hide();
-                $(".param").attr('disabled', 'disabled').val('');
-                if ($(this).val()) {
-                    for (var i = 0; i < $(this).val().length; i++) {
-                        if ($(this).val()[i] == "PARTNER") {
-                            $("#filter-partner-id").fadeIn("fast")['show']();
-                            $("#filter-partner").removeAttr('disabled');
-                        } else if ($(this).val()[i] == "TXN_TYPE") {
-                            $("#txn_type_id").fadeIn("fast")['show']();
-                            $("#txn_type").removeAttr('disabled')
-                        } else if ($(this).val()[i] == "DATE") {
-                            // $('#filter-id').hide();
-                            $("#date_filter_id").fadeIn("fast")['show']();
-                            $("#report_time_id").removeAttr('disabled');
-                        }
-                    }
+            // $('#date_range, #button_filter').hide();
+            // $('#report_time_id').on('change', function () {
+            //     // alert('here')
+            //     $('#date_range, #button_filter').show();
+            //
+            // })
+            // $('#filter-id').on('click', function () {
+            //    let report = $('#report_time_id').val();
+            //     let range = $('#date_filter').val();
+            // })
 
-                }
-            }).trigger('change');
-            $("#report_time_id").change(function () {
-                $('#date_filter').hide();
-                // $("#filter-id").attr('disabled', 'disabled').val('');
-                $("#date_filter").fadeIn("fast")['show']();
-                $("#date_filter").removeAttr('disabled');
-            }).trigger('change');
-            $('#date_filter').on('click', function () {
-                $("#filter-id").fadeIn("fast")['show']();
-            })
+            // $("#date-form").submit(function(e) {
+            //     let data = $("#date-form").serialize();
+            //     alert(data)
+            //     let dateInteval = data.get('fromtto');
+            //     alert(dateInteval)
+            //     if (dateInterval) {
+            //         dateInterval = dateInterval.split('%20');
+            //         start = dateInterval[0];
+            //         end = dateInterval[2];
+            //     }
+            //     e.preventDefault();
+            // });
 
-
-            // let searchParams = new URLSearchParams(window.location.search);
+            let searchParams = new URLSearchParams(window.location.search);
             //
             // // alert(searchParams);
-            // let dateInterval = searchParams.get('from-to');
-            // let filterPartner = searchParams.get('filter-partner');
-            // // alert(filterPartner);
-            // // let filterTxnType = searchParams.get('txn-type');
-            // // let selectedPartner = null;
-            // let start = moment().startOf('month');
-            // let end = moment();
-            // // if (filterPartner) {
-            // //     selectedPartner = filterPartner;
-            // // }
-            //
-            // if (dateInterval) {
-            //     dateInterval = dateInterval.split(' - ');
-            //     start = dateInterval[0];
-            //     end = dateInterval[1];
+            let dateInterval = searchParams.get('fromtto');
+            let start = moment().startOf('month');
+            let end = moment();
+            // if (filterPartner) {
+            //     selectedPartner = filterPartner;
             // }
+
+            if (dateInterval) {
+                dateInterval = dateInterval.split(' - ');
+                start = dateInterval[0];
+                end = dateInterval[1];
+            }
+
             $('#date_filter').daterangepicker({
                 "showDropdowns": true,
                 "showWeekNumbers": true,

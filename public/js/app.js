@@ -1785,6 +1785,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1820,9 +1823,10 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
-    getReorderItems: function getReorderItems(api) {
+    getAllTransactions: function getAllTransactions(api) {
       var _this2 = this;
 
+      console.log('here');
       axios.get(api).then(function (response) {
         _this2.items = response.data.data;
         _this2.links = response.data.links;
@@ -1832,7 +1836,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     fetchItems: function fetchItems() {
-      this.getReorderItems(this.api);
+      this.getAllTransactions(this.api);
     },
     addReorderItem: function addReorderItem(item) {
       this.selectedItems.push(item);
@@ -33336,11 +33340,9 @@ var render = function() {
                       return _c("tr", [
                         _c("td", [_vm._v(_vm._s(item.req_field123))]),
                         _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(item.req_field7))]),
-                        _vm._v(" "),
                         _c("td", [_vm._v(_vm._s(item.date_time_added))]),
                         _vm._v(" "),
-                        _c("td", [_vm._v("item.paid_out_date")]),
+                        _c("td", [_vm._v(_vm._s(item.paid_out_date))]),
                         _vm._v(" "),
                         _c("td", [_vm._v(_vm._s(item.res_field48))]),
                         _vm._v(" "),
@@ -33358,18 +33360,13 @@ var render = function() {
                         _vm._v(" "),
                         _c("td", [_vm._v(_vm._s(item.req_field37))]),
                         _vm._v(" "),
-                        _c("td", [
-                          _vm._v(
-                            _vm._s(item.req_field49) +
-                              _vm._s(_vm.intval(item.req_field4) / 100)
-                          )
-                        ]),
+                        _c("td", [_vm._v(_vm._s(item.req_field49))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(item.req_field4))]),
                         _vm._v(" "),
                         _c("td", [_vm._v(_vm._s(item.req_field50))]),
                         _vm._v(" "),
-                        _c("td", [
-                          _vm._v(_vm._s(_vm.intval(item.req_field5) / 100))
-                        ]),
+                        _c("td", [_vm._v(_vm._s(item.req_field5))]),
                         _vm._v(" "),
                         _c("td", [_vm._v(_vm._s(item.req_field3))]),
                         _vm._v(" "),
@@ -33379,88 +33376,22 @@ var render = function() {
                         _vm._v(" "),
                         _c("td", [_vm._v(_vm._s(item.req_field102))]),
                         _vm._v(" "),
-                        _c("td", [_vm._v("{!! item.res_field44 !!} ")]),
+                        _c("td", [
+                          _c("span", {
+                            domProps: { innerHTML: _vm._s(item.res_field44) }
+                          })
+                        ]),
                         _vm._v(" "),
                         _c("td", [_vm._v(_vm._s(item.req_field112))]),
                         _vm._v(" "),
-                        _c("td", [
-                          _vm._v("@include('transactions.datatables_actions')")
-                        ])
+                        _c("td")
                       ])
                     }),
                     0
                   )
                 ]
               )
-            : _vm._e(),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "dataTables_paginate paging_simple_numbers",
-              attrs: { id: "dataTableBuilder_paginate" }
-            },
-            [
-              _c("ul", { staticClass: "pagination" }, [
-                _c(
-                  "li",
-                  {
-                    staticClass: "paginate_button previous pointed",
-                    attrs: { id: "dataTableBuilder_previous" }
-                  },
-                  [
-                    _c(
-                      "a",
-                      {
-                        on: {
-                          click: function($event) {
-                            return _vm.getReorderItems(_vm.links.prev)
-                          }
-                        }
-                      },
-                      [_vm._v("Previous")]
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c("li", { staticClass: "paginate_button active" }, [
-                  _c(
-                    "a",
-                    {
-                      attrs: {
-                        href: "#",
-                        "aria-controls": "dataTableBuilder",
-                        "data-dt-idx": "1",
-                        tabindex: "0"
-                      }
-                    },
-                    [_vm._v(_vm._s(_vm.meta.current_page))]
-                  )
-                ]),
-                _vm._v(" "),
-                _c(
-                  "li",
-                  {
-                    staticClass: "paginate_button next pointed",
-                    attrs: { id: "dataTableBuilder_next" }
-                  },
-                  [
-                    _c(
-                      "a",
-                      {
-                        on: {
-                          click: function($event) {
-                            return _vm.getReorderItems(_vm.links.next)
-                          }
-                        }
-                      },
-                      [_vm._v("Next")]
-                    )
-                  ]
-                )
-              ])
-            ]
-          )
+            : _vm._e()
         ])
       ])
     ])
@@ -33488,6 +33419,8 @@ var staticRenderFns = [
         _c("th", [_vm._v("Sync Msg Ref")]),
         _vm._v(" "),
         _c("th", [_vm._v("TXN No")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Sender Cur")]),
         _vm._v(" "),
         _c("th", [_vm._v("Amount Sent")]),
         _vm._v(" "),

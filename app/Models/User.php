@@ -140,7 +140,7 @@ class User extends Authenticatable
         'contact_person' => 'required',
         'email' => 'required|unique:users',
         'password' => 'required|confirmed|min:8',
-        'msisdn' => 'required',
+//        'msisdn' => 'required',
     ];
 
     public function company(){

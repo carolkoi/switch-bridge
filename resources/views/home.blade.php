@@ -120,21 +120,21 @@
                                 <i class="fa fa-times"></i></button>
                         </div>
                     </div>
-{{--                    <div class="box-body">--}}
-{{--                        <table  class="table table-striped table-hover table-bordered table-fw-widget table no-margin">--}}
-{{--                            <thead>--}}
-{{--                            <th></th>--}}
-{{--                            <th>Yesterday's Report</th>--}}
-{{--                            <th>Today's Report</th>--}}
-{{--                            </thead>--}}
-{{--                            <tbody>--}}
-{{--                            <tr><td>All Transactions</td><td><span class=" badge bg-aqua">{{count($yesterday_txns)}}</span></td><td><span class="badge bg-aqua">{{count($today_transactions)}}</span></td></tr>--}}
-{{--                            <tr><td>Successful Transactions</td><td><span class=" badge bg-green">{{$yesterday_txns->where('res_field48', 'COMPLETED')->count()}}</span></td><td><span class="badge bg-green">{{$today_transactions->where('res_field48', 'COMPLETED')->count()}}</span></td></tr>--}}
-{{--                            <tr><td>Pending Transaction</td><td><span class=" badge bg-yellow">{{$yesterday_txns->WhereNotIn('res_field48', ['COMPLETED', 'FAILED'])->count()}}</span></td><td><span class="badge bg-yellow">{{$today_transactions->WhereNotIn('res_field48', ['COMPLETED', 'FAILED'])->count()}}</span></td></tr>--}}
-{{--                            <tr><td>Failed Transaction</td><td><span class=" badge bg-red">{{$yesterday_txns->where('res_field48', 'FAILED')->count()}}</span></td><td><span class="badge bg-red">{{$today_transactions->where('res_field48', 'FAILED')->count()}}</span></td></tr>--}}
-{{--                            </tbody>--}}
-{{--                        </table>--}}
-{{--                    </div>--}}
+                    <div class="box-body">
+                        <table  class="table table-striped table-hover table-bordered table-fw-widget table no-margin">
+                            <thead>
+                            <th></th>
+                            <th>Yesterday's Report</th>
+                            <th>Today's Report</th>
+                            </thead>
+                            <tbody>
+                            <tr><td>All Transactions</td><td><span class=" badge bg-aqua">{{count($yesterday_txns)}}</span></td><td><span class="badge bg-aqua">{{count($today_transactions)}}</span></td></tr>
+                            <tr><td>Successful Transactions</td><td><span class=" badge bg-green">{{$yesterday_txns->where('res_field48', 'COMPLETED')->count()}}</span></td><td><span class="badge bg-green">{{$today_transactions->where('res_field48', 'COMPLETED')->count()}}</span></td></tr>
+                            <tr><td>Pending Transaction</td><td><span class=" badge bg-yellow">{{$yesterday_txns->WhereNotIn('res_field48', ['COMPLETED', 'FAILED'])->count()}}</span></td><td><span class="badge bg-yellow">{{$today_transactions->WhereNotIn('res_field48', ['COMPLETED', 'FAILED'])->count()}}</span></td></tr>
+                            <tr><td>Failed Transaction</td><td><span class=" badge bg-red">{{$yesterday_txns->where('res_field48', 'FAILED')->count()}}</span></td><td><span class="badge bg-red">{{$today_transactions->where('res_field48', 'FAILED')->count()}}</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
                 </div>
@@ -172,6 +172,7 @@
                                 <th>Receiver Acc/No </th>
                                 <th>Response</th>
                                 <th>Receiver Bank </th>
+
 
                             </tr>
                             </thead>
@@ -218,7 +219,16 @@
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer clearfix">
-                    {{$transactions->render()}}
+{{--                    {{$transactions->render()}}--}}
+                    @if (Request::has('page') && Request::get('page') > 1)
+                        <a href="{{ route('home', ['page' => Request::get('page') - 1]) }}" class=" btn btn-primary">PREV</a>
+                    @endif
+
+                    @if (Request::has('page'))
+                        <a href="{{ route('home', ['page' => Request::get('page') + 1]) }}" class="btn btn-default">NEXT</a>
+                    @else
+                        <a href="{{ route('home', ['page' =>2]) }}" class=" btn btn-primary">Next page</a>
+                    @endif
                 </div>
                 <!-- /.box-footer -->
             </div>
