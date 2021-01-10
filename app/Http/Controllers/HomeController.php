@@ -48,7 +48,7 @@ class HomeController extends Controller
         $limit = $request->has('limit') ? $request->get('limit') : 10;
 
         $take = 30;
-        $skip = 29;
+        $skip = 0;
         $currentPage = $request->get('page', 1);
         $transactions = Transactions::transactionsByCompany()->take($take)
             ->skip($skip + (($currentPage - 1) * $take))
