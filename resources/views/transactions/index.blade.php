@@ -37,7 +37,7 @@
                                 {{--                                        <label>SELECT PARTNER</label>--}}
                                 <div class="form-group" id="filter-partner-id" style="">
                                     @if(Auth::check() && Auth::user()->company_id == 9)
-                                        <select name="filter-partner" class="form-control param select2"
+                                        <select name="filter-partner" class="form-control param"
                                                 id="filter-partner">
                                             <option>SELECT PARTNER</option>
                                             @foreach($upesi_partners as $partner)
@@ -101,7 +101,7 @@
                                 <div class="col-md-6">
                                     <div class="col-xs-12 form-inline" style="">
                                         <div class="input-daterange input-group" id="datepicker">
-                                            <input type="text" class="input-sm form-control" name="from" value="{{\Carbon\Carbon::now()->subDays(7)->format('Y-m-d') }}" />
+                                            <input type="text" class="input-sm form-control" name="from" value="{{\Carbon\Carbon::now()->subDays(3)->format('Y-m-d') }}" />
                                             <span class="input-group-addon">to</span>
                                             <input type="text" class="input-sm form-control" name="to" value="{{ \Carbon\Carbon::now()->addDay(2)->format('Y-m-d') }}"/>
                                         </div>
