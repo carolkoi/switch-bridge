@@ -1466,8 +1466,8 @@ class Transactions extends Model implements ApprovableInterface
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
-
-    protected $dates = ['deleted_at'];
+//    protected $dates = ['trial_ends_at'];
+    protected $dates = ['deleted_at', 'trial_ends_at', 'subscription_ends_at'];
     public $timestamps = false;
 
 
@@ -2136,7 +2136,13 @@ class Transactions extends Model implements ApprovableInterface
         $model->save();
     }
 
+    public function scopeBetween($query, $from, $to)
+    {
+        $query->whereBetween('paid_out_date', [$from, $to]);
+    }
+
     public function ScopeFilterByInputString($query){
+//        dd(json_encode(request()->all()));
         $from = Carbon::now()->subDays(60)->format('Y-m-d');
         $to = Carbon::now()->addDays(2)->format('Y-m-d');
         $day = array('start' => $from, 'end' => $to);
@@ -2195,6 +2201,7 @@ class Transactions extends Model implements ApprovableInterface
                 return $query->where('req_field41', 'LIKE', "%$txnType%")->whereBetween('paid_out_date', array($date[0], $date[1]));
         }
         if (request()->has('fromto')) {
+            dd('here');
 //            $reportTime = request()->input('reportdate');
 
             $date = explode(" - ", request()->input('fromto', ""));

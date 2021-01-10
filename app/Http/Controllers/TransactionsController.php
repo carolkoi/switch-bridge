@@ -45,22 +45,22 @@ class TransactionsController extends AppBaseController
      * @param TransactionsDataTable $transactionsDataTable
      * @return Response
      */
-//    public function index(TransactionsDataTable $transactionsDataTable)
-//    {
-//
-//        $partners = Partner::get();
-//
-////        dd($partners);
-//        $txnTypes = Transactions::pluck('req_field41')->all();
-////        Log::info(json_encode($txnTypes));
-////        dd(collect($txnTypes));
-//        //$transactions = Transactions::transactionsByCompany()->orderBy('date_time_added', 'desc')->paginate(30);
-//        return $transactionsDataTable->addScope(new TransactionDataTableScope())
-//            ->render('transactions.index', ['partners' => $partners, 'txnTypes' => array_unique($txnTypes)]);
-//
-//    }
+    public function iindex(TransactionsDataTable $transactionsDataTable)
+    {
 
-    public function index(Request $request)
+        $partners = Partner::get();
+
+//        dd($partners);
+        $txnTypes = Transactions::pluck('req_field41')->all();
+//        Log::info(json_encode($txnTypes));
+//        dd(collect($txnTypes));
+        //$transactions = Transactions::transactionsByCompany()->orderBy('date_time_added', 'desc')->paginate(30);
+        return $transactionsDataTable->addScope(new TransactionDataTableScope())
+            ->render('transactions.index', ['partners' => $partners, 'txnTypes' => array_unique($txnTypes)]);
+
+    }
+
+    public function TableIndex(Request $request)
     {
         $from = Carbon::now()->subDays(60)->format('Y-m-d');
         $to = Carbon::now()->addDays(2)->format('Y-m-d');
@@ -86,13 +86,19 @@ class TransactionsController extends AppBaseController
 
     }
 
-    public function DataiIndex(Request $request)
+    public function index(Request $request)
     {
         $upesi_partners = Partner::WhereNotIn('partner_id', ['NGAO', 'CHIPPERCASH'])->get();
         $all_partners = Partner::get();
         $txnTypes = Transactions::pluck('req_field41')->all();
         if ($request->ajax()) {
-            $data = Transactions::query()->transactionsByCompany()->orderBy('iso_id', 'desc');
+            $dede = $request->get('fromto');
+            $arrStart = $request->get('from');
+            $arrEnd = $request->get('to');
+            $range = array('from' => $arrStart, 'to' => $arrEnd);
+
+//            dd($arrStart,$arrEnd, $dede);
+            $data = Transactions::query()->transactionsByCompany()->between($arrStart, $arrEnd)->orderBy('iso_id', 'desc');
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->editColumn('date_time_added', function ($transaction) {
@@ -113,7 +119,7 @@ class TransactionsController extends AppBaseController
 //                ->addColumn('action', function($transaction){
 //                    return $this->getActionColumn($transaction);
 //                })
-                ->filter(function ($instance) use ($request) {
+                ->filter(function ($instance) use ($request, $range) {
                     $from = Carbon::now()->subDays(60)->format('Y-m-d');
                     $to = Carbon::now()->addDays(2)->format('Y-m-d');
                     $day = array('start' => $from, 'end' => $to);
@@ -132,32 +138,7 @@ class TransactionsController extends AppBaseController
 //                        dd('here');
                         $instance->where('req_field41', 'LIKE', "%$txnType%")->where('req_field123', $request->get('req_field123'));;
                     }
-//                    $instance->orderBy('iso_id', 'desc');
-//                    if ($request->has('reportdate') && $request->has('fromto')) {
-//                        $reportTime = $request->input('report_time');
-//
-//                        $date = explode(" - ", request()->input('from-to', ""));
-////            dd($date,  'yes', $reportTime);
-//                        $date1 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[0])))) * 1000;
-//                        $date2 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[1])))) * 1000;
-//                        if ($reportTime == 'trn_date'){
-//                            return $query->whereBetween('date_time_added', array($date1, $date2));
-//
-//                        }else
-////                return $query->whereBetween('date_time_modified', array($date1, $date2));
-//                            return $query->whereBetween('paid_out_date', array($date[0], $date[1]));
-//
-//                    }
 
-
-                    if ($request->has('fromto')) {
-                        dd('here');
-                        $date = explode(" - ", $request->get('fromto', ""));
-                        dd($date);
-                        dd($date[0], $date[1]);
-
-                        $instance->where('paid_out_date', $date[0]);
-                    }
                     if (!empty($request->get('search'))) {
                         $instance->where(function ($w) use ($request) {
                             $search = $request->get('search');
@@ -177,6 +158,8 @@ class TransactionsController extends AppBaseController
 
                         });
                     }
+//                    dd('here');
+                    $instance->whereBetween('paid_out_date', array($range['from'], $day['to']));
 //
                 })
                 ->rawColumns(['action', 'res_field44', 'res_field48'])
