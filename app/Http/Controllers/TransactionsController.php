@@ -101,7 +101,7 @@ class TransactionsController extends AppBaseController
             $data = Transactions::select(['iso_id', 'res_field48','date_time_added', 'date_time_modified',
                 'req_field41', 'req_field34', 'sync_message', 'req_field37', 'req_field49', 'req_field4',
                 'req_field50', 'req_field5', 'req_field105', 'req_field108','req_field102', 'res_field44',
-                'req_field112', 'req_field112'])->transactionsByCompany()
+                'req_field112', 'req_field123'])->transactionsByCompany()
                 ->whereBetween('created_at', array($range['from'], $range['to']))->orderBy('iso_id', 'desc');
             return Datatables::of($data)
                 ->addIndexColumn()
