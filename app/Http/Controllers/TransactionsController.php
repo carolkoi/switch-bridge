@@ -71,9 +71,11 @@ class TransactionsController extends AppBaseController
         $take = 30;
         $skip = 29;
         $currentPage = $request->get('page', 1);
-        $transactions = Transactions::transactionsByCompany()->take($take)
+        $transactions = Transactions::orderBy('iso_id','desc')->transactionsByCompany()
+            ->filterByInputString()
+            ->take($take)
             ->skip($skip + (($currentPage - 1) * $take))
-            ->orderBy('iso_id','desc')->get();
+            ->get();
 
         $transactions = Transactions::orderBy('iso_id', 'desc')->transactionsByCompany()
             ->search()->filterByInputString()->paginate(30);
