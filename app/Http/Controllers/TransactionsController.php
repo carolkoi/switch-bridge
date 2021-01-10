@@ -145,7 +145,7 @@ class TransactionsController extends AppBaseController
                         $range = array('from' => $a, 'to' => $b);
                         $instance->whereBetween('created_at', array($range['from'], $range['to']));
 //
-//                    }
+                    }
 
                     if (!empty($request->get('search'))) {
                         $instance->where(function ($w) use ($request) {
