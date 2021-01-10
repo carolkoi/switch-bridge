@@ -53,8 +53,8 @@
                 serverSide: true,
                 pageLength: 30,
                 retrieve: true,
-                paginate: true,
-                bPaginate: true,
+                paginate: false,
+                // bPaginate: true,
                 bStateSave: true,
                 {{--ajax: "{{ route('transactions.index') }}",--}}
                 ajax:{
@@ -118,14 +118,6 @@
                     "infoFiltered": "<span class=' '>(filtered from <span class='badge bold badge-dt'>_MAX_</span> total records)</span>",
                     "zeroRecords": "No matching records found",
                     "search": "<i class='fa fa-search'></i>",
-                    "paginate": {
-                        "previous": "Prev",
-                        "next": "Next",
-                        "last": "Last",
-                        "first": "First",
-                        "page": "<span class=' '><i class='fa fa-eye'></i> &nbsp;Page&nbsp;&nbsp;</span>",
-                        "pageOf": "<span class=' '>&nbsp;of&nbsp;</span>"
-                    },
                     "sProcessing": "Please wait..."
                 },
 

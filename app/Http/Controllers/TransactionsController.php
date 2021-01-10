@@ -101,12 +101,12 @@ class TransactionsController extends AppBaseController
             $take = 30;
             $skip = 0;
             $currentPage = $request->get('page', 1);
-//            $transactions = Transactions::select('iso_id', 'res_field48','date_time_added','paid_out_date', 'date_time_modified',
-//                'req_field41', 'req_field34', 'sync_message', 'req_field37', 'req_field49', 'req_field4',
-//                'req_field50', 'req_field5', 'req_field105', 'req_field108','req_field102', 'res_field44',
-//                'req_field112', 'req_field123', 'req_field124')->transactionsByCompany()->take($take)
-//                ->skip($skip + (($currentPage - 1) * $take))
-//                ->orderBy('iso_id','desc')->get();
+            $transactions = Transactions::select('iso_id', 'res_field48','date_time_added','paid_out_date', 'date_time_modified',
+                'req_field41', 'req_field34', 'sync_message', 'req_field37', 'req_field49', 'req_field4',
+                'req_field50', 'req_field5', 'req_field105', 'req_field108','req_field102', 'res_field44',
+                'req_field112', 'req_field123', 'req_field124')->transactionsByCompany()->take($take)
+                ->skip($skip + (($currentPage - 1) * $take))
+                ->orderBy('iso_id','desc')->get();
 
             $data = Transactions::select('iso_id', 'res_field48','date_time_added','paid_out_date', 'date_time_modified',
                 'req_field41', 'req_field34', 'sync_message', 'req_field37', 'req_field49', 'req_field4',
@@ -114,7 +114,7 @@ class TransactionsController extends AppBaseController
                 'req_field112', 'req_field123', 'req_field124')->transactionsByCompany()
                 ->whereBetween('created_at', array($range['from'], $range['to']))->orderBy('iso_id', 'desc');
 //            dd($data)->count();
-            return Datatables::of($data)
+            return Datatables::of($transactions)
                 ->addIndexColumn()
                 ->editColumn('date_time_added', function ($transaction) {
                     return date('Y-m-d H:i:s', strtotime('+3 hours', strtotime(date('Y-m-d H:i:s', ($transaction->date_time_added / 1000)))));
