@@ -2138,7 +2138,7 @@ class Transactions extends Model implements ApprovableInterface
 
     public function scopeBetween($query, $from, $to)
     {
-        $query->whereBetween('paid_out_date', [$from, $to]);
+        $query->whereBetween('created_at', [$from, $to]);
     }
 
     public function ScopeFilterByInputString($query){

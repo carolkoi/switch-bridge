@@ -92,13 +92,14 @@ class TransactionsController extends AppBaseController
         $all_partners = Partner::get();
         $txnTypes = Transactions::pluck('req_field41')->all();
         if ($request->ajax()) {
-            $dede = $request->get('fromto');
-            $arrStart = $request->get('from');
-            $arrEnd = $request->get('to');
-            $range = array('from' => $arrStart, 'to' => $arrEnd);
+            $arrStart = explode("-", $request->get('from'));
+            $arrEnd = explode("-", $request->get('to'));
+            $start = Carbon::create($arrStart[0], $arrStart[1], $arrStart[2], 0, 0, 0);
+            $end = Carbon::create($arrEnd[0], $arrEnd[1], $arrEnd[2], 23, 59, 59);
+            $range = array('from' => $start, 'to' => $end);
 
-//            dd($arrStart,$arrEnd, $dede);
-            $data = Transactions::query()->transactionsByCompany()->between($arrStart, $arrEnd)->orderBy('iso_id', 'desc');
+//            dd($start,$end);
+            $data = Transactions::query()->transactionsByCompany()->between($start, $end)->orderBy('iso_id', 'desc');
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->editColumn('date_time_added', function ($transaction) {

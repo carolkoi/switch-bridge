@@ -50,18 +50,18 @@
                                     @elseif(Auth::check() && Auth::user()->company_id == 10)
                                         <select name="filter-partner" class="form-control param select2"
                                                 id="filter-partner">
-                                            <option>SELECT PARTNER</option>
+                                            <option disabled>SELECT PARTNER</option>
                                             <option
-                                                value="10">CHIPPERCASH</option>
+                                                value="CHIPPERCASH">CHIPPERCASH</option>
                                         </select>
 
                                     @elseif(Auth::check() && Auth::user()->company_id == 11)
                                         <select name="partner" class="form-control param select2"
                                                 id="filter-partner">
-                                            <option>SELECT PARTNER</option>
+                                            <option disabled>SELECT PARTNER</option>
 
                                             <option
-                                                value="11">NGAO</option>
+                                                value="NGAO">NGAO</option>
                                         </select>
 
                                     @else
