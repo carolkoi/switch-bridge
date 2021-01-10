@@ -37,9 +37,9 @@
                                 {{--                                        <label>SELECT PARTNER</label>--}}
                                 <div class="form-group" id="filter-partner-id" style="">
                                     @if(Auth::check() && Auth::user()->company_id == 9)
-                                        <select name="filter-partner" class="form-control param"
+                                        <select name="filter-partner" class="form-control param select2"
                                                 id="filter-partner">
-                                            <option disabled>SELECT PARTNER</option>
+                                            <option value=" ">SELECT PARTNER</option>
                                             @foreach($upesi_partners as $partner)
                                                 <option
                                                     value="{{$partner->partner_name}}">{{$partner->partner_name}}
@@ -48,7 +48,7 @@
                                         </select>
 
                                     @elseif(Auth::check() && Auth::user()->company_id == 10)
-                                        <select name="filter-partner" class="form-control param "
+                                        <select name="filter-partner" class="form-control param select2"
                                                 id="filter-partner">
                                             <option disabled>SELECT PARTNER</option>
                                             <option
@@ -65,10 +65,10 @@
                                         </select>
 
                                     @else
-                                        <select name="req_field123" class="form-control param"
+                                        <select name="req_field123" class="form-control param select2"
                                                 id="filter-partner">
                                             {{--                                                <option>SELECT PARTNER</option>--}}
-                                            <option disabled>SELECT PARTNER</option>
+                                            <option value=" ">SELECT PARTNER</option>
                                             @foreach($partners as $partner)
                                                 <option
                                                     value="{{$partner->partner_name}}">{{$partner->partner_name}}</option>
@@ -81,7 +81,7 @@
                             <div class="col-md-3">
 
                                 <div class="form-group" id="txn_type_id" style="">
-                                    <select name="req_field41" id="txn_type" class="form-control param">
+                                    <select name="req_field41" id="txn_type" class="form-control param select2">
                                         <option selected disabled>SELECT TYPE</option>
                                         @foreach($txnTypes as $key => $txnType)
                                             <option value="{{ trim($txnType) }}">{{ trim($txnType) }}</option>
