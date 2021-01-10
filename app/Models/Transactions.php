@@ -2228,7 +2228,7 @@ class Transactions extends Model implements ApprovableInterface
     {
         $search = request()->search;
         return empty($search) ? $q :
-            $q->transactionsByCompany()->orderBy('iso_id', 'desc')
+            $q->orderBy('iso_id', 'desc')->transactionsByCompany()->filterByInputString()
                 ->where('req_field123', 'LIKE', "%$search%")
                 ->orWhere('req_field41', 'LIKE', "%$search%")
                 ->orWhere('sync_message', 'LIKE', "%$search%")
