@@ -61,17 +61,17 @@
                     url: "{{ route('transactions.index') }}",
                     // data: {req_field123:req_field123}
                     data: function (d) {
-                        d.req_field123 = $('#filter-partner').val(),
+                        d.to = $('input[name=to]').val(),
+                            d.fromto = $('date_filter').val(),
                             d.req_field41 = $('#txn_type').val(),
+                            d.req_field123 = $('#filter-partner').val(),
                             d.search = $('input[type="search"]').val(),
                             d.from = $('input[name=from]').val();
-                        d.to = $('input[name=to]').val(),
-                        d.fromto = $('date_filter').val();
                     },
                 },
 
                 // buttons:['excel'],
-                buttons: ['csv', 'excel', 'pdf', 'print', 'reset', 'reload'],
+                // buttons: ['csv', 'excel', 'pdf', 'print', 'reset', 'reload'],
                 columns: [
                     // {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                     {data: 'req_field123', name: 'req_field123'},
@@ -136,6 +136,9 @@
                 //     loadingIndicator: true
                 // },
             });
+            $('#dateSearch').on('click', function() {
+                table.draw();
+            });
             $('#filter-partner, #txn_type').change(function(){
                 table.draw();
             });
@@ -149,9 +152,7 @@
                 // dateFormat: 'yy-mm-dd'
             });
 
-            $('#dateSearch').on('click', function() {
-                table.draw();
-            });
+
             // }
             setInterval( function () {
                 $('#txn-table').ajax.reload(); // user paging is not reset on reload

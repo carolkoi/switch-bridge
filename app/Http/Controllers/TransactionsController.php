@@ -98,8 +98,10 @@ class TransactionsController extends AppBaseController
             $end = Carbon::create($arrEnd[0], $arrEnd[1], $arrEnd[2], 23, 59, 59);
             $range = array('from' => $start, 'to' => $end);
 
-//            dd($start,$end);
-            $data = Transactions::query()->transactionsByCompany()->between($start, $end)->orderBy('iso_id', 'desc');
+//            dd($start->toArray()['formatted'],$end);
+// $request->has('from')
+            $data = Transactions::select()->transactionsByCompany()
+                ->whereBetween('created_at', array($range['from'], $range['to']))->orderBy('iso_id', 'desc');
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->editColumn('date_time_added', function ($transaction) {
@@ -120,25 +122,28 @@ class TransactionsController extends AppBaseController
 //                ->addColumn('action', function($transaction){
 //                    return $this->getActionColumn($transaction);
 //                })
-                ->filter(function ($instance) use ($request, $range) {
-                    $from = Carbon::now()->subDays(60)->format('Y-m-d');
-                    $to = Carbon::now()->addDays(2)->format('Y-m-d');
-                    $day = array('start' => $from, 'end' => $to);
-                    if ($request->has('req_field123')) {
-//                        dd('here');
-                        $instance->where('req_field123', $request->get('req_field123'));
-                    }
-                    if ($request->has('req_field41')) {
-//                        dd('hre');
-                        $txnType = $request->get('req_field41');
-//                        dd('here');
-                        $instance->where('req_field41', 'LIKE', "%$txnType%");
-                    }
-                    if ($request->has('req_field123') && $request->has('req_field41')) {
-                        $txnType = $request->get('req_field41');
-//                        dd('here');
-                        $instance->where('req_field41', 'LIKE', "%$txnType%")->where('req_field123', $request->get('req_field123'));;
-                    }
+                ->filter(function ($instance) use ($request) {
+
+//                    if ($request->has('req_field41')) {
+////                        dd('hre');
+//                        $txnType = $request->get('req_field41');
+////                        dd('here');
+//                        $instance->where('req_field41', 'LIKE', "%$txnType%");
+//                    }
+//                    if ($request->has('req_field123')) {
+////                        dd('here');
+//                        $instance->where('req_field123', $request->get('req_field123'));
+//                    }
+//
+//                    if ($request->has('from') && $request->has('to')){
+//
+//                        $a = $request->get('from');
+//                        $b = $request->get('to');
+////                        dd('here', $a, $b);
+//                        $range = array('from' => $a, 'to' => $b);
+//                        $instance->whereBetween('created_at', array($range['from'], $range['to']));
+//
+//                    }
 
                     if (!empty($request->get('search'))) {
                         $instance->where(function ($w) use ($request) {
@@ -155,14 +160,46 @@ class TransactionsController extends AppBaseController
                                 ->orWhere('req_field102', 'LIKE', "%$search%")
                                 ->orWhere('res_field48', 'LIKE', "%$search%")
                                 ->orWhere('paid_out_date', 'LIKE', "%$search%");
-
-
                         });
                     }
-//                    dd('here');
-                    $instance->whereBetween('paid_out_date', array($range['from'], $day['to']));
 //
                 })
+//                ->filter(function ($instance) use ($request, $data) {
+//
+//                   if ($request->has('from') && $request->has('to') ) {
+//                       $a = $request->get('from');
+//                       $b = $request->get('to');
+////                       dd($a, $b);
+////                       $arrStart = explode("-", $request->get('from'));
+////                       $arrEnd = explode("-", $request->get('to'));
+////                       $start = Carbon::create($arrStart[0], $arrStart[1], $arrStart[2], 0, 0, 0);
+////                       $end = Carbon::create($arrEnd[0], $arrEnd[1], $arrEnd[2], 23, 59, 59);
+//                       $range = array('from' => $a, 'to' => $b);
+//                       $instance->whereBetween('created_at', array($range['from'], $range['to']));
+////                       dd('here');
+//                   }
+////                    if ($request->has('req_field123')) {
+//////                        dd('here');
+////                        $instance->where('req_field123', $request->get('req_field123'));
+////                    }
+//
+//                })
+//                ->filter(function ($instance) use ($request) {
+//
+//                    if ($request->has('req_field123')) {
+////                        dd('here');
+//                        $instance->where('req_field123', $request->get('req_field123'));
+//                    }
+//
+//                })
+//                ->filter(function ($instance) use ($request) {
+//
+//                    if ($request->has('req_field123')) {
+////                        dd('here');
+//                        $instance->where('req_field123', $request->get('req_field123'));
+//                    }
+//
+//                })
                 ->rawColumns(['action', 'res_field44', 'res_field48'])
                 ->setRowAttr([
                     'style' => function ($query) {
