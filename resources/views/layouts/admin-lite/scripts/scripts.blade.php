@@ -8,8 +8,17 @@
     <script src="{{URL::asset('admin-lte/bower_components/jquery-ui/jquery-ui.min.js')}}"></script>
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
     <script>
+
         $.widget.bridge('uibutton', $.ui.button);
     </script>
+    <!-- Select2 -->
+    <script src="{{URL::asset('admin-lte/bower_components/select2/dist/js/select2.full.min.js')}}"></script>
+    <!-- daterangepicker -->
+    <script src="{{URL::asset('admin-lte/bower_components/moment/min/moment.min.js')}}"></script>
+    <script src="{{URL::asset('admin-lte/bower_components/bootstrap-daterangepicker/daterangepicker.js')}}"></script>
+    <!-- datepicker -->
+    <script src="{{URL::asset('admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js')}}"></script>
+
     <!-- Bootstrap 3.3.7 -->
     <script src="{{URL::asset('admin-lte/bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
     <!-- Morris.js charts -->
@@ -22,12 +31,7 @@
     <script src="{{URL::asset('admin-lte/plugins/jvectormap/jquery-jvectormap-world-mill-en.js')}}"></script>
     <!-- jQuery Knob Chart -->
     <script src="{{URL::asset('admin-lte/bower_components/jquery-knob/dist/jquery.knob.min.js')}}"></script>
-    <!-- daterangepicker -->
-    <script src="{{URL::asset('admin-lte/bower_components/moment/min/moment.min.js')}}"></script>
-    <script src="{{URL::asset('admin-lte/bower_components/bootstrap-daterangepicker/daterangepicker.js')}}"></script>
-    <!-- datepicker -->
-    <script src="{{URL::asset('admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js')}}"></script>
-    <!-- CK Editor -->
+   <!-- CK Editor -->
     <script src="{{URL::asset('admin-lte/bower_components/ckeditor/ckeditor.js')}}"></script>
     <!-- Bootstrap WYSIHTML5 -->
     <script src="{{URL::asset('admin-lte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js')}}"></script>
@@ -41,9 +45,6 @@
     <script src="{{URL::asset('admin-lte/plugins/timepicker/bootstrap-timepicker.min.js')}}"></script>
     <!-- Bootstrap date-time Picker -->
     <script src="{{URL::asset('admin-lte/plugins/datetimepicker/bootstrap-datetimepicker.min.js')}}"></script>
-    <!-- Select2 -->
-    <script src="{{URL::asset('admin-lte/bower_components/select2/dist/js/select2.full.min.js')}}"></script>
-
     <!-- PACE -->
     <script src="{{asset('admin-lte/bower_components/PACE/pace.min.js')}}"></script>
     <!--Star Rating-->

@@ -127,7 +127,7 @@
                 // scroller: {
                 //     loadingIndicator: true
                 // },
-            }).load();
+            });
             $('#dateSearch').on('click', function() {
                 table.draw();
             });

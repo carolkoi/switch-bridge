@@ -127,7 +127,11 @@
                 // scroller: {
                 //     loadingIndicator: true
                 // },
-            }).load();
+            });
+            setInterval( function () {
+                $('#txn-table').ajax.reload(); // user paging is not reset on reload
+            }, 120000);
+
             $('#dateSearch').on('click', function() {
                 table.draw();
             });
@@ -146,9 +150,6 @@
 
 
             // }
-            setInterval( function () {
-                $('#txn-table').ajax.reload(); // user paging is not reset on reload
-            }, 60000);
 
 
         } );

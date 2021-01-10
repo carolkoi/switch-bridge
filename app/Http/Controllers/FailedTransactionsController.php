@@ -55,8 +55,7 @@ class FailedTransactionsController extends Controller
                 'req_field41', 'req_field34', 'sync_message', 'req_field37', 'req_field49', 'req_field4',
                 'req_field50', 'req_field5', 'req_field105', 'req_field108','req_field102', 'res_field44',
                 'req_field112', 'req_field123', 'req_field124')->transactionsByCompany()
-                ->whereBetween('created_at', array($range['from'], $range['to']))->take($take)
-                ->skip($skip + (($currentPage - 1) * $take)) ->orderBy('iso_id', 'desc')->where('res_field48', 'FAILED');
+                ->whereBetween('created_at', array($range['from'], $range['to']))->orderBy('iso_id', 'desc')->where('res_field48', 'FAILED')->take(200);
 //            dd($data)->count();
             return Datatables::of($data)
                 ->addIndexColumn()
