@@ -1,125 +1,3 @@
-<form id="date-form">
-    <div class="row">
-        <div class="col-md-12">
-
-{{--            <form id="date-form">--}}
-                <div class="col-md-4">
-{{--                    <label>SELECT DATE</label>--}}
-
-                    <select name="reportdate" id="report_time_id" class="form-control param select2">
-                        <option>SELECT REPORTING DATE</option>
-                        <option value="trn-date">TRANSACTION DATE</option>
-                        <option value="paid-date">PAID OUT DATE</option>
-
-                    </select>
-                </div>
-                <div class="col-md-6" style="" id="date_range">
-                    <div class="input-group date">
-                        <div class="input-group-addon">
-                            <i class="fa fa-calendar"></i>
-                        </div>
-
-                        <input type="text" name="fromto" class="form-control param" id="date_filter"
-                               autocomplete="off">
-                    </div>
-
-                </div>
-
-{{--                <span class="pull-right">--}}
-{{--                                        <div class="btn-group" id="button_filter" style="display: none">--}}
-{{--                                                <button type="button" name="filter" id="filter-id" class=" btn btn-primary">Filter</button>--}}
-{{--                                                <button type="button" name="refresh" id="refresh" class="btn btn-default">Refresh</button>--}}
-{{--                                            </div>--}}
-{{--                                    <input type="submit" class="btn btn-primary" value="Filter" id="filter-id">--}}
-{{--                                </span>--}}
-
-
-{{--            </form>--}}
-        </div>
-    </div>
-    <div class="row">
-
-        <div class="col-md-12">
-
-
-            <div class="">
-                <div class="col-md-4">
-{{--                    <label>SELECT PARTNER</label>--}}
-                    <div class="form-group" id="filter-partner-id" style="">
-                        @if(Auth::check() && Auth::user()->company_id == 9)
-                            <select name="partner" class="form-control param select2"
-                                    id="filter-partner">
-                                <option>SELECT PARTNER</option>
-                                @foreach($upesi_partners as $partner)
-                                    <option
-                                        value="{{$partner->partner_name}}">{{$partner->partner_name}}
-                                    </option>
-                                @endforeach
-                            </select>
-
-                        @elseif(Auth::check() && Auth::user()->company_id == 10)
-                            <select name="partner" class="form-control param select2"
-                                    id="filter-partner">
-                                <option>SELECT PARTNER</option>
-                                <option
-                                    value="10">CHIPPERCASH</option>
-                            </select>
-
-                        @elseif(Auth::check() && Auth::user()->company_id == 11)
-                            <select name="partner" class="form-control param select2"
-                                    id="filter-partner">
-                                <option>SELECT PARTNER</option>
-
-                                <option
-                                    value="11">NGAO</option>
-                            </select>
-
-                        @else
-                            <select name="partner" class="form-control param select2"
-                                    id="filter-partner">
-                                <option>SELECT PARTNER</option>
-                                <option value="" selected disabled>SELECT PARTNER</option>
-                                @foreach($partners as $partner)
-                                    <option
-                                        value="{{$partner->partner_name}}">{{$partner->partner_name}}</option>
-                                @endforeach
-                            </select>
-
-                        @endif
-                    </div>
-                </div>
-                <div class="col-md-4">
-
-                    <div class="form-group" id="txn_type_id" style="">
-                        <select name="txn-type" id="txn_type" class="form-control param select2">
-                            <option value="" selected disabled>SELECT TYPE</option>
-                            @foreach($txnTypes as $key => $txnType)
-                                <option value="{{ trim($txnType) }}">{{ trim($txnType) }}</option>
-                            @endforeach
-                        </select>
-
-                    </div>
-                </div>
-                <div class="form-group" id="date_filter_id" style="">
-
-                </div>
-
-
-            </div>
-        </div>
-
-
-    </div>
-    <span class="pull-right">
-                                        <div class="btn-group" id="button_filter" style="display: none">
-                                                <button type="button" name="filter" id="filter-id" class=" btn btn-primary">Filter</button>
-                                                <button type="button" name="refresh" id="refresh" class="btn btn-default">Refresh</button>
-                                        </div>
-                                                            <input type="submit" class="btn btn-primary" value="Filter" id="filter-id">
-                                </span>
-
-</form>
-
 
 
 <div class="loader"></div>
@@ -129,17 +7,17 @@
     <div class="box-header with-border">
 
     <div class="box-body">
-{{--        <form>--}}
+        <form>
             <div class="input-group custom-search-form">
                 <input type="text" name="search" id="search" class="form-control" style="width: 500px" placeholder="Search Transaction Data" />
 {{--                <input type="text" class="form-control" name="search" id="search" style="width: 500px" placeholder="Search...">--}}
 {{--                <span class="input-group-btn">--}}
     <button class="btn btn-default-sm" id="search-id" type="submit">
-        <i class="fa fa-search"></i>
+        Search
     </button>
 {{--</span>--}}
             </div>
-{{--        </form>--}}
+        </form>
         <div class="table-responsive">
             <table class="table table-striped table-hover table-bordered table-fw-widget table no-margin" id="txn-table">
                 <thead>
@@ -165,39 +43,43 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($transactions as $transaction)
+@foreach($transactions as $transaction)
 
-                                    @if ($transaction->res_field48 == 'COMPLETED')
-                                        <tr class="odd gradeX" style="color: #2E8B57;">
-                                    @elseif ($transaction->res_field48 == 'FAILED')
-                                        <tr class="odd gradeX" style="color: #ff0000;">
-                                    @elseif ($transaction->res_field48 == 'AML-APPROVED')
-                                        <tr class="odd gradeX" style="color: blue;">
-                                    @elseif ($transaction->res_field48 == 'UPLOAD-FAILED')
-                                        <tr class="odd gradeX" style="color: #ff0000;">
-                                    @else
-                                        <tr>                                                                                                                                                                                                                  @endif                                                                                                                                                                                                                                                               <tr class="odd gradeX">
+    @if ($transaction->res_field48 == 'COMPLETED')
+        <tr class="odd gradeX" style="color: #2E8B57;">
+    @elseif ($transaction->res_field48 == 'FAILED')
+        <tr class="odd gradeX" style="color: #ff0000;">
+    @elseif ($transaction->res_field48 == 'AML-APPROVED')
+        <tr class="odd gradeX" style="color: blue;">
+    @elseif ($transaction->res_field48 == 'UPLOAD-FAILED')
+        <tr class="odd gradeX" style="color: #ff0000;">
+    @else
+        <tr class="odd gradeX">
+            @endif
+            {{--                                <tr class="odd gradeX">--}}
 
-                                            <td>{{ $transaction->req_field123  }}</td>
-                                            <td>{{date('Y-m-d H:i:s',strtotime('+3 hours',strtotime(date('Y-m-d H:i:s', ($transaction->date_time_added / 1000)))))}}</td>
-                                            <td>{{!empty($transaction->paid_out_date) ? date("Y-m-d H:i:s", strtotime($transaction->paid_out_date)+10800):null}}</td>
-                                            <td>{{ $transaction->res_field48 }}</td>
-                                            <td>{{ $transaction->req_field41 }}</td>
-                                            <td>{{ $transaction->req_field34 }}</td>
-                                            <td>{{$transaction->sync_message ? $transaction->sync_message : "N/A" }}</td>
-                                            <td>{{ $transaction->req_field37 }}</td>
-                                            <td>{{ $transaction->req_field49. " ".intval($transaction->req_field4)/100 }}</td>
-                                            <td>{{$transaction->req_field50}}</td>
-                                            <td>{{intval($transaction->req_field5)/100  }}</td>
-                                            <td>{{ $transaction->req_field105  }}</td>
-                                            <td>{{ $transaction->req_field108   }}</td>
-                                            <td>{{ $transaction->req_field102  }}</td>
-                                            <td>{!! $transaction->res_field44 !!} </td>
-                                            <td>{{ $transaction->req_field112 }}</td>
-                                            <td>@include('transactions.datatables_actions')</td>
+            <td>{{ $transaction->req_field123  }}</td>
+            <td>{{date('Y-m-d H:i:s',strtotime('+3 hours',strtotime(date('Y-m-d H:i:s', ($transaction->date_time_added / 1000)))))}}</td>
+            <td>{{!empty($transaction->paid_out_date) ? date("Y-m-d H:i:s", strtotime($transaction->paid_out_date)+10800):null}}</td>
+            <td>@include('transactions.datatables_status')</td>
+            <td>{{ $transaction->req_field41 }}</td>
+            <td>{{ $transaction->req_field34 }}</td>
+            <td>{{$transaction->sync_message ? $transaction->sync_message : "N/A" }}</td>
+            <td>{{ $transaction->req_field37 }}</td>
+            <td>{{ $transaction->req_field49. " ".intval($transaction->req_field4)/100 }}</td>
+            <td>{{$transaction->req_field50}}</td>
+            <td>{{intval($transaction->req_field5)/100  }}</td>
+            <td>{{ $transaction->req_field105  }}</td>
+            <td>{{ $transaction->req_field108   }}</td>
+            <td>{{ $transaction->req_field102  }}</td>
+            <td>{!! $transaction->res_field44 !!} </td>
+            <td>{{ $transaction->req_field112 }}</td>
+            <td>@include('transactions.datatables_actions')</td>
 
-                </tr>
-                @endforeach
+
+        </tr>
+        @endforeach
+
                 </tbody>
 
             </table>
@@ -219,31 +101,31 @@
         <!-- /.box-footer -->
     </div>
 </div>
-</div>
-@section('js')
-    <script type="text/javascript">
-        $('#search-id').on('click',function(){
-            $value=$('#search').val();
-            let partner = $('#filter-partner').val();
-            $.ajax({
-                type : 'get',
-                url : '{{URL::to('search')}}',
-                data:{'search':$value},
-                success:function(response){
-                    console.log(response);
-                    // response = JSON.parse(response);
-                    // for (var transaction of response) {
-                    //     console.log(transaction);
-                    // }
-                    $('tbody').html(response);
-                }
-            });
-        });
-    </script>
-    <script type="text/javascript">
-            $.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
+{{--</div>--}}
+{{--@section('js')--}}
+{{--    <script type="text/javascript">--}}
+{{--        $('#search-id').on('click',function(){--}}
+{{--            $value=$('#search').val();--}}
+{{--            let partner = $('#filter-partner').val();--}}
+{{--            $.ajax({--}}
+{{--                type : 'get',--}}
+{{--                url : '{{URL::to('search')}}',--}}
+{{--                data:{'search':$value},--}}
+{{--                success:function(response){--}}
+{{--                    console.log(response);--}}
+{{--                    // response = JSON.parse(response);--}}
+{{--                    // for (var transaction of response) {--}}
+{{--                    //     console.log(transaction);--}}
+{{--                    // }--}}
+{{--                    $('tbody').html(response);--}}
+{{--                }--}}
+{{--            });--}}
+{{--        });--}}
+{{--    </script>--}}
+{{--    <script type="text/javascript">--}}
+{{--            $.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });--}}
 
-@endsection
+{{--@endsection--}}
 
 {{--@section('js')--}}
 {{--    @include('layouts.datatables_js')--}}

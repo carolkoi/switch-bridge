@@ -2137,25 +2137,26 @@ class Transactions extends Model implements ApprovableInterface
     }
 
     public function ScopeFilterByInputString($query){
-        $from = Carbon::now()->subDays(60)->format('Y-m-d');
+        $from = Carbon::now()->subDays(7)->format('Y-m-d');
         $to = Carbon::now()->addDays(2)->format('Y-m-d');
         $day = array('start' => $from, 'end' => $to);
 
 //        dd($day);
 
 
-        if (request()->has('reportdate') && request()->has('fromto')){
-//            dd('here');
+        if (request()->has('fromto') && request()->input('partner') && request()->has('txn-type')){
+//            dd(request()->input('reportdate'));
             $partner = request()->input('partner');
             $txnType = request()->input('txn-type');
-            $reportTime = request()->input('reportdate');
+//            $reportTime = request()->input('reportdate');
             $date = explode(" - ", request()->input('fromto', ""));
             $date1 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[0])))) * 1000;
             $date2 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[1])))) * 1000;
-            if ($reportTime == 'trn_date'){
-                return $query->where('req_field123', $partner)
-                    ->where('req_field41', 'LIKE', "%$txnType%")->whereBetween('date_time_added', array($date1, $date2));
-            }else
+//            if ($reportTime == 'trn-date'){
+//                return $query->where('req_field123', $partner)
+//                    ->where('req_field41', 'LIKE', "%$txnType%")->whereBetween('date_time_added', array($date1, $date2));
+//            }else
+
                 return $query->where('req_field123', $partner)
                     ->where('req_field41', 'LIKE', "%$txnType%")
                     ->whereBetween('paid_out_date', array($date[0], $date[1]));
@@ -2169,41 +2170,41 @@ class Transactions extends Model implements ApprovableInterface
             $partner = request()->input('partner');
             return $query->where('req_field123', $partner)->where('req_field41', 'LIKE', "%$txnType%");
         }
-        if (request()->has('partner') && request()->has('reportdate') && request()->has('fromto')) {
+        if (request()->has('partner') && request()->has('fromto')) {
             $partner = request()->input('partner');
-            $reportTime = request()->input('reportdate');
+//            $reportTime = request()->input('reportdate');
 
             $date = explode(" - ", request()->input('fromto', ""));
             $date1 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[0])))) * 1000;
             $date2 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[1])))) * 1000;
-            if ($reportTime == 'trn_date'){
-                return $query->where('req_field123', $partner)->whereBetween('date_time_added', array($date1, $date2));
-            }else
+//            if ($reportTime == 'trn_date'){
+//                return $query->where('req_field123', $partner)->whereBetween('date_time_added', array($date1, $date2));
+//            }else
                 return $query->where('req_field123', $partner)->whereBetween('paid_out_date', array($date[0], $date[1]));
         }
-        if (request()->has('txn-type') && request()->has('reportdate') && request()->has('fromto')) {
+        if (request()->has('txn-type') && request()->has('fromto')) {
             $txnType = request()->input('txn-type');
             $date = explode(" - ", request()->input('fromto', ""));
-            $reportTime = request()->input('reportdate');
+//            $reportTime = request()->input('reportdate');
 
             $date1 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[0])))) * 1000;
             $date2 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[1])))) * 1000;
-            if ($reportTime == 'trn_date'){
-                return $query->where('req_field41', 'LIKE', "%$txnType%")->whereBetween('date_time_added', array($date1, $date2));
-            }else
+//            if ($reportTime == 'trn_date'){
+//                return $query->where('req_field41', 'LIKE', "%$txnType%")->whereBetween('date_time_added', array($date1, $date2));
+//            }else
                 return $query->where('req_field41', 'LIKE', "%$txnType%")->whereBetween('paid_out_date', array($date[0], $date[1]));
         }
-        if (request()->has('reportdate') && request()->has('fromto')) {
-            $reportTime = request()->input('reportdate');
+        if (request()->has('fromto')) {
+//            $reportTime = request()->input('reportdate');
 
             $date = explode(" - ", request()->input('fromto', ""));
-//            dd($date,  'yes', $reportTime);
+//            dd($date);
             $date1 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[0])))) * 1000;
             $date2 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[1])))) * 1000;
-            if ($reportTime == 'trn_date'){
-                return $query->whereBetween('date_time_added', array($date1, $date2));
-
-            }else
+//            if ($reportTime == 'trn_date'){
+//                return $query->whereBetween('date_time_added', array($date1, $date2));
+//
+//            }else
 //                return $query->whereBetween('date_time_modified', array($date1, $date2));
                 return $query->whereBetween('paid_out_date', array($date[0], $date[1]));
 

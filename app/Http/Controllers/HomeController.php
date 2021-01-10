@@ -42,29 +42,25 @@ class HomeController extends Controller
         $yesterday_txns = Transactions::transactionsByCompany()
             ->whereBetween('created_at', array($date['start'], $date['today']))->get();
 
-//        $transactions = Transactions::transactionsByCompany()->orderBy('iso_id', 'desc')->take(2000)->paginate(30);
+        $transactions = Transactions::transactionsByCompany()->orderBy('iso_id', 'desc')->take(2000)->paginate(30);
 
         $page = $request->has('page') ? $request->get('page') : 1;
         $limit = $request->has('limit') ? $request->get('limit') : 10;
 
-        $count = Transactions::get()->count();
-//        dd($count);
-//        $transactions = Transactions::orderBy('iso_id','desc')->get()->toArray();
-//        dd($transactions);
         $take = 30;
         $skip = 29;
-        $currentPage = $request->get('page', 1);
-        $transactions = Transactions::transactionsByCompany()->take($take)
-            ->skip($skip + (($currentPage - 1) * $take))
-            ->orderBy('iso_id','desc')->get();
+//        $currentPage = $request->get('page', 1);
+//        $transactions = Transactions::transactionsByCompany()->take($take)
+//            ->skip($skip + (($currentPage - 1) * $take))
+//            ->orderBy('iso_id','desc')->get();
 //        $transactions->paginate(2);
 //        dd($transactions);
 
-//        if (env('APP_ENV') == 'dev'){
-//            $transactions->setPath('https://dev.slafrica.net:6810/');
-//        }elseif (env('APP_ENV') == 'prod'){
-//            $transactions->setPath('https://asgard.slafrica.net:9810/');
-//        }
+        if (env('APP_ENV') == 'dev'){
+            $transactions->setPath('https://dev.slafrica.net:6810/');
+        }elseif (env('APP_ENV') == 'prod'){
+            $transactions->setPath('https://asgard.slafrica.net:9810/');
+        }
 
 //        $transactions->setBaseUrl('custom/url');
         return view('home', ['transactions' => $transactions,
