@@ -94,19 +94,14 @@
 
                                 </div>
                             </div>
-                            <div class="form-group" id="date_filter_id" style="">
 
-                                {{--                                        <div class="input-group-addon">--}}
-                                {{--
-                                                                   </div>--}}
-                            </div>
 
                             <form>
 
                                 <div class="col-md-6">
                                     <div class="col-xs-12 form-inline" style="">
                                         <div class="input-daterange input-group" id="datepicker">
-                                            <input type="text" class="input-sm form-control" name="from" value="{{\Carbon\Carbon::now()->subDays(2)->format('Y-m-d') }}" />
+                                            <input type="text" class="input-sm form-control" name="from" value="{{\Carbon\Carbon::now()->subDays(7)->format('Y-m-d') }}" />
                                             <span class="input-group-addon">to</span>
                                             <input type="text" class="input-sm form-control" name="to" value="{{ \Carbon\Carbon::now()->addDay(2)->format('Y-m-d') }}"/>
                                         </div>
