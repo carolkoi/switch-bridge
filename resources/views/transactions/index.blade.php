@@ -36,18 +36,19 @@
                             <div class="col-md-3">
                                 {{--                                        <label>SELECT PARTNER</label>--}}
                                 <div class="form-group" id="filter-partner-id" style="">
-                                    @if(Auth::check() && Auth::user()->company_id == 9)
-                                        <select name="filter-partner" class="form-control param select2"
-                                                id="filter-partner">
-                                            <option value=" ">SELECT PARTNER</option>
-                                            @foreach($upesi_partners as $partner)
-                                                <option
-                                                    value="{{$partner->partner_name}}">{{$partner->partner_name}}
-                                                </option>
-                                            @endforeach
-                                        </select>
+{{--                                    @if(Auth::check() && Auth::user()->company_id == 9)--}}
+{{--                                        <select name="filter-partner" class="form-control param select2"--}}
+{{--                                                id="filter-partner">--}}
+{{--                                            <option value=" ">SELECT PARTNER</option>--}}
+{{--                                            @foreach($upesi_partners as $partner)--}}
+{{--                                                <option--}}
+{{--                                                    value="{{$partner->partner_name}}">{{$partner->partner_name}}--}}
+{{--                                                </option>--}}
+{{--                                            @endforeach--}}
+{{--                                        </select>--}}
 
-                                    @elseif(Auth::check() && Auth::user()->company_id == 10)
+{{--                                    @else--}}
+                                        @if(Auth::check() && Auth::user()->company_id == 10)
                                         <select name="filter-partner" class="form-control param select2"
                                                 id="filter-partner">
                                             <option disabled>SELECT PARTNER</option>
@@ -64,16 +65,16 @@
                                                 value="NGAO">NGAO</option>
                                         </select>
 
-                                    @else
-                                        <select name="req_field123" class="form-control param select2"
-                                                id="filter-partner">
-                                            {{--                                                <option>SELECT PARTNER</option>--}}
-                                            <option value=" ">SELECT PARTNER</option>
-                                            @foreach($partners as $partner)
-                                                <option
-                                                    value="{{$partner->partner_name}}">{{$partner->partner_name}}</option>
-                                            @endforeach
-                                        </select>
+{{--                                    @else--}}
+{{--                                        <select name="req_field123" class="form-control param select2"--}}
+{{--                                                id="filter-partner">--}}
+{{--                                            --}}{{--                                                <option>SELECT PARTNER</option>--}}
+{{--                                            <option value=" ">SELECT PARTNER</option>--}}
+{{--                                            @foreach($partners as $partner)--}}
+{{--                                                <option--}}
+{{--                                                    value="{{$partner->partner_name}}">{{$partner->partner_name}}</option>--}}
+{{--                                            @endforeach--}}
+{{--                                        </select>--}}
 
                                     @endif
                                 </div>
