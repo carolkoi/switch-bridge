@@ -98,9 +98,10 @@ class TransactionsController extends AppBaseController
             $end = Carbon::create($arrEnd[0], $arrEnd[1], $arrEnd[2], 23, 59, 59);
             $range = array('from' => $start, 'to' => $end);
 
-//            dd($start->toArray()['formatted'],$end);
-// $request->has('from')
-            $data = Transactions::select()->transactionsByCompany()
+            $data = Transactions::select(['iso_id', 'res_field48','date_time_added', 'date_time_modified',
+                'req_field41', 'req_field34', 'sync_message', 'req_field37', 'req_field49', 'req_field4',
+                'req_field50', 'req_field5', 'req_field105', 'req_field108','req_field102', 'res_field44',
+                'req_field112'])->transactionsByCompany()
                 ->whereBetween('created_at', array($range['from'], $range['to']))->orderBy('iso_id', 'desc');
             return Datatables::of($data)
                 ->addIndexColumn()
@@ -124,26 +125,26 @@ class TransactionsController extends AppBaseController
 //                })
                 ->filter(function ($instance) use ($request) {
 
-//                    if ($request->has('req_field41')) {
-////                        dd('hre');
-//                        $txnType = $request->get('req_field41');
-////                        dd('here');
-//                        $instance->where('req_field41', 'LIKE', "%$txnType%");
-//                    }
-//                    if ($request->has('req_field123')) {
-////                        dd('here');
-//                        $instance->where('req_field123', $request->get('req_field123'));
-//                    }
-//
-//                    if ($request->has('from') && $request->has('to')){
-//
-//                        $a = $request->get('from');
-//                        $b = $request->get('to');
-////                        dd('here', $a, $b);
-//                        $range = array('from' => $a, 'to' => $b);
-//                        $instance->whereBetween('created_at', array($range['from'], $range['to']));
-//
-//                    }
+                    if ($request->has('req_field41')) {
+//                        dd('hre');
+                        $txnType = $request->get('req_field41');
+//                        dd('here');
+                        $instance->where('req_field41', 'LIKE', "%$txnType%");
+                    }
+                    if ($request->has('req_field123')) {
+//                        dd('here');
+                        $instance->where('req_field123', $request->get('req_field123'));
+                    }
+
+                    if ($request->has('from') && $request->has('to')){
+
+                        $a = $request->get('from');
+                        $b = $request->get('to');
+//                        dd('here', $a, $b);
+                        $range = array('from' => $a, 'to' => $b);
+                        $instance->whereBetween('created_at', array($range['from'], $range['to']));
+
+                    }
 
                     if (!empty($request->get('search'))) {
                         $instance->where(function ($w) use ($request) {
@@ -164,42 +165,6 @@ class TransactionsController extends AppBaseController
                     }
 //
                 })
-//                ->filter(function ($instance) use ($request, $data) {
-//
-//                   if ($request->has('from') && $request->has('to') ) {
-//                       $a = $request->get('from');
-//                       $b = $request->get('to');
-////                       dd($a, $b);
-////                       $arrStart = explode("-", $request->get('from'));
-////                       $arrEnd = explode("-", $request->get('to'));
-////                       $start = Carbon::create($arrStart[0], $arrStart[1], $arrStart[2], 0, 0, 0);
-////                       $end = Carbon::create($arrEnd[0], $arrEnd[1], $arrEnd[2], 23, 59, 59);
-//                       $range = array('from' => $a, 'to' => $b);
-//                       $instance->whereBetween('created_at', array($range['from'], $range['to']));
-////                       dd('here');
-//                   }
-////                    if ($request->has('req_field123')) {
-//////                        dd('here');
-////                        $instance->where('req_field123', $request->get('req_field123'));
-////                    }
-//
-//                })
-//                ->filter(function ($instance) use ($request) {
-//
-//                    if ($request->has('req_field123')) {
-////                        dd('here');
-//                        $instance->where('req_field123', $request->get('req_field123'));
-//                    }
-//
-//                })
-//                ->filter(function ($instance) use ($request) {
-//
-//                    if ($request->has('req_field123')) {
-////                        dd('here');
-//                        $instance->where('req_field123', $request->get('req_field123'));
-//                    }
-//
-//                })
                 ->rawColumns(['action', 'res_field44', 'res_field48'])
                 ->setRowAttr([
                     'style' => function ($query) {
