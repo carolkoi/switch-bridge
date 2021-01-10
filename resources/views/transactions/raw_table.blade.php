@@ -53,7 +53,7 @@
                 serverSide: true,
                 pageLength: 30,
                 retrieve: true,
-                paginate: false,
+                paginate: true,
                 // bPaginate: true,
                 bStateSave: true,
                 {{--ajax: "{{ route('transactions.index') }}",--}}
@@ -127,7 +127,7 @@
                 // scroller: {
                 //     loadingIndicator: true
                 // },
-            });
+            }).load();
             $('#dateSearch').on('click', function() {
                 table.draw();
             });

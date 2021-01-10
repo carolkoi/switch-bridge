@@ -8,6 +8,8 @@
 {{--    <div class="box-body">--}}
 
 <div class="table-responsive">
+    <div class="row">
+    </div>
     <table class="table table-striped table-hover table-bordered table-fw-widget table no-margin" id="txn-table">
         <thead>
         <tr>
@@ -34,200 +36,126 @@
         </tr>
         </thead>
 
-        {{--                <tbody>--}}
-
-        {{--                @foreach($transactions as $transaction)--}}
-
-        {{--                    @if ($transaction->res_field48 == 'COMPLETED')--}}
-        {{--                        <tr class="odd gradeX" style="color: #2E8B57;">--}}
-        {{--                    @elseif ($transaction->res_field48 == 'FAILED')--}}
-        {{--                        <tr class="odd gradeX" style="color: #ff0000;">--}}
-        {{--                    @elseif ($transaction->res_field48 == 'AML-APPROVED')--}}
-        {{--                        <tr class="odd gradeX" style="color: blue;">--}}
-        {{--                    @elseif ($transaction->res_field48 == 'UPLOAD-FAILED')--}}
-        {{--                        <tr class="odd gradeX" style="color: #ff0000;">--}}
-        {{--                    @else--}}
-        {{--                        <tr class="odd gradeX">--}}
-        {{--                            @endif--}}
-        {{--                                                            <tr class="odd gradeX">--}}
-
-        {{--                            <td>{{ $transaction->req_field123  }}</td>--}}
-        {{--                                                                <td>{{ $transaction->req_field7  }}</td>--}}
-        {{--                            <td>{{date('Y-m-d H:i:s',strtotime('+3 hours',strtotime(date('Y-m-d H:i:s', ($transaction->date_time_added / 1000)))))}}</td>--}}
-        {{--                            <td>{{!empty($transaction->paid_out_date) ? date("Y-m-d H:i:s", strtotime($transaction->paid_out_date)+10800):null}}</td>--}}
-        {{--                            <td>{{ $transaction->res_field48 }}</td>--}}
-        {{--                            <td>{{ $transaction->req_field41 }}</td>--}}
-        {{--                            <td>{{ $transaction->req_field34 }}</td>--}}
-        {{--                            <td>{{$transaction->sync_message ? $transaction->sync_message : "N/A" }}</td>--}}
-
-        {{--                            <td>{{ $transaction->req_field37 }}</td>--}}
-        {{--                            <td>{{ $transaction->req_field49. " ".intval($transaction->req_field4)/100 }}</td>--}}
-        {{--                            <td>{{$transaction->req_field50}}</td>--}}
-        {{--                            <td>{{intval($transaction->req_field5)/100  }}</td>--}}
-        {{--                                                            <td>{{ $transaction->req_field3 }}</td>--}}
-        {{--                            <td>{{ $transaction->req_field105  }}</td>--}}
-        {{--                            <td>{{ $transaction->req_field108   }}</td>--}}
-        {{--                            <td>{{ $transaction->req_field102  }}</td>--}}
-        {{--                            <td>{!! $transaction->res_field44 !!} </td>--}}
-        {{--                            <td>{{ $transaction->req_field112 }}</td>--}}
-        {{--                            <td>@include('transactions.datatables_actions')</td>--}}
-
-
-        {{--                        </tr>--}}
-        {{--                        @endforeach--}}
-
-        {{--                </tbody>--}}
     </table>
 
 </div>
-{{--    </div>--}}
-<!-- /.box-body -->
-{{--    <div class="box-footer clearfix">--}}
-{{--        {{$transactions->render()}}--}}
-{{--    </div>--}}
-<!-- /.box-footer -->
-{{--</div>--}}
+
 @section('scripts')
     @include('layouts.datatables_js')
 
     <script>
         $(document).ready(function() {
-            fetch_data();
+            // fetch_data();
 
-            function fetch_data(partner = '', type = '', fromto = '') {
-                let table = $('#txn-table').DataTable({
-                    processing: true,
-                    serverSide: true,
-                    pageLength: 30,
-                    retrieve: true,
-                    paginate: true,
-                    bPaginate: true,
-                    bStateSave: true,
-                    ajax:{
-                        url: "{{ route('pending-transactions.index') }}",
-                        data: {partner:partner, type:type, fromto:fromto}
+            // function fetch_data(partner = '', type = '', fromto = '') {
+            let table = $('#txn-table').DataTable({
+                processing: true,
+                serverSide: true,
+                pageLength: 30,
+                retrieve: true,
+                paginate: true,
+                // bPaginate: true,
+                bStateSave: true,
+                {{--ajax: "{{ route('transactions.index') }}",--}}
+                ajax:{
+                    url: "{{ route('pending-transactions.index') }}",
+                    // data: {req_field123:req_field123}
+                    data: function (d) {
+                        d.to = $('input[name=to]').val(),
+                            d.fromto = $('date_filter').val(),
+                            d.req_field41 = $('#txn_type').val(),
+                            d.req_field123 = $('#filter-partner').val(),
+                            d.search = $('input[type="search"]').val(),
+                            d.from = $('input[name=from]').val();
                     },
+                },
 
-                    // buttons:['excel'],
-                    buttons: ['csv', 'excel', 'pdf', 'print', 'reset', 'reload'],
-                    columns: [
-                        // {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                        {data: 'req_field123', name: 'req_field123'},
-                        // {data: 'req_field7', name: 'req_field7'},
-                        {data: 'date_time_added', name: 'date_time_added'},
-                        {data: 'paid_out_date', name: 'paid_out_date'},
-                        {data: 'res_field48', name: 'res_field48'},
-                        {data: 'req_field41', name: 'req_field41'},
-                        {data: 'req_field34', name: 'req_field34'},
-                        {data: 'sync_message', name: 'sync_message'},
-                        {data: 'req_field37', name: 'req_field37'},
-                        {data: 'req_field49', name: 'req_field49'},
-                        {data: 'req_field4', name: 'req_field4'},
-                        {data: 'req_field50', name: 'req_field50'},
-                        {data: 'req_field5', name: 'req_field5'},
-                        // {data: 'req_field3', name: 'req_field3'},
-                        {data: 'req_field105', name: 'req_field105'},
-                        {data: 'req_field108', name: 'req_field108'},
-                        {data: 'req_field102', name: 'req_field102'},
-                        {data: 'res_field44', name: 'res_field44'},
-                        {data: 'req_field112', name: 'req_field112'},
+                // buttons:['excel'],
+                // buttons: ['csv', 'excel', 'pdf', 'print', 'reset', 'reload'],
+                columns: [
+                    // {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                    {data: 'req_field123', name: 'req_field123'},
+                    // {data: 'req_field7', name: 'req_field7'},
+                    {data: 'date_time_added', name: 'date_time_added'},
+                    {data: 'paid_out_date', name: 'paid_out_date'},
+                    {data: 'res_field48', name: 'res_field48'},
+                    {data: 'req_field41', name: 'req_field41'},
+                    {data: 'req_field34', name: 'req_field34'},
+                    {data: 'sync_message', name: 'sync_message'},
+                    {data: 'req_field37', name: 'req_field37'},
+                    {data: 'req_field49', name: 'req_field49'},
+                    {data: 'req_field4', name: 'req_field4'},
+                    {data: 'req_field50', name: 'req_field50'},
+                    {data: 'req_field5', name: 'req_field5'},
+                    // {data: 'req_field3', name: 'req_field3'},
+                    {data: 'req_field105', name: 'req_field105'},
+                    {data: 'req_field108', name: 'req_field108'},
+                    {data: 'req_field102', name: 'req_field102'},
+                    {data: 'res_field44', name: 'res_field44'},
+                    {data: 'req_field112', name: 'req_field112'},
 
-                        {data: 'action', name: 'action', orderable: false, searchable: false},
-                    ],
-                    dom: 'Bfrtip',
-                    buttons: [
-                        'copy', 'csv', 'excel', 'pdf', 'print'
-                    ],
-                    'lengthMenu': [
-                        [10, 25, 50, -1],
-                        ['10 rows', '25 rows', '50 rows', 'Show all']
-                    ],
-                    "dom": "<'row'<'col-md-4 col-sm-12'<'pull-left'f>><'col-md-8 col-sm-12'<'table-group-actions pull-right'B>>r><'table-container't><'row'<'col-md-12 col-sm-12'pli>>", // datatable layout
-                    // "pagingType": "bootstrap_extended",
-                    "renderer": "bootstrap",
-                    "searchDelay": 800,
-                    "bDeferRender": true,
-                    "autoWidth": false, // disable fixed width and enable fluid table
-                    "language": { // language settings
-                        "lengthMenu": "<span class='dt-length-style'><i class='fa fa-bars'></i> &nbsp;View &nbsp;&nbsp;_MENU_ &nbsp;records&nbsp;&nbsp; </span>",
-                        "info": "<span class='dt-length-records'><i class='fa fa-globe'></i> &nbsp;Found&nbsp;<span class='badge bold badge-dt'>_TOTAL_</span>&nbsp;total records </span>",
-                        "infoEmpty": "<span class='dt-length-records'>No records found to show</span>",
-                        "emptyTable": "No data available in table",
-                        "infoFiltered": "<span class=' '>(filtered from <span class='badge bold badge-dt'>_MAX_</span> total records)</span>",
-                        "zeroRecords": "No matching records found",
-                        "search": "<i class='fa fa-search'></i>",
-                        "paginate": {
-                            "previous": "Prev",
-                            "next": "Next",
-                            "last": "Last",
-                            "first": "First",
-                            "page": "<span class=' '><i class='fa fa-eye'></i> &nbsp;Page&nbsp;&nbsp;</span>",
-                            "pageOf": "<span class=' '>&nbsp;of&nbsp;</span>"
-                        },
-                        "sProcessing": "Please wait..."
-                    }
+                    {data: 'action', name: 'action', orderable: false, searchable: false},
+                ],
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
+                'lengthMenu': [
+                    [10, 25, 50, -1],
+                    ['10 rows', '25 rows', '50 rows', 'Show all']
+                ],
+                "dom": "<'row'<'col-md-4 col-sm-12'<'pull-left'f>><'col-md-8 col-sm-12'<'table-group-actions pull-right'B>>r><'table-container't><'row'<'col-md-12 col-sm-12'pli>>", // datatable layout
+                // "pagingType": "bootstrap_extended",
+                "renderer": "bootstrap",
+                "searchDelay": 800,
+                "bDeferRender": true,
+                "autoWidth": false, // disable fixed width and enable fluid table
+                "language": { // language settings
+                    "lengthMenu": "<span class='dt-length-style'><i class='fa fa-bars'></i> &nbsp;View &nbsp;&nbsp;_MENU_ &nbsp;records&nbsp;&nbsp; </span>",
+                    "info": "<span class='dt-length-records'><i class='fa fa-globe'></i> &nbsp;Found&nbsp;<span class='badge bold badge-dt'>_TOTAL_</span>&nbsp;total records </span>",
+                    "infoEmpty": "<span class='dt-length-records'>No records found to show</span>",
+                    "emptyTable": "No data available in table",
+                    "infoFiltered": "<span class=' '>(filtered from <span class='badge bold badge-dt'>_MAX_</span> total records)</span>",
+                    "zeroRecords": "No matching records found",
+                    "search": "<i class='fa fa-search'></i>",
+                    "sProcessing": "Please wait..."
+                },
 
-                    // "deferRender": true,
+                // "deferRender": true,
 
-                    // scrollY: 200,
-                    // scroller: {
-                    //     loadingIndicator: true
-                    // },
-                });
-            }
+                // scrollY: 200,
+                // scroller: {
+                //     loadingIndicator: true
+                // },
+            }).load();
+            $('#dateSearch').on('click', function() {
+                table.draw();
+            });
+            $('#filter-partner, #txn_type').change(function(){
+                table.draw();
+            });
+            $('#filter-id').click(function(){
+                table.draw();
+            });
+            $('.input-daterange').datepicker({
+                autoclose: true,
+                todayHighlight: true,
+                format: 'yyyy-mm-dd'
+                // dateFormat: 'yy-mm-dd'
+            });
+
+
+            // }
             setInterval( function () {
                 $('#txn-table').ajax.reload(); // user paging is not reset on reload
-            }, 120000);
+            }, 60000);
 
-            // $('#filter-id').click(function(){
-            //    let partner = $('#filter-partner').val();
-            //     let type = $('#txn_type').val();
-            //     let range = $('#date_filter').val();
-            //     if(partner !== '' &&  type !== '' && range !== '')
-            //     {
-            //         $('#txn-table').DataTable().destroy();
-            //         fetch_data(partner, type, range);
-            //     }
-            //     if(partner !== '' &&  type === '' && range === '')
-            //     {
-            //         $('#txn-table').DataTable().destroy();
-            //         fetch_data(partner, '', '');
-            //     }
-            //     if(partner === '' &&  type !== '' && range === '')
-            //     {
-            //         $('#txn-table').DataTable().destroy();
-            //         fetch_data('', type, '');
-            //     }
-            //     if(partner === '' &&  type === '' && range !== '')
-            //     {
-            //         $('#txn-table').DataTable().destroy();
-            //         fetch_data('', '', range);
-            //     }
-            //     if(partner !== '' &&  type !== '' && range === '')
-            //     {
-            //         $('#txn-table').DataTable().destroy();
-            //         fetch_data(partner, type, '');
-            //     }
-            //     if(partner === '' &&  type !== '' && range !== '')
-            //     {
-            //         $('#txn-table').DataTable().destroy();
-            //         fetch_data('', type, range);
-            //     }
-            //     if(partner !== '' &&  type === '' && range !== '')
-            //     {
-            //         $('#txn-table').DataTable().destroy();
-            //         fetch_data(partner, '', range);
-            //     }
-            // });
-            // $('#refresh').click(function(){
-            //      $('#filter-partner').val();
-            //      $('#txn_type').val();
-            //     $('#date_filter').val();
-            //     fetch_data();
-            // });
 
         } );
     </script>
 @endsection
+
+
+
 
 
