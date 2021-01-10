@@ -122,7 +122,7 @@ class PendingTransactionsController extends Controller
                 ->make(true);
         }
 
-        return view('transactions.index', ['partners' => $all_partners,
+        return view('transactions.pending_index', ['partners' => $all_partners,
             'upesi_partners' => $upesi_partners, 'txnTypes' => array_unique($txnTypes)]);
     }
 }

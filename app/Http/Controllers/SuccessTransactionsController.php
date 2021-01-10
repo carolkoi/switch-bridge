@@ -131,7 +131,7 @@ class SuccessTransactionsController extends AppBaseController
                 ->make(true);
         }
 
-        return view('transactions.index', ['partners' => $all_partners,
+        return view('transactions.success_index', ['partners' => $all_partners,
             'upesi_partners' => $upesi_partners, 'txnTypes' => array_unique($txnTypes)]);
     }
 
