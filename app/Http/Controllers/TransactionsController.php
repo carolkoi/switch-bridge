@@ -98,11 +98,12 @@ class TransactionsController extends AppBaseController
             $end = Carbon::create($arrEnd[0], $arrEnd[1], $arrEnd[2], 23, 59, 59);
             $range = array('from' => $start, 'to' => $end);
 
-            $data = Transactions::select(['iso_id', 'res_field48','date_time_added', 'date_time_modified',
+            $data = Transactions::select(['iso_id', 'res_field48','date_time_added','paid_out_date', 'date_time_modified',
                 'req_field41', 'req_field34', 'sync_message', 'req_field37', 'req_field49', 'req_field4',
                 'req_field50', 'req_field5', 'req_field105', 'req_field108','req_field102', 'res_field44',
                 'req_field112', 'req_field123'])->transactionsByCompany()
                 ->whereBetween('created_at', array($range['from'], $range['to']))->orderBy('iso_id', 'desc');
+//            dd($data)->count();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->editColumn('date_time_added', function ($transaction) {
@@ -143,8 +144,8 @@ class TransactionsController extends AppBaseController
 //                        dd('here', $a, $b);
                         $range = array('from' => $a, 'to' => $b);
                         $instance->whereBetween('created_at', array($range['from'], $range['to']));
-
-                    }
+//
+//                    }
 
                     if (!empty($request->get('search'))) {
                         $instance->where(function ($w) use ($request) {
