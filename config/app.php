@@ -199,6 +199,7 @@ return [
         WorkflowApprovalEventServiceProvider::class,
         WizPackApprovalServiceProvider::class,
         Yajra\Datatables\DatatablesServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
 //        Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
 
@@ -259,6 +260,7 @@ return [
         'Uuid' => Webpatser\Uuid\Uuid::class,
         'WkPdf'    => Barryvdh\Snappy\Facades\SnappyPdf::class,
         'WkImage'  => Barryvdh\Snappy\Facades\SnappyImage::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ],
 
 ];

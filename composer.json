@@ -36,7 +36,8 @@
         "webpatser/laravel-uuid": "^3.0",
         "yajra/laravel-datatables-buttons": "^4.6",
         "yajra/laravel-datatables-html": "^4.4",
-        "yajra/laravel-datatables-oracle": "^9.15"
+        "yajra/laravel-datatables-oracle": "^9.15",
+        "phpoffice/phpexcel": "^1.8"
     },
     "require-dev": {
         "appointer/swaggervel": "^2.5",

@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\DataTables\PendingTransactionsDataTable;
 use App\DataTables\Scopes\TransactionDataTableScope;
 use App\DataTables\SuccessTransactionsDataTable;
+use App\Exports\TransactionReport;
 use App\Models\Partner;
 use App\Models\Transactions;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use DataTables;
+use Excel;
 
 class PendingTransactionsController extends Controller
 {
@@ -21,7 +23,7 @@ class PendingTransactionsController extends Controller
      * @param PendingTransactionsDataTable $pendingTransactionsDataTable
      * @return Response
      */
-    public function index(Request $request)
+    public function iindex(Request $request)
     {
         $upesi_partners = Partner::WhereNotIn('partner_id', ['NGAO', 'CHIPPERCASH'])->get();
         $all_partners = Partner::get();
@@ -125,5 +127,37 @@ class PendingTransactionsController extends Controller
         return view('transactions.pending_index', ['partners' => $all_partners,
             'upesi_partners' => $upesi_partners, 'txnTypes' => array_unique($txnTypes)]);
     }
+
+    public function index(Request $request)
+    {
+        $from = Carbon::now()->subDays(60)->format('Y-m-d');
+        $to = Carbon::now()->addDays(2)->format('Y-m-d');
+        $date = array('start' => $from, 'end' => $to);
+        $upesi_partners = Partner::WhereNotIn('partner_id', ['NGAO', 'CHIPPERCASH'])->get();
+        $all_partners = Partner::get();
+        $txnTypes = Transactions::pluck('req_field41')->all();
+        $take = 30;
+        $skip = 29;
+        $currentPage = $request->get('page', 1);
+        $transactions = Transactions::orderBy('iso_id','desc')->transactionsByCompany()
+//            ->filterByInputString()
+            ->take($take)
+            ->skip($skip + (($currentPage - 1) * $take))
+            ->get();
+
+        $transactions = Transactions::orderBy('iso_id', 'desc')->transactionsByCompany()
+            ->search()->WhereNotIn('res_field48', ['COMPLETED', 'FAILED'])->paginate(30);
+
+
+        return view('transactions.pending_index', ['transactions' =>$transactions, 'partners' => $all_partners,
+            'upesi_partners' => $upesi_partners, 'txnTypes' => array_unique($txnTypes)]);
+
+    }
+    public function getExport(){
+        $transactions = Transactions::orderBy('iso_id', 'desc')->transactionsByCompany()
+            ->search()->WhereNotIn('res_field48', ['COMPLETED', 'FAILED'])->paginate(1000);
+        return Excel::download( new TransactionReport($transactions), 'transaction-report.xls');
+    }
+
 }
 

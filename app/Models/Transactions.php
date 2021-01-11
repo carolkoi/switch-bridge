@@ -2142,35 +2142,18 @@ class Transactions extends Model implements ApprovableInterface
         $query->whereBetween('created_at', [$from, $to]);
     }
 
-    public function ScopeFilterByInputString($query){
-//        dd(json_encode(request()->all()));
-        $from = Carbon::now()->subDays(60)->format('Y-m-d');
-        $to = Carbon::now()->addDays(2)->format('Y-m-d');
-        $day = array('start' => $from, 'end' => $to);
-
-//        dd($day);
-
+    public function scopeFilter($query){
 
         if (request()->has('fromto') && request()->input('partner') && request()->has('txn-type')){
-//            dd(request()->input('reportdate'));
             $partner = request()->input('partner');
             $txnType = request()->input('txn-type');
-//            $reportTime = request()->input('reportdate');
             $date = explode(" - ", request()->input('fromto', ""));
-            $date1 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[0])))) * 1000;
-            $date2 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[1])))) * 1000;
-//            if ($reportTime == 'trn-date'){
-//                return $query->where('req_field123', $partner)
-//                    ->where('req_field41', 'LIKE', "%$txnType%")->whereBetween('date_time_added', array($date1, $date2));
-//            }else
+
 
                 return $query->where('req_field123', $partner)
                     ->where('req_field41', 'LIKE', "%$txnType%")
-                    ->whereBetween('paid_out_date', array($date[0], $date[1]));
-
-//
-//                return $query->where('req_field123', $partner)
-//                    ->where('req_field41', 'LIKE', "%$txnType%")->whereBetween('date_time_modified', array($date1, $date2));
+                    ->where('req_field123', $partner)
+                    ->whereBetween('created_at', array($date[0], $date[1]));
         }
         if (request()->has('partner') && request()->has('txn-type')) {
             $txnType = request()->input('txn-type');
@@ -2178,49 +2161,21 @@ class Transactions extends Model implements ApprovableInterface
             return $query->where('req_field123', $partner)->where('req_field41', 'LIKE', "%$txnType%");
         }
         if (request()->has('partner') && request()->has('fromto')) {
-            $partner = request()->input('partner');
-//            $reportTime = request()->input('reportdate');
-
             $date = explode(" - ", request()->input('fromto', ""));
-            $date1 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[0])))) * 1000;
-            $date2 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[1])))) * 1000;
-//            if ($reportTime == 'trn_date'){
-//                return $query->where('req_field123', $partner)->whereBetween('date_time_added', array($date1, $date2));
-//            }else
-                return $query->where('req_field123', $partner)->whereBetween('paid_out_date', array($date[0], $date[1]));
+            $partner = request()->input('partner');
+                return $query->where('req_field123', $partner)->whereBetween('created_at', array($date[0], $date[1]));
         }
         if (request()->has('txn-type') && request()->has('fromto')) {
             $txnType = request()->input('txn-type');
             $date = explode(" - ", request()->input('fromto', ""));
-//            $reportTime = request()->input('reportdate');
-
-            $date1 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[0])))) * 1000;
-            $date2 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[1])))) * 1000;
-//            if ($reportTime == 'trn_date'){
-//                return $query->where('req_field41', 'LIKE', "%$txnType%")->whereBetween('date_time_added', array($date1, $date2));
-//            }else
                 return $query->where('req_field41', 'LIKE', "%$txnType%")->whereBetween('paid_out_date', array($date[0], $date[1]));
         }
         if (request()->has('fromto')) {
-            dd('here');
-//            $reportTime = request()->input('reportdate');
-
             $date = explode(" - ", request()->input('fromto', ""));
-//            dd($date);
-            $date1 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[0])))) * 1000;
-            $date2 = strtotime(date('Y-m-d H:i:s', strtotime('+3', strtotime($date[1])))) * 1000;
-//            if ($reportTime == 'trn_date'){
-//                return $query->whereBetween('date_time_added', array($date1, $date2));
-//
-//            }else
-//                return $query->whereBetween('date_time_modified', array($date1, $date2));
-                return $query->whereBetween('paid_out_date', array($date[0], $date[1]));
-
+                return $query->whereBetween('created_at', array($date[0], $date[1]));
         }
-
         if (request()->has('partner')) {
-//            dd('here');
-            $txnType = request()->input('txn-type');
+
             $partner = request()->input('partner');
             return $query->where('req_field123', $partner);
         }
@@ -2228,15 +2183,14 @@ class Transactions extends Model implements ApprovableInterface
             $txnType = request()->input('txn-type');
             return $query->where('req_field41', 'LIKE', "%$txnType%");
         }
-        return $query->whereBetween('paid_out_date', array($day['start'], $day['end']));
-//        return $query;
+        return $query;
     }
 
     public function scopeSearch($q)
     {
         $search = request()->search;
         return empty($search) ? $q :
-            $q->orderBy('iso_id', 'desc')->transactionsByCompany()->filterByInputString()
+            $q->orderBy('iso_id', 'desc')
                 ->where('req_field123', 'LIKE', "%$search%")
                 ->orWhere('req_field41', 'LIKE', "%$search%")
                 ->orWhere('sync_message', 'LIKE', "%$search%")
@@ -2249,7 +2203,6 @@ class Transactions extends Model implements ApprovableInterface
                 ->orWhere('req_field102', 'LIKE', "%$search%")
                 ->orWhere('res_field48', 'LIKE', "%$search%")
                 ->orWhere('paid_out_date', 'LIKE', "%$search%")->paginate();
-
-
         }
+
 }

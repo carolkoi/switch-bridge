@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\DataTables\Scopes\TransactionDataTableScope;
 use App\DataTables\TransactionsDataTable;
+use App\Exports\TransactionReport;
 use App\Http\Requests;
 use App\Http\Requests\CreateTransactionsRequest;
 use App\Http\Requests\UpdateTransactionsRequest;
+use App\Http\Resources\Transaction;
 use App\Models\ApiTransaction;
 use App\Models\Partner;
 use App\Models\SessionTxn;
@@ -25,6 +27,7 @@ use DB;
 use WizPack\Workflow\Models\Approvals;
 use Yajra\Datatables\Facades\Datatables as AjaxDataTables;
 use DataTables;
+use Excel;
 
 
 class TransactionsController extends AppBaseController
@@ -60,7 +63,7 @@ class TransactionsController extends AppBaseController
 
     }
 
-    public function TableIndex(Request $request)
+    public function index(Request $request)
     {
         $from = Carbon::now()->subDays(60)->format('Y-m-d');
         $to = Carbon::now()->addDays(2)->format('Y-m-d');
@@ -72,13 +75,13 @@ class TransactionsController extends AppBaseController
         $skip = 29;
         $currentPage = $request->get('page', 1);
         $transactions = Transactions::orderBy('iso_id','desc')->transactionsByCompany()
-            ->filterByInputString()
+//            ->filterByInputString()
             ->take($take)
             ->skip($skip + (($currentPage - 1) * $take))
             ->get();
 
         $transactions = Transactions::orderBy('iso_id', 'desc')->transactionsByCompany()
-            ->search()->filterByInputString()->paginate(30);
+            ->search()->filter()->paginate(30);
 
 
         return view('transactions.index', ['transactions' =>$transactions, 'partners' => $all_partners,
@@ -86,7 +89,7 @@ class TransactionsController extends AppBaseController
 
     }
 
-    public function index(Request $request)
+    public function Aindex(Request $request)
     {
         $upesi_partners = Partner::WhereNotIn('partner_id', ['NGAO', 'CHIPPERCASH'])->get();
         $all_partners = Partner::get();
@@ -279,15 +282,8 @@ class TransactionsController extends AppBaseController
     public function update($iso_id, UpdateTransactionsRequest $request)
     {
         $transactions = Transactions::where('iso_id', $iso_id)->first();
-//        dd(strtotime(now())*1000, date('Y-m-d H:i', strtotime(now())), $transactions->date_time_modified, date('Y-m-d H:i', $transactions->date_time_modified/1000));
 
         $input = $request->all();
-//        $datePaid = strtotime($request->input('paid_out_date'))*1000;
-
-
-//        $hyphen = "-";
-//        $plus = "+";
-//        $appended = $transactions->res_field37 .= $hyphen .= substr(md5(microtime()),rand(0,26),1);
 
         if (empty($transactions)) {
             Flash::error('Transactions not found');
@@ -297,9 +293,7 @@ class TransactionsController extends AppBaseController
         Transactions::where('iso_id', $iso_id)->update([
             'modified_by' => Auth::user()->id
         ]);
-//        if ($transactions->res_field37 == $appended){
-//            $appended = $transactions->res_field37 .= $plus .= substr(md5(microtime()),rand(0,26),1);
-//        }
+
         $sessionTxn = SessionTxn::updateOrCreate([
             'txn_id' => $transactions->iso_id,
         ],
@@ -318,12 +312,13 @@ class TransactionsController extends AppBaseController
                 'user_id' => Auth::id(),
                 'sent_by' => Auth::id(),
                 'workflow_type' => 'transaction_approval',
-                'collection_name' => 'transaction_approval',
+                'collection_name' => 'Transaction Approval',
                 'model_id' => $transactions->iso_id,
                 'model_type' => 'App\Models\Transactions',
                 'awaiting_stage_id' => null,
                 'company_id' => Auth::user()->company_id
             ]);
+//        dd($approval);
 
         //initiating the approval request
 //        $approval = new Transactions();
@@ -466,5 +461,11 @@ class TransactionsController extends AppBaseController
             return response()->json($output);
 //            return Response($transactions);
         }
+    }
+
+    public function getExport(){
+        $transactions = Transactions::orderBy('iso_id', 'desc')->transactionsByCompany()
+            ->search()->paginate(1000);
+        return Excel::download( new TransactionReport($transactions), 'transaction-report.xls');
     }
 }

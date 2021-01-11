@@ -129,4 +129,9 @@ Route::resource('floatBalances', 'FloatBalanceController');
 Route::resource('floatBalances', 'FloatBalanceController');
 Route::get('recent-transactions', 'TransactionsController@vueIndex')->name('transaction.index');
 Route::get('/search', 'TransactionsController@search')->name('transaction.search');
+Route::get('/export', 'TransactionsController@getExport')->name('transaction.export');
+Route::get('/success-export', 'SuccessTransactionsController@getExport')->name('success-transaction.export');
+Route::get('/pending-export', 'PendingTransactionsController@getExport')->name('pending-transaction.export');
+Route::get('/failed-export', 'FailedTransactionsController@getExport')->name('failed-transaction.export');
+
 
