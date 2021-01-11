@@ -15,7 +15,7 @@
                 retrieve: true,
                 ajax: "data.json",
                 //});
-            });
+            }).ajax.url('https://asgard.slafrica.net:9810/upesi/approval-types').load();
                 // .ajax.url('https://asgard.slafrica.net:9810/upesi/approval-types').load();
 
 

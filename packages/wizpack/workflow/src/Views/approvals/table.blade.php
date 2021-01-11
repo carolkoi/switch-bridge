@@ -15,7 +15,7 @@
                 retrieve: true,
                 ajax: "data.json",
                 //});
-            }).ajax.url.url('https://dev.slafrica.net:6810/upesi/approvals').load();
+            }).ajax.url('https://dev.slafrica.net:6810/upesi/approvals').load();
 
 
         });
