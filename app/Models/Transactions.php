@@ -2143,6 +2143,10 @@ class Transactions extends Model implements ApprovableInterface
     }
 
     public function scopeFilter($query){
+        $from = Carbon::now()->subDays(3)->format('Y-m-d');
+        $now =  Carbon::now()->format('Y-m-d');
+        $to = Carbon::now()->addDays(2)->format('Y-m-d');
+        $day = array('start' => $from, 'today' => $now, 'end' => $to);
 
         if (request()->has('fromto') && request()->input('partner') && request()->has('txn-type')){
             $partner = request()->input('partner');
@@ -2183,7 +2187,7 @@ class Transactions extends Model implements ApprovableInterface
             $txnType = request()->input('txn-type');
             return $query->where('req_field41', 'LIKE', "%$txnType%");
         }
-        return $query;
+        return $query->whereBetween('created_at', array($day[0], $day[1]));
     }
 
     public function scopeSearch($q)
