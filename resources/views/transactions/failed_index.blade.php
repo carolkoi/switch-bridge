@@ -119,9 +119,12 @@
 
 
                 <div>
+                    @if(Auth::check() && Auth::user()->company_id == 9)
+
                     <a class="btn btn-primary pull-right" href="{{route('failed-transaction.export')}}">
                         Export to Excel
                     </a>
+                    @endif
                     <form>
                         <div class="form-group" style="width: 800px">
                             <input type="text" name="search" style="width: 500px">
