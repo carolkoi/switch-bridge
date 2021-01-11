@@ -123,11 +123,11 @@
     </ul>
 @endif
 
-{{--@if(Auth::check() && auth()->user()->can('Can Authorize Transaction Update'))--}}
+@if(Auth::check() && auth()->user()->can('Can Authorize Transaction Update'))
 
     <li class="divider" style="color:white; padding: 15px"><span><b>Approval Settings</b></span></li>
     @include("wizpack::layouts.menu")
-{{--    @endif--}}
+    @endif
 
 {{--<li class="{{ Request::is('partners*') ? 'active' : '' }}">--}}
 {{--    <a href="{{ route('partners.index') }}"><i class="fa fa-edit"></i><span>Partners</span></a>--}}

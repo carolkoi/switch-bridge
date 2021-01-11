@@ -42,7 +42,7 @@ class SuccessTransactionsController extends AppBaseController
             $end = Carbon::create($arrEnd[0], $arrEnd[1], $arrEnd[2], 23, 59, 59);
             $range = array('from' => $start, 'to' => $end);
 
-            $take = 30;
+            $take = 2000;
             $skip = 0;
             $currentPage = $request->get('page', 1);
 //            $transactions = Transactions::select('iso_id', 'res_field48','date_time_added','paid_out_date', 'date_time_modified',
