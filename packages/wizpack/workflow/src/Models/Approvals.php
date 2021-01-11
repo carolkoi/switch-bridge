@@ -263,7 +263,7 @@ class Approvals extends Model
     public function ScopeFilterApprovalsByCompany($query, $userCompanyId = null){
         $userCompanyId = $userCompanyId ?: auth()->user()->company_id;
 
-        if ($userCompanyId == 9 OR $userCompanyId == 11) {
+        if ($userCompanyId !== 1) {
             return $query->where('company_id', $userCompanyId);
         }else
             return $query;
