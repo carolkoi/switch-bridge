@@ -16,11 +16,7 @@
                 ajax: "data.json",
                 //});
             }).ajax.url.url('https://dev.slafrica.net:6810/upesi/approvals').load();
-                // .ajax.url('https://asgard.slafrica.net:9810/upesi/approvals').load();
-            setInterval( function () {
-                table.ajax.reload(); // user paging is not reset on reload
-                hasBeenSet = 1;
-            }, 3000);
+
 
         });
     </script>

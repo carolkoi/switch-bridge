@@ -111,6 +111,7 @@
                     </div>
                 </div>
             </div>
+            <hr style="color: darkblue">
             <div class="box-body">
 
 

@@ -286,7 +286,7 @@ class SuccessTransactionsController extends AppBaseController
 
     public function getExport(){
         $transactions = Transactions::orderBy('iso_id', 'desc')->transactionsByCompany()
-            ->search()->where('res_field48', 'COMPLETED')->paginate(1000);
+            ->search()->filter()->where('res_field48', 'COMPLETED')->paginate(1000);
         return Excel::download( new TransactionReport($transactions), 'transaction-report.xls');
     }
 }

@@ -165,7 +165,7 @@ class FailedTransactionsController extends Controller
     }
     public function getExport(){
         $transactions = Transactions::orderBy('iso_id', 'desc')->transactionsByCompany()
-            ->search()->where('res_field48', 'FAILED')->paginate(1000);
+            ->search()->filter()->where('res_field48', 'FAILED')->paginate(5000);
         return Excel::download( new TransactionReport($transactions), 'transaction-report.xls');
     }
 
