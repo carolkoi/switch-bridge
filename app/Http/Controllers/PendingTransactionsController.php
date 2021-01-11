@@ -148,7 +148,7 @@ class PendingTransactionsController extends Controller
             ->get();
 
         $transactions = Transactions::orderBy('iso_id', 'desc')->transactionsByCompany()
-            ->search()->WhereNotIn('res_field48', ['COMPLETED', 'FAILED'])->paginate(30);
+            ->search()->filter()->WhereNotIn('res_field48', ['COMPLETED', 'FAILED'])->paginate(30);
 
 
         return view('transactions.pending_index', ['transactions' =>$transactions, 'partners' => $all_partners,

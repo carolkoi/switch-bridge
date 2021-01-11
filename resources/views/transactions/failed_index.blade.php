@@ -134,8 +134,8 @@
 
 
             @include('transactions.normal_table')
-{{--            <div class="box-footer clearfix">--}}
-{{--                --}}{{--            {{$transactions->render()}}--}}
+            <div class="box-footer clearfix">
+                            {{$transactions->render()}}
 {{--                @if (Request::has('page') && Request::get('page') > 1)--}}
 {{--                    <a href="{{ route('failed-transactions.index', ['page' => Request::get('page') - 1]) }}" class=" btn btn-primary">PREV</a>--}}
 {{--                @endif--}}
@@ -145,7 +145,7 @@
 {{--                @else--}}
 {{--                    <a href="{{ route('failed-transactions.index', ['page' =>2]) }}" class=" btn btn-primary">Next page</a>--}}
 {{--                @endif--}}
-{{--            </div>--}}
+            </div>
 
         </div>
     </div>

@@ -465,8 +465,7 @@ class TransactionsController extends AppBaseController
     }
 
     public function getExport(){
-        $transactions = Transactions::orderBy('iso_id', 'desc')->transactionsByCompany()
-            ->search()->filter()->paginate(5000);
+        $transactions = Transactions::paginate(2000);
         return Excel::download( new TransactionReport($transactions), 'transaction-report.xls');
     }
 }

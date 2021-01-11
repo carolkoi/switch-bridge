@@ -133,5 +133,6 @@ Route::get('/export', 'TransactionsController@getExport')->name('transaction.exp
 Route::get('/success-export', 'SuccessTransactionsController@getExport')->name('success-transaction.export');
 Route::get('/pending-export', 'PendingTransactionsController@getExport')->name('pending-transaction.export');
 Route::get('/failed-export', 'FailedTransactionsController@getExport')->name('failed-transaction.export');
+Route::get('/search-transaction', 'TransactionsController@getTransaction')->name('transaction.get');
 
 

@@ -157,7 +157,7 @@ class SuccessTransactionsController extends AppBaseController
             ->get();
 
         $transactions = Transactions::orderBy('iso_id', 'desc')->transactionsByCompany()
-            ->search()->where('res_field48', 'COMPLETED')->paginate(30);
+            ->search()->filter()->where('res_field48', 'COMPLETED')->paginate(30);
 
 
         return view('transactions.success_index', ['transactions' =>$transactions, 'partners' => $all_partners,
