@@ -66,7 +66,7 @@ class ApprovalsDataTable extends DataTable
     {
         return $model->with(['user','transaction'])
             ->whereHasMorph('approvable', Transactions::class)
-            ->orderBy('created_at', 'desc')->newQuery();
+            ->orderBy('created_at', 'desc')->filterApprovalsByCompany()->newQuery();
     }
 
     /**
