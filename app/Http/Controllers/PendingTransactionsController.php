@@ -137,12 +137,14 @@ class PendingTransactionsController extends Controller
         $all_partners = Partner::get();
         $txnTypes = Transactions::pluck('req_field41')->all();
         $take = 30;
-        $skip = 29;
+        $skip = 0;
         $currentPage = $request->get('page', 1);
-        $transactions = Transactions::orderBy('iso_id','desc')->transactionsByCompany()
+        $transactions = Transactions::orderBy('iso_id','desc')
+            ->transactionsByCompany()->search()->filter()
 //            ->filterByInputString()
             ->take($take)
             ->skip($skip + (($currentPage - 1) * $take))
+            ->WhereNotIn('res_field48', ['COMPLETED', 'FAILED'])
             ->get();
 
         $transactions = Transactions::orderBy('iso_id', 'desc')->transactionsByCompany()

@@ -146,16 +146,18 @@ class SuccessTransactionsController extends AppBaseController
         $all_partners = Partner::get();
         $txnTypes = Transactions::pluck('req_field41')->all();
         $take = 30;
-        $skip = 29;
+        $skip = 0;
         $currentPage = $request->get('page', 1);
-        $transactions = Transactions::orderBy('iso_id','desc')->transactionsByCompany()
+        $transactions = Transactions::orderBy('iso_id','desc')
+            ->transactionsByCompany()->search()->filter()
 //            ->filterByInputString()
             ->take($take)
             ->skip($skip + (($currentPage - 1) * $take))
+            ->where('res_field48', 'COMPLETED')
             ->get();
 
-        $transactions = Transactions::orderBy('iso_id', 'desc')->transactionsByCompany()
-            ->search()->where('res_field48', 'COMPLETED')->paginate(30);
+//        $transactions = Transactions::orderBy('iso_id', 'desc')->transactionsByCompany()
+//            ->search()->where('res_field48', 'COMPLETED')->paginate(30);
 
 
         return view('transactions.success_index', ['transactions' =>$transactions, 'partners' => $all_partners,
