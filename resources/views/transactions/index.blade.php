@@ -134,18 +134,18 @@
 
 
                 @include('transactions.normal_table')
-            <div class="box-footer clearfix">
+{{--            <div class="box-footer clearfix">--}}
 {{--            {{$transactions->render()}}--}}
-                @if (Request::has('page') && Request::get('page') > 1)
-                    <a href="{{ route('transactions.index', ['page' => Request::get('page') - 1]) }}" class=" btn btn-primary">PREV</a>
-                @endif
+{{--                @if (Request::has('page') && Request::get('page') > 1)--}}
+{{--                    <a href="{{ route('transactions.index', ['page' => Request::get('page') - 1]) }}" class=" btn btn-primary">PREV</a>--}}
+{{--                @endif--}}
 
-                @if (Request::has('page'))
-                    <a href="{{ route('transactions.index', ['page' => Request::get('page') + 1]) }}" class="btn btn-default">NEXT</a>
-                @else
-                    <a href="{{ route('transactions.index', ['page' =>2]) }}" class=" btn btn-primary">Next page</a>
-                @endif
-            </div>
+{{--                @if (Request::has('page'))--}}
+{{--                    <a href="{{ route('transactions.index', ['page' => Request::get('page') + 1]) }}" class="btn btn-default">NEXT</a>--}}
+{{--                @else--}}
+{{--                    <a href="{{ route('transactions.index', ['page' =>2]) }}" class=" btn btn-primary">Next page</a>--}}
+{{--                @endif--}}
+{{--            </div>--}}
             <!-- /.box-footer -->
             </div>
             </div>

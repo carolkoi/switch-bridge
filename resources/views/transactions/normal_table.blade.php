@@ -75,4 +75,20 @@
     </table>
 
 </div>
+<div class="box-footer clearfix">
+                        {{$transactions->render()}}
+{{--    @if (Request::has('page') && Request::get('page') > 1)--}}
+{{--        <a href="{{ route('home', ['page' => Request::get('page') - 1]) }}" class=" btn btn-primary">PREV</a>--}}
+{{--    @endif--}}
 
+{{--    @if (Request::has('page'))--}}
+{{--        <a href="{{ route('home', ['page' => Request::get('page') + 1]) }}" class="btn btn-default">NEXT</a>--}}
+{{--    @else--}}
+{{--        <a href="{{ route('home', ['page' =>2]) }}" class=" btn btn-primary">Next page</a>--}}
+{{--    @endif--}}
+{{--</div>--}}
+<!-- /.box-footer -->
+</div>
+@section('js')
+
+@endsection

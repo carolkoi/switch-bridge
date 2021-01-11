@@ -71,18 +71,18 @@ class TransactionsController extends AppBaseController
         $upesi_partners = Partner::WhereNotIn('partner_id', ['NGAO', 'CHIPPERCASH'])->get();
         $all_partners = Partner::get();
         $txnTypes = Transactions::pluck('req_field41')->all();
-        $take = 30;
+        $take = 2000;
         $skip = 0;
         $currentPage = $request->get('page', 1);
-        $transactions = Transactions::orderBy('iso_id','desc')
-            ->transactionsByCompany()->search()->filter()
-//            ->filterByInputString()
-            ->take($take)
-            ->skip($skip + (($currentPage - 1) * $take))
-            ->get();
+//        $transactions = Transactions::orderBy('iso_id','desc')
+//            ->transactionsByCompany()->search()->filter()
+////            ->filterByInputString()
+//            ->take($take)
+////            ->skip($skip + (($currentPage - 1) * $take))
+//            ->get();
 
-//        $transactions = Transactions::orderBy('iso_id', 'desc')->transactionsByCompany()
-//            ->search()->filter()->paginate(30);
+        $transactions = Transactions::orderBy('iso_id', 'desc')->transactionsByCompany()
+            ->search()->filter()->paginate(30);
 
 
         return view('transactions.index', ['transactions' =>$transactions, 'partners' => $all_partners,

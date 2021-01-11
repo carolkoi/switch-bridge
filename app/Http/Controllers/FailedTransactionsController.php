@@ -157,8 +157,8 @@ class FailedTransactionsController extends Controller
             ->where('res_field48', 'FAILED')
             ->get();
 
-//        $transactions = Transactions::orderBy('iso_id', 'desc')->transactionsByCompany()
-//            ->search()->where('res_field48', 'FAILED')->paginate(30);
+        $transactions = Transactions::orderBy('iso_id', 'desc')->transactionsByCompany()
+            ->search()->where('res_field48', 'FAILED')->paginate(30);
 
 
         return view('transactions.failed_index', ['transactions' =>$transactions, 'partners' => $all_partners,
