@@ -22,9 +22,9 @@
                                 {{--                                                                                        <label>SELECT PARTNER</label>--}}
                                 <div class="form-group" id="filter-partner-id" style="">
                                     @if(Auth::check() && Auth::user()->company_id == 9)
-                                        <select name="filter-partner" class="form-control param select2"
+                                        <select name="partner" class="form-control param select2"
                                                 id="filter-partner">
-                                            <option value=" ">SELECT PARTNER</option>
+                                            <option selected disabled>SELECT PARTNER</option>
                                             @foreach($upesi_partners as $partner)
                                                 <option
                                                     value="{{$partner->partner_name}}">{{$partner->partner_name}}
@@ -35,9 +35,9 @@
                                         {{--                                            </div>--}}
 
                                     @elseif(Auth::check() && Auth::user()->company_id == 10)
-                                        <select name="filter-partner" class="form-control param select2"
+                                        <select name="partner" class="form-control param select2"
                                                 id="filter-partner">
-                                            <option disabled>SELECT PARTNER</option>
+                                            <option selected disabled>SELECT PARTNER</option>
                                             <option
                                                 value="CHIPPERCASH">CHIPPERCASH</option>
                                         </select>
@@ -54,7 +54,7 @@
                                     @else
                                         <select name="partner" class="form-control param select2"
                                                 id="filter-partner">
-                                            <option value=" ">SELECT PARTNER</option>
+                                            <option selected disabled>SELECT PARTNER</option>
                                             @foreach($partners as $partner)
                                                 <option
                                                     value="{{$partner->partner_name}}">{{$partner->partner_name}}</option>
@@ -67,7 +67,7 @@
                             <div class="col-md-3">
 
                                 <div class="form-group" id="txn_type_id" style="">
-                                    <select name="partner" id="txn_type" class="form-control param select2">
+                                    <select name="txn-type" id="txn_type" class="form-control param select2">
                                         <option selected disabled>SELECT TYPE</option>
                                         @foreach($txnTypes as $key => $txnType)
                                             <option value="{{ trim($txnType) }}">{{ trim($txnType) }}</option>
@@ -91,13 +91,13 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input type="text" name="from-to" class="form-control param" id="date_filter"
+                                    <input type="text" name="fromto" class="form-control param" id="date_filter"
                                            autocomplete="off">
                                     {{--                                            {!! Form::text('paid_out_date', null, ['class' => 'form-control', 'autocomplete' => 'off', 'id' => 'paid-out-id']) !!}--}}
                                 </div>
                             </div>
                             <span>
-                                                        <button type="button" id="dateSearch" class="btn btn-sm btn-primary">Filter</button>
+                                                        <button type="submit" id="dateSearch" class="btn btn-sm btn-primary">Filter</button>
 
                                                                         </span>
 
@@ -111,6 +111,7 @@
                     </div>
                 </div>
             </div>
+
             <hr style="color: darkblue">
             <div class="box-body">
 

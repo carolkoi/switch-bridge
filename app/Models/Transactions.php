@@ -2143,7 +2143,7 @@ class Transactions extends Model implements ApprovableInterface
     }
 
     public function scopeFilter($query){
-        $from = Carbon::now()->subDays(3)->format('Y-m-d');
+        $from = Carbon::now()->subDays(60)->format('Y-m-d');
         $now =  Carbon::now()->format('Y-m-d');
         $to = Carbon::now()->addDays(2)->format('Y-m-d');
         $day = array('start' => $from, 'today' => $now, 'end' => $to);

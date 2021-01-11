@@ -157,7 +157,7 @@ class PendingTransactionsController extends Controller
     }
     public function getExport(){
         $transactions = Transactions::orderBy('iso_id', 'desc')->transactionsByCompany()
-            ->search()->filter()->WhereNotIn('res_field48', ['COMPLETED', 'FAILED'])->paginate(5000);
+            ->WhereNotIn('res_field48', ['COMPLETED', 'FAILED'])->paginate(2000);
         return Excel::download( new TransactionReport($transactions), 'transaction-report.xls');
     }
 
