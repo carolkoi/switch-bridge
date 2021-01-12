@@ -65,7 +65,7 @@ class TransactionsController extends AppBaseController
 
     public function index(Request $request)
     {
-        $from = Carbon::now()->subDays(60)->format('Y-m-d');
+        $from = Carbon::now()->subDays(4)->format('Y-m-d');
         $to = Carbon::now()->addDays(2)->format('Y-m-d');
         $date = array('start' => $from, 'end' => $to);
         $upesi_partners = Partner::WhereNotIn('partner_id', ['NGAO', 'CHIPPERCASH'])->get();
@@ -82,7 +82,7 @@ class TransactionsController extends AppBaseController
 //            ->get();
 
         $transactions = Transactions::orderBy('iso_id', 'desc')->transactionsByCompany()
-            ->search()->filter()->paginate(30);
+            ->search()->filter()->whereBetween('created_at', array($date['start'], $date['end']))->paginate(30);
 
 
         return view('transactions.index', ['transactions' =>$transactions, 'partners' => $all_partners,

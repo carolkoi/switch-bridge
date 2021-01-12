@@ -57,12 +57,12 @@
                         <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    @if(\App\Helpers::getEnv() == "local")
+{{--                                    @if(\App\Helpers::getEnv() == "local")--}}
 {{--                                        {{URL::asset('profile/'.(Auth::check() && Auth::user()->id)}}--}}
-                                    <a href="" class="btn btn-default btn-flat">Profile</a>
-                                @else
-                                        <a class="btn btn-default btn-flat" href="{{\App\Helpers::assetToggle()}}profile/{{(Auth::check() && Auth::user()->id)}}" >Profile</a>
-                                @endif
+                                    <a href="/profile/{{Auth::id()}}" class="btn btn-default btn-flat">Profile</a>
+{{--                                @else--}}
+{{--                                        <a class="btn btn-default btn-flat" href="{{\App\Helpers::assetToggle()}}profile/{{(Auth::check() && Auth::user()->id)}}" >Profile</a>--}}
+{{--                                @endif--}}
                                 </div>
                                 <div class="pull-right">
                                     @if(\App\Helpers::getEnv() == "local")

@@ -2187,7 +2187,7 @@ class Transactions extends Model implements ApprovableInterface
             $txnType = request()->input('txn-type');
             return $query->where('req_field41', 'LIKE', "%$txnType%");
         }
-        return $query->whereBetween('created_at', array($day['start'], $day['end']));
+        return $query;
     }
 
     public function scopeSearch($q)
