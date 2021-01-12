@@ -32,7 +32,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(UrlGenerator $url)
     {
         if(App::environment('prod')) {
-            $url->forceRootUrl(env('APP_URL', 'https://asgard.slafrica.net:9810/'));
+            $url->forceRootUrl(env('APP_URL', 'https://dev.slafrica.net:6810/'));
         }
 
         Collection::macro('paginate', function ($perPage, $total = null, $page = null, $pageName = 'page') {
